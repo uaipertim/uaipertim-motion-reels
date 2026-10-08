@@ -46,6 +46,10 @@ def section_curve(tl, n):
     t0, t1 = off + a * bar, off + (b + 1) * bar
     ramp = (t >= t0) & (t < t1)
     curve[ramp] += np.interp(t[ramp], [t0, t1], [-2.5, 2.0])
+    # "Uai…" quase solo: a trilha entra logo depois da primeira palavra
+    hold = m.get("introHoldSeconds", 0)
+    if hold:
+        curve += np.interp(t, [0, hold, hold + 0.25], [-18, -18, 0])
     return db(curve)
 
 

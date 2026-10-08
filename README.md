@@ -44,12 +44,16 @@ npm run studio    # pré-visualização interativa
 npm install
 # áudio (Python 3 + FluidSynth)
 sudo apt-get install fluidsynth fluid-soundfont-gm
-npm run audio:setup   # baixa o modelo de TTS Kokoro e instala as libs Python
+npm run audio:setup   # baixa as vozes (Piper pt-BR + Kokoro) e instala as libs Python
 ```
 
 ## Áudio (gerado pelo projeto, sem samples externos)
 
-- **Locução:** Kokoro TTS v1.0 offline, voz pt-BR `pf_dora` (`audio/tts.py`). As pronúncias são ajustadas em `narration.phonemeFixes`: "Uai" sai com uma sílaba só e "UaiPertim"/"pertim" com o jeitinho mineiro. Também tem queda do "r" no infinitivo ("baixá", "instalá", "ocupá"). Cada fala é acelerada sozinha se passar de `maxSeconds`.
+- **Locução:** voz **Piper `pt_BR-cadu-medium`**, treinada com um falante brasileiro nativo (dataset CC0, uso comercial liberado), rodando offline (`audio/tts.py`).
+  - A pronúncia é ajustada em `narration.phonemeFixes.piper`: o "Uaai" sai numa sílaba, levemente arrastado, e o "w" de Uai-Pertim fica bem marcado. A grafia mineira entra direto no texto: "baixá", "instalá", "ocupá".
+  - O modelo varia a cada geração. A `seed` de cada fala em `timeline.json` fixa o take escolhido.
+  - `audio/pick_takes.py` (opcional, usa Whisper) gera vários takes por fala, transcreve cada um e grava a seed do mais fiel ao texto.
+  - Para trocar a voz, mude `narration.voice` (`pt_BR-faber-medium` é outra voz masculina brasileira). Para voltar ao Kokoro, use `"engine": "kokoro"` com `"voice": "pf_dora"`, mas o sotaque dele soa estrangeiro.
 - **Trilha:** 124 bpm, composta em MIDI (`audio/music.py`) e renderizada com FluidSynth + FluidR3 GM. Leva violão nylon em voicing de ukulele, marimba, glockenspiel/celesta, baixo, palmas e shaker. Sobe nas cenas 1–2, tem um respiro de ~1s no swipe da cena 3, cresce até o pico no CTA e fecha com o acorde do sting no end card.
 - **SFX:** sintetizados em numpy (`audio/sfx.py`): glup, alarme, boing, carimbo, whoosh, pop mágico, sininho, digitação, tap, plop, confete etc.
 - **Mix:** `audio/mix.py` faz o ducking da trilha guiado pela voz (-10 dB), a automação por seção e normaliza em -14 LUFS com limiter (pico -1.5 dBFS).

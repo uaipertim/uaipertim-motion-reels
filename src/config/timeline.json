@@ -23,9 +23,9 @@
   "beats": {
     "s1": {
       "land": 10,
-      "iconsStart": 13,
+      "iconsStart": 22,
       "iconEvery": 1.6,
-      "glups": [14, 19, 24, 29, 34, 39, 45],
+      "glups": [24, 29, 34, 39, 44, 50, 55],
       "overflow": [42, 50, 57],
       "storageStart": 16,
       "storageFull": 60,
@@ -84,33 +84,44 @@
   },
 
   "narration": {
-    "voice": "pf_dora",
+    "_doc": "engine 'piper' = voz brasileira nativa (padrão; modelos em audio/models/piper: pt_BR-cadu-medium, pt_BR-faber-medium). engine 'kokoro' = alternativa (voz pf_dora, sotaque menos natural). 'say' é o texto que a voz lê (pode ter grafia mineira: baixá, instalá); 'text' é só referência.",
+    "engine": "piper",
+    "voice": "pt_BR-cadu-medium",
+    "noiseScale": 0.7,
+    "noiseW": 0.85,
+    "_doc_seed": "seed = qual 'take' da voz usar (o modelo varia a cada geração). Escolhidas com audio/pick_takes.py.",
     "items": [
-      { "id": "n1", "from": 6, "speed": 1.0, "maxSeconds": 2.8,
+      { "id": "n1", "seed": 0, "from": 6, "speed": 1.0, "maxSeconds": 2.8,
         "text": "Uai… seu celular já vive cheio, né?",
-        "segments": [ { "ph": "wˈaɪ…" }, { "say": "seu celular já vive cheio, né?" } ], "pause": 0.22 },
-      { "id": "n2", "from": 94, "speed": 1.1, "maxSeconds": 2.85,
+        "segments": [ { "say": "Uai…" }, { "say": "seu celular já vive cheio, né?" } ], "pause": 0.2 },
+      { "id": "n2", "seed": 8, "from": 92, "speed": 1.0, "maxSeconds": 2.95,
         "text": "E aí vem mais um aplicativo… não cabe mais nada!",
-        "segments": [ { "say": "E aí vem mais um aplicativo… não cabe mais nada!" } ] },
-      { "id": "n3", "from": 188, "speed": 1.0, "maxSeconds": 3.3,
+        "segments": [ { "say": "E aí, vem mais um aplicativo… não cabe mais nada!" } ] },
+      { "id": "n3", "seed": 4, "from": 188, "speed": 1.0, "maxSeconds": 3.3,
         "text": "Calma! O UaiPertim não é aplicativo pra baixar.",
-        "segments": [ { "say": "Calma!" }, { "say": "O UaiPertim não é aplicativo pra baixá." } ], "pause": 0.12 },
-      { "id": "n4", "from": 306, "speed": 1.0, "maxSeconds": 4.3,
+        "segments": [ { "say": "Calma! O Uai Pertim não é aplicativo pra baixá." } ] },
+      { "id": "n4", "seed": 9, "from": 306, "speed": 1.0, "maxSeconds": 4.3,
         "text": "É só abrir o link no navegador. Sem instalar, sem ocupar espaço.",
         "segments": [ { "say": "É só abri o link no navegador." }, { "say": "Sem instalá, sem ocupá espaço." } ], "pause": 0.15 },
-      { "id": "n5", "from": 462, "speed": 0.96, "maxSeconds": 3.6,
+      { "id": "n5", "seed": 8, "from": 462, "speed": 0.97, "maxSeconds": 3.6,
         "text": "Todo o comércio da sua cidade, pertim de você.",
         "segments": [ { "say": "Todo o comércio da sua cidade, pertim de você." } ] },
-      { "id": "n6", "from": 612, "speed": 1.0, "maxSeconds": 4.2,
+      { "id": "n6", "seed": 3, "from": 612, "speed": 1.0, "maxSeconds": 4.2,
         "text": "Em breve a gente chega. Segue e ativa o lembrete, ó!",
-        "segments": [ { "say": "Em breve a gente chega." }, { "say": "Segue e ativa, o lembrete, ó!" } ], "pause": 0.18 }
+        "segments": [ { "say": "Em breve a gente chega." }, { "say": "Segue e ativa o lembrete, ó!" } ], "pause": 0.18 }
     ],
-    "_doc_lexicon": "Ajustes de pronúncia aplicados aos fonemas gerados (regex -> fonemas). Dão o 'Uai' de uma sílaba e o 'pertim' mineiro.",
-    "phonemeFixes": [
-      ["uˈaɪ ?peɾətʃˈiŋ", "wˌajpeɾtʃˈiŋ"],
-      ["peɾətʃˈiŋ", "pɛɾtʃˈiŋ"],
-      ["uˈaɪ", "wˈaɪ"]
-    ]
+    "_doc_fixes": "Ajustes de pronúncia (regex sobre os fonemas do espeak), por motor. Piper: 'Uaai' numa sílaba só, levemente arrastado (bem mineiro), e o 'w' da marca bem marcado (o Uai-Pertim). Kokoro: idem.",
+    "phonemeFixes": {
+      "piper": [
+        ["^uˈaɪ", "wˈaːj"],
+        ["u uˈaɪ peɾətʃˈiŋ", "u ʊwˈaɪ pˌɛɾətʃˈiŋ"]
+      ],
+      "kokoro": [
+        ["uˈaɪ ?peɾətʃˈiŋ", "wˌajpeɾtʃˈiŋ"],
+        ["peɾətʃˈiŋ", "pɛɾtʃˈiŋ"],
+        ["uˈaɪ", "wˈaɪ"]
+      ]
+    }
   },
 
   "music": {
@@ -126,14 +137,15 @@
       "peak": [10, 12],
       "final": [13, 13]
     },
+    "introHoldSeconds": 0.55,
     "duckDb": -10,
     "duckAttack": 0.08,
     "duckRelease": 0.35
   },
 
   "sfx": [
-    { "sound": "thump", "scene": "s1", "at": "land", "gain": -4 },
-    { "sound": "glup", "scene": "s1", "at": "glups", "gain": -8, "vary": true },
+    { "sound": "thump", "scene": "s1", "at": "land", "gain": -8 },
+    { "sound": "glup", "scene": "s1", "at": "glups", "gain": -10, "vary": true },
     { "sound": "boing_small", "scene": "s1", "at": "overflow", "gain": -12, "vary": true },
     { "sound": "alarm", "scene": "s1", "at": "alarm", "gain": -12 },
     { "sound": "whoosh_down", "scene": "s2", "at": "newAppIn", "gain": -10 },
