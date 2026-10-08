@@ -1,0 +1,76 @@
+"""Utilidades compartilhadas do pipeline de áudio (lê a timeline única do projeto)."""
+import json
+import os
+from pathlib import Path
+
+import numpy as np
+import soundfile as sf
+from scipy.signal import resample_poly
+
+ROOT = Path(__file__).resolve().parent.parent
+TIMELINE_PATH = ROOT / "src" / "config" / "timeline.json"
+BUILD = ROOT / "audio" / "build"
+MODELS = Path(os.environ.get("UAI_MODELS_DIR", ROOT / "audio" / "models"))
+PUBLIC_AUDIO = ROOT / "public" / "audio"
+SR = 48000
+
+
+def load_timeline():
+    with open(TIMELINE_PATH, encoding="utf-8") as f:
+        return json.load(f)
+
+
+def db(x):
+    return 10 ** (x / 20.0)
+
+
+def to_sr(x, sr_in, sr_out=SR):
+    if sr_in == sr_out:
+        return x.astype(np.float32)
+    g = np.gcd(sr_in, sr_out)
+    return resample_poly(x, sr_out // g, sr_in // g).astype(np.float32)
+
+
+def read(path):
+    x, sr = sf.read(str(path), dtype="float32", always_2d=False)
+    return x, sr
+
+
+def write(path, x, sr=SR):
+    Path(path).parent.mkdir(parents=True, exist_ok=True)
+    sf.write(str(path), x, sr, subtype="PCM_16")
+
+
+def trim_silence(x, sr, thresh_db=-45.0, pad=0.02):
+    """Remove silêncio do começo/fim mantendo um respiro curto."""
+    if x.size == 0:
+        return x
+    win = max(1, int(sr * 0.01))
+    env = np.sqrt(np.convolve(x ** 2, np.ones(win) / win, mode="same"))
+    idx = np.where(env > db(thresh_db) * max(1e-9, np.abs(x).max()))[0]
+    if idx.size == 0:
+        return x
+    a = max(0, idx[0] - int(pad * sr))
+    b = min(len(x), idx[-1] + int(pad * sr))
+    return x[a:b]
+
+
+def fade(x, sr, fin=0.005, fout=0.02):
+    x = x.copy()
+    n_in, n_out = int(fin * sr), int(fout * sr)
+    if n_in:
+        x[:n_in] *= np.linspace(0, 1, n_in)
+    if n_out:
+        x[-n_out:] *= np.linspace(1, 0, n_out)
+    return x
+
+
+def beat_frames(tl, scene, at):
+    """Resolve uma referência de beat ('nome' | número | lista) em frames ABSOLUTOS."""
+    base = tl["scenes"][scene]["from"]
+    if isinstance(at, (int, float)):
+        return [base + at]
+    v = tl["beats"][scene][at]
+    if isinstance(v, list):
+        return [base + f for f in v]
+    return [base + v]
