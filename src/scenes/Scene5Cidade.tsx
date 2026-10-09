@@ -15,8 +15,8 @@ import { PHONE4 } from "./Scene4Link";
 
 // CENA 5 · A cidade ganha vida — zoom-out, lojinhas brotam, pin quica, categorias orbitam.
 const B = BEATS.s5;
-const END = { cx: 540, cy: 880, scale: 0.64 };
-const GROUND = 1470;
+const END = { cx: 540, cy: 820, scale: 0.64 };
+const GROUND = 1330; // chão mais alto: a faixa da legenda fica sobre a estradinha
 
 const SHOPS: Array<{ kind: ShopKind; x: number; base: number; scale: number }> = [
   { kind: "mercado", x: 118, base: GROUND + 20, scale: 1.14 },
@@ -141,13 +141,13 @@ export const Scene5Cidade: React.FC = () => {
         <>
           <div
             style={{
-              position: "absolute", left: 540 - 80, top: GROUND + 62, width: 160, height: 30, borderRadius: "50%", background: "rgba(34,28,25,0.18)",
+              position: "absolute", left: 540 - 80, top: GROUND + 22, width: 160, height: 30, borderRadius: "50%", background: "rgba(34,28,25,0.18)",
               transform: `scale(${interpolate(pinY, [-1000, 0], [0.2, 1], clamp)})`, zIndex: 5,
             }}
           />
           <div
             style={{
-              position: "absolute", left: 540 - 85, top: GROUND + 76 - 221, transform: `translateY(${pinY}px) scale(${pinSX}, ${pinSY})`,
+              position: "absolute", left: 540 - 85, top: GROUND + 36 - 221, transform: `translateY(${pinY}px) scale(${pinSX}, ${pinSY})`,
               transformOrigin: "50% 100%", zIndex: 6,
             }}
           >

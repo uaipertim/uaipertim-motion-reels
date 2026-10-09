@@ -84,6 +84,8 @@
   },
 
   "narration": {
+    "enabled": false,
+    "_doc_enabled": "false = sem locução (a narração vira legenda animada em 'captions'). true = volta a gerar/usar a voz.",
     "_doc": "engine 'piper' = voz brasileira nativa (padrão; modelos em audio/models/piper: pt_BR-cadu-medium, pt_BR-faber-medium). engine 'kokoro' = alternativa (voz pf_dora, sotaque menos natural). 'say' é o texto que a voz lê (pode ter grafia mineira: baixá, instalá); 'text' é só referência.",
     "engine": "piper",
     "voice": "pt_BR-cadu-medium",
@@ -124,6 +126,29 @@
     }
   },
 
+  "captions": {
+    "_doc": "Legenda animada (karaokê) no lugar da locução. from/to = frames ABSOLUTOS (inícios nos tempos da trilha). *palavra* = destaque em amarelo. y = centro da faixa (acima dos ~420px de baixo do Reels).",
+    "enabled": true,
+    "y": 1440,
+    "items": [
+      { "from": 16, "to": 44, "text": "*Uai…*" },
+      { "from": 44, "to": 89, "text": "seu celular já vive *cheio*, né?" },
+      { "from": 95, "to": 131, "text": "E aí vem mais um aplicativo…" },
+      { "from": 131, "to": 168, "text": "*não cabe* mais nada!" },
+      { "from": 190, "to": 218, "text": "*Calma!*" },
+      { "from": 218, "to": 247, "text": "O *UaiPertim* não é" },
+      { "from": 247, "to": 283, "text": "aplicativo pra *baixar*." },
+      { "from": 306, "to": 335, "text": "É só abrir o *link*" },
+      { "from": 335, "to": 364, "text": "no navegador." },
+      { "from": 364, "to": 393, "text": "*Sem instalar*," },
+      { "from": 393, "to": 444, "text": "*sem ocupar* espaço." },
+      { "from": 466, "to": 509, "text": "Todo o comércio da sua cidade," },
+      { "from": 509, "to": 586, "text": "*pertim* de você." },
+      { "from": 611, "to": 654, "text": "*Em breve* a gente chega." },
+      { "from": 654, "to": 740, "text": "Segue e ativa o *lembrete*, ó!" }
+    ]
+  },
+
   "music": {
     "bpm": 124,
     "offsetSeconds": 0.039,
@@ -138,7 +163,7 @@
       "peak": [10, 12],
       "final": [13, 13]
     },
-    "introHoldSeconds": 0.55,
+    "introHoldSeconds": 0,
     "duckDb": -10,
     "duckAttack": 0.08,
     "duckRelease": 0.35

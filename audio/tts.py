@@ -126,6 +126,9 @@ def fit_item(engine, fixes, item, seed):
 def main():
     tl = load_timeline()
     nar = tl["narration"]
+    if not nar.get("enabled", True):
+        print("locução desligada (narration.enabled = false) — nada a gerar")
+        return
     engine_name, engine, fixes = make_engine(nar)
 
     def phonemes(seg):

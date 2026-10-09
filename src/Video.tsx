@@ -1,8 +1,9 @@
 import React from "react";
 import { AbsoluteFill, Audio, Sequence, staticFile, useCurrentFrame } from "remotion";
 import { C } from "./config/theme";
-import { SCENES, TRANSITIONS } from "./config/timeline";
+import { CAPTIONS, FPS, MUSIC, SCENES, TRANSITIONS } from "./config/timeline";
 import { ColorSwipe } from "./components/Decor";
+import { Captions } from "./components/Captions";
 import { Scene1Dor } from "./scenes/Scene1Dor";
 import { Scene2Transborda } from "./scenes/Scene2Transborda";
 import { Scene3Virada } from "./scenes/Scene3Virada";
@@ -37,6 +38,15 @@ export const Video: React.FC<{ withAudio?: boolean }> = ({ withAudio = true }) =
         </Sequence>
       );
     })}
+    {/* legenda animada (substitui a locução) — fica sob os swipes de transição */}
+    {CAPTIONS.enabled && (
+      <Captions
+        items={CAPTIONS.items}
+        y={CAPTIONS.y}
+        beatFrames={(60 / MUSIC.bpm) * FPS}
+        beatOffset={MUSIC.offsetSeconds * FPS}
+      />
+    )}
     <Sequence from={TRANSITIONS.swipe23.from} durationInFrames={TRANSITIONS.swipe23.duration} name="Swipe coral 2→3">
       <Swipe duration={TRANSITIONS.swipe23.duration} />
     </Sequence>

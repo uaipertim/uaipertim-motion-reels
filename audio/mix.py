@@ -61,8 +61,9 @@ def main():
     sfx = np.zeros((n, 2), np.float32)
     rng = np.random.default_rng(11)
 
-    # --- locução ---
-    for item in tl["narration"]["items"]:
+    # --- locução (desligada quando o vídeo usa legenda animada) ---
+    voice_on = tl["narration"].get("enabled", True)
+    for item in tl["narration"]["items"] if voice_on else []:
         x, sr = read(BUILD / "vo" / f"{item['id']}.wav")
         x = to_sr(x, sr)
         i = int(item["from"] / fps * SR)
@@ -93,7 +94,7 @@ def main():
         music = np.pad(music, ((0, n - len(music)), (0, 0)))
     win = int(0.02 * SR)
     env = np.sqrt(np.convolve(vo ** 2, np.ones(win) / win, mode="same"))
-    active = (env > db(-38) * np.abs(vo).max()).astype(np.float32)
+    active = (env > db(-38) * max(1e-9, np.abs(vo).max())).astype(np.float32) if voice_on else np.zeros(n, np.float32)
     # segura o ducking entre palavras de uma mesma frase
     hold = int(0.18 * SR)
     active = np.convolve(active, np.ones(hold), mode="same") > 0

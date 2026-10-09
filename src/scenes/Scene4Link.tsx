@@ -14,7 +14,7 @@ import { HOME_PHONE, HomePhone } from "./HomePhone";
 const B = BEATS.s4;
 const DUR = SCENES.s4.duration;
 export const PHONE4 = { cx: 540, cy: 780 + HOME_PHONE.h / 2 };
-export const TILE_SPOTS: Array<[number, number]> = [[150, 900], [930, 960], [150, 1140], [930, 1200], [150, 1380]];
+export const TILE_SPOTS: Array<[number, number]> = [[150, 860], [930, 920], [150, 1080], [930, 1140], [150, 1280]];
 
 export const typedAt = (f: number) => interpolate(f, [B.typeStart, B.typeStart + TEXTS.s4.url.length * B.typeEvery], [0, TEXTS.s4.url.length], clamp);
 
