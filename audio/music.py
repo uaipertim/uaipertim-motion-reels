@@ -64,9 +64,18 @@ class Track:
         mid.save(path)
 
 
+# Início (tick) de cada compasso quando a trilha é montada em frases de duração fixa (story);
+# vazio = compassos corridos (Reels).
+BAR_TICKS = []
+
+
+def bar_tick(bar):
+    return BAR_TICKS[bar] if BAR_TICKS else bar * 4 * TPB
+
+
 def slot_tick(bar, slot):
     """Tick da colcheia `slot` (0..7) no compasso `bar`, com swing nos contratempos."""
-    t = bar * 4 * TPB + slot * E8
+    t = bar_tick(bar) + slot * E8
     if slot % 2 == 1:
         t += int(SWING * TPB)
     return t
@@ -79,6 +88,12 @@ def compose(tl):
     breaks = set(m.get("breakBars", []))  # compassos com "breque" no fim (tempo 3.5)
     double_claps = set(m.get("doubleClapBars", []))  # palmas em todas as colcheias ("acelera")
     crash_bars = set(m.get("crashBars", []))  # prato no 1º tempo (ex.: a virada do Vídeo 4)
+    buttons = set(m.get("buttonBars", []))  # fim de frase: acorde curto no tempo forte (story: fim de cada card)
+    BAR_TICKS.clear()
+    if "segmentSeconds" in m:  # story: cada frase (card) começa num tempo forte em k·segmentSeconds
+        seg_ticks = round(m["segmentSeconds"] * m["bpm"] / 60 * TPB)
+        per = m["barsPerSegment"]
+        BAR_TICKS.extend((b // per) * seg_ticks + (b % per) * 4 * TPB for b in range(len(chords)))
     rng = np.random.default_rng(3)
 
     def in_sec(bar, name):
@@ -105,7 +120,7 @@ def compose(tl):
         peak = in_sec(bar, "peak")
         grooveB = in_sec(bar, "grooveB")
         energy = 0.62 + 0.08 * bar if intro else 0.8 if in_sec(bar, "grooveA") else 0.9 if grooveB else 1.0
-        bar0 = bar * 4 * TPB
+        bar0 = bar_tick(bar)
 
         if final:  # sting: "Uai-Per-TIM!" resolve no acorde final
             strum(bar0, "C", 112, True, TPB * 6)
@@ -118,6 +133,16 @@ def compose(tl):
             pad.note(bar0, 60, 70, TPB * 4); pad.note(bar0, 64, 66, TPB * 4); pad.note(bar0, 67, 66, TPB * 4)
             drums.note(bar0, KICK, 118, 120); drums.note(bar0, CRASH, 96, 400)
             drums.note(bar0, TRI, 80, 400); drums.note(bar0, CLAP, 100, 100)
+            continue
+
+        if bar in buttons:
+            # "button": a frase fecha num tempo forte; o card é cortado logo depois
+            strum(bar0, ch, 112, True, TPB * 2)
+            for n in CHORD_TONES[ch]:
+                mar.note(bar0, n, 100, TPB)
+            glock.note(bar0, CHORD_TONES[ch][-1] + 12, 96, TPB)
+            bass.note(bar0, ROOT[ch], 108, TPB)
+            drums.note(bar0, KICK, 112, 100); drums.note(bar0, CLAP, 96, 80); drums.note(bar0, SPLASH, 80, 300)
             continue
 
         if in_sec(bar, "sad"):
@@ -231,7 +256,8 @@ def compose(tl):
     q = TPB // 4  # quantiza em semicolcheia
     for i, fr in enumerate(m.get("accents", [])):
         tick = int(round((fr / tl["fps"] - m["offsetSeconds"]) / beat_s * TPB / q)) * q
-        ch = chords[min(n_bars - 1, max(0, tick // (4 * TPB)))]
+        bi = tick // (4 * TPB) if not BAR_TICKS else max([b for b, t in enumerate(BAR_TICKS) if t <= tick] or [0])
+        ch = chords[min(n_bars - 1, max(0, bi))]
         for n in CHORD_TONES[ch]:
             mar.note(tick, n + 12, 120, TPB)
             mar.note(tick, n, 106, TPB)

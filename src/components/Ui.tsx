@@ -30,9 +30,9 @@ export const Marker: React.FC<{ width: number; progress: number; color?: string;
 };
 
 // Faixa (banner) que desenrola da esquerda.
-export const Ribbon: React.FC<{ text: string; width: number; height: number; progress: number; fontSize?: number }> = ({
-  text, width, height, progress, fontSize = 56,
-}) => {
+export const Ribbon: React.FC<{
+  text: string; width: number; height: number; progress: number; fontSize?: number; color?: string; foldColor?: string; textColor?: string; rollColor?: string;
+}> = ({ text, width, height, progress, fontSize = 56, color = C.coral, foldColor = C.coralDark, textColor = "#fff", rollColor = C.coralLight }) => {
   const p = Math.max(0, Math.min(1.08, progress));
   const reveal = Math.min(1, p);
   const tail = height * 0.55;
@@ -40,30 +40,30 @@ export const Ribbon: React.FC<{ text: string; width: number; height: number; pro
     <div style={{ position: "relative", width, height: height * 1.25 }}>
       {/* pontas dobradas */}
       <svg width={width + tail * 2} height={height * 1.25} style={{ position: "absolute", left: -tail, top: 0, overflow: "visible" }}>
-        <path d={`M0 ${height * 0.25} H${tail * 1.4} V${height * 1.25} H0 L${tail * 0.55} ${height * 0.75} Z`} fill={C.coralDark} />
+        <path d={`M0 ${height * 0.25} H${tail * 1.4} V${height * 1.25} H0 L${tail * 0.55} ${height * 0.75} Z`} fill={foldColor} />
         {reveal > 0.97 && (
           <path
             d={`M${width + tail * 2} ${height * 0.25} H${width + tail * 0.6} V${height * 1.25} H${width + tail * 2} L${width + tail * 1.45} ${height * 0.75} Z`}
-            fill={C.coralDark}
+            fill={foldColor}
           />
         )}
       </svg>
       <div
         style={{
-          position: "absolute", left: 0, top: 0, width, height, background: C.coral, borderRadius: 14,
+          position: "absolute", left: 0, top: 0, width, height, background: color, borderRadius: 14,
           clipPath: `inset(0 ${(1 - reveal) * 100}% 0 0 round 14px)`,
-          boxShadow: "0 10px 0 rgba(198,58,23,0.9)",
+          boxShadow: color === C.coral ? "0 10px 0 rgba(198,58,23,0.9)" : `0 10px 0 ${foldColor}`,
           display: "flex", alignItems: "center", justifyContent: "center",
         }}
       >
-        <span style={{ fontFamily: FONT, fontWeight: W.black, fontSize, color: "#fff", letterSpacing: 2, whiteSpace: "nowrap" }}>{text}</span>
+        <span style={{ fontFamily: FONT, fontWeight: W.black, fontSize, color: textColor, letterSpacing: 2, whiteSpace: "nowrap" }}>{text}</span>
       </div>
       {/* rolo que desenrola */}
       {reveal < 0.995 && (
         <div
           style={{
             position: "absolute", top: -8, left: reveal * width - 22, width: 44, height: height + 16, borderRadius: 22,
-            background: `linear-gradient(90deg, ${C.coralDark}, ${C.coralLight}, ${C.coralDark})`,
+            background: `linear-gradient(90deg, ${foldColor}, ${rollColor}, ${foldColor})`,
           }}
         />
       )}
@@ -172,7 +172,7 @@ export const BellWaves: React.FC<{ frame: number; size: number; color?: string; 
 );
 
 // Sininho grande balançando (rotação ±15°) com ondinhas.
-export const SwingBell: React.FC<{ size: number; frame: number; rings: number[]; idle?: boolean }> = ({ size, frame, rings, idle = true }) => {
+export const SwingBell: React.FC<{ size: number; frame: number; rings: number[]; idle?: boolean; waveColor?: string }> = ({ size, frame, rings, idle = true, waveColor }) => {
   let swing = idle ? Math.sin(frame * 0.22) * 6 : 0;
   for (const r of rings) {
     const t = frame - r;
@@ -181,7 +181,7 @@ export const SwingBell: React.FC<{ size: number; frame: number; rings: number[];
   swing = Math.max(-16, Math.min(16, swing));
   return (
     <div style={{ position: "relative", width: size, height: size }}>
-      <BellWaves frame={frame} size={size} />
+      <BellWaves frame={frame} size={size} color={waveColor} />
       <BellGlyph size={size} swing={swing} />
     </div>
   );

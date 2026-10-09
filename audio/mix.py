@@ -8,7 +8,7 @@ import json
 import numpy as np
 import pyloudnorm as pyln
 
-from common import BUILD, MIX_OUT, SR, beat_frames, db, load_timeline, read, to_sr, write
+from common import BUILD, MIX_OUT, SR, beat_frames, db, load_timeline, read, segment_bar_seconds, to_sr, write
 
 TARGET_LUFS = -14.0
 VO_GAIN_DB = 0.0
@@ -38,7 +38,10 @@ def section_curve(tl, n):
     level.update(m.get("levels", {}))  # ajuste por vídeo (dB por seção)
     pts_t, pts_v = [], []
     for name, (a, b) in sorted(m["sections"].items(), key=lambda kv: kv[1][0]):
-        pts_t += [off + a * bar, off + (b + 1) * bar - 0.05]
+        if "segmentSeconds" in m:  # story: compassos por frase (card)
+            pts_t += [segment_bar_seconds(m, a), segment_bar_seconds(m, b + 1) - 0.05]
+        else:
+            pts_t += [off + a * bar, off + (b + 1) * bar - 0.05]
         pts_v += [level.get(name, 0.0), level.get(name, 0.0)]
     t = np.arange(n) / SR
     curve = np.interp(t, pts_t, pts_v)
@@ -155,6 +158,19 @@ def main():
     final_lufs = meter.integrated_loudness(mix)
 
     write(MIX_OUT, mix.astype(np.float32))
+    if tl.get("splitScenes"):
+        # story: um WAV por card (mesma trilha, cortada nas fronteiras das cenas)
+        keys = list(tl["scenes"])
+        for i, key in enumerate(keys):
+            sc = tl["scenes"][key]
+            a, b = int(sc["from"] / fps * SR), int((sc["from"] + sc["duration"]) / fps * SR)
+            part = mix[a:b].copy()
+            if i > 0:
+                part[: int(0.003 * SR)] *= np.linspace(0, 1, int(0.003 * SR))[:, None]
+            if i < len(keys) - 1:
+                nf = int(0.03 * SR)
+                part[-nf:] *= np.linspace(1, 0, nf)[:, None]
+            write(MIX_OUT.parent / f"{key}.wav", part.astype(np.float32))
     report = {"lufs": round(float(final_lufs), 2), "peak_dbfs": round(float(20 * np.log10(np.abs(mix).max())), 2),
               "seconds": n / SR}
     with open(BUILD / "mix_report.json", "w") as f:

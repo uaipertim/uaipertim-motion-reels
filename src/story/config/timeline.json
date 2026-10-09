@@ -1,0 +1,132 @@
+{
+  "_doc": "Story 'Conheça' (destaque). 4 cards de 6s (180 frames) = 4 cenas desta timeline, renderizadas como 4 MP4. FONTE ÚNICA DE TEMPOS (30fps) para vídeo e áudio: 'beats' = frames LOCAIS de cada card. O áudio é UMA trilha de 24s (public/audio/story/mix.wav) cortada em card1..card4.wav. Depois de editar: npm run audio:story e npm run render:story.",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "durationInFrames": 720,
+  "splitScenes": true,
+  "scenes": {
+    "card1": { "name": "Prazer, UaiPertim", "from": 0, "duration": 180 },
+    "card2": { "name": "Não é app", "from": 180, "duration": 180 },
+    "card3": { "name": "Tem de tudo, pertim", "from": 360, "duration": 180 },
+    "card4": { "name": "Em breve + CTA", "from": 540, "duration": 180 }
+  },
+  "transitions": {},
+  "beats": {
+    "card1": {
+      "curtainDrop": 0,
+      "curtainOpen": 14,
+      "curtainDur": 16,
+      "logo": 29,
+      "sparkle": 33,
+      "shops": [34, 40, 46, 52],
+      "hello": 58,
+      "intro": 87,
+      "support": 116
+    },
+    "card2": {
+      "phone": 2,
+      "download": 16,
+      "bounce": 29,
+      "cross": 36,
+      "crossDur": 8,
+      "text1": 43,
+      "bar": 58,
+      "typeStart": 62,
+      "typeEvery": 2,
+      "text2": 72,
+      "tap": 102,
+      "light": 104
+    },
+    "card3": {
+      "pin": 2,
+      "pinLand": 12,
+      "title1": 6,
+      "title2": 12,
+      "tiles": [22, 29, 36, 44, 51, 58, 65, 73],
+      "chime": 87,
+      "city": 102
+    },
+    "card4": {
+      "ribbon": 4,
+      "ribbonDur": 22,
+      "bell": 12,
+      "bellRings": [29, 58, 87],
+      "cta1": 29,
+      "cta2": 36,
+      "confetti": [58, 87],
+      "slogan": 87,
+      "sting": 116
+    }
+  },
+  "narration": {
+    "enabled": false,
+    "_doc": "Story sem locução e sem legenda: toda a informação está nos textos de tela (story/config/texts.ts).",
+    "items": []
+  },
+  "music": {
+    "bpm": 124,
+    "offsetSeconds": 0,
+    "segmentSeconds": 6,
+    "barsPerSegment": 4,
+    "_doc": "Uma trilha de 24s em 4 frases de 6s (uma por card). Cada frase começa num tempo forte exatamente no início do card (0, 6, 12, 18s); 3 compassos de groove e, no tempo 1 do 4º compasso, um 'button' (acorde curto) que fecha o card num tempo forte. No card 4 o acorde final/sting cai no 3º compasso (frame 116 do card) e soa até o fim.",
+    "chords": ["C", "G", "Am", "F", "C", "G", "Am", "F", "Am", "F", "G", "C", "C", "G", "C"],
+    "buttonBars": [3, 7, 11],
+    "sections": {
+      "intro": [0, 2],
+      "grooveA": [4, 6],
+      "grooveB": [8, 10],
+      "peak": [12, 13],
+      "final": [14, 14]
+    },
+    "introHoldSeconds": 0,
+    "duckDb": -9,
+    "duckAttack": 0.08,
+    "duckRelease": 0.35
+  },
+  "master": { "ceilingDb": -1.5, "truePeak": true },
+  "typingSfx": { "count": 16, "every": 2, "_doc": "'uaipertim.com.br' = 16 teclas, 1 a cada 2 frames (card2.typeStart)" },
+  "sfx": [
+    { "sound": "curtain", "scene": "card1", "at": "curtainDrop", "gain": -7 },
+    { "sound": "fwip", "scene": "card1", "at": "curtainOpen", "gain": -11 },
+    { "sound": "pop_magic", "scene": "card1", "at": "logo", "gain": -7 },
+    { "sound": "sininho", "scene": "card1", "at": "sparkle", "gain": -10 },
+    { "sound": "plop", "scene": "card1", "at": "shops", "gain": -13, "vary": true },
+    { "sound": "pop", "scene": "card1", "at": "hello", "gain": -11 },
+    { "sound": "pop", "scene": "card1", "at": "intro", "gain": -12 },
+    { "sound": "pop", "scene": "card1", "at": "support", "gain": -14 },
+
+    { "sound": "pop", "scene": "card2", "at": "phone", "gain": -12 },
+    { "sound": "whoosh_down", "scene": "card2", "at": "download", "gain": -12 },
+    { "sound": "boing", "scene": "card2", "at": "bounce", "gain": -7 },
+    { "sound": "marker", "scene": "card2", "at": "cross", "gain": -9 },
+    { "sound": "pop", "scene": "card2", "at": "text1", "gain": -12 },
+    { "sound": "whoosh_up", "scene": "card2", "at": "bar", "gain": -13 },
+    { "sound": "typing", "scene": "card2", "at": "typeStart", "gain": -9 },
+    { "sound": "pop", "scene": "card2", "at": "text2", "gain": -13 },
+    { "sound": "tap", "scene": "card2", "at": "tap", "gain": -6 },
+    { "sound": "plim", "scene": "card2", "at": "light", "gain": -7 },
+    { "sound": "brilho", "scene": "card2", "at": "light", "offset": 3, "gain": -13 },
+
+    { "sound": "pin_drop", "scene": "card3", "at": "pin", "gain": -8 },
+    { "sound": "pop", "scene": "card3", "at": "title1", "gain": -12 },
+    { "sound": "plop", "scene": "card3", "at": "tiles[0]", "gain": -10 },
+    { "sound": "plop@2", "scene": "card3", "at": "tiles[1]", "gain": -10 },
+    { "sound": "plop@4", "scene": "card3", "at": "tiles[2]", "gain": -10 },
+    { "sound": "plop@5", "scene": "card3", "at": "tiles[3]", "gain": -10 },
+    { "sound": "plop@7", "scene": "card3", "at": "tiles[4]", "gain": -10 },
+    { "sound": "plop@9", "scene": "card3", "at": "tiles[5]", "gain": -10 },
+    { "sound": "plop@11", "scene": "card3", "at": "tiles[6]", "gain": -10 },
+    { "sound": "plop@12", "scene": "card3", "at": "tiles[7]", "gain": -10 },
+    { "sound": "chime", "scene": "card3", "at": "chime", "gain": -8 },
+    { "sound": "pop", "scene": "card3", "at": "city", "gain": -12 },
+
+    { "sound": "fwip", "scene": "card4", "at": "ribbon", "gain": -9 },
+    { "sound": "pop", "scene": "card4", "at": "bell", "gain": -12 },
+    { "sound": "bell", "scene": "card4", "at": "bellRings", "gain": -9 },
+    { "sound": "pop", "scene": "card4", "at": "cta1", "gain": -12 },
+    { "sound": "confete", "scene": "card4", "at": "confetti", "gain": -12 },
+    { "sound": "pop", "scene": "card4", "at": "slogan", "gain": -12 },
+    { "sound": "sting", "scene": "card4", "at": "sting", "gain": -5 }
+  ]
+}

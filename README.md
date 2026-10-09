@@ -129,16 +129,39 @@ Regras de conteúdo seguidas:
 - Nenhum estabelecimento real: a Lojinha não tem nome.
 - O lançamento aparece como "CHEGANDO EM BREVE", sem data.
 
+## Story — destaque "Conheça"
+
+- **Arquivos finais:** [`out/story-conheca/card1.mp4`](out/story-conheca/card1.mp4) … [`card4.mp4`](out/story-conheca/card4.mp4): 4 cards de 6s (180 frames), H.264 yuv420p, 1080×1920, 30fps, AAC 48 kHz estéreo. Poste na ordem.
+- **Composições:** `Story-Conheca-Card1` … `Story-Conheca-Card4` (`src/story/StoryConheca.tsx`). Para revisar, `Story-Conheca-Previa` toca os 4 cards em sequência com a trilha inteira; ela não é um entregável.
+- **Roteiro original:** [`docs/story-conheca/ROTEIRO.md`](docs/story-conheca/ROTEIRO.md)
+
+| Card | Componente |
+|---|---|
+| 1 · Prazer, UaiPertim | `src/story/cards/Card1Prazer.tsx` |
+| 2 · Não é app | `src/story/cards/Card2NaoEApp.tsx` |
+| 3 · Tem de tudo, pertim | `src/story/cards/Card3TemDeTudo.tsx` |
+| 4 · Em breve + CTA | `src/story/cards/Card4EmBreve.tsx` |
+
+- **"CHEGANDO EM BREVE" é o único texto temporário.** Ele fica na constante `LAUNCH_TEXT`, no topo de `src/story/config/texts.ts`. No lançamento, troque (ex.: `"JÁ ESTÁ NO AR"`) e rode `npm run render:story`.
+- **Safe areas de Story:** nenhum texto nos 250px de cima nem nos 340px de baixo.
+- **Área livre no card 4:** 600×180px no terço inferior (`STICKER_AREA` em `Card4EmBreve.tsx`, y 1350–1530), sem nada desenhado, para a figurinha de link ou menção do Instagram.
+- **Leitura:** cada texto fica parado pelo menos 1,5s, e todo card termina com ~1s de tela estável.
+- Sem WhatsApp, sem telefone e sem data.
+- **Trilha:** é uma só, de 24s a 124 bpm (`public/audio/story/mix.wav`), cortada em `card1.wav` … `card4.wav`.
+  - Ela é montada em 4 frases de 6s (`music.segmentSeconds`): cada card começa num tempo forte, exatamente em 0, 6, 12 e 18s.
+  - Os cards 1–3 fecham com um acorde curto no tempo 1 do 4º compasso (`buttonBars`).
+  - No card 4, o acorde final (sting) cai em 3,9s e soa até o fim.
+
 ## Como editar
 
-- **Textos de tela:** `src/config/texts.ts` (Vídeo 1) · `src/v2/config/texts.ts` (Vídeo 2) · `src/v3/config/texts.ts` (Vídeo 3) · `src/v4/config/texts.ts` (Vídeo 4)
-- **Tempos (fonte única para vídeo e áudio):** `src/config/timeline.json` (Vídeo 1) · `src/v2/config/timeline.json` (Vídeo 2) · `src/v3/config/timeline.json` (Vídeo 3) · `src/v4/config/timeline.json` (Vídeo 4)
+- **Textos de tela:** `src/config/texts.ts` (Vídeo 1) · `src/v2/config/texts.ts` (Vídeo 2) · `src/v3/config/texts.ts` (Vídeo 3) · `src/v4/config/texts.ts` (Vídeo 4) · `src/story/config/texts.ts` (story)
+- **Tempos (fonte única para vídeo e áudio):** `src/config/timeline.json` (Vídeo 1) · `src/v2/config/timeline.json` (Vídeo 2) · `src/v3/config/timeline.json` (Vídeo 3) · `src/v4/config/timeline.json` (Vídeo 4) · `src/story/config/timeline.json` (story)
   - `scenes`: início e duração de cada cena
   - `beats`: momentos das animações, em frames locais de cada cena (ex.: `s2.stamp` = carimbo)
   - `captions`: legenda animada opcional (texto e frames de cada bloco; desligada no Vídeo 1)
   - `narration.items`: texto, frame de entrada e velocidade de cada fala (`narration.enabled` liga ou desliga a voz)
   - `sfx`: cada efeito sonoro aponta para um beat, então se o beat muda o som acompanha. O `at` aceita `"nome"`, `"nome[i]"` (um item de uma lista de beats) ou um número; `offset` desloca o som em frames
-  - `music`: bpm, acordes, seções (respiro, suspense, pico), `breakBars` (breques), `accents` (stabs em frames absolutos: os "degraus" dos passos 1-2-3 no Vídeo 2, o estouro do balão e a notificação no Vídeo 3), `doubleClapBars` (palmas dobradas), `mutes` (pausas curtas da trilha), `levels` (volume por seção, só no vídeo que pedir), `crashBars` (prato no 1º tempo) e `muffle` (trilha abafada até um frame)
+  - `music`: bpm, acordes, seções (respiro, suspense, pico), `breakBars` (breques), `accents` (stabs em frames absolutos: os "degraus" dos passos 1-2-3 no Vídeo 2, o estouro do balão e a notificação no Vídeo 3), `doubleClapBars` (palmas dobradas), `mutes` (pausas curtas da trilha), `levels` (volume por seção, só no vídeo que pedir), `crashBars` (prato no 1º tempo), `muffle` (trilha abafada até um frame) e, no story, `segmentSeconds`/`barsPerSegment` (uma frase por card) e `buttonBars` (fim de frase)
 - **Paleta e fontes:** `src/config/theme.ts`
 - **Helpers de animação** (spring com overshoot, respiração, flutuação, squash): `src/lib/anim.ts`
 
@@ -153,7 +176,9 @@ npm run audio:v3    # Vídeo 3 → public/audio/v3/mix.wav
 npm run render:v3   # → out/uaipertim_video3_qual-comercio-precisa.mp4
 npm run audio:v4    # Vídeo 4 → public/audio/v4/mix.wav
 npm run render:v4   # → out/uaipertim_video4_ele-te-acha.mp4
-npm run studio      # pré-visualização interativa (as quatro composições)
+npm run audio:story    # story → public/audio/story/mix.wav + card1..card4.wav
+npm run render:story   # → out/story-conheca/card1.mp4 … card4.mp4
+npm run studio      # pré-visualização interativa (todas as composições)
 ```
 
 ## Setup
@@ -176,7 +201,7 @@ npm run audio:setup   # baixa as vozes (Piper pt-BR + Kokoro) e instala as libs 
 - **Trilha:** 124 bpm, composta em MIDI (`audio/music.py`) e renderizada com FluidSynth + FluidR3 GM. Leva violão nylon em voicing de ukulele, marimba, glockenspiel/celesta, baixo, palmas e shaker. Sobe nas cenas 1–2, tem um respiro de ~1s no swipe da cena 3, cresce até o pico no CTA e fecha com o acorde do sting no end card.
 - **SFX:** sintetizados em numpy (`audio/sfx.py`): glup, alarme, boing, carimbo, whoosh, pop mágico, sininho, digitação, tap, plop, confete etc. No Vídeo 4: lupa girando, "plim" triste e desafinado, toldo murchando, check, passinhos, foguetinho e o interruptor do holofote. No Vídeo 3 entram ainda o "fuuu" do balão enchendo, o estouro, o tic-tac de relógio cartoon (nas colcheias da trilha), o "hmm?" das lojinhas (zumbido de kazoo, sem voz humana), o "plim" subindo de tom, o "fiuuu" da etiqueta, a notificação e a mini-comemoração.
 - **Mix:** `audio/mix.py` faz a automação por seção (subidas, respiro, pico) e normaliza em -14 LUFS com limiter. Quando há voz, também faz o ducking da trilha. Nos Vídeos 2, 3 e 4 o limitador é true peak com lookahead (`master.truePeak`), para o pico real ficar abaixo de -1 dBTP depois do AAC.
-- **Vários vídeos:** todos os scripts aceitam `--video v1|v2|v3|v4` (padrão `v1`). A saída de cada vídeo vai para `audio/build/<vídeo>` e para o seu `mix.wav`.
+- **Vários vídeos:** todos os scripts aceitam `--video v1|v2|v3|v4|story` (padrão `v1`). A saída de cada vídeo vai para `audio/build/<vídeo>` e para o seu `mix.wav`.
 
 **Trocar por voz gravada:** grave as falas `n1`…`n6` como WAV, coloque em `audio/build/vo/` (Vídeo 1) ou `audio/build/v2/vo/` (Vídeo 2) com esses nomes e rode `python3 audio/build_audio.py [--video v2] --no-tts`.
 
@@ -185,4 +210,4 @@ npm run audio:setup   # baixa as vozes (Piper pt-BR + Kokoro) e instala as libs 
 - A Poppins é carregada localmente (`public/fonts`, arquivos do `@fontsource/poppins`) via `@remotion/fonts`. Assim o render funciona offline. O `@remotion/google-fonts` continua instalado como alternativa.
 - O lançamento aparece como **"EM BREVE"**, sem data, conforme o prompt. Isso substitui o "segunda quinzena de agosto" que estava no roteiro.
 - `assets/` guarda os originais recebidos. `public/img/` tem as versões preparadas: logo com fundo transparente, a marca sem texto e a home ampliada em 3×.
-- `node scripts/stills.mjs 120 300 …` renderiza quadros avulsos em `out/stills/` para revisão. Para os outros vídeos, use `COMP=Video2-VaiFuncionarAssim`, `COMP=Video3-QualComercioPrecisa` ou `COMP=Video4-EleTeAcha`.
+- `node scripts/stills.mjs 120 300 …` renderiza quadros avulsos em `out/stills/` para revisão. Para os outros vídeos, use `COMP=Video2-VaiFuncionarAssim`, `COMP=Video3-QualComercioPrecisa`, `COMP=Video4-EleTeAcha` ou `COMP=Story-Conheca-Card1` (…`Card4`).

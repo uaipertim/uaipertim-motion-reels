@@ -8,7 +8,7 @@ import soundfile as sf
 from scipy.signal import resample_poly
 
 ROOT = Path(__file__).resolve().parent.parent
-# Qual vídeo processar: UAI_VIDEO=v1 (padrão) | v2 | v3 | v4. Os scripts aceitam --video vX.
+# Qual vídeo processar: UAI_VIDEO=v1 (padrão) | v2 | v3 | v4 | story. Os scripts aceitam --video vX.
 VIDEOS = {
     "v1": {"timeline": ROOT / "src" / "config" / "timeline.json", "build": ROOT / "audio" / "build",
            "mix": ROOT / "public" / "audio" / "mix.wav"},
@@ -18,6 +18,8 @@ VIDEOS = {
            "mix": ROOT / "public" / "audio" / "v3" / "mix.wav"},
     "v4": {"timeline": ROOT / "src" / "v4" / "config" / "timeline.json", "build": ROOT / "audio" / "build" / "v4",
            "mix": ROOT / "public" / "audio" / "v4" / "mix.wav"},
+    "story": {"timeline": ROOT / "src" / "story" / "config" / "timeline.json", "build": ROOT / "audio" / "build" / "story",
+              "mix": ROOT / "public" / "audio" / "story" / "mix.wav"},
 }
 VIDEO = os.environ.get("UAI_VIDEO", "v1")
 TIMELINE_PATH = VIDEOS[VIDEO]["timeline"]
@@ -90,3 +92,14 @@ def beat_frames(tl, scene, at):
     if isinstance(v, list):
         return [base + f for f in v]
     return [base + v]
+
+
+def segment_bar_seconds(m, i):
+    """Início (s) do compasso i quando a trilha é montada em frases de duração fixa (story: 1 frase por card).
+
+    Cada frase começa num tempo forte exatamente em k·segmentSeconds; dentro dela os compassos seguem o bpm.
+    """
+    beat = 60.0 / m["bpm"]
+    seg = round(m["segmentSeconds"] / beat * 480) / 480 * beat
+    k, j = divmod(i, m["barsPerSegment"])
+    return m["offsetSeconds"] + k * seg + j * 4 * beat

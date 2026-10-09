@@ -9,11 +9,13 @@
     "audio:v2": "python3 audio/build_audio.py --video v2",
     "audio:v3": "python3 audio/build_audio.py --video v3",
     "audio:v4": "python3 audio/build_audio.py --video v4",
+    "audio:story": "python3 audio/build_audio.py --video story",
     "audio:setup": "bash audio/download_models.sh && pip install -r audio/requirements.txt",
     "render": "remotion render Video1-NaoPrecisaBaixar out/uaipertim_video1_nao-precisa-baixar.mp4",
     "render:v2": "remotion render Video2-VaiFuncionarAssim out/uaipertim_video2_vai-funcionar-assim.mp4",
     "render:v3": "remotion render Video3-QualComercioPrecisa out/uaipertim_video3_qual-comercio-precisa.mp4",
     "render:v4": "remotion render Video4-EleTeAcha out/uaipertim_video4_ele-te-acha.mp4",
+    "render:story": "remotion render Story-Conheca-Card1 out/story-conheca/card1.mp4 && remotion render Story-Conheca-Card2 out/story-conheca/card2.mp4 && remotion render Story-Conheca-Card3 out/story-conheca/card3.mp4 && remotion render Story-Conheca-Card4 out/story-conheca/card4.mp4",
     "still": "remotion still Video1-NaoPrecisaBaixar --frame=400 out/still.png",
     "typecheck": "tsc --noEmit"
   },

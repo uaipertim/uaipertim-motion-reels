@@ -477,6 +477,17 @@ def switch_on():
     return norm(y)
 
 
+# ------------------------------------------------------- sons do story ----
+
+def curtain(dur=0.7):
+    """'Fruuu' do toldo/cortina descendo: pano tremulando + sopro descendo."""
+    t = t_(dur)
+    w = noise_sweep(dur, 3200, 500, 0.5, shape=lambda p: np.clip(p * 6, 0, 1) * np.clip((1 - p) * 3, 0, 1))
+    flutter = 0.55 + 0.45 * np.sign(np.sin(2 * np.pi * 26 * t[: len(w)]))
+    y = np.zeros(len(t)); y[: len(w)] += w * flutter
+    return norm(lp(y, 6000))
+
+
 def build():
     tl = load_timeline()
     out = BUILD / "sfx"
@@ -515,6 +526,10 @@ def build():
         "lupa_spin": lupa_spin(), "sad_plim": sad_plim(), "droop": droop(), "check": check(), "step": step(),
         "rocket": rocket(), "switch_on": switch_on(), "brilho": norm(sparkle(1.3, 14, 2400, 7200, 0.6)),
     })
+    # sons do story (idem: por último)
+    bank.update({"curtain": curtain()})
+    for semi in (9, 11, 12):  # plops subindo de tom (os outros já existem)
+        bank[f"plop@{semi}"] = plop(semi)
     for semi in (2, 4, 5, 7, 9, 12):  # plim subindo de tom a cada balão
         p = bank["plim"]
         bank[f"plim@{semi}"] = np.interp(np.arange(0, len(p), 2 ** (semi / 12)), np.arange(len(p)), p).astype(np.float32)

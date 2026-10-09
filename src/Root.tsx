@@ -5,10 +5,12 @@ import { TL } from "./config/timeline";
 import { TL2 } from "./v2/config/timeline";
 import { TL3 } from "./v3/config/timeline";
 import { TL4 } from "./v4/config/timeline";
+import { CARDS, TLS } from "./story/config/timeline";
 import { Video } from "./Video";
 import { Video2 } from "./v2/Video2";
 import { Video3 } from "./v3/Video3";
 import { Video4 } from "./v4/Video4";
+import { StoryCard, StoryPreview } from "./story/StoryConheca";
 
 export const RemotionRoot: React.FC = () => (
   <>
@@ -46,6 +48,28 @@ export const RemotionRoot: React.FC = () => (
       fps={TL4.fps}
       width={TL4.width}
       height={TL4.height}
+      defaultProps={{ withAudio: true }}
+    />
+    {/* Story "Conheça": 4 cards (1 MP4 cada) + prévia com os 4 em sequência */}
+    {(["card1", "card2", "card3", "card4"] as const).map((card, i) => (
+      <Composition
+        key={card}
+        id={`Story-Conheca-Card${i + 1}`}
+        component={StoryCard}
+        durationInFrames={CARDS[card].duration}
+        fps={TLS.fps}
+        width={TLS.width}
+        height={TLS.height}
+        defaultProps={{ card, withAudio: true }}
+      />
+    ))}
+    <Composition
+      id="Story-Conheca-Previa"
+      component={StoryPreview}
+      durationInFrames={TLS.durationInFrames}
+      fps={TLS.fps}
+      width={TLS.width}
+      height={TLS.height}
       defaultProps={{ withAudio: true }}
     />
   </>

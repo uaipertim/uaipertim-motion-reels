@@ -305,3 +305,41 @@ export const PaperPlaneIcon: React.FC<P> = ({ color = "#fff", ...p }) => (
     <path d="M48 60 L44 84 L56 70 Z" fill={color} opacity="0.85" />
   </Svg>
 );
+
+// ---- Story "Conheça" ----
+
+// ícone de "baixar app" (seta pra baixo entrando na bandeja), em tile de app
+export const DownloadIcon: React.FC<P> = ({ color = C.verde, ...p }) => (
+  <Svg {...p}>
+    <rect x="6" y="6" width="88" height="88" rx="24" fill={color} />
+    <rect x="6" y="6" width="88" height="44" rx="24" fill="#fff" opacity="0.12" />
+    <path d="M50 20 V58" stroke="#fff" strokeWidth="11" strokeLinecap="round" />
+    <path d="M32 42 L50 60 L68 42" stroke="#fff" strokeWidth="11" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+    <path d="M26 64 V74 H74 V64" stroke="#fff" strokeWidth="9" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+  </Svg>
+);
+
+// 🌱 mudinha (agropecuárias)
+export const SproutIcon: React.FC<P> = (p) => (
+  <Svg {...p}>
+    <ellipse cx="50" cy="90" rx="30" ry="5" fill="#000" opacity="0.12" />
+    <path d="M30 70 H70 L64 90 H36 Z" fill="#B8733A" />
+    <rect x="26" y="64" width="48" height="10" rx="4" fill="#9A5B2E" />
+    <path d="M50 66 V40" stroke={C.verdeDark} strokeWidth="6" strokeLinecap="round" />
+    <path d="M50 46 C 30 46, 18 32, 18 16 C 36 16, 50 28, 50 46 Z" fill={C.verde} />
+    <path d="M50 40 C 66 40, 82 30, 84 12 C 64 12, 50 24, 50 40 Z" fill={C.verdeLight} />
+    <path d="M24 22 Q34 30 44 40" stroke={C.verdeDark} strokeWidth="3" strokeLinecap="round" fill="none" opacity="0.6" />
+  </Svg>
+);
+
+// 🥤 copo com canudinho (bebidas)
+export const CupIcon: React.FC<P> = ({ color = C.coral, ...p }) => (
+  <Svg {...p}>
+    <ellipse cx="50" cy="92" rx="24" ry="4" fill="#000" opacity="0.12" />
+    <path d="M58 30 L66 6 L76 9" stroke={C.amarelo} strokeWidth="7" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+    <path d="M24 30 H76 L70 88 Q70 92 66 92 H34 Q30 92 30 88 Z" fill={color} />
+    <rect x="20" y="22" width="60" height="12" rx="6" fill="#fff" stroke={C.cremeDeep} strokeWidth="3" />
+    <path d="M30 52 H70 L68 70 H32 Z" fill="#fff" opacity="0.85" />
+    <path d="M36 40 L38 82" stroke="#fff" strokeOpacity="0.45" strokeWidth="5" strokeLinecap="round" />
+  </Svg>
+);
