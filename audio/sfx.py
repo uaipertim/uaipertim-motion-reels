@@ -348,6 +348,71 @@ def doorbell():
     return norm(y)
 
 
+# ------------------------------------------------------- sons do Vídeo 3 ----
+
+def inflate(dur=1.3):
+    """'Fuuu' de balão enchendo: sopro filtrado subindo + tom de borracha."""
+    w = noise_sweep(dur, 300, 2600, 0.45, shape=lambda p: np.clip(p, 0, 1) ** 0.8 * np.minimum(1, (1 - p) * 12))
+    t = t_(len(w) / SR)
+    squeak = np.sin(2 * np.pi * np.cumsum(220 + 500 * (t / dur) ** 1.5) / SR) * 0.12 * np.minimum(1, t / 0.3)
+    return norm(w + squeak * np.minimum(1, (dur - t) / 0.1))
+
+
+def balloon_pop():
+    y = np.zeros(int(0.5 * SR))
+    place(y, hp(rng.standard_normal(int(0.04 * SR)), 600) * env_exp(0.04, 0.008) * 1.4, 0)
+    place(y, sweep_sine(700, 120, 0.12) * env_exp(0.12, 0.03), 0)
+    place(y, lp(rng.standard_normal(int(0.25 * SR)), 1800) * env_exp(0.25, 0.06) * 0.4, 0.004)
+    return norm(np.tanh(1.5 * y))
+
+
+def clock_tick(dur=2.6, rate=4.0):
+    """Tic-tac de relógio cartoon (alterna tom agudo/grave)."""
+    y = np.zeros(int(dur * SR))
+    for i in range(int(dur * rate)):
+        f = 2400 if i % 2 == 0 else 1700
+        k = np.sin(2 * np.pi * f * t_(0.025)) * env_exp(0.025, 0.005)
+        k += hp(rng.standard_normal(len(k)), 3000) * env_exp(0.025, 0.002) * 0.4
+        place(y, k * (0.9 if i % 2 == 0 else 0.75), i / rate)
+    return norm(y)
+
+
+def hmm(up=True):
+    """'Hmm?' cartoon sem voz humana: zumbido de kazoo com a altura subindo no fim."""
+    dur = 0.55
+    t = t_(dur)
+    f = 260 * (1 + (0.45 if up else -0.2) * np.clip((t - 0.25) / 0.3, 0, 1) ** 2) * (1 + 0.02 * np.sin(2 * np.pi * 6 * t))
+    ph = 2 * np.pi * np.cumsum(f) / SR
+    buzz = np.tanh(3 * np.sin(ph)) + 0.4 * np.sin(2 * ph)
+    y = bp(buzz, 300, 2600) * np.minimum(1, t / 0.04) * np.minimum(1, (dur - t) / 0.08)
+    return norm(y)
+
+
+def cheer():
+    """Mini-comemoração: 'tirilim' de sininhos subindo."""
+    y = np.zeros(int(0.9 * SR))
+    for i, f in enumerate([1318.5, 1568.0, 2093.0]):
+        place(y, fm_bell(f, 0.6, 3.5, 1.3, 0.25) * (0.7 + 0.15 * i), i * 0.06)
+    return norm(y)
+
+
+def slide_whistle(dur=0.6):
+    """'Fiuuu': apito de êmbolo subindo e descendo (etiqueta voando em arco)."""
+    t = t_(dur)
+    f = 700 + 900 * np.sin(np.pi * t / dur) ** 0.8
+    y = np.sin(2 * np.pi * np.cumsum(f * (1 + 0.01 * np.sin(2 * np.pi * 9 * t))) / SR)
+    y += bp(rng.standard_normal(len(t)), 1500, 5000) * 0.05
+    return norm(y * np.minimum(1, t / 0.03) * np.minimum(1, (dur - t) / 0.08))
+
+
+def notif():
+    """Notificação: 'dlin-dlin' brilhante."""
+    y = np.zeros(int(1.0 * SR))
+    place(y, fm_bell(1760, 0.7, 2.0, 1.6, 0.3), 0)
+    place(y, fm_bell(2637, 0.8, 2.0, 1.4, 0.32), 0.09)
+    return norm(y)
+
+
 def build():
     tl = load_timeline()
     out = BUILD / "sfx"
@@ -374,6 +439,16 @@ def build():
         "stamp_light": stamp_light(), "whistle_drop": whistle_drop(), "plim": plim(), "ding": ding(),
         "shuffle": shuffle(), "tada": tada(), "tick": tick(), "motor": motor(), "doorbell": doorbell(),
     })
+    # sons do Vídeo 3 (gerados por último para não mudar o sorteio dos sons anteriores)
+    bank.update({
+        "inflate": inflate(), "balloon_pop": balloon_pop(), "hmm": hmm(),
+        # tic-tac em colcheias da trilha, durando os 2 compassos de suspense
+        "clock_tick": clock_tick(8 * 60 / tl.get("music", {}).get("bpm", 124), tl.get("music", {}).get("bpm", 124) / 30),
+        "hmm_down": hmm(False), "cheer": cheer(), "slide_whistle": slide_whistle(), "notif": notif(),
+    })
+    for semi in (2, 4, 5, 7, 9, 12):  # plim subindo de tom a cada balão
+        p = bank["plim"]
+        bank[f"plim@{semi}"] = np.interp(np.arange(0, len(p), 2 ** (semi / 12)), np.arange(len(p)), p).astype(np.float32)
     base = bank["tick"]
     for semi in (2, 4, 7):  # tics subindo a cada etapa da linha do tempo
         bank[f"tick@{semi}"] = np.interp(np.arange(0, len(base), 2 ** (semi / 12)), np.arange(len(base)), base).astype(np.float32)

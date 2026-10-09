@@ -8,12 +8,14 @@ import soundfile as sf
 from scipy.signal import resample_poly
 
 ROOT = Path(__file__).resolve().parent.parent
-# Qual vídeo processar: UAI_VIDEO=v1 (padrão) | v2. Os scripts aceitam --video vX.
+# Qual vídeo processar: UAI_VIDEO=v1 (padrão) | v2 | v3. Os scripts aceitam --video vX.
 VIDEOS = {
     "v1": {"timeline": ROOT / "src" / "config" / "timeline.json", "build": ROOT / "audio" / "build",
            "mix": ROOT / "public" / "audio" / "mix.wav"},
     "v2": {"timeline": ROOT / "src" / "v2" / "config" / "timeline.json", "build": ROOT / "audio" / "build" / "v2",
            "mix": ROOT / "public" / "audio" / "v2" / "mix.wav"},
+    "v3": {"timeline": ROOT / "src" / "v3" / "config" / "timeline.json", "build": ROOT / "audio" / "build" / "v3",
+           "mix": ROOT / "public" / "audio" / "v3" / "mix.wav"},
 }
 VIDEO = os.environ.get("UAI_VIDEO", "v1")
 TIMELINE_PATH = VIDEOS[VIDEO]["timeline"]
@@ -75,10 +77,13 @@ def fade(x, sr, fin=0.005, fout=0.02):
 
 
 def beat_frames(tl, scene, at):
-    """Resolve uma referência de beat ('nome' | número | lista) em frames ABSOLUTOS."""
+    """Resolve uma referência de beat ('nome' | 'nome[i]' | número | lista) em frames ABSOLUTOS."""
     base = tl["scenes"][scene]["from"]
     if isinstance(at, (int, float)):
         return [base + at]
+    if at.endswith("]"):  # um item de uma lista de beats, ex.: "balloons[2]"
+        name, idx = at[:-1].split("[")
+        return [base + tl["beats"][scene][name][int(idx)]]
     v = tl["beats"][scene][at]
     if isinstance(v, list):
         return [base + f for f in v]

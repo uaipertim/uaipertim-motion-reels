@@ -76,6 +76,7 @@ def compose(tl):
     chords = m["chords"]
     sec = m["sections"]
     breaks = set(m.get("breakBars", []))  # compassos com "breque" no fim (tempo 3.5)
+    double_claps = set(m.get("doubleClapBars", []))  # palmas em todas as colcheias ("acelera")
     rng = np.random.default_rng(3)
 
     def in_sec(bar, name):
@@ -115,6 +116,12 @@ def compose(tl):
             pad.note(bar0, 60, 70, TPB * 4); pad.note(bar0, 64, 66, TPB * 4); pad.note(bar0, 67, 66, TPB * 4)
             drums.note(bar0, KICK, 118, 120); drums.note(bar0, CRASH, 96, 400)
             drums.note(bar0, TRI, 80, 400); drums.note(bar0, CLAP, 100, 100)
+            continue
+
+        if in_sec(bar, "suspense"):
+            # suspense: só ukulele, baixinho e espaçado (o tic-tac vem dos efeitos)
+            for slot, down, v in ((0, True, 64), (4, True, 52), (6, False, 40)):
+                strum(slot_tick(bar, slot), ch, v + hum(), down, E8 * (3 if down else 1), 4 if down else 2)
             continue
 
         if respiro:
@@ -184,6 +191,9 @@ def compose(tl):
                 drums.note(t, KICK, 70 + 40 * energy + hum(), 80)
             if peak and bar == n_bars - 2 and beat == 3:
                 drums.note(t + E8, CLAP, 100, 60)
+        if bar in double_claps:
+            for slot in range(8):
+                drums.note(slot_tick(bar, slot), CLAP, 70 + 10 * (slot % 2 == 0) + 12 * (slot / 8) + hum(), 50)
         for slot in range(8):
             if bar in breaks and slot >= 6:
                 continue
@@ -229,6 +239,8 @@ def main():
     out.mkdir(parents=True, exist_ok=True)
     total = int(SR * tl["durationInFrames"] / tl["fps"])
     offset = int(SR * tl["music"]["offsetSeconds"])
+    skip = max(0, -offset)  # offset negativo: a música começa no meio do compasso 0
+    offset = max(0, offset)
     mix = np.zeros((total, 2), np.float32)
     for name, track in compose(tl).items():
         mid, wav = out / f"{name}.mid", out / f"{name}.wav"
@@ -239,6 +251,7 @@ def main():
         if x.ndim == 1:
             x = np.stack([x, x], 1)
         x = np.stack([to_sr(x[:, 0], sr), to_sr(x[:, 1], sr)], 1)
+        x = x[skip:]
         n = min(len(x), total - offset)
         mix[offset:offset + n] += x[:n] * db(STEM_GAIN_DB[name])
     # cauda: fade suave nos últimos 0.35s

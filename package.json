@@ -7,9 +7,11 @@
     "studio": "remotion studio",
     "audio": "python3 audio/build_audio.py",
     "audio:v2": "python3 audio/build_audio.py --video v2",
+    "audio:v3": "python3 audio/build_audio.py --video v3",
     "audio:setup": "bash audio/download_models.sh && pip install -r audio/requirements.txt",
     "render": "remotion render Video1-NaoPrecisaBaixar out/uaipertim_video1_nao-precisa-baixar.mp4",
     "render:v2": "remotion render Video2-VaiFuncionarAssim out/uaipertim_video2_vai-funcionar-assim.mp4",
+    "render:v3": "remotion render Video3-QualComercioPrecisa out/uaipertim_video3_qual-comercio-precisa.mp4",
     "still": "remotion still Video1-NaoPrecisaBaixar --frame=400 out/still.png",
     "typecheck": "tsc --noEmit"
   },

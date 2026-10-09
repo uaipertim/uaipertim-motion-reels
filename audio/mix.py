@@ -34,11 +34,12 @@ def section_curve(tl, n):
     m = tl["music"]
     bar = 4 * 60.0 / m["bpm"]
     off = m["offsetSeconds"]
-    level = {"intro": -2.5, "respiro": 0.0, "grooveA": -1.0, "grooveB": 0.0, "peak": 2.5, "final": 3.0}
+    level = {"intro": -2.5, "respiro": 0.0, "suspense": -3.0, "grooveA": -1.0, "grooveB": 0.0, "peak": 2.5, "final": 3.0}
+    level.update(m.get("levels", {}))  # ajuste por vídeo (dB por seção)
     pts_t, pts_v = [], []
     for name, (a, b) in sorted(m["sections"].items(), key=lambda kv: kv[1][0]):
         pts_t += [off + a * bar, off + (b + 1) * bar - 0.05]
-        pts_v += [level[name], level[name]]
+        pts_v += [level.get(name, 0.0), level.get(name, 0.0)]
     t = np.arange(n) / SR
     curve = np.interp(t, pts_t, pts_v)
     # intro cresce do começo ao fim das cenas 1–2
@@ -50,6 +51,10 @@ def section_curve(tl, n):
     hold = m.get("introHoldSeconds", 0)
     if hold:
         curve += np.interp(t, [0, hold, hold + 0.25], [-18, -18, 0])
+    # pausas curtas (frames absolutos), ex.: o "@" do Vídeo 3
+    for a, b in m.get("mutes", []):
+        t0, t1 = a / tl["fps"], b / tl["fps"]
+        curve += np.interp(t, [t0 - 0.03, t0, t1, t1 + 0.05], [0, -40, -40, 0])
     return db(curve)
 
 
@@ -81,7 +86,7 @@ def main():
             x = to_sr(x, sr) * db(cue.get("gain", 0) + tl.get("master", {}).get("sfxGainDb", SFX_GAIN_DB))
             pan = cue.get("pan", rng.uniform(-0.35, 0.35))
             l, r = np.sqrt(0.5 * (1 - pan)), np.sqrt(0.5 * (1 + pan))
-            i = int(max(0, f) / fps * SR)
+            i = int(max(0, f + cue.get("offset", 0)) / fps * SR)
             k = min(len(x), n - i)
             if k > 0:
                 sfx[i:i + k, 0] += x[:k] * l * 1.414
