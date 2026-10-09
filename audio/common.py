@@ -8,7 +8,7 @@ import soundfile as sf
 from scipy.signal import resample_poly
 
 ROOT = Path(__file__).resolve().parent.parent
-# Qual vídeo processar: UAI_VIDEO=v1 (padrão) | v2 | v3. Os scripts aceitam --video vX.
+# Qual vídeo processar: UAI_VIDEO=v1 (padrão) | v2 | v3 | v4. Os scripts aceitam --video vX.
 VIDEOS = {
     "v1": {"timeline": ROOT / "src" / "config" / "timeline.json", "build": ROOT / "audio" / "build",
            "mix": ROOT / "public" / "audio" / "mix.wav"},
@@ -16,6 +16,8 @@ VIDEOS = {
            "mix": ROOT / "public" / "audio" / "v2" / "mix.wav"},
     "v3": {"timeline": ROOT / "src" / "v3" / "config" / "timeline.json", "build": ROOT / "audio" / "build" / "v3",
            "mix": ROOT / "public" / "audio" / "v3" / "mix.wav"},
+    "v4": {"timeline": ROOT / "src" / "v4" / "config" / "timeline.json", "build": ROOT / "audio" / "build" / "v4",
+           "mix": ROOT / "public" / "audio" / "v4" / "mix.wav"},
 }
 VIDEO = os.environ.get("UAI_VIDEO", "v1")
 TIMELINE_PATH = VIDEOS[VIDEO]["timeline"]

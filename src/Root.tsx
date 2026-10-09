@@ -4,9 +4,11 @@ import "./components/Fonts";
 import { TL } from "./config/timeline";
 import { TL2 } from "./v2/config/timeline";
 import { TL3 } from "./v3/config/timeline";
+import { TL4 } from "./v4/config/timeline";
 import { Video } from "./Video";
 import { Video2 } from "./v2/Video2";
 import { Video3 } from "./v3/Video3";
+import { Video4 } from "./v4/Video4";
 
 export const RemotionRoot: React.FC = () => (
   <>
@@ -35,6 +37,15 @@ export const RemotionRoot: React.FC = () => (
       fps={TL3.fps}
       width={TL3.width}
       height={TL3.height}
+      defaultProps={{ withAudio: true }}
+    />
+    <Composition
+      id="Video4-EleTeAcha"
+      component={Video4}
+      durationInFrames={TL4.durationInFrames}
+      fps={TL4.fps}
+      width={TL4.width}
+      height={TL4.height}
       defaultProps={{ withAudio: true }}
     />
   </>

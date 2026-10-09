@@ -43,10 +43,11 @@ def section_curve(tl, n):
     t = np.arange(n) / SR
     curve = np.interp(t, pts_t, pts_v)
     # intro cresce do começo ao fim das cenas 1–2
-    a, b = m["sections"]["intro"]
-    t0, t1 = off + a * bar, off + (b + 1) * bar
-    ramp = (t >= t0) & (t < t1)
-    curve[ramp] += np.interp(t[ramp], [t0, t1], [-2.5, 2.0])
+    if "intro" in m["sections"]:
+        a, b = m["sections"]["intro"]
+        t0, t1 = off + a * bar, off + (b + 1) * bar
+        ramp = (t >= t0) & (t < t1)
+        curve[ramp] += np.interp(t[ramp], [t0, t1], [-2.5, 2.0])
     # "Uai…" quase solo: a trilha entra logo depois da primeira palavra
     hold = m.get("introHoldSeconds", 0)
     if hold:
@@ -111,6 +112,14 @@ def main():
     if look:
         duck_env = np.concatenate([duck_env[look:], np.full(look, duck_env[-1])])
     duck_gain = 1 - (1 - db(m["duckDb"])) * duck_env
+    mu = m.get("muffle")
+    if mu:
+        # trilha "abafada" (passa-baixa) até a virada; depois abre de uma vez
+        from scipy.signal import butter, sosfiltfilt
+        wet = sosfiltfilt(butter(2, mu["cutoffHz"], "low", fs=SR, output="sos"), music, axis=0).astype(np.float32)
+        t1 = mu["to"] / tl["fps"]
+        k = np.interp(np.arange(n) / SR, [0, t1, t1 + mu.get("release", 0.1)], [1, 1, 0])[:, None]
+        music = music * (1 - k) + wet * k
     music *= (duck_gain * section_curve(tl, n) * db(MUSIC_GAIN_DB))[:, None]
 
     mix = music + sfx + vo[:, None]

@@ -19,7 +19,8 @@ E8 = TPB // 2  # colcheia
 SWING = 0.07  # leve swing nas colcheias de contratempo ("pulinho")
 
 # Ukulele (afinação GCEA reentrante) — voicings de cima pra baixo (corda G primeiro)
-UKE = {"C": [67, 60, 64, 72], "G": [67, 62, 67, 71], "Am": [69, 60, 64, 69], "F": [69, 60, 65, 69]}
+UKE = {"C": [67, 60, 64, 72], "G": [67, 62, 67, 71], "Am": [69, 60, 64, 69], "F": [69, 60, 65, 69],
+       "Em": [67, 64, 67, 71], "E": [71, 64, 68, 71]}  # Em/E: só na versão triste (Vídeo 4)
 ROOT = {"C": 36, "G": 43, "Am": 45, "F": 41}
 FIFTH = {"C": 43, "G": 50, "Am": 52, "F": 48}
 CHORD_TONES = {"C": [72, 76, 79], "G": [71, 74, 79], "Am": [72, 76, 81], "F": [72, 77, 81]}
@@ -77,6 +78,7 @@ def compose(tl):
     sec = m["sections"]
     breaks = set(m.get("breakBars", []))  # compassos com "breque" no fim (tempo 3.5)
     double_claps = set(m.get("doubleClapBars", []))  # palmas em todas as colcheias ("acelera")
+    crash_bars = set(m.get("crashBars", []))  # prato no 1º tempo (ex.: a virada do Vídeo 4)
     rng = np.random.default_rng(3)
 
     def in_sec(bar, name):
@@ -116,6 +118,19 @@ def compose(tl):
             pad.note(bar0, 60, 70, TPB * 4); pad.note(bar0, 64, 66, TPB * 4); pad.note(bar0, 67, 66, TPB * 4)
             drums.note(bar0, KICK, 118, 120); drums.note(bar0, CRASH, 96, 400)
             drums.note(bar0, TRI, 80, 400); drums.note(bar0, CLAP, 100, 100)
+            continue
+
+        if in_sec(bar, "sad"):
+            # versão triste: ukulele em tom menor, em meio-tempo, + "coração" abafado
+            # (o abafado de verdade é um passa-baixa no mix: music.muffle)
+            for slot, down, v in ((0, True, 72), (4, True, 60), (6, False, 46)):
+                if bar in breaks and slot >= 4:
+                    continue
+                strum(slot_tick(bar, slot), ch, v + hum(), down, E8 * (4 if down else 1), 4 if down else 2)
+            for beat in (0, 2):
+                drums.note(bar0 + beat * TPB, KICK, 56 + hum(), 120)
+            for n in UKE[ch][1:]:
+                pad.note(bar0, n - 12, 38, TPB * 4)
             continue
 
         if in_sec(bar, "suspense"):
@@ -191,6 +206,8 @@ def compose(tl):
                 drums.note(t, KICK, 70 + 40 * energy + hum(), 80)
             if peak and bar == n_bars - 2 and beat == 3:
                 drums.note(t + E8, CLAP, 100, 60)
+        if bar in crash_bars:
+            drums.note(bar0, CRASH, 112, 400)
         if bar in double_claps:
             for slot in range(8):
                 drums.note(slot_tick(bar, slot), CLAP, 70 + 10 * (slot % 2 == 0) + 12 * (slot / 8) + hum(), 50)

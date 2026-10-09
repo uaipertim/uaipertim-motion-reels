@@ -43,12 +43,19 @@ export const ShopChar: React.FC<{
   signSwing?: number; // graus (placa balançando)
   signLift?: number; // unidades do svg (placa sobe quando a lojinha "estica o pescoço")
   awning?: number; // 0..1 toldo esticando pra frente
+  droop?: number; // 0..1 toldo murcho (desce por cima dos olhos: desanimada)
+  sparkle?: number; // 0..1 brilho nos olhinhos
+  bulbs?: number; // 0..1 cordão de luzinhas na vitrine
+  bulbPhase?: number; // pisca-pisca das luzinhas
   style?: React.CSSProperties;
-}> = ({ kind, width, mood = "worried", look = [0, 0], blink = 0, eyeScale = 1, lit = 0, glow = 0, signSwing = 0, signLift = 0, awning = 0, style }) => {
+}> = ({
+  kind, width, mood = "worried", look = [0, 0], blink = 0, eyeScale = 1, lit = 0, glow = 0, signSwing = 0, signLift = 0, awning = 0,
+  droop = 0, sparkle = 0, bulbs = 0, bulbPhase = 0, style,
+}) => {
   const s = SHOP_LOOK[kind];
   const win = interpolateColors(Math.max(0, Math.min(1, lit)), [0, 1], [WINDOW_OFF, WINDOW_ON]);
   const stripes = 6;
-  const awnH = 24 + 16 * awning;
+  const awnH = 24 + 16 * awning + 34 * droop;
   return (
     <div style={{ position: "relative", width, height: width * SHOP_RATIO, ...style }}>
       {glow > 0 && (
@@ -100,6 +107,32 @@ export const ShopChar: React.FC<{
           })}
         </g>
         <rect x="4" y="66" width="192" height="14" rx="7" fill={s.wallDark} />
+        {/* cordão de luzinhas */}
+        {bulbs > 0 && (
+          <g opacity={Math.min(1, bulbs * 1.5)}>
+            <path d="M20 182 Q60 194 100 184 Q140 194 180 182" stroke={C.tinta} strokeOpacity="0.5" strokeWidth="2.5" fill="none" />
+            {[24, 46, 68, 90, 112, 134, 156, 176].map((x, i) => {
+              const on = bulbs * (0.55 + 0.45 * Math.sin(bulbPhase * 0.35 + i * 1.7));
+              const col = [C.amarelo, C.coral, C.verdeLight][i % 3];
+              const y = 186 + 4 * Math.sin((x - 20) / 160 * Math.PI * 2);
+              return (
+                <g key={x}>
+                  <circle cx={x} cy={y} r={11 * on} fill={col} opacity={0.35 * on} />
+                  <circle cx={x} cy={y} r="5" fill={col} opacity={0.4 + 0.6 * on} />
+                </g>
+              );
+            })}
+          </g>
+        )}
+        {/* brilho nos olhinhos */}
+        {sparkle > 0 &&
+          [[78, 120], [158, 120]].map(([x, y], i) => (
+            <path
+              key={i}
+              d={`M${x} ${y - 12} C${x + 2} ${y - 3} ${x + 3} ${y - 2} ${x + 12} ${y} C${x + 3} ${y + 2} ${x + 2} ${y + 3} ${x} ${y + 12} C${x - 2} ${y + 3} ${x - 3} ${y + 2} ${x - 12} ${y} C${x - 3} ${y - 2} ${x - 2} ${y - 3} ${x} ${y - 12} Z`}
+              fill="#fff" stroke={C.amarelo} strokeWidth="2" transform={`translate(${x} ${y}) scale(${sparkle}) translate(${-x} ${-y})`}
+            />
+          ))}
         {/* placa com ícone */}
         <g transform={`translate(0 ${-signLift}) rotate(${signSwing} 100 66)`}>
           <rect x="66" y="44" width="8" height="24" rx="3" fill={s.wallDark} />

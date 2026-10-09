@@ -413,6 +413,70 @@ def notif():
     return norm(y)
 
 
+# ------------------------------------------------------- sons do Vídeo 4 ----
+
+def lupa_spin(dur=1.6):
+    """'Fuuun' da lupa girando: sopro que ondula (giro) e sobe de leve."""
+    t = t_(dur)
+    w = noise_sweep(dur, 500, 1500, 0.4, shape=lambda p: np.clip(p * 4, 0, 1) * np.clip((1 - p) * 5, 0, 1))
+    w = w[: len(t)] * (0.55 + 0.45 * np.sin(2 * np.pi * 3.2 * t[: len(w)]))
+    hum = np.sin(2 * np.pi * np.cumsum(330 + 60 * np.sin(2 * np.pi * 3.2 * t) + 80 * t / dur) / SR) * 0.08
+    y = np.zeros(len(t)); y[: len(w)] += w; y += hum * np.minimum(1, t / 0.15) * np.minimum(1, (dur - t) / 0.2)
+    return norm(y)
+
+
+def sad_plim():
+    """'Plim' triste e desafinado: duas notas que batem entre si e caem, abafadas."""
+    dur = 1.1
+    t = t_(dur)
+    bend = 1 - 0.07 * np.clip(t / 0.6, 0, 1)
+    y = sum(np.sin(2 * np.pi * np.cumsum(f * bend) / SR) for f in (880.0, 905.0, 587.3))
+    return norm(lp(y * env_exp(dur, 0.32, 0.002), 2200))
+
+
+def droop(dur=0.7):
+    """Toldo murchando: assobio descendo com vibrato ('fiuuuu…')."""
+    t = t_(dur)
+    f = 760 * (260 / 760) ** (t / dur) * (1 + 0.03 * np.sin(2 * np.pi * 6 * t))
+    e = np.minimum(1, t / 0.03) * np.minimum(1, (dur - t) / 0.12)
+    return norm(lp(np.sin(2 * np.pi * np.cumsum(f) / SR), 2500) * e)
+
+
+def check():
+    """Check se desenhando: 'tic-tic' subindo."""
+    y = np.zeros(int(0.25 * SR))
+    place(y, sweep_sine(1100, 1500, 0.04) * env_exp(0.04, 0.012), 0)
+    place(y, sweep_sine(1500, 2300, 0.06) * env_exp(0.06, 0.02), 0.06)
+    return norm(y)
+
+
+def step():
+    """Passinho 'tuc' (bloco de madeira)."""
+    y = np.zeros(int(0.12 * SR))
+    place(y, np.sin(2 * np.pi * 820 * t_(0.05)) * env_exp(0.05, 0.012, 0.0005), 0)
+    place(y, bp(rng.standard_normal(int(0.01 * SR)), 1500, 5000) * 0.3, 0)
+    return norm(y)
+
+
+def rocket(dur=0.9):
+    """'Fiuuu' do foguetinho subindo + chiado."""
+    t = t_(dur)
+    f = 420 * (2600 / 420) ** (t / dur)
+    tone = np.sin(2 * np.pi * np.cumsum(f) / SR) * 0.6
+    fizz = bp(rng.standard_normal(len(t)), 2500, 9000) * 0.35
+    e = np.minimum(1, t / 0.05) * np.minimum(1, (dur - t) / 0.15)
+    return norm((tone + fizz) * e)
+
+
+def switch_on():
+    """Holofote ligando: clack + zumbido curto."""
+    y = np.zeros(int(0.6 * SR))
+    place(y, hp(rng.standard_normal(int(0.008 * SR)), 1800) * env_exp(0.008, 0.002), 0)
+    place(y, sweep_sine(220, 160, 0.06) * env_exp(0.06, 0.015) * 0.6, 0)
+    place(y, np.sin(2 * np.pi * 120 * t_(0.45)) * env_exp(0.45, 0.2) * 0.2, 0.03)
+    return norm(y)
+
+
 def build():
     tl = load_timeline()
     out = BUILD / "sfx"
@@ -445,6 +509,11 @@ def build():
         # tic-tac em colcheias da trilha, durando os 2 compassos de suspense
         "clock_tick": clock_tick(8 * 60 / tl.get("music", {}).get("bpm", 124), tl.get("music", {}).get("bpm", 124) / 30),
         "hmm_down": hmm(False), "cheer": cheer(), "slide_whistle": slide_whistle(), "notif": notif(),
+    })
+    # sons do Vídeo 4 (idem: por último)
+    bank.update({
+        "lupa_spin": lupa_spin(), "sad_plim": sad_plim(), "droop": droop(), "check": check(), "step": step(),
+        "rocket": rocket(), "switch_on": switch_on(), "brilho": norm(sparkle(1.3, 14, 2400, 7200, 0.6)),
     })
     for semi in (2, 4, 5, 7, 9, 12):  # plim subindo de tom a cada balão
         p = bank["plim"]

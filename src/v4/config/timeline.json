@@ -1,0 +1,178 @@
+{
+  "_doc": "Vídeo 4 — 'Ele te acha?' (convite ao comerciante). FONTE ÚNICA DE TEMPOS (30fps) para vídeo e áudio. 'beats' = frames LOCAIS de cada cena (0 = início da cena); 'transitions', 'music.accents' e 'music.muffle' = frames ABSOLUTOS. Nos efeitos, 'at' aceita 'nome', 'nome[i]' ou número; 'offset' desloca em frames. Depois de editar: npm run audio:v4 e npm run render:v4.",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "durationInFrames": 840,
+  "scenes": {
+    "s1": { "name": "O cliente procura", "from": 0, "duration": 135 },
+    "s2": { "name": "A loja invisível", "from": 135, "duration": 135 },
+    "s3": { "name": "Acende no mapa", "from": 270, "duration": 150 },
+    "s4": { "name": "Os benefícios", "from": 420, "duration": 165 },
+    "s5": { "name": "É simples entrar", "from": 585, "duration": 135 },
+    "s6": { "name": "Fecho + CTA", "from": 720, "duration": 120 }
+  },
+  "transitions": {
+    "iris12": { "from": 120, "duration": 20, "_doc": "a lupa cresce e a cidade cinza aparece dentro da lente (1 -> 2)" },
+    "swipe23": { "from": 259, "duration": 22, "_doc": "swipe coral 2 -> 3 (cobre a tela em from + duration/2 = 270)" },
+    "swipe56": { "from": 709, "duration": 22, "_doc": "swipe coral 5 -> 6 (cobre a tela em 720)" }
+  },
+  "beats": {
+    "s1": {
+      "phoneIn": 2,
+      "chip": 8,
+      "barIn": 14,
+      "typeStart": 22,
+      "typeEvery": 2,
+      "text1": 40,
+      "text2": 47,
+      "lupaSpin": 58,
+      "questions": [62, 70, 78, 86, 94, 102],
+      "lupaZoom": 112
+    },
+    "s2": {
+      "headline": 6,
+      "markerStart": 18,
+      "markerDur": 10,
+      "lupaIn": 4,
+      "sweepEnd": 72,
+      "passLoja": 37,
+      "subline1": 46,
+      "subline2": 52,
+      "stamp": 76,
+      "droop": 88
+    },
+    "s3": {
+      "logoIn": 12,
+      "text1": 24,
+      "text2": 31,
+      "pinRelease": 70,
+      "impact": 82,
+      "waveDur": 36,
+      "textOut": 136,
+      "zoomIn": 138,
+      "zoomDur": 20
+    },
+    "s4": {
+      "_doc_cards": "cards de benefício (~1,7s entre eles); cada reação da Lojinha acompanha o seu card",
+      "cards": [4, 55, 106],
+      "checkDelay": 8,
+      "checkDur": 10,
+      "spotlight": 10,
+      "clientPins": 57,
+      "hearts": 62,
+      "boxes": [110, 117, 124],
+      "boxFall": 10,
+      "cardsOut": 158
+    },
+    "s5": {
+      "trail": 0,
+      "trailDur": 16,
+      "selo": 6,
+      "signs": [4, 8, 12],
+      "_doc_steps": "a Lojinha chega em cada placa (a placa acende)",
+      "steps": [13, 57, 101],
+      "hops": [4, 30, 39, 48, 74, 83, 92],
+      "hopDur": 9,
+      "rocket": 115
+    },
+    "s6": {
+      "headline": 2,
+      "headlineOut": 66,
+      "logo": 10,
+      "dm": 18,
+      "heart": 28,
+      "pill": 32,
+      "ribbon": 42,
+      "ribbonDur": 20,
+      "lojinha": 22,
+      "slogan": 70,
+      "confetti": [34, 70],
+      "endCard": 96
+    }
+  },
+  "narration": {
+    "enabled": false,
+    "_doc": "Vídeo 4 não tem locução nem legenda: toda a informação está nos textos de tela (v4/config/texts.ts).",
+    "items": []
+  },
+  "music": {
+    "bpm": 124,
+    "offsetSeconds": 0.103,
+    "_doc": "Grade: compasso 6 (a virada: trilha completa + prato) cai no impacto do pin (f352) e o 14 (acorde final/sting) no end card (f816). Compassos 0–5 = versão triste (ukulele em tom menor, meio-tempo, abafado por um passa-baixa até a virada). accents = stab de marimba na virada, em cada benefício e em cada passo.",
+    "chords": ["Am", "Em", "F", "E", "Am", "E", "C", "G", "Am", "F", "C", "G", "Am", "G", "C"],
+    "breakBars": [5],
+    "sections": {
+      "sad": [0, 5],
+      "grooveB": [6, 11],
+      "peak": [12, 13],
+      "final": [14, 14]
+    },
+    "crashBars": [6],
+    "levels": { "sad": -1.5, "grooveB": 0.5, "peak": 4.0, "final": 4.5, "_doc": "dB por seção (sobrepõe o padrão do mix.py)" },
+    "muffle": { "to": 352, "cutoffHz": 950, "release": 0.12, "_doc": "trilha abafada (passa-baixa) até a virada" },
+    "accents": [352, 424, 475, 526, 598, 642, 685],
+    "introHoldSeconds": 0,
+    "duckDb": -9,
+    "duckAttack": 0.08,
+    "duckRelease": 0.35
+  },
+  "master": { "ceilingDb": -1.5, "truePeak": true },
+  "typingSfx": { "count": 18, "every": 2, "_doc": "'onde comprar aqui…' = 18 teclas, 1 a cada 2 frames (s1.typeStart)" },
+  "sfx": [
+    { "sound": "pop", "scene": "s1", "at": "phoneIn", "gain": -12 },
+    { "sound": "pop", "scene": "s1", "at": "chip", "gain": -12 },
+    { "sound": "typing", "scene": "s1", "at": "typeStart", "gain": -8 },
+    { "sound": "pop", "scene": "s1", "at": "text1", "gain": -13 },
+    { "sound": "lupa_spin", "scene": "s1", "at": "lupaSpin", "gain": -9 },
+    { "sound": "boing_small", "scene": "s1", "at": "questions", "gain": -16, "vary": true },
+    { "sound": "whoosh_zoom", "scene": "s1", "at": "lupaZoom", "gain": -10 },
+
+    { "sound": "whoosh", "scene": "s2", "at": "lupaIn", "gain": -11, "pan": -0.4 },
+    { "sound": "pop", "scene": "s2", "at": "headline", "gain": -12 },
+    { "sound": "marker", "scene": "s2", "at": "markerStart", "gain": -13 },
+    { "sound": "whoosh", "scene": "s2", "at": "passLoja", "offset": -6, "gain": -12, "pan": 0.1 },
+    { "sound": "sad_plim", "scene": "s2", "at": "passLoja", "offset": 4, "gain": -8 },
+    { "sound": "pop", "scene": "s2", "at": "subline1", "gain": -14 },
+    { "sound": "stamp", "scene": "s2", "at": "stamp", "gain": -4 },
+    { "sound": "droop", "scene": "s2", "at": "droop", "gain": -10 },
+
+    { "sound": "whoosh", "scene": "s3", "at": -10, "gain": -8 },
+    { "sound": "pop_magic", "scene": "s3", "at": "logoIn", "gain": -8 },
+    { "sound": "pop", "scene": "s3", "at": "text1", "gain": -13 },
+    { "sound": "whistle_drop", "scene": "s3", "at": "pinRelease", "gain": -10 },
+    { "sound": "thump", "scene": "s3", "at": "impact", "gain": -6 },
+    { "sound": "pop_magic", "scene": "s3", "at": "impact", "gain": -8 },
+    { "sound": "brilho", "scene": "s3", "at": "impact", "offset": 6, "gain": -11 },
+    { "sound": "cheer", "scene": "s3", "at": "impact", "offset": 10, "gain": -13 },
+    { "sound": "whoosh_zoom", "scene": "s3", "at": "zoomIn", "gain": -12 },
+
+    { "sound": "ding", "scene": "s4", "at": "cards", "gain": -10 },
+    { "sound": "check", "scene": "s4", "at": "cards", "offset": 8, "gain": -10 },
+    { "sound": "switch_on", "scene": "s4", "at": "spotlight", "gain": -9 },
+    { "sound": "plim@4", "scene": "s4", "at": "hearts", "gain": -13 },
+    { "sound": "plim@7", "scene": "s4", "at": "hearts", "offset": 10, "gain": -13 },
+    { "sound": "thump", "scene": "s4", "at": "boxes", "offset": 10, "gain": -11 },
+    { "sound": "pop", "scene": "s4", "at": "cardsOut", "gain": -15 },
+
+    { "sound": "fwip", "scene": "s5", "at": "trail", "gain": -12 },
+    { "sound": "pop", "scene": "s5", "at": "selo", "gain": -11 },
+    { "sound": "step", "scene": "s5", "at": "hops", "offset": 9, "gain": -10 },
+    { "sound": "plim", "scene": "s5", "at": "steps[0]", "gain": -9 },
+    { "sound": "plim@4", "scene": "s5", "at": "steps[1]", "gain": -9 },
+    { "sound": "plim@7", "scene": "s5", "at": "steps[2]", "gain": -9 },
+    { "sound": "rocket", "scene": "s5", "at": "rocket", "gain": -8 },
+    { "sound": "confete", "scene": "s5", "at": "rocket", "offset": 8, "gain": -12 },
+
+    { "sound": "whoosh", "scene": "s6", "at": -10, "gain": -8 },
+    { "sound": "pop", "scene": "s6", "at": "headline", "gain": -12 },
+    { "sound": "pop_magic", "scene": "s6", "at": "logo", "gain": -9 },
+    { "sound": "notif", "scene": "s6", "at": "dm", "gain": -5 },
+    { "sound": "pop", "scene": "s6", "at": "heart", "gain": -12 },
+    { "sound": "pop", "scene": "s6", "at": "pill", "gain": -10 },
+    { "sound": "confete", "scene": "s6", "at": "confetti", "gain": -11 },
+    { "sound": "fwip", "scene": "s6", "at": "ribbon", "gain": -10 },
+    { "sound": "sininho", "scene": "s6", "at": "slogan", "gain": -10 },
+    { "sound": "sting", "scene": "s6", "at": "endCard", "gain": -5 }
+  ]
+}

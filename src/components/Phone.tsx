@@ -49,7 +49,7 @@ export const Phone: React.FC<{
   );
 };
 
-export type Mood = "worried" | "strained" | "spit" | "happy" | "surprised";
+export type Mood = "worried" | "strained" | "spit" | "happy" | "surprised" | "sad";
 
 // Rostinho do celular-personagem (olhinhos + sobrancelhas + boca).
 export const PhoneFace: React.FC<{
@@ -102,6 +102,7 @@ export const PhoneFace: React.FC<{
       {mood === "spit" && <ellipse cx="150" cy="130" rx="22" ry="20" fill={C.tinta} />}
       {mood === "happy" && <path d="M112 116 Q150 156 188 116 Z" fill={C.tinta} />}
       {surprised && <ellipse cx="150" cy="128" rx="15" ry="19" fill={C.tinta} />}
+      {mood === "sad" && <path d="M116 142 Q150 112 184 142" stroke={C.tinta} strokeWidth="8" strokeLinecap="round" fill="none" />}
     </svg>
   );
 };

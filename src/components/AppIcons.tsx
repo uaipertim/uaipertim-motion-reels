@@ -223,3 +223,85 @@ export const DishIcon: React.FC<P> = ({ color = C.coral, ...p }) => (
     <rect x="18" y="82" width="64" height="7" rx="3.5" fill={C.amareloDark} />
   </Svg>
 );
+
+// ---- Vídeo 4 ----
+
+// 👋 mãozinha de emoji acenando (desenho de emoji, não figura humana)
+export const WaveHandIcon: React.FC<P> = (p) => (
+  <Svg {...p}>
+    <path d="M16 30 Q12 22 20 20" stroke={C.amareloDark} strokeWidth="5" strokeLinecap="round" fill="none" />
+    <path d="M10 44 Q4 34 10 26" stroke={C.amareloDark} strokeWidth="5" strokeLinecap="round" fill="none" />
+    <g transform="rotate(-14 56 60)">
+      <rect x="34" y="20" width="13" height="40" rx="6.5" fill={C.amarelo} />
+      <rect x="48" y="12" width="13" height="46" rx="6.5" fill={C.amarelo} />
+      <rect x="62" y="16" width="13" height="44" rx="6.5" fill={C.amarelo} />
+      <rect x="76" y="26" width="12" height="36" rx="6" fill={C.amarelo} />
+      <path d="M32 50 H88 V66 Q88 92 62 92 Q40 92 34 74 L22 54 Q18 46 26 44 Q30 43 34 50 Z" fill={C.amarelo} />
+      <path d="M44 70 Q50 80 60 80" stroke={C.amareloDark} strokeWidth="4" strokeLinecap="round" fill="none" />
+    </g>
+  </Svg>
+);
+
+// 📲 celular com setinha entrando
+export const PhoneArrowIcon: React.FC<P> = ({ color = C.coral, ...p }) => (
+  <Svg {...p}>
+    <rect x="38" y="8" width="44" height="84" rx="10" fill={C.tinta} />
+    <rect x="43" y="16" width="34" height="62" rx="5" fill={C.creme} />
+    <circle cx="60" cy="85" r="3" fill="#6E5B52" />
+    <path d="M6 48 H34" stroke={color} strokeWidth="9" strokeLinecap="round" />
+    <path d="M24 36 L38 48 L24 60" stroke={color} strokeWidth="9" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+    <circle cx="60" cy="40" r="9" fill={color} />
+    <circle cx="60" cy="40" r="3.5" fill="#fff" />
+  </Svg>
+);
+
+// 📦 caixinha de produto
+export const BoxIcon: React.FC<P> = ({ color = "#E2A15C", ...p }) => (
+  <Svg {...p}>
+    <path d="M50 10 L90 28 L50 46 L10 28 Z" fill="#F0BE80" />
+    <path d="M10 28 L50 46 V92 L10 74 Z" fill={color} />
+    <path d="M90 28 L50 46 V92 L90 74 Z" fill="#C9833F" />
+    <path d="M30 19 L70 37 V52 L62 48 V40 L22 22 Z" fill={C.amareloLight} />
+    <path d="M24 66 L36 71" stroke="#fff" strokeOpacity="0.7" strokeWidth="4" strokeLinecap="round" />
+  </Svg>
+);
+
+// 📝 folha com lápis
+export const NoteIcon: React.FC<P> = (p) => (
+  <Svg {...p}>
+    <rect x="14" y="10" width="56" height="78" rx="8" fill="#fff" stroke={C.cremeDeep} strokeWidth="4" />
+    {[28, 40, 52, 64].map((y, i) => (
+      <rect key={y} x="24" y={y} width={i === 3 ? 22 : 36} height="5" rx="2.5" fill={i === 0 ? C.coral : C.cremeDeep} />
+    ))}
+    <g transform="rotate(40 70 60)">
+      <rect x="62" y="20" width="16" height="56" rx="3" fill={C.amarelo} />
+      <rect x="62" y="20" width="16" height="10" rx="3" fill={C.coral} />
+      <path d="M62 76 L70 92 L78 76 Z" fill="#F3D9B5" />
+      <path d="M67 86 L70 92 L73 86 Z" fill={C.tinta} />
+    </g>
+  </Svg>
+);
+
+// 🚀 foguetinho
+export const RocketIcon: React.FC<P & { flame?: number }> = ({ flame = 1, ...p }) => (
+  <Svg {...p}>
+    <g transform="rotate(35 50 50)">
+      <path d={`M42 78 Q50 ${92 + 8 * flame} 58 78 Z`} fill={C.amarelo} />
+      <path d={`M45 78 Q50 ${86 + 5 * flame} 55 78 Z`} fill={C.coral} />
+      <path d="M50 6 C66 18 68 46 62 76 H38 C32 46 34 18 50 6 Z" fill="#fff" stroke={C.cremeDeep} strokeWidth="3" />
+      <path d="M50 6 C58 12 62 20 64 28 H36 C38 20 42 12 50 6 Z" fill={C.coral} />
+      <circle cx="50" cy="44" r="9" fill={C.amareloLight} stroke={C.tinta} strokeWidth="4" />
+      <path d="M38 56 L24 74 L38 72 Z" fill={C.coral} />
+      <path d="M62 56 L76 74 L62 72 Z" fill={C.coral} />
+    </g>
+  </Svg>
+);
+
+// aviãozinho de papel (mensagem do direct)
+export const PaperPlaneIcon: React.FC<P> = ({ color = "#fff", ...p }) => (
+  <Svg {...p}>
+    <path d="M8 46 L92 10 L66 90 L48 60 Z" fill={color} />
+    <path d="M48 60 L92 10 L40 52 Z" fill={color} opacity="0.75" />
+    <path d="M48 60 L44 84 L56 70 Z" fill={color} opacity="0.85" />
+  </Svg>
+);
