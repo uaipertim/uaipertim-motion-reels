@@ -56,10 +56,10 @@ export const PhoneFace: React.FC<{
   width: number;
   mood: Mood;
   blink?: number; // 0 aberto → 1 fechado
+  blinkRight?: number; // piscadinha só do olho direito (opcional)
   look?: [number, number];
   style?: React.CSSProperties;
-}> = ({ width, mood, blink = 0, look = [0, 0], style }) => {
-  const eyeRy = 40 * (1 - 0.92 * blink);
+}> = ({ width, mood, blink = 0, blinkRight, look = [0, 0], style }) => {
   const [lx, ly] = look;
   const browL = mood === "happy" ? "M44 30 Q70 14 96 26" : mood === "strained" ? "M42 18 L98 34" : "M42 34 Q70 26 98 14";
   const browR = mood === "happy" ? "M204 26 Q230 14 256 30" : mood === "strained" ? "M202 34 L258 18" : "M202 14 Q230 26 258 34";
@@ -68,17 +68,21 @@ export const PhoneFace: React.FC<{
       {/* bochechas */}
       <ellipse cx="40" cy="112" rx="22" ry="12" fill={C.coral} opacity="0.28" />
       <ellipse cx="260" cy="112" rx="22" ry="12" fill={C.coral} opacity="0.28" />
-      {[70, 230].map((cx, i) => (
-        <g key={cx}>
-          <ellipse cx={cx} cy="74" rx="34" ry={Math.max(3, eyeRy)} fill="#fff" stroke={C.tinta} strokeWidth="6" />
-          {blink < 0.7 && (
-            <g transform={`translate(${lx * 12} ${ly * 10})`}>
-              <circle cx={cx + (i === 0 ? 4 : -4)} cy="78" r={17 * (1 - blink)} fill={C.tinta} />
-              <circle cx={cx + (i === 0 ? -2 : -10)} cy="70" r={6 * (1 - blink)} fill="#fff" />
-            </g>
-          )}
-        </g>
-      ))}
+      {[70, 230].map((cx, i) => {
+        const b = i === 1 && blinkRight !== undefined ? Math.max(blink, blinkRight) : blink;
+        const eyeRy = 40 * (1 - 0.92 * b);
+        return (
+          <g key={cx}>
+            <ellipse cx={cx} cy="74" rx="34" ry={Math.max(3, eyeRy)} fill="#fff" stroke={C.tinta} strokeWidth="6" />
+            {b < 0.7 && (
+              <g transform={`translate(${lx * 12} ${ly * 10})`}>
+                <circle cx={cx + (i === 0 ? 4 : -4)} cy="78" r={17 * (1 - b)} fill={C.tinta} />
+                <circle cx={cx + (i === 0 ? -2 : -10)} cy="70" r={6 * (1 - b)} fill="#fff" />
+              </g>
+            )}
+          </g>
+        );
+      })}
       <path d={browL} stroke={C.tinta} strokeWidth="9" strokeLinecap="round" fill="none" />
       <path d={browR} stroke={C.tinta} strokeWidth="9" strokeLinecap="round" fill="none" />
       {mood === "worried" && (

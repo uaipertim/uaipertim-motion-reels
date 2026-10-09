@@ -129,6 +129,7 @@
     "offsetSeconds": 0.039,
     "_doc": "Grade de compassos (1 compasso = 1.935s): o compasso 3 começa no swipe da cena 3 (respiro) e o 13 (acorde final/sting) cai no end card (frame 756). Seções em índice de compasso.",
     "chords": ["C", "G", "Am", "F", "C", "G", "Am", "F", "C", "G", "Am", "F", "G", "C"],
+    "breakBars": [2],
     "sections": {
       "intro": [0, 2],
       "respiro": [3, 3],

@@ -75,9 +75,12 @@ def compose(tl):
     m = tl["music"]
     chords = m["chords"]
     sec = m["sections"]
+    breaks = set(m.get("breakBars", []))  # compassos com "breque" no fim (tempo 3.5)
     rng = np.random.default_rng(3)
 
     def in_sec(bar, name):
+        if name not in sec:
+            return False
         a, b = sec[name]
         return a <= bar <= b
 
@@ -132,7 +135,7 @@ def compose(tl):
         # ---- ukulele (island strum: D . D U . U D U) ----
         pattern = [(0, True, 1.0), (2, True, 0.85), (3, False, 0.7), (5, False, 0.75), (6, True, 0.85), (7, False, 0.7)]
         for slot, down, acc in pattern:
-            if bar == 2 and slot >= 6:  # "breque" antes do swipe
+            if bar in breaks and slot >= 6:  # "breque" antes do swipe
                 continue
             v = (76 + 30 * energy) * acc + hum()
             strum(slot_tick(bar, slot), ch, v, down, E8 + 30, 4 if down else 3)
@@ -143,7 +146,7 @@ def compose(tl):
         # ---- baixo ----
         if bar >= 1:
             for slot, note, v in [(0, ROOT[ch], 100), (3, ROOT[ch], 72), (4, FIFTH[ch], 92), (7, ROOT[ch] + 12, 66)]:
-                if bar == 2 and slot == 7:
+                if bar in breaks and slot == 7:
                     continue
                 bass.note(slot_tick(bar, slot), note, v * (0.8 + 0.25 * energy) + hum(), E8 * (2 if slot in (0, 4) else 1))
 
@@ -151,7 +154,7 @@ def compose(tl):
         if bar >= 1:
             hook = HOOK_FINAL_G if bar == n_bars - 2 else HOOK[ch]
             for slot, n in enumerate(hook):
-                if n is None or (bar == 2 and slot >= 6):
+                if n is None or (bar in breaks and slot >= 6):
                     continue
                 v = 78 + 30 * energy + hum()
                 mar.note(slot_tick(bar, slot), n, v, E8 + 40)
@@ -182,7 +185,7 @@ def compose(tl):
             if peak and bar == n_bars - 2 and beat == 3:
                 drums.note(t + E8, CLAP, 100, 60)
         for slot in range(8):
-            if bar == 2 and slot >= 6:
+            if bar in breaks and slot >= 6:
                 continue
             drums.note(slot_tick(bar, slot), SHAKER, (44 if slot % 2 == 0 else 62) + 20 * energy + hum(), 40)
             if (grooveB or peak) and slot % 2 == 1:
@@ -190,10 +193,27 @@ def compose(tl):
         if peak:
             for s16 in range(16):
                 drums.note(bar0 + s16 * TPB // 4, HAT, 40 + (12 if s16 % 4 == 2 else 0) + hum(), 30)
-        if bar in (sec["grooveA"][0], sec["peak"][0]):
-            drums.note(bar0, CRASH if bar == sec["peak"][0] else SPLASH, 84, 300)
-        if bar == 2:  # breque: "ta-dã" seco no tempo 3.5 antes do respiro
+        if bar in (sec.get("grooveA", [-1])[0], sec.get("peak", [-1])[0]):
+            drums.note(bar0, CRASH if bar == sec.get("peak", [-1])[0] else SPLASH, 84, 300)
+        if bar in breaks:  # breque: "ta-dã" seco no tempo 3.5
             drums.note(slot_tick(bar, 5), KICK, 104, 80); drums.note(slot_tick(bar, 5), CLAP, 104, 80)
+
+    # acentos ("degraus") em frames absolutos — ex.: badges 1-2-3 do Vídeo 2.
+    # Stab de marimba no acorde da hora + sininho que sobe um degrau a cada acento.
+    beat_s = 60.0 / m["bpm"]
+    q = TPB // 4  # quantiza em semicolcheia
+    for i, fr in enumerate(m.get("accents", [])):
+        tick = int(round((fr / tl["fps"] - m["offsetSeconds"]) / beat_s * TPB / q)) * q
+        ch = chords[min(n_bars - 1, max(0, tick // (4 * TPB)))]
+        for n in CHORD_TONES[ch]:
+            mar.note(tick, n + 12, 120, TPB)
+            mar.note(tick, n, 106, TPB)
+        top = (84, 88, 91, 96)[i % 4] + 12
+        glock.note(tick, top, 120, TPB * 2)
+        cel.note(tick, top - 12, 100, TPB * 2)
+        drums.note(tick, KICK, 120, 80)
+        drums.note(tick, CLAP, 110, 80)
+        drums.note(tick, SPLASH, 96, 300)
 
     return {"uke": uke, "bass": bass, "marimba": mar, "glock": glock, "pad": pad, "celesta": cel, "drums": drums}
 

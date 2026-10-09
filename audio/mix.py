@@ -8,7 +8,7 @@ import json
 import numpy as np
 import pyloudnorm as pyln
 
-from common import BUILD, PUBLIC_AUDIO, SR, beat_frames, db, load_timeline, read, to_sr, write
+from common import BUILD, MIX_OUT, SR, beat_frames, db, load_timeline, read, to_sr, write
 
 TARGET_LUFS = -14.0
 VO_GAIN_DB = 0.0
@@ -101,6 +101,9 @@ def main():
     D = 48  # envelope calculado a 1 kHz
     duck_env = one_pole(active[::D].astype(np.float32), m["duckAttack"], m["duckRelease"], SR / D)
     duck_env = np.interp(np.arange(n), np.arange(0, n, D)[:len(duck_env)], duck_env)
+    look = int(SR * m.get("duckLookahead", 0))  # trilha começa a abaixar um pouco ANTES da voz
+    if look:
+        duck_env = np.concatenate([duck_env[look:], np.full(look, duck_env[-1])])
     duck_gain = 1 - (1 - db(m["duckDb"])) * duck_env
     music *= (duck_gain * section_curve(tl, n) * db(MUSIC_GAIN_DB))[:, None]
 
@@ -122,7 +125,7 @@ def main():
     mix = np.clip(mix, -ceiling, ceiling)
     final_lufs = meter.integrated_loudness(mix)
 
-    write(PUBLIC_AUDIO / "mix.wav", mix.astype(np.float32))
+    write(MIX_OUT, mix.astype(np.float32))
     report = {"lufs": round(float(final_lufs), 2), "peak_dbfs": round(float(20 * np.log10(np.abs(mix).max())), 2),
               "seconds": n / SR}
     with open(BUILD / "mix_report.json", "w") as f:

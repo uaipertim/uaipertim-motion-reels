@@ -90,7 +90,11 @@ def make_engine(nar):
 
 
 def render_item(engine, fixes, item, speed, seed):
-    """Gera uma fala (todos os segmentos + pausas) em 48 kHz."""
+    """Gera uma fala (todos os segmentos + pausas) em 48 kHz.
+
+    Por segmento: "say" (texto) ou "ph" (fonemas), "speedMul" (ex.: marca um pouco mais
+    devagar), "seed" (trava o take daquele trecho) e "pauseAfter" (s).
+    """
     parts = []
     for i, seg in enumerate(item["segments"]):
         if "ph" in seg:
@@ -99,10 +103,10 @@ def render_item(engine, fixes, item, speed, seed):
             p = engine.phonemize(seg["say"])
             for rx, rep in fixes:
                 p = rx.sub(rep, p)
-        audio, sr = engine.synth(p, speed, seed * 10 + i)
+        audio, sr = engine.synth(p, speed * seg.get("speedMul", 1.0), seg.get("seed", seed * 10 + i))
         parts.append(to_sr(trim_silence(audio, sr), sr))
         if i < len(item["segments"]) - 1:
-            parts.append(np.zeros(int(SR * item.get("pause", 0.15)), np.float32))
+            parts.append(np.zeros(int(SR * seg.get("pauseAfter", item.get("pause", 0.15))), np.float32))
     return np.concatenate(parts)
 
 

@@ -11,7 +11,7 @@ const HEADLESS = process.env.REMOTION_BROWSER ?? "/opt/pw-browsers/chromium_head
 const browserExecutable = fs.existsSync(HEADLESS) ? HEADLESS : null;
 const serveUrl = await bundle({ entryPoint: path.resolve("src/index.ts") });
 const browser = await openBrowser("chrome", { browserExecutable });
-const composition = await selectComposition({ serveUrl, id: "Video1-NaoPrecisaBaixar", puppeteerInstance: browser, browserExecutable });
+const composition = await selectComposition({ serveUrl, id: process.env.COMP ?? "Video1-NaoPrecisaBaixar", puppeteerInstance: browser, browserExecutable });
 for (const frame of frames) {
   const output = path.join(out, `f${String(frame).padStart(3, "0")}.png`);
   await renderStill({ composition, serveUrl, frame, output, puppeteerInstance: browser, browserExecutable, scale: 0.5 });

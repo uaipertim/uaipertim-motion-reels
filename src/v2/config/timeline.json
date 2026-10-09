@@ -1,0 +1,628 @@
+{
+  "_doc": "Vídeo 2 — 'Vai funcionar assim, ó'. FONTE ÚNICA DE TEMPOS (30fps) para vídeo e áudio. 'beats' = frames LOCAIS de cada cena; 'narration.from', 'transitions' e 'music.accents' = frames ABSOLUTOS. Depois de editar: npm run audio:v2 e npm run render:v2.",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "durationInFrames": 840,
+  "scenes": {
+    "s1": {
+      "name": "Abertura",
+      "from": 0,
+      "duration": 105
+    },
+    "s2": {
+      "name": "Passo 1: a cidade",
+      "from": 105,
+      "duration": 135
+    },
+    "s3": {
+      "name": "Passo 2: a categoria",
+      "from": 240,
+      "duration": 150
+    },
+    "s4": {
+      "name": "Passo 3: quem tá aberto",
+      "from": 390,
+      "duration": 165
+    },
+    "s5": {
+      "name": "Acompanha em tempo real",
+      "from": 555,
+      "duration": 135
+    },
+    "s6": {
+      "name": "Fecho + CTA",
+      "from": 690,
+      "duration": 150
+    }
+  },
+  "transitions": {
+    "swipe56": {
+      "from": 679,
+      "duration": 22,
+      "_doc": "swipe coral 5 -> 6 (cobre a tela em from + duration/2)"
+    }
+  },
+  "beats": {
+    "s1": {
+      "land": 12,
+      "blink": 40,
+      "wink": 58,
+      "arrow": 30,
+      "chip": 24,
+      "title1": 72,
+      "title2": 88,
+      "cursorIn": 80,
+      "tap": 100
+    },
+    "s2": {
+      "zoomDur": 16,
+      "badge": 14,
+      "text": 18,
+      "map": 8,
+      "pinDrop": 34,
+      "pinLand": 46,
+      "pinBounces": [
+        58,
+        66
+      ],
+      "card": 62,
+      "cursorIn": 78,
+      "tap": 96,
+      "zoomOut": 120
+    },
+    "s3": {
+      "reveal": 14,
+      "badge": 24,
+      "text1": 28,
+      "tiles": [
+        40,
+        44,
+        48,
+        52,
+        56
+      ],
+      "hovers": [
+        71,
+        89
+      ],
+      "tap": 107,
+      "petWiggle": 128,
+      "text2": 132,
+      "typeStart": 134,
+      "zoomOut": 144
+    },
+    "s4": {
+      "reveal": 14,
+      "badge": 34,
+      "text": 38,
+      "cards": [
+        44,
+        50,
+        56
+      ],
+      "selo": 64,
+      "inspect": [
+        97,
+        112
+      ],
+      "tap": 138,
+      "zoomOut": 152
+    },
+    "s5": {
+      "reveal": 12,
+      "title": 8,
+      "steps": [
+        18,
+        38,
+        58,
+        110
+      ],
+      "rideStart": 58,
+      "rideEnd": 108
+    },
+    "s6": {
+      "logo": 6,
+      "head1": 8,
+      "confetti1": 8,
+      "link": 32,
+      "selo": 42,
+      "ribbon": 68,
+      "ribbonDur": 22,
+      "head2": 88,
+      "bellRings": [
+        96,
+        112
+      ],
+      "confetti2": 88,
+      "endCardStart": 116,
+      "endCardStatic": 126
+    }
+  },
+  "narration": {
+    "engine": "piper",
+    "voice": "pt_BR-cadu-medium",
+    "noiseScale": 0.7,
+    "noiseW": 0.85,
+    "items": [
+      {
+        "id": "n1",
+        "from": 3,
+        "speed": 1.3,
+        "maxSeconds": 6.0,
+        "text": "Bora ver como vai ser pedir no UaiPertim? Vai funcionar assim, ó.",
+        "segments": [
+          {
+            "ph": "bˈɔɾæ vˈer kˌomʊ vaɪ ser pedʒˈir",
+            "pauseAfter": 0.03,
+            "seed": 110
+          },
+          {
+            "ph": "nʊ ʊwˈaɪpɛɾətʃˈiŋ?",
+            "speedMul": 0.7846,
+            "pauseAfter": 0.08,
+            "seed": 111
+          },
+          {
+            "say": "Vai funcionar assim,",
+            "pauseAfter": 0.03,
+            "seed": 610,
+            "speedMul": 0.9231
+          },
+          {
+            "say": "ó!",
+            "seed": 710,
+            "speedMul": 0.9231
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "from": 123,
+        "speed": 1.28,
+        "maxSeconds": 6.0,
+        "text": "Primeiro, você escolhe a sua cidade. O UaiPertim mostra só o que tem pertim de você.",
+        "segments": [
+          {
+            "say": "Primeiro, você escolhe a sua cidade.",
+            "pauseAfter": 0.1
+          },
+          {
+            "ph": "u ʊwˈaɪ pˌɛɾətʃˈiŋ",
+            "speedMul": 0.7969,
+            "pauseAfter": 0.03,
+            "seed": 220
+          },
+          {
+            "ph": "mˈɔstræ sˈɔ ʊ ky teɪŋ peɾətʃˈiŋ dʒy vosˈe.",
+            "seed": 221
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "from": 265,
+        "speed": 1.25,
+        "maxSeconds": 6.0,
+        "text": "Depois, escolhe a categoria: mercado, farmácia, restaurante, pet shop… ou busca direto o que quiser.",
+        "segments": [
+          {
+            "say": "Depois escolhe a categoria"
+          },
+          {
+            "say": "mercado",
+            "speedMul": 1.08
+          },
+          {
+            "say": "farmácia",
+            "speedMul": 1.08
+          },
+          {
+            "say": "restaurante",
+            "speedMul": 1.08
+          },
+          {
+            "say": "pet shop",
+            "speedMul": 1.08
+          },
+          {
+            "say": "ou busca direto o que quiser."
+          }
+        ],
+        "pause": 0.05
+      },
+      {
+        "id": "n4",
+        "from": 430,
+        "speed": 1.05,
+        "maxSeconds": 6.0,
+        "text": "Aí é só ver quem tá aberto, conferir tudinho e tocar em Pedir agora.",
+        "segments": [
+          {
+            "say": "Aí é só ver quem tá aberto, conferir tudinho e tocar em Pedir agora."
+          }
+        ]
+      },
+      {
+        "id": "n5",
+        "from": 560,
+        "speed": 1.0,
+        "maxSeconds": 6.0,
+        "text": "E você acompanha tudo em tempo real, do pedido até chegar na sua casa.",
+        "segments": [
+          {
+            "say": "E você acompanha tudo em tempo real,"
+          },
+          {
+            "say": "do pedido até chegar na sua casa."
+          }
+        ],
+        "pause": 0.08
+      },
+      {
+        "id": "n6",
+        "from": 696,
+        "speed": 1.1,
+        "maxSeconds": 6.0,
+        "text": "Facim, facim! E sem baixar nada. Tá chegando, ó. Segue e ativa o lembrete!",
+        "segments": [
+          {
+            "say": "Facim facim!"
+          },
+          {
+            "say": "E sem baixar nada."
+          },
+          {
+            "say": "Tá chegando ó."
+          },
+          {
+            "say": "Segue e ativa o lembrete!"
+          }
+        ],
+        "pause": 0.08
+      }
+    ],
+    "phonemeFixes": {
+      "piper": [
+        [
+          "uˈaɪ peɾətʃˈiŋ",
+          "ʊwˈaɪ pˌɛɾətʃˈiŋ"
+        ]
+      ]
+    },
+    "_doc": "Mesma voz do Vídeo 1 (Piper pt_BR-cadu-medium). Por segmento: say|ph, speedMul, seed (trava o take), pauseAfter. A marca vai num trecho próprio, um pouco mais lento, para soar 'Uai-Pertim'."
+  },
+  "music": {
+    "bpm": 124,
+    "offsetSeconds": 0.103,
+    "_doc": "Mesma identidade do Vídeo 1. Grade: compasso 14 (acorde final/sting) cai no end card (frame 816). accents = 'degraus' de marimba nos badges 1-2-3 (frames absolutos, em tempos da música).",
+    "chords": [
+      "C",
+      "G",
+      "Am",
+      "F",
+      "C",
+      "G",
+      "Am",
+      "F",
+      "C",
+      "G",
+      "Am",
+      "F",
+      "C",
+      "G",
+      "C"
+    ],
+    "breakBars": [
+      11
+    ],
+    "sections": {
+      "intro": [
+        0,
+        1
+      ],
+      "grooveA": [
+        2,
+        9
+      ],
+      "grooveB": [
+        10,
+        11
+      ],
+      "peak": [
+        12,
+        13
+      ],
+      "final": [
+        14,
+        14
+      ]
+    },
+    "accents": [
+      119,
+      264,
+      424
+    ],
+    "duckDb": -9,
+    "duckAttack": 0.08,
+    "duckRelease": 0.35,
+    "duckLookahead": 0.12
+  },
+  "typingSfx": {
+    "count": 13,
+    "every": 1
+  },
+  "sfx": [
+    {
+      "sound": "boing",
+      "scene": "s1",
+      "at": "land",
+      "gain": -6
+    },
+    {
+      "sound": "stamp_light",
+      "scene": "s1",
+      "at": "chip",
+      "gain": -5
+    },
+    {
+      "sound": "pop",
+      "scene": "s1",
+      "at": "title1",
+      "gain": -12
+    },
+    {
+      "sound": "pop",
+      "scene": "s1",
+      "at": "title2",
+      "gain": -11
+    },
+    {
+      "sound": "tap",
+      "scene": "s1",
+      "at": "tap",
+      "gain": -6
+    },
+    {
+      "sound": "whoosh_zoom",
+      "scene": "s1",
+      "at": 101,
+      "gain": -9
+    },
+    {
+      "sound": "pop",
+      "scene": "s2",
+      "at": "badge",
+      "gain": -8
+    },
+    {
+      "sound": "whistle_drop",
+      "scene": "s2",
+      "at": "pinDrop",
+      "gain": -13
+    },
+    {
+      "sound": "plim",
+      "scene": "s2",
+      "at": "pinLand",
+      "gain": -9
+    },
+    {
+      "sound": "boing_small",
+      "scene": "s2",
+      "at": "pinBounces",
+      "gain": -15
+    },
+    {
+      "sound": "whoosh_up",
+      "scene": "s2",
+      "at": "card",
+      "gain": -11
+    },
+    {
+      "sound": "tap",
+      "scene": "s2",
+      "at": "tap",
+      "gain": -6
+    },
+    {
+      "sound": "whoosh_zoom",
+      "scene": "s2",
+      "at": "zoomOut",
+      "gain": -10
+    },
+    {
+      "sound": "pop",
+      "scene": "s3",
+      "at": "badge",
+      "gain": -8
+    },
+    {
+      "sound": "plop",
+      "scene": "s3",
+      "at": "tiles",
+      "gain": -10,
+      "vary": true
+    },
+    {
+      "sound": "tick",
+      "scene": "s3",
+      "at": "hovers",
+      "gain": -14
+    },
+    {
+      "sound": "tap",
+      "scene": "s3",
+      "at": "tap",
+      "gain": -6
+    },
+    {
+      "sound": "ding",
+      "scene": "s3",
+      "at": "tap",
+      "gain": -9
+    },
+    {
+      "sound": "boing_small",
+      "scene": "s3",
+      "at": "petWiggle",
+      "gain": -15
+    },
+    {
+      "sound": "typing",
+      "scene": "s3",
+      "at": "typeStart",
+      "gain": -14
+    },
+    {
+      "sound": "whoosh_zoom",
+      "scene": "s3",
+      "at": "zoomOut",
+      "gain": -10
+    },
+    {
+      "sound": "pop",
+      "scene": "s4",
+      "at": "badge",
+      "gain": -8
+    },
+    {
+      "sound": "shuffle",
+      "scene": "s4",
+      "at": "cards",
+      "gain": -9
+    },
+    {
+      "sound": "tick",
+      "scene": "s4",
+      "at": "selo",
+      "gain": -13
+    },
+    {
+      "sound": "tap",
+      "scene": "s4",
+      "at": "tap",
+      "gain": -6
+    },
+    {
+      "sound": "tada",
+      "scene": "s4",
+      "at": "tap",
+      "gain": -8
+    },
+    {
+      "sound": "confete",
+      "scene": "s4",
+      "at": 139,
+      "gain": -10
+    },
+    {
+      "sound": "whoosh_zoom",
+      "scene": "s4",
+      "at": "zoomOut",
+      "gain": -10
+    },
+    {
+      "sound": "pop",
+      "scene": "s5",
+      "at": "title",
+      "gain": -12
+    },
+    {
+      "sound": "tick",
+      "scene": "s5",
+      "at": 18,
+      "gain": -9
+    },
+    {
+      "sound": "tick@2",
+      "scene": "s5",
+      "at": 38,
+      "gain": -9
+    },
+    {
+      "sound": "tick@4",
+      "scene": "s5",
+      "at": 58,
+      "gain": -9
+    },
+    {
+      "sound": "motor",
+      "scene": "s5",
+      "at": "rideStart",
+      "gain": -13
+    },
+    {
+      "sound": "tick@7",
+      "scene": "s5",
+      "at": 110,
+      "gain": -9
+    },
+    {
+      "sound": "doorbell",
+      "scene": "s5",
+      "at": 111,
+      "gain": -8
+    },
+    {
+      "sound": "whoosh",
+      "scene": "s6",
+      "at": -7,
+      "gain": -7
+    },
+    {
+      "sound": "pop_magic",
+      "scene": "s6",
+      "at": "logo",
+      "gain": -15
+    },
+    {
+      "sound": "confete",
+      "scene": "s6",
+      "at": "confetti1",
+      "gain": -17
+    },
+    {
+      "sound": "pop",
+      "scene": "s6",
+      "at": "link",
+      "gain": -10
+    },
+    {
+      "sound": "stamp_light",
+      "scene": "s6",
+      "at": "selo",
+      "gain": -8
+    },
+    {
+      "sound": "fwip",
+      "scene": "s6",
+      "at": "ribbon",
+      "gain": -10
+    },
+    {
+      "sound": "pop",
+      "scene": "s6",
+      "at": "head2",
+      "gain": -11
+    },
+    {
+      "sound": "bell",
+      "scene": "s6",
+      "at": "bellRings",
+      "gain": -9
+    },
+    {
+      "sound": "confete",
+      "scene": "s6",
+      "at": "confetti2",
+      "gain": -12
+    },
+    {
+      "sound": "sting",
+      "scene": "s6",
+      "at": "endCardStatic",
+      "gain": -5
+    }
+  ]
+}

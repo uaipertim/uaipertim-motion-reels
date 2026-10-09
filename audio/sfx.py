@@ -261,10 +261,97 @@ def sting():
     return norm(y)
 
 
+# ------------------------------------------------------- sons do Vídeo 2 ----
+
+def stamp_light():
+    """Estalo de carimbo leve (chip PRÉVIA)."""
+    y = np.zeros(int(0.3 * SR))
+    place(y, sweep_sine(170, 70, 0.12) * env_exp(0.12, 0.03), 0)
+    place(y, bp(rng.standard_normal(int(0.025 * SR)), 1200, 6000) * env_exp(0.025, 0.005) * 1.1, 0)
+    return norm(np.tanh(1.4 * y))
+
+
+def whistle_drop(dur=0.5):
+    """Assobio de queda (cartoon)."""
+    t = t_(dur)
+    f = 1900 * (420 / 1900) ** (t / dur) * (1 + 0.012 * np.sin(2 * np.pi * 7 * t))
+    e = np.minimum(1, t / 0.04) * np.minimum(1, (dur - t) / 0.05)
+    return norm(np.sin(2 * np.pi * np.cumsum(f) / SR) * e * (0.6 + 0.4 * t / dur))
+
+
+def plim():
+    y = np.zeros(int(1.0 * SR))
+    place(y, fm_bell(2349.3, 0.9, 2.0, 1.6, 0.35), 0)
+    return norm(y)
+
+
+def ding():
+    y = np.zeros(int(1.2 * SR))
+    place(y, fm_bell(1760, 1.1, 3.5, 2.0, 0.45), 0)
+    place(y, fm_bell(2637, 0.9, 3.5, 1.4, 0.3) * 0.4, 0.004)
+    return norm(y)
+
+
+def shuffle(n=5, gap=0.07):
+    """Cartas descendo/embaralhando: 'frrt' de papel em sequência."""
+    y = np.zeros(int((n * gap + 0.2) * SR))
+    for i in range(n):
+        flick = bp(rng.standard_normal(int(0.05 * SR)), 1500, 7000) * env_exp(0.05, 0.012)
+        thwp = sweep_sine(300, 140, 0.04) * env_exp(0.04, 0.01) * 0.4
+        k = np.zeros(int(0.06 * SR)); place(k, flick, 0); place(k, thwp, 0.005)
+        place(y, k * rng.uniform(0.7, 1.0), i * gap + rng.uniform(0, 0.008))
+    return norm(y)
+
+
+def _brass(freqs, dur):
+    t = t_(dur)
+    out = np.zeros(len(t))
+    for f in freqs:
+        for det in (-0.004, 0.004):
+            out += 2 * ((f * (1 + det) * t) % 1) - 1
+    env = np.minimum(1, t / 0.02) * np.minimum(1, (dur - t) / 0.08) * np.exp(-t * 1.2)
+    return lp(out, 2600) * env
+
+
+def tada():
+    """'Tchanan!' — dois acordes de metal sintético + brilho."""
+    y = np.zeros(int(1.4 * SR))
+    place(y, _brass([523.25, 659.25, 783.99], 0.16) * 0.8, 0)
+    place(y, _brass([523.25, 659.25, 783.99, 1046.5], 0.9), 0.19)
+    place(y, sparkle(0.9, 8, 2000, 6000, 0.4) * 0.25, 0.2)
+    return norm(y)
+
+
+def tick():
+    y = np.zeros(int(0.12 * SR))
+    place(y, np.sin(2 * np.pi * 2600 * t_(0.03)) * env_exp(0.03, 0.006), 0)
+    place(y, hp(rng.standard_normal(int(0.004 * SR)), 3000) * 0.4, 0)
+    return norm(y)
+
+
+def motor(dur=1.8):
+    """Motorzinho cartoon (putt-putt) acelerando de leve."""
+    t = t_(dur)
+    puff = 0.5 + 0.5 * np.sign(np.sin(2 * np.pi * np.cumsum(18 + 10 * t / dur) / SR))
+    f = 85 + 25 * t / dur
+    body = np.sin(2 * np.pi * np.cumsum(f) / SR) + 0.5 * np.sign(np.sin(2 * np.pi * np.cumsum(2 * f) / SR))
+    y = lp(body * (0.4 + 0.6 * puff), 900) + bp(rng.standard_normal(len(t)), 300, 1500) * puff * 0.15
+    e = np.minimum(1, t / 0.1) * np.minimum(1, (dur - t) / 0.25)
+    return norm(y * e)
+
+
+def doorbell():
+    """Campainha 'plim-plom'."""
+    y = np.zeros(int(1.6 * SR))
+    place(y, fm_bell(1318.5, 1.0, 2.0, 1.2, 0.45), 0)
+    place(y, fm_bell(1046.5, 1.2, 2.0, 1.2, 0.5), 0.32)
+    return norm(y)
+
+
 def build():
     tl = load_timeline()
     out = BUILD / "sfx"
-    s4 = tl["beats"]["s4"]
+    type_every = tl["beats"].get("s4", {}).get("typeEvery", 2)
     url = "uaipertim.com.br"
     bank = {
         "thump": thump(), "glup": glup(), "boing": boing(), "boing_small": boing_small(),
@@ -272,7 +359,7 @@ def build():
         "whoosh_up": whoosh(0.42, 300, 3800), "whoosh_out": whoosh(0.6, 1800, 300, 0.7),
         "whoosh_zoom": whoosh(0.55, 250, 5000, 0.5), "stamp": stamp(), "pop": pop(),
         "pop_magic": pop_magic(), "sininho": sininho(), "marker": marker(),
-        "typing": typing(len(url), s4["typeEvery"], tl["fps"]), "tap": tap(), "plop": plop(),
+        "typing": typing(tl.get("typingSfx", {}).get("count", len(url)), tl.get("typingSfx", {}).get("every", type_every), tl["fps"]), "tap": tap(), "plop": plop(),
         "pin_drop": pin_drop(), "chime": chime(), "confete": confete(), "fwip": fwip(),
         "bell": bell(), "sting": sting(),
     }
@@ -282,6 +369,14 @@ def build():
         bank[f"pop@{semi}"] = pop(semi)
         bank[f"plop@{semi}"] = plop(semi)
         bank[f"boing_small@{semi}"] = boing_small(semi)
+    # sons do Vídeo 2 (gerados por último para não mudar o sorteio dos sons do Vídeo 1)
+    bank.update({
+        "stamp_light": stamp_light(), "whistle_drop": whistle_drop(), "plim": plim(), "ding": ding(),
+        "shuffle": shuffle(), "tada": tada(), "tick": tick(), "motor": motor(), "doorbell": doorbell(),
+    })
+    base = bank["tick"]
+    for semi in (2, 4, 7):  # tics subindo a cada etapa da linha do tempo
+        bank[f"tick@{semi}"] = np.interp(np.arange(0, len(base), 2 ** (semi / 12)), np.arange(len(base)), base).astype(np.float32)
     for name, x in bank.items():
         write(out / f"{name}.wav", x)
     print(f"sfx: {len(bank)} arquivos em {out}")

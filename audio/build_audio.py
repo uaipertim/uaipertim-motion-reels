@@ -1,14 +1,19 @@
-"""Gera todo o áudio do vídeo a partir de src/config/timeline.json.
+"""Gera todo o áudio de um vídeo a partir da timeline dele.
 
-    python3 audio/build_audio.py          # locução + sfx + trilha + mix
-    python3 audio/build_audio.py --no-tts # reaproveita a locução já gerada (ou gravada)
+    python3 audio/build_audio.py                 # Vídeo 1 (src/config/timeline.json)
+    python3 audio/build_audio.py --video v2      # Vídeo 2 (src/v2/config/timeline.json)
+    python3 audio/build_audio.py --no-tts        # reaproveita a locução já gerada (ou gravada)
 """
+import os
 import sys
 
-import mix
-import music
-import sfx
-import tts
+if "--video" in sys.argv:
+    os.environ["UAI_VIDEO"] = sys.argv[sys.argv.index("--video") + 1]
+
+import mix  # noqa: E402
+import music  # noqa: E402
+import sfx  # noqa: E402
+import tts  # noqa: E402
 
 if __name__ == "__main__":
     if "--no-tts" not in sys.argv:

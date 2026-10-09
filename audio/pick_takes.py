@@ -6,6 +6,7 @@ diferente. Este script gera N takes por fala, transcreve cada um com Whisper
 
     python3 audio/pick_takes.py            # 8 takes por fala
     python3 audio/pick_takes.py --takes 12 --only n1,n3
+    python3 audio/pick_takes.py --video v2
 
 Requer: pip install sherpa-onnx  e o modelo Whisper small em
 audio/models/sherpa-onnx-whisper-small (ou UAI_ASR_DIR), baixado de
@@ -14,13 +15,17 @@ https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-w
 import argparse
 import os
 import re
+import sys
 import unicodedata
 from difflib import SequenceMatcher
 
 import numpy as np
 
-from common import MODELS, SR, TIMELINE_PATH, load_timeline
-from tts import fit_item, make_engine
+if "--video" in sys.argv:  # antes de importar common (que lê UAI_VIDEO)
+    os.environ["UAI_VIDEO"] = sys.argv[sys.argv.index("--video") + 1]
+
+from common import MODELS, SR, TIMELINE_PATH, load_timeline  # noqa: E402
+from tts import fit_item, make_engine  # noqa: E402
 
 
 def norm(t):
@@ -37,6 +42,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--takes", type=int, default=8)
     ap.add_argument("--only", default="")
+    ap.add_argument("--video", default="v1")
     args = ap.parse_args()
 
     import sherpa_onnx
