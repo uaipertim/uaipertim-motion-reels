@@ -37,6 +37,8 @@ Transições: swipe coral (2→3), o logo "engole" a cena (3→4), zoom-out (4�
 | 5 · Acompanha em tempo real | 555–690 | `src/v2/scenes/S5TempoReal.tsx` |
 | 6 · Fecho + CTA + end card | 690–840 | `src/v2/scenes/S6Fecho.tsx` |
 
+**Só visual + trilha**, como o Vídeo 1: sem locução e sem legenda. Os efeitos sonoros acompanham cada toque, e a trilha marca os passos 1-2-3.
+
 O celular-personagem da cena 1 vira o "palco" (`src/v2/scenes/Stage.tsx`): cada toque do cursor abre a tela seguinte com zoom-through. A passagem 5→6 é um swipe coral.
 
 Componentes novos, reutilizáveis nos próximos vídeos:
@@ -83,7 +85,7 @@ npm run audio:setup   # baixa as vozes (Piper pt-BR + Kokoro) e instala as libs 
 
 ## Áudio (gerado pelo projeto, sem samples externos)
 
-- **Locução:** desligada no Vídeo 1 (só trilha + efeitos). No Vídeo 2: voz **Piper `pt_BR-cadu-medium`**, treinada com um falante brasileiro nativo (dataset CC0, uso comercial liberado), rodando offline (`audio/tts.py`).
+- **Locução:** desligada nos dois vídeos (decisão: só visual + trilha + efeitos; `narration.enabled: false`). O pipeline de voz continua pronto caso um vídeo futuro precise: **Piper `pt_BR-cadu-medium`**, treinada com um falante brasileiro nativo (dataset CC0, uso comercial liberado), rodando offline (`audio/tts.py`).
   - A pronúncia é ajustada em `narration.phonemeFixes.piper`: o "Uaai" sai numa sílaba, levemente arrastado, e o "w" de Uai-Pertim fica bem marcado. A grafia mineira entra direto no texto: "baixá", "instalá", "ocupá".
   - O modelo varia a cada geração. A `seed` de cada fala em `timeline.json` fixa o take escolhido.
   - `audio/pick_takes.py` (opcional, usa Whisper) gera vários takes por fala, transcreve cada um e grava a seed do mais fiel ao texto.
@@ -91,7 +93,7 @@ npm run audio:setup   # baixa as vozes (Piper pt-BR + Kokoro) e instala as libs 
   - Para trocar a voz, mude `narration.voice` (`pt_BR-faber-medium` é outra voz masculina brasileira). Para voltar ao Kokoro, use `"engine": "kokoro"` com `"voice": "pf_dora"`, mas o sotaque dele soa estrangeiro.
 - **Trilha:** 124 bpm, composta em MIDI (`audio/music.py`) e renderizada com FluidSynth + FluidR3 GM. Leva violão nylon em voicing de ukulele, marimba, glockenspiel/celesta, baixo, palmas e shaker. Sobe nas cenas 1–2, tem um respiro de ~1s no swipe da cena 3, cresce até o pico no CTA e fecha com o acorde do sting no end card.
 - **SFX:** sintetizados em numpy (`audio/sfx.py`): glup, alarme, boing, carimbo, whoosh, pop mágico, sininho, digitação, tap, plop, confete etc.
-- **Mix:** `audio/mix.py` faz o ducking da trilha guiado pela voz (-10 dB no Vídeo 1, -9 dB com 120 ms de antecipação no Vídeo 2), a automação por seção e normaliza em -14 LUFS com limiter (pico -1.5 dBFS).
+- **Mix:** `audio/mix.py` faz a automação por seção (subidas, respiro, pico) e normaliza em -14 LUFS com limiter. Quando há voz, também faz o ducking da trilha. No Vídeo 2 o limitador é true peak com lookahead (`master.truePeak`), para o pico real ficar abaixo de -1 dBTP depois do AAC.
 - **Vários vídeos:** todos os scripts aceitam `--video v1|v2` (padrão `v1`). A saída de cada vídeo vai para `audio/build/<vídeo>` e para o seu `mix.wav`.
 
 **Trocar por voz gravada:** grave as falas `n1`…`n6` como WAV, coloque em `audio/build/vo/` (Vídeo 1) ou `audio/build/v2/vo/` (Vídeo 2) com esses nomes e rode `python3 audio/build_audio.py [--video v2] --no-tts`.

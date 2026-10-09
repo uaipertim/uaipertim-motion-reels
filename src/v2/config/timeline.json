@@ -140,6 +140,8 @@
     }
   },
   "narration": {
+    "enabled": false,
+    "_doc_enabled": "false = sem locução (decisão: só visual + trilha). true = volta a gerar/usar a voz cadu com os takes travados abaixo.",
     "engine": "piper",
     "voice": "pt_BR-cadu-medium",
     "noiseScale": 0.7,
@@ -348,6 +350,7 @@
     "duckRelease": 0.35,
     "duckLookahead": 0.12
   },
+  "master": { "ceilingDb": -1.5, "truePeak": true, "_doc": "limitador com detecção de true peak (sem voz, os transientes estouravam após o AAC)" },
   "typingSfx": {
     "count": 13,
     "every": 1
@@ -574,13 +577,13 @@
       "sound": "pop_magic",
       "scene": "s6",
       "at": "logo",
-      "gain": -15
+      "gain": -9
     },
     {
       "sound": "confete",
       "scene": "s6",
       "at": "confetti1",
-      "gain": -17
+      "gain": -11
     },
     {
       "sound": "pop",

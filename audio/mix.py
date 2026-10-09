@@ -78,7 +78,7 @@ def main():
             if cue.get("vary") and VARIANTS[j % len(VARIANTS)] != 0:
                 name = f"{name}@{VARIANTS[j % len(VARIANTS)]}"
             x, sr = read(BUILD / "sfx" / f"{name}.wav")
-            x = to_sr(x, sr) * db(cue.get("gain", 0) + SFX_GAIN_DB)
+            x = to_sr(x, sr) * db(cue.get("gain", 0) + tl.get("master", {}).get("sfxGainDb", SFX_GAIN_DB))
             pan = cue.get("pan", rng.uniform(-0.35, 0.35))
             l, r = np.sqrt(0.5 * (1 - pan)), np.sqrt(0.5 * (1 + pan))
             i = int(max(0, f) / fps * SR)
@@ -114,15 +114,29 @@ def main():
     meter = pyln.Meter(SR)
     lufs = meter.integrated_loudness(mix)
     mix *= db(TARGET_LUFS - lufs)
-    ceiling = db(-1.5)
-    D = 16
-    pk = np.abs(mix).max(1)
-    pk = np.pad(pk, (0, (-len(pk)) % D)).reshape(-1, D).max(1)
-    pk = np.maximum(pk, np.roll(pk, -1))  # pequeno lookahead
-    peak_env = one_pole(pk, 0.0005, 0.08, SR / D)
-    peak_env = np.interp(np.arange(n), np.arange(0, n, D)[:len(peak_env)] + D // 2, peak_env)
-    gain = np.minimum(1.0, ceiling / np.maximum(peak_env, 1e-9))
-    mix *= gain[:, None]
+    ceiling = db(tl.get("master", {}).get("ceilingDb", -1.5))  # pico de amostra antes do AAC
+    if tl.get("master", {}).get("truePeak", False):
+        # limitador true peak com lookahead: detecta picos entre amostras (sobreamostragem 4x),
+        # abaixa o ganho ~2 ms ANTES do pico e solta em ~80 ms (evita estouro após o AAC)
+        from scipy.ndimage import minimum_filter1d, uniform_filter1d
+        from scipy.signal import resample_poly
+        tp = np.abs(resample_poly(mix, 4, 1, axis=0)).max(1)[: n * 4].reshape(-1, 4).max(1)
+        look = int(0.002 * SR)
+        g = np.minimum(1.0, ceiling / np.maximum(tp, 1e-9))
+        g = uniform_filter1d(minimum_filter1d(g, size=2 * look + 1), size=look)
+        D = 8
+        red = one_pole((1 - g)[::D].astype(np.float32), 0.00002, 0.08, SR / D)
+        red = np.maximum(np.interp(np.arange(n), np.arange(0, n, D)[:len(red)], red), 1 - g)
+        mix *= (1 - red)[:, None]
+    else:
+        D = 16
+        pk = np.abs(mix).max(1)
+        pk = np.pad(pk, (0, (-len(pk)) % D)).reshape(-1, D).max(1)
+        pk = np.maximum(pk, np.roll(pk, -1))  # pequeno lookahead
+        peak_env = one_pole(pk, 0.0005, 0.08, SR / D)
+        peak_env = np.interp(np.arange(n), np.arange(0, n, D)[:len(peak_env)] + D // 2, peak_env)
+        gain = np.minimum(1.0, ceiling / np.maximum(peak_env, 1e-9))
+        mix *= gain[:, None]
     mix = np.clip(mix, -ceiling, ceiling)
     final_lufs = meter.integrated_loudness(mix)
 
