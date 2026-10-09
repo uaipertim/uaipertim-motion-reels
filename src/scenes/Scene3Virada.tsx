@@ -11,7 +11,7 @@ import { PopWords } from "../components/Text";
 
 // CENA 3 · A virada — logo entra com pulo + brilho; "NÃO" gigante com marcador amarelo.
 const B = BEATS.s3;
-const LOGO = { cx: 540, cy: 500, size: 420 };
+const LOGO = { cx: 540, cy: 560, size: 420 };
 
 export const Scene3Virada: React.FC = () => {
   const f = useCurrentFrame();
@@ -48,7 +48,7 @@ export const Scene3Virada: React.FC = () => {
       <StarPops frame={f} start={B.sparkle + 26} cx={LOGO.cx} cy={LOGO.cy} radius={300} count={6} seed="logo-stars-2" size={44} loop={34} />
 
       {/* textos */}
-      <div style={{ position: "absolute", top: 714, left: 0, right: 0 }}>
+      <div style={{ position: "absolute", top: 774, left: 0, right: 0 }}>
         <PopWords
           parts={[
             { t: `${TEXTS.s3.lead} ` },
@@ -62,7 +62,7 @@ export const Scene3Virada: React.FC = () => {
           out={textOut}
         />
       </div>
-      <div style={{ position: "absolute", top: 870, left: 0, right: 0, display: "flex", justifyContent: "center" }}>
+      <div style={{ position: "absolute", top: 930, left: 0, right: 0, display: "flex", justifyContent: "center" }}>
         <div style={{ position: "relative", transform: `scale(${naoS * textOut}) rotate(${naoRot}deg)` }}>
           <Marker width={660} progress={marker} thickness={64} style={{ position: "absolute", left: -20, top: 236 }} />
           <span
@@ -75,7 +75,7 @@ export const Scene3Virada: React.FC = () => {
           </span>
         </div>
       </div>
-      <div style={{ position: "absolute", top: 1230, left: 0, right: 0 }}>
+      <div style={{ position: "absolute", top: 1290, left: 0, right: 0 }}>
         <PopWords parts={TEXTS.s3.tail} frame={f} start={B.line3} stagger={4} size={128} out={textOut} />
       </div>
 

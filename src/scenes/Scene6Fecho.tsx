@@ -37,7 +37,7 @@ export const Scene6Fecho: React.FC = () => {
   const logoIn = bouncy(f, B.logo);
   const pulse = breathe(f, 44, 0.045) * (1 - endP) + endP * 1;
   const logoSize = 470 + endP * 50;
-  const logoCy = 630 + endP * 80;
+  const logoCy = 690 + endP * 50;
   const logoRot = wiggle(f, B.logo + 3, 9, 0.35, 0.09);
 
   const ribbonP = interpolate(f, [B.ribbon, B.ribbon + B.ribbonDur], [0, 1], { ...clamp, easing: Easing.out(Easing.back(1.4)) });
@@ -63,7 +63,7 @@ export const Scene6Fecho: React.FC = () => {
       </div>
 
       {/* logo central */}
-      <StarPops frame={f} start={B.logo + 4} cx={540} cy={630} radius={290} count={8} seed="logo6" size={60} />
+      <StarPops frame={f} start={B.logo + 4} cx={540} cy={690} radius={290} count={8} seed="logo6" size={60} />
       <div
         style={{
           position: "absolute", left: 540 - logoSize / 2, top: logoCy - logoSize / 2, width: logoSize, height: logoSize,
@@ -88,12 +88,12 @@ export const Scene6Fecho: React.FC = () => {
           }
         />
       </div>
-      <div style={{ position: "absolute", top: 930, left: 540 - 410, transform: `scale(${ctaOut})` }}>
+      <div style={{ position: "absolute", top: 990, left: 540 - 410, transform: `scale(${ctaOut})` }}>
         <Ribbon text={TEXTS.s6.ribbon} width={820} height={120} progress={ribbonP} fontSize={58} />
       </div>
       <div
         style={{
-          position: "absolute", top: 1100, left: 0, right: 0, display: "flex", justifyContent: "center",
+          position: "absolute", top: 1180, left: 0, right: 0, display: "flex", justifyContent: "center",
           transform: `scale(${pillIn * pillPulse * ctaOut})`,
         }}
       >
@@ -107,7 +107,7 @@ export const Scene6Fecho: React.FC = () => {
           <span style={{ fontFamily: FONT, fontWeight: W.extraBold, fontSize: 56, color: C.tinta, whiteSpace: "nowrap" }}>{TEXTS.s6.reminder}</span>
         </div>
       </div>
-      <div style={{ position: "absolute", top: 1250, left: 0, right: 0 }}>
+      <div style={{ position: "absolute", top: 1350, left: 0, right: 0 }}>
         <Slogan frame={f} start={B.slogan} size={78} out={ctaOut} />
       </div>
 
@@ -116,13 +116,13 @@ export const Scene6Fecho: React.FC = () => {
         <>
           <div
             style={{
-              position: "absolute", top: 1016, left: 0, right: 0, textAlign: "center", fontFamily: FONT, fontWeight: W.black, fontSize: 92,
+              position: "absolute", top: 1046, left: 0, right: 0, textAlign: "center", fontFamily: FONT, fontWeight: W.black, fontSize: 92,
               color: C.coral, transform: `scale(${handleIn})`, letterSpacing: -1, textShadow: `0 6px 0 ${C.cremeDeep}`,
             }}
           >
             {TEXTS.s6.handle}
           </div>
-          <div style={{ position: "absolute", top: 1150, left: 0, right: 0, transform: `scale(${sloganEndIn})` }}>
+          <div style={{ position: "absolute", top: 1196, left: 0, right: 0, transform: `scale(${sloganEndIn})` }}>
             <Slogan frame={B.endCardStatic + 100} start={0} size={80} />
           </div>
         </>

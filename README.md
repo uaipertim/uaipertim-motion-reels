@@ -18,13 +18,9 @@ Vídeos de motion graphic (Reels 9:16) para o Instagram do UaiPertim, a platafor
 
 Transições: swipe coral (2→3), o logo "engole" a cena (3→4), zoom-out (4→5) e swipe amarelo (5→6).
 
-**Sem locução, com legenda animada.** O Vídeo 1 usa só trilha + efeitos sonoros, e a narração aparece como legenda estilo karaokê (`src/components/Captions.tsx`):
-- Os blocos entram com pulinho e as palavras pipocam uma a uma.
-- A palavra "da vez" ganha marcador coral, e as `*palavras*` entre asteriscos ficam em amarelo.
-- A pílula pulsa de leve na batida (124 bpm).
-- A faixa fica em y ≈ 1380–1480, acima da área que a interface do Reels cobre.
-
-Textos e tempos ficam em `captions` no `src/config/timeline.json`. Para voltar a usar voz (ex.: locução gravada), ponha `narration.enabled: true` e, se quiser, `captions.enabled: false`.
+**Só visual + trilha.** O Vídeo 1 não tem locução nem legenda: os elementos já contam a proposta do app, e o som é a trilha com os efeitos sonoros. O projeto ainda guarda as duas opções, ambas desligadas no `src/config/timeline.json`:
+- Voz: `narration.enabled`.
+- Legenda animada estilo karaokê: `captions.enabled`, componente `src/components/Captions.tsx`.
 
 ## Vídeo 2 — "Vai funcionar assim, ó"
 
@@ -59,7 +55,7 @@ Regras de conteúdo seguidas:
 - **Tempos (fonte única para vídeo e áudio):** `src/config/timeline.json` (Vídeo 1) · `src/v2/config/timeline.json` (Vídeo 2)
   - `scenes`: início e duração de cada cena
   - `beats`: momentos das animações, em frames locais de cada cena (ex.: `s2.stamp` = carimbo)
-  - `captions`: legenda animada (texto e frames de cada bloco; Vídeo 1)
+  - `captions`: legenda animada opcional (texto e frames de cada bloco; desligada no Vídeo 1)
   - `narration.items`: texto, frame de entrada e velocidade de cada fala (`narration.enabled` liga ou desliga a voz)
   - `sfx`: cada efeito sonoro aponta para um beat, então se o beat muda o som acompanha
   - `music`: bpm, acordes, seções (respiro, pico), `breakBars` (breques) e `accents` (os "degraus" dos passos 1-2-3 no Vídeo 2)
@@ -87,7 +83,7 @@ npm run audio:setup   # baixa as vozes (Piper pt-BR + Kokoro) e instala as libs 
 
 ## Áudio (gerado pelo projeto, sem samples externos)
 
-- **Locução:** desligada no Vídeo 1, que usa legenda animada. No Vídeo 2: voz **Piper `pt_BR-cadu-medium`**, treinada com um falante brasileiro nativo (dataset CC0, uso comercial liberado), rodando offline (`audio/tts.py`).
+- **Locução:** desligada no Vídeo 1 (só trilha + efeitos). No Vídeo 2: voz **Piper `pt_BR-cadu-medium`**, treinada com um falante brasileiro nativo (dataset CC0, uso comercial liberado), rodando offline (`audio/tts.py`).
   - A pronúncia é ajustada em `narration.phonemeFixes.piper`: o "Uaai" sai numa sílaba, levemente arrastado, e o "w" de Uai-Pertim fica bem marcado. A grafia mineira entra direto no texto: "baixá", "instalá", "ocupá".
   - O modelo varia a cada geração. A `seed` de cada fala em `timeline.json` fixa o take escolhido.
   - `audio/pick_takes.py` (opcional, usa Whisper) gera vários takes por fala, transcreve cada um e grava a seed do mais fiel ao texto.

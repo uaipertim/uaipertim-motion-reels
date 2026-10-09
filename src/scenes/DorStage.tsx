@@ -13,7 +13,7 @@ import { SweatDrops } from "../components/Particles";
 // `t` = frames desde o início da cena 1 (a cena 2 passa t = 90 + frame local).
 
 const B = BEATS.s1;
-export const PHONE = { w: 420, h: 840, x: 540, top: 540 };
+export const PHONE = { w: 440, h: 880, x: 540, top: 560 };
 const ICON = 76;
 const GAP = 18;
 const COLS = 4;
@@ -87,7 +87,7 @@ export const DorStage: React.FC<{
         const p = Math.min(1, tt / dur);
         const x = PHONE.x + j.side * j.dist * p;
         const startY = PHONE.top + 90;
-        const groundY = PHONE.top + PHONE.h - 70 - j.pile * 100;
+        const groundY = PHONE.top + PHONE.h - 40 - j.pile * 100;
         const y = startY + (groundY - startY) * p - 420 * 4 * p * (1 - p);
         const [ix, iy] = squash(tt, dur, 0.3);
         const rot = j.side * (p < 1 ? p * 300 : 300 + Math.sin(tt * 0.3) * 4);
@@ -112,7 +112,7 @@ export const DorStage: React.FC<{
             <div
               key={i}
               style={{
-                position: "absolute", left: PHONE.w / 2 - 50 + s.dx, top: -70,
+                position: "absolute", left: PHONE.w / 2 - 50 + s.dx, top: -78,
                 transform: `translateY(${(1 - p) * 120}px) scale(${p}) rotate(${s.rot + wob}deg)`, transformOrigin: "50% 100%",
                 zIndex: 0,
               }}
@@ -165,7 +165,7 @@ export const DorStage: React.FC<{
       {/* card de armazenamento */}
       <div
         style={{
-          position: "absolute", left: 540 - 310, top: 1150, transform: `translate(${cardShake}px, ${(1 - cardIn) * 260}px) scale(${0.6 + 0.4 * cardIn}) rotate(${cardShake * 0.2}deg)`,
+          position: "absolute", left: 540 - 310, top: 1296, transform: `translate(${cardShake}px, ${(1 - cardIn) * 260}px) scale(${0.6 + 0.4 * cardIn}) rotate(${cardShake * 0.2}deg)`,
           opacity: Math.min(1, cardIn * 2), transformOrigin: "50% 100%",
         }}
       >

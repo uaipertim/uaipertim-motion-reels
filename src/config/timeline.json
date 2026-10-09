@@ -127,8 +127,8 @@
   },
 
   "captions": {
-    "_doc": "Legenda animada (karaokê) no lugar da locução. from/to = frames ABSOLUTOS (inícios nos tempos da trilha). *palavra* = destaque em amarelo. y = centro da faixa (acima dos ~420px de baixo do Reels).",
-    "enabled": true,
+    "_doc": "Legenda animada (karaokê) — DESLIGADA no Vídeo 1 (decisão: só visual + trilha). Para ligar: enabled = true; a faixa y ~1380-1480 pode cobrir o card de armazenamento, 'é app.' e o pin da cena 5, então reposicione esses elementos antes. from/to = frames ABSOLUTOS (inícios nos tempos da trilha). *palavra* = destaque em amarelo. y = centro da faixa (acima dos ~420px de baixo do Reels).",
+    "enabled": false,
     "y": 1440,
     "items": [
       { "from": 16, "to": 44, "text": "*Uai…*" },
