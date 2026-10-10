@@ -1,5 +1,5 @@
 import React from "react";
-import { Composition } from "remotion";
+import { Composition, Still } from "remotion";
 import "./components/Fonts";
 import { TL } from "./config/timeline";
 import { TL2 } from "./v2/config/timeline";
@@ -11,6 +11,8 @@ import { Video2 } from "./v2/Video2";
 import { Video3 } from "./v3/Video3";
 import { Video4 } from "./v4/Video4";
 import { StoryCard, StoryPreview } from "./story/StoryConheca";
+import { CoverCard } from "./components/Cover";
+import { COVERS } from "./covers/covers";
 
 export const RemotionRoot: React.FC = () => (
   <>
@@ -63,6 +65,8 @@ export const RemotionRoot: React.FC = () => (
         defaultProps={{ card, withAudio: true }}
       />
     ))}
+    {/* Capas (thumbnails) dos Reels */}
+    <Still id="Capa-Video2" component={CoverCard} width={1080} height={1920} defaultProps={COVERS.video2} />
     <Composition
       id="Story-Conheca-Previa"
       component={StoryPreview}
