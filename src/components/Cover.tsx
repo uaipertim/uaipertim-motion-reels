@@ -32,15 +32,17 @@ export type CoverCardProps = {
   leadSize?: number; // tamanho da linha 1 (padrão 108, como "O UaiPertim")
   highlightShift?: number; // sobe/desce só o destaque (ex.: para manter o respiro com uma linha 1 menor)
   markerDrop?: number; // desce só o marcador (ex.: para passar abaixo de uma vírgula)
+  tailSize?: number; // tamanho da linha 3 (padrão 128, como "é app.")
+  tailShift?: number; // sobe/desce só a linha 3
 };
 
 export const CoverCard: React.FC<CoverCardProps> = ({
   lead, highlight, highlightSize = COVER_LAYOUT.highlight.size, markerWidth, tail, twinkles = V1_TWINKLES, frame = 88, offsetY = 0,
-  leadSize = COVER_LAYOUT.line1.size, highlightShift = 0, markerDrop = 0,
+  leadSize = COVER_LAYOUT.line1.size, highlightShift = 0, markerDrop = 0, tailSize = COVER_LAYOUT.tail.size, tailShift = 0,
 }) => {
   const logo = { ...COVER_LAYOUT.logo, cy: COVER_LAYOUT.logo.cy + offsetY };
   const line1 = { ...COVER_LAYOUT.line1, top: COVER_LAYOUT.line1.top + offsetY };
-  const tl = { ...COVER_LAYOUT.tail, top: COVER_LAYOUT.tail.top + offsetY };
+  const tl = { top: COVER_LAYOUT.tail.top + offsetY + tailShift, size: tailSize };
   const hlTop = COVER_LAYOUT.highlight.top + offsetY + highlightShift;
   const k = highlightSize / COVER_LAYOUT.highlight.size;
   const settled = 1000; // PopWords já assentado (sem animação)

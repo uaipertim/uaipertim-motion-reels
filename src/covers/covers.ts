@@ -15,4 +15,17 @@ export const COVERS: Record<string, CoverCardProps> = {
     // brilhos longe do logo e do texto
     twinkles: [[130, 400], [950, 430], [900, 300], [215, 640], [865, 600], [140, 1470], [940, 1450], [210, 1590], [880, 1600]],
   },
+  video3: {
+    lead: "Qual comércio", // tinta, linha de apoio (mesmo tamanho da capa 2)
+    highlight: "PRECISA", // coral, com marcador amarelo (como o "NÃO")
+    tail: "estar aqui?", // tinta, mesmo tamanho da linha 1
+    leadSize: 92,
+    tailSize: 92,
+    highlightSize: 175,
+    markerWidth: 790,
+    offsetY: 164, // bloco centrado nos recortes 3:4 e 4:5
+    highlightShift: -37, // ~55px entre a cedilha do "ç" e o topo de "PRECISA"
+    tailShift: -153, // ~45px entre o marcador e "estar aqui?"
+    twinkles: [[130, 400], [950, 430], [900, 300], [215, 640], [865, 600], [140, 1470], [940, 1450], [210, 1590], [880, 1600]],
+  },
 };
