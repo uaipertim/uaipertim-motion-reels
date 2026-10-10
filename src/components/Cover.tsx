@@ -29,15 +29,19 @@ export type CoverCardProps = {
   twinkles?: Array<[number, number]>; // brilhos: escolha pontos que não encostem no texto
   frame?: number; // só gira os raios/pisca os brilhos; 88 = o mesmo ângulo do frame 268 do Vídeo 1
   offsetY?: number; // desce o bloco inteiro (logo + textos) sem mudar os espaçamentos entre eles
+  leadSize?: number; // tamanho da linha 1 (padrão 108, como "O UaiPertim")
+  highlightShift?: number; // sobe/desce só o destaque (ex.: para manter o respiro com uma linha 1 menor)
+  markerDrop?: number; // desce só o marcador (ex.: para passar abaixo de uma vírgula)
 };
 
 export const CoverCard: React.FC<CoverCardProps> = ({
   lead, highlight, highlightSize = COVER_LAYOUT.highlight.size, markerWidth, tail, twinkles = V1_TWINKLES, frame = 88, offsetY = 0,
+  leadSize = COVER_LAYOUT.line1.size, highlightShift = 0, markerDrop = 0,
 }) => {
   const logo = { ...COVER_LAYOUT.logo, cy: COVER_LAYOUT.logo.cy + offsetY };
   const line1 = { ...COVER_LAYOUT.line1, top: COVER_LAYOUT.line1.top + offsetY };
   const tl = { ...COVER_LAYOUT.tail, top: COVER_LAYOUT.tail.top + offsetY };
-  const hlTop = COVER_LAYOUT.highlight.top + offsetY;
+  const hlTop = COVER_LAYOUT.highlight.top + offsetY + highlightShift;
   const k = highlightSize / COVER_LAYOUT.highlight.size;
   const settled = 1000; // PopWords já assentado (sem animação)
   return (
@@ -61,13 +65,13 @@ export const CoverCard: React.FC<CoverCardProps> = ({
       </div>
 
       <div style={{ position: "absolute", top: line1.top, left: 0, right: 0 }}>
-        <PopWords parts={lead} frame={settled} start={0} size={line1.size} />
+        <PopWords parts={lead} frame={settled} start={0} size={leadSize} />
       </div>
       <div style={{ position: "absolute", top: hlTop, left: 0, right: 0, display: "flex", justifyContent: "center" }}>
         <div style={{ position: "relative" }}>
           <Marker
             width={markerWidth ?? 660 * k} progress={1} thickness={64 * k}
-            style={{ position: "absolute", left: -20 * k, top: 236 * k }}
+            style={{ position: "absolute", left: -20 * k, top: 236 * k + markerDrop }}
           />
           <span
             style={{
