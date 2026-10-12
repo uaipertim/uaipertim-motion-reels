@@ -1,31 +1,33 @@
 import type { CoverCardProps } from "../components/Cover";
 
 // Capas (thumbnails) dos Reels: textos e ajustes de cada uma. Componente: components/Cover.tsx (CoverCard).
-// Zona segura: logo e texto entre y=285 e y=1635 (grade 3:4 e feed 4:5), margem lateral ≥ 80px.
+// Gabarito = frame 268 do Vídeo 1: logo no mesmo lugar e tamanho; destaque com a largura do "NÃO" (~665px,
+// ~62% da tela); linhas de apoio com até a largura de "O UaiPertim" (655px); marcador de 64px de espessura.
+// Zona segura: logo e texto entre y=285 e y=1635 (grade 3:4 e feed 4:5).
 export const COVERS: Record<string, CoverCardProps> = {
   video2: {
-    lead: "Vai funcionar", // tinta, mesmo peso de "O UaiPertim"
+    lead: "Vai funcionar", // tinta, linha de apoio
     highlight: "assim, ó", // coral, com marcador amarelo (como o "NÃO")
-    highlightSize: 190,
-    markerWidth: 820,
-    offsetY: 204, // sem a 3ª linha, o bloco desce para ficar centrado nos recortes 3:4 e 4:5
-    leadSize: 92, // linha de apoio ~15% menor que no Vídeo 1: o destaque domina
-    highlightShift: -17, // mantém o respiro entre as linhas com a linha 1 menor
-    markerDrop: 27, // o marcador passa abaixo da ponta da vírgula de "assim,"
-    // brilhos longe do logo e do texto
-    twinkles: [[130, 400], [950, 430], [900, 300], [215, 640], [865, 600], [140, 1470], [940, 1450], [210, 1590], [880, 1600]],
+    leadSize: 94, // maior tamanho em que "Vai funcionar" cabe na largura de "O UaiPertim"
+    highlightSize: 158, // "assim, ó" com a largura do "NÃO"
+    markerWidth: 660,
+    markerThickness: 64,
+    logoScale: 1.024,
+    highlightShift: 59, // mesmo respiro linha 1 → destaque da capa 3
+    markerDrop: 17, // o marcador passa logo abaixo da ponta da vírgula de "assim,"
   },
   video3: {
-    lead: "Qual comércio", // tinta, linha de apoio (mesmo tamanho da capa 2)
+    lead: "Qual comércio", // tinta, linha de apoio
     highlight: "PRECISA", // coral, com marcador amarelo (como o "NÃO")
     tail: "estar aqui?", // tinta, mesmo tamanho da linha 1
-    leadSize: 92,
-    tailSize: 92,
-    highlightSize: 175,
-    markerWidth: 790,
-    offsetY: 164, // bloco centrado nos recortes 3:4 e 4:5
-    highlightShift: -37, // ~55px entre a cedilha do "ç" e o topo de "PRECISA"
-    tailShift: -153, // ~45px entre o marcador e "estar aqui?"
-    twinkles: [[130, 400], [950, 430], [900, 300], [215, 640], [865, 600], [140, 1470], [940, 1450], [210, 1590], [880, 1600]],
+    leadSize: 88, // maior tamanho em que "Qual comércio" cabe na largura de "O UaiPertim"
+    tailSize: 88,
+    highlightSize: 159, // "PRECISA" com a largura do "NÃO"
+    markerWidth: 660,
+    markerThickness: 64,
+    logoScale: 1.024,
+    highlightShift: 44, // destaque centrado entre as linhas de apoio
+    markerDrop: -10, // marcador encostando na base do texto, como no "NÃO"
+    tailShift: 46, // "estar aqui?" termina onde termina o "é app." (bloco com a altura do frame 268)
   },
 };

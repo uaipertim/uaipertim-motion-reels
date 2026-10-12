@@ -34,11 +34,13 @@ export type CoverCardProps = {
   markerDrop?: number; // desce só o marcador (ex.: para passar abaixo de uma vírgula)
   tailSize?: number; // tamanho da linha 3 (padrão 128, como "é app.")
   tailShift?: number; // sobe/desce só a linha 3
+  markerThickness?: number; // espessura do marcador (padrão: proporcional ao destaque; 64 = a do "NÃO")
+  logoScale?: number; // 1.024 = o tamanho do logo no frame 268 do Vídeo 1 (ele "respira" na cena)
 };
 
 export const CoverCard: React.FC<CoverCardProps> = ({
   lead, highlight, highlightSize = COVER_LAYOUT.highlight.size, markerWidth, tail, twinkles = V1_TWINKLES, frame = 88, offsetY = 0,
-  leadSize = COVER_LAYOUT.line1.size, highlightShift = 0, markerDrop = 0, tailSize = COVER_LAYOUT.tail.size, tailShift = 0,
+  leadSize = COVER_LAYOUT.line1.size, highlightShift = 0, markerDrop = 0, tailSize = COVER_LAYOUT.tail.size, tailShift = 0, markerThickness, logoScale = 1,
 }) => {
   const logo = { ...COVER_LAYOUT.logo, cy: COVER_LAYOUT.logo.cy + offsetY };
   const line1 = { ...COVER_LAYOUT.line1, top: COVER_LAYOUT.line1.top + offsetY };
@@ -60,7 +62,7 @@ export const CoverCard: React.FC<CoverCardProps> = ({
       <div
         style={{
           position: "absolute", left: logo.cx - logo.size / 2, top: logo.cy - logo.size / 2, width: logo.size, height: logo.size,
-          filter: "drop-shadow(0 18px 24px rgba(198,58,23,0.35))",
+          filter: "drop-shadow(0 18px 24px rgba(198,58,23,0.35))", transform: logoScale !== 1 ? `scale(${logoScale})` : undefined,
         }}
       >
         <Img src={staticFile("img/uaipertim_logo.png")} style={{ width: "100%", height: "100%" }} />
@@ -72,7 +74,7 @@ export const CoverCard: React.FC<CoverCardProps> = ({
       <div style={{ position: "absolute", top: hlTop, left: 0, right: 0, display: "flex", justifyContent: "center" }}>
         <div style={{ position: "relative" }}>
           <Marker
-            width={markerWidth ?? 660 * k} progress={1} thickness={64 * k}
+            width={markerWidth ?? 660 * k} progress={1} thickness={markerThickness ?? 64 * k}
             style={{ position: "absolute", left: -20 * k, top: 236 * k + markerDrop }}
           />
           <span
