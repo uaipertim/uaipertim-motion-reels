@@ -41,7 +41,16 @@ export const RemotionRoot: React.FC = () => (
       fps={TL3.fps}
       width={TL3.width}
       height={TL3.height}
-      defaultProps={{ withAudio: true }}
+      defaultProps={{ withAudio: true, audio: "audio/v3/mix_semvoz.wav" }}
+    />
+    <Composition
+      id="Video3-QualComercioPrecisa-Narrado"
+      component={Video3}
+      durationInFrames={TL3.durationInFrames}
+      fps={TL3.fps}
+      width={TL3.width}
+      height={TL3.height}
+      defaultProps={{ withAudio: true, audio: "audio/v3/mix.wav" }}
     />
     <Composition
       id="Video4-EleTeAcha"

@@ -10,7 +10,7 @@ import { S3Responde } from "./scenes/S3Responde";
 import { S4MarcaDono } from "./scenes/S4MarcaDono";
 import { S5Fecho } from "./scenes/S5Fecho";
 
-// Vídeo 3 — "Qual comércio PRECISA estar aqui?" (Reels 1080×1920, 30fps, 25s).
+// Vídeo 3 — "Qual comércio PRECISA estar aqui?" (Reels 1080×1920, 30fps, 25s), com e sem narração.
 // Ordem/tempos das cenas vêm de v3/config/timeline.json. As cenas 2–5 acontecem na mesma
 // cidadezinha (TownStage, sem corte); cada cena desenha por cima os seus textos e interações.
 
@@ -29,7 +29,8 @@ const OVERLAYS: Record<Exclude<keyof typeof SCENES3, "s1">, React.FC> = {
 const townFrom = SCENES3.s2.from;
 const townTo = SCENES3.s5.from + SCENES3.s5.duration;
 
-export const Video3: React.FC<{ withAudio?: boolean }> = ({ withAudio = true }) => (
+// audio: "audio/v3/mix.wav" = com narração (voz oficial); "audio/v3/mix_semvoz.wav" = só trilha + efeitos
+export const Video3: React.FC<{ withAudio?: boolean; audio?: string }> = ({ withAudio = true, audio = "audio/v3/mix.wav" }) => (
   <AbsoluteFill style={{ background: C.creme }}>
     <Sequence from={SCENES3.s1.from} durationInFrames={SCENES3.s1.duration} name={`Cena 1 · ${SCENES3.s1.name}`}>
       <S1Pergunta />
@@ -48,6 +49,6 @@ export const Video3: React.FC<{ withAudio?: boolean }> = ({ withAudio = true }) 
     <Sequence from={TRANSITIONS3.swipe12.from} durationInFrames={TRANSITIONS3.swipe12.duration} name="Swipe creme 1→2">
       <Swipe duration={TRANSITIONS3.swipe12.duration} />
     </Sequence>
-    {withAudio && <Audio src={staticFile("audio/v3/mix.wav")} />}
+    {withAudio && <Audio src={staticFile(audio)} />}
   </AbsoluteFill>
 );

@@ -23,9 +23,9 @@
       "title1": 42,
       "title2": 47,
       "title3": 52,
-      "markerStart": 74,
+      "markerStart": 88,
       "markerDur": 10,
-      "tremble": 84
+      "tremble": 98
     },
     "s2": {
       "_doc_shops": "lojinhas brotando do chão, na ordem de TOWN_SHOPS (v3/scenes/Town.tsx)",
@@ -104,8 +104,10 @@
     }
   },
   "narration": {
-    "enabled": false,
-    "_doc": "Narração gravada (ElevenLabs) num arquivo só: engine 'file' recorta cada fala do arquivo ('src': [início, fim] em segundos no mp3) e posiciona no frame 'from' (absoluto). Ordem na tela: frase 1 → 3 → 4 (cortada nas vírgulas, junto dos balões) → 5 → 2. Trilha abaixa music.duckDb durante a fala; SFX ficam. Ligue 'enabled' depois de preencher os 'src' e rode npm run audio:v3.",
+    "enabled": true,
+    "_doc_alsoInstrumental": "true = o mix também sai sem voz (public/audio/v3/mix_semvoz.wav), para a versão sem narração (composição Video3-QualComercioPrecisa).",
+    "alsoInstrumental": true,
+    "_doc": "Narração gravada (ElevenLabs) num arquivo só: engine 'file' recorta cada fala do arquivo ('src': [início, fim] em segundos no mp3) e posiciona no frame 'from' (absoluto). Ordem na tela: frase 1 → 3 → 4 (cortada nas vírgulas, junto dos balões) → 5 → 2. Trilha abaixa music.duckDb durante a fala; SFX ficam. Depois de mudar o roteiro: python3 audio/elevenlabs.py --video v3, ajuste os 'src'/'from' e rode npm run audio:v3.",
     "engine": "file",
     "src": "public/audio/narracao_video3.mp3",
     "_doc_script": "Roteiro lido de uma vez pela voz oficial (audio/voz_oficial.json): python3 audio/elevenlabs.py --video v3. <break> = pausa entre as frases (facilita o corte). 'e a gente quer saber:' é gravado mas não entra no vídeo.",

@@ -173,7 +173,8 @@ npm run render      # → out/uaipertim_video1_nao-precisa-baixar.mp4
 npm run audio:v2    # Vídeo 2 → public/audio/v2/mix.wav
 npm run render:v2   # → out/uaipertim_video2_vai-funcionar-assim.mp4
 npm run audio:v3    # Vídeo 3 → public/audio/v3/mix.wav
-npm run render:v3   # → out/uaipertim_video3_qual-comercio-precisa.mp4
+npm run render:v3   # → out/uaipertim_video3_qual-comercio-precisa.mp4 (sem voz)
+npm run render:v3:narrado   # → out/uaipertim_video3_qual-comercio-precisa_narrado.mp4 (com a voz oficial)
 npm run audio:v4    # Vídeo 4 → public/audio/v4/mix.wav
 npm run render:v4   # → out/uaipertim_video4_ele-te-acha.mp4
 npm run audio:story    # story → public/audio/story/mix.wav + card1..card4.wav
@@ -192,7 +193,7 @@ npm run audio:setup   # baixa as vozes (Piper pt-BR + Kokoro) e instala as libs 
 
 ## Áudio (gerado pelo projeto, sem samples externos)
 
-- **Locução:** desligada nos quatro vídeos (decisão: só visual + trilha + efeitos; `narration.enabled: false`). O pipeline de voz continua pronto caso um vídeo futuro precise: **Piper `pt_BR-cadu-medium`**, treinada com um falante brasileiro nativo (dataset CC0, uso comercial liberado), rodando offline (`audio/tts.py`).
+- **Locução:** o Vídeo 3 tem versão narrada com a voz oficial (ElevenLabs, ver abaixo): `public/audio/v3/mix.wav` (com voz, trilha com ducking de -11 dB) e `mix_semvoz.wav` (sem voz), nas composições `Video3-QualComercioPrecisa-Narrado` e `Video3-QualComercioPrecisa`. Vídeos 1, 2 e 4 seguem sem locução (`narration.enabled: false`). O pipeline de voz continua pronto caso um vídeo futuro precise: **Piper `pt_BR-cadu-medium`**, treinada com um falante brasileiro nativo (dataset CC0, uso comercial liberado), rodando offline (`audio/tts.py`).
   - A pronúncia é ajustada em `narration.phonemeFixes.piper`: o "Uaai" sai numa sílaba, levemente arrastado, e o "w" de Uai-Pertim fica bem marcado. A grafia mineira entra direto no texto: "baixá", "instalá", "ocupá".
   - O modelo varia a cada geração. A `seed` de cada fala em `timeline.json` fixa o take escolhido.
   - `audio/pick_takes.py` (opcional, usa Whisper) gera vários takes por fala, transcreve cada um e grava a seed do mais fiel ao texto.

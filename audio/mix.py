@@ -62,8 +62,10 @@ def section_curve(tl, n):
     return db(curve)
 
 
-def main():
+def main(voice=None, out=None):
+    """voice=False força a versão sem locução (mesma trilha, efeitos e automação, sem ducking)."""
     tl = load_timeline()
+    out = out or MIX_OUT
     fps = tl["fps"]
     n = int(SR * tl["durationInFrames"] / fps)
     vo = np.zeros(n, np.float32)
@@ -71,7 +73,7 @@ def main():
     rng = np.random.default_rng(11)
 
     # --- locução (desligada quando o vídeo usa legenda animada) ---
-    voice_on = tl["narration"].get("enabled", True)
+    voice_on = tl["narration"].get("enabled", True) if voice is None else voice
     for item in tl["narration"]["items"] if voice_on else []:
         x, sr = read(BUILD / "vo" / f"{item['id']}.wav")
         x = to_sr(x, sr)
@@ -157,7 +159,7 @@ def main():
     mix = np.clip(mix, -ceiling, ceiling)
     final_lufs = meter.integrated_loudness(mix)
 
-    write(MIX_OUT, mix.astype(np.float32))
+    write(out, mix.astype(np.float32))
     if tl.get("splitScenes"):
         # story: um WAV por card (mesma trilha, cortada nas fronteiras das cenas)
         keys = list(tl["scenes"])
@@ -173,9 +175,12 @@ def main():
             write(MIX_OUT.parent / f"{key}.wav", part.astype(np.float32))
     report = {"lufs": round(float(final_lufs), 2), "peak_dbfs": round(float(20 * np.log10(np.abs(mix).max())), 2),
               "seconds": n / SR}
-    with open(BUILD / "mix_report.json", "w") as f:
+    with open(BUILD / f"{out.stem}_report.json" if out != MIX_OUT else BUILD / "mix_report.json", "w") as f:
         json.dump(report, f, indent=2)
-    print(f"mix: {report}")
+    print(f"{out.name}: {report}")
+    # vídeo narrado que também tem versão sem voz (narration.alsoInstrumental): mix_semvoz.wav ao lado
+    if voice is None and voice_on and tl["narration"].get("alsoInstrumental"):
+        main(voice=False, out=MIX_OUT.with_name("mix_semvoz.wav"))
 
 
 if __name__ == "__main__":
