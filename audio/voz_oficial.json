@@ -1,0 +1,14 @@
+{
+  "_doc": "VOZ OFICIAL DA UAIPERTIM (ElevenLabs), escolhida em 2026-10-15 entre 4 amostras. Use estes valores em toda narração nova (audio/elevenlabs.py lê este arquivo). A chave da API NÃO fica no projeto: ela vem do ambiente (Segredos de rede, cabeçalho xi-api-key) ou da variável XI_API_KEY.",
+  "provider": "elevenlabs",
+  "name": "Victor Pinho",
+  "voiceId": "LuQ9eaWO9yCQrR73VQFa",
+  "perfil": "masculina, jovem, sotaque brasileiro; jovial e animada, de conversa (não é locutor de anúncio)",
+  "origem": "Biblioteca pública de vozes da ElevenLabs (não precisa ser adicionada à conta para gerar)",
+  "model": "eleven_multilingual_v2",
+  "voiceSettings": { "stability": 0.4, "similarity_boost": 0.8, "style": 0.35, "use_speaker_boost": true },
+  "seed": 42,
+  "outputFormat": "mp3_44100_128",
+  "_doc_pronuncia": "Grafia enviada à API para acertar a pronúncia (o texto de tela continua igual). 'UaiPertim' = uai-per-TIM.",
+  "pronuncia": { "UaiPertim": "Uaipertím" }
+}

@@ -108,14 +108,16 @@
     "_doc": "Narração gravada (ElevenLabs) num arquivo só: engine 'file' recorta cada fala do arquivo ('src': [início, fim] em segundos no mp3) e posiciona no frame 'from' (absoluto). Ordem na tela: frase 1 → 3 → 4 (cortada nas vírgulas, junto dos balões) → 5 → 2. Trilha abaixa music.duckDb durante a fala; SFX ficam. Ligue 'enabled' depois de preencher os 'src' e rode npm run audio:v3.",
     "engine": "file",
     "src": "public/audio/narracao_video3.mp3",
+    "_doc_script": "Roteiro lido de uma vez pela voz oficial (audio/voz_oficial.json): python3 audio/elevenlabs.py --video v3. <break> = pausa entre as frases (facilita o corte). 'e a gente quer saber:' é gravado mas não entra no vídeo.",
+    "script": "Ô Glória, responde aí rapidinho! <break time=\"0.6s\" /> O UaiPertim tá chegando… e a gente quer saber: <break time=\"0.6s\" /> qual comércio PRECISA estar aqui? <break time=\"0.6s\" /> Aquela padaria, o mercadinho, a farmácia de confiança… <break time=\"0.6s\" /> Comenta o nome e marca o dono!",
     "items": [
-      { "id": "n1", "from": 2, "src": null, "text": "Ô Glória, responde aí rapidinho!", "_doc": "cena 1: balão '?' cheio e quicando desde o frame 0" },
-      { "id": "n3", "from": 62, "src": null, "text": "qual comércio PRECISA estar aqui?", "_doc": "cena 1: título na tela; o 'PRECISA' falado cai no marcador (s1.markerStart = f74)" },
-      { "id": "n4a", "from": 256, "src": null, "text": "Aquela padaria,", "_doc": "cena 3: balão da padaria (f262)" },
-      { "id": "n4b", "from": 287, "src": null, "text": "o mercadinho,", "_doc": "cena 3: balão do mercadinho (f291)" },
-      { "id": "n4c", "from": 340, "src": null, "text": "a farmácia de confiança…", "_doc": "cena 3: balão da farmácia (f345)" },
-      { "id": "n5", "from": 426, "src": null, "text": "Comenta o nome e marca o dono!", "_doc": "cena 4: 'Comenta e marca o dono' (f424–430)" },
-      { "id": "n2", "from": 588, "src": null, "text": "O UaiPertim tá chegando…", "_doc": "cena 5: logo (f586) → faixa CHEGANDO EM BREVE (f650); 'e a gente quer saber:' fica de fora" }
+      { "id": "n1", "from": 0, "src": [0.0, 2.4], "text": "Ô Glória, responde aí rapidinho!", "_doc": "cena 1: balão '?' cheio e quicando desde o frame 0" },
+      { "id": "n3", "from": 65, "src": [6.3, 9.0], "text": "qual comércio PRECISA estar aqui?", "_doc": "cena 1: título na tela; o 'PRECISA' falado (+23 frames) cai no marcador (s1.markerStart)" },
+      { "id": "n4a", "from": 248, "src": [9.1, 10.67], "text": "Aquela padaria,", "_doc": "cena 3: balão da padaria (f262)" },
+      { "id": "n4b", "from": 287, "src": [10.67, 11.75], "text": "o mercadinho,", "_doc": "cena 3: balão do mercadinho (f291)" },
+      { "id": "n4c", "from": 340, "src": [11.75, 13.75], "text": "a farmácia de confiança…", "_doc": "cena 3: balão da farmácia (f345)" },
+      { "id": "n5", "from": 426, "src": [13.75, 16.3], "text": "Comenta o nome e marca o dono!", "_doc": "cena 4: 'Comenta e marca o dono' (f424–430)" },
+      { "id": "n2", "from": 588, "src": [2.6, 4.66], "text": "O UaiPertim tá chegando…", "_doc": "cena 5: logo (f586) → faixa CHEGANDO EM BREVE (f650); 'e a gente quer saber:' fica de fora" }
     ]
   },
   "music": {

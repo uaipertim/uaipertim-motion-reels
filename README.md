@@ -203,6 +203,8 @@ npm run audio:setup   # baixa as vozes (Piper pt-BR + Kokoro) e instala as libs 
 - **Mix:** `audio/mix.py` faz a automação por seção (subidas, respiro, pico) e normaliza em -14 LUFS com limiter. Quando há voz, também faz o ducking da trilha. Nos Vídeos 2, 3 e 4 o limitador é true peak com lookahead (`master.truePeak`), para o pico real ficar abaixo de -1 dBTP depois do AAC.
 - **Vários vídeos:** todos os scripts aceitam `--video v1|v2|v3|v4|story` (padrão `v1`). A saída de cada vídeo vai para `audio/build/<vídeo>` e para o seu `mix.wav`.
 
+**Voz oficial da UaiPertim (ElevenLabs):** Victor Pinho (`LuQ9eaWO9yCQrR73VQFa`), modelo `eleven_multilingual_v2`; ajustes, seed e grafias de pronúncia em `audio/voz_oficial.json` (sem a chave). `python3 audio/elevenlabs.py --video v3` lê o roteiro da timeline (`narration.script`) e salva o mp3 + o tempo de cada palavra (`.alignment.json`); com `narration.engine: "file"`, `audio/tts.py` recorta cada fala do mp3 (`src`) e a posiciona no frame `from`. A chave vem do ambiente (Segredos de rede) ou de `XI_API_KEY`, nunca do repositório.
+
 **Trocar por voz gravada:** grave as falas `n1`…`n6` como WAV, coloque em `audio/build/vo/` (Vídeo 1) ou `audio/build/v2/vo/` (Vídeo 2) com esses nomes e rode `python3 audio/build_audio.py [--video v2] --no-tts`.
 
 ## Notas

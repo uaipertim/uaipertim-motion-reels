@@ -1,0 +1,175 @@
+{
+ "text": "Ô Glória, responde aí rapidinho! <break time=\"0.6s\" /> O Uaipertím tá chegando… e a gente quer saber: <break time=\"0.6s\" /> qual comércio PRECISA estar aqui? <break time=\"0.6s\" /> Aquela padaria, o mercadinho, a farmácia de confiança… <break time=\"0.6s\" /> Comenta o nome e marca o dono!",
+ "words": [
+  {
+   "w": "Ô",
+   "start": 0.0,
+   "end": 0.116
+  },
+  {
+   "w": "Glória",
+   "start": 0.197,
+   "end": 0.58
+  },
+  {
+   "w": "responde",
+   "start": 0.662,
+   "end": 1.138
+  },
+  {
+   "w": "aí",
+   "start": 1.161,
+   "end": 1.242
+  },
+  {
+   "w": "rapidinho",
+   "start": 1.289,
+   "end": 2.055
+  },
+  {
+   "w": "O",
+   "start": 2.775,
+   "end": 2.833
+  },
+  {
+   "w": "Uaipertím",
+   "start": 2.961,
+   "end": 3.68
+  },
+  {
+   "w": "tá",
+   "start": 3.773,
+   "end": 3.913
+  },
+  {
+   "w": "chegando",
+   "start": 3.971,
+   "end": 4.574
+  },
+  {
+   "w": "e",
+   "start": 4.748,
+   "end": 4.865
+  },
+  {
+   "w": "a",
+   "start": 4.899,
+   "end": 4.923
+  },
+  {
+   "w": "gente",
+   "start": 4.981,
+   "end": 5.236
+  },
+  {
+   "w": "quer",
+   "start": 5.294,
+   "end": 5.445
+  },
+  {
+   "w": "saber",
+   "start": 5.503,
+   "end": 5.909
+  },
+  {
+   "w": "qual",
+   "start": 6.676,
+   "end": 6.85
+  },
+  {
+   "w": "comércio",
+   "start": 6.896,
+   "end": 7.419
+  },
+  {
+   "w": "PRECISA",
+   "start": 7.465,
+   "end": 7.976
+  },
+  {
+   "w": "estar",
+   "start": 7.999,
+   "end": 8.231
+  },
+  {
+   "w": "aqui",
+   "start": 8.29,
+   "end": 8.626
+  },
+  {
+   "w": "Aquela",
+   "start": 9.392,
+   "end": 9.834
+  },
+  {
+   "w": "padaria",
+   "start": 9.88,
+   "end": 10.6
+  },
+  {
+   "w": "o",
+   "start": 10.739,
+   "end": 10.82
+  },
+  {
+   "w": "mercadinho",
+   "start": 10.89,
+   "end": 11.691
+  },
+  {
+   "w": "a",
+   "start": 11.831,
+   "end": 11.9
+  },
+  {
+   "w": "farmácia",
+   "start": 11.981,
+   "end": 12.608
+  },
+  {
+   "w": "de",
+   "start": 12.643,
+   "end": 12.713
+  },
+  {
+   "w": "confiança",
+   "start": 12.771,
+   "end": 13.386
+  },
+  {
+   "w": "Comenta",
+   "start": 14.095,
+   "end": 14.524
+  },
+  {
+   "w": "o",
+   "start": 14.547,
+   "end": 14.571
+  },
+  {
+   "w": "nome",
+   "start": 14.64,
+   "end": 15.058
+  },
+  {
+   "w": "e",
+   "start": 15.105,
+   "end": 15.221
+  },
+  {
+   "w": "marca",
+   "start": 15.29,
+   "end": 15.615
+  },
+  {
+   "w": "o",
+   "start": 15.662,
+   "end": 15.685
+  },
+  {
+   "w": "dono",
+   "start": 15.743,
+   "end": 16.161
+  }
+ ]
+}
