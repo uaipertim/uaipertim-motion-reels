@@ -18,7 +18,7 @@ import numpy as np
 import phonemizer
 from phonemizer.backend.espeak.wrapper import EspeakWrapper
 
-from common import BUILD, MODELS, SR, fade, load_timeline, to_sr, trim_silence, write
+from common import BUILD, MODELS, ROOT, SR, fade, load_timeline, read, to_sr, trim_silence, write
 
 EspeakWrapper.set_library(espeakng_loader.get_library_path())
 EspeakWrapper.set_data_path(espeakng_loader.get_data_path())
@@ -123,12 +123,55 @@ def fit_item(engine, fixes, item, seed):
     return x, speed
 
 
+def speech_chunks(x, min_pause=0.18, thresh_db=-40.0):
+    """Trechos de fala de uma gravação, separados por pausas ≥ min_pause (s). Retorna [(início, fim)] em s."""
+    win = int(SR * 0.01)
+    env = np.sqrt(np.convolve(x ** 2, np.ones(win) / win, mode="same"))
+    on = env > 10 ** (thresh_db / 20) * np.abs(x).max()
+    idx = np.where(on)[0]
+    chunks, a, last = [], None, None
+    for i in idx:
+        if a is None:
+            a = i
+        elif i - last > min_pause * SR:
+            chunks.append((a / SR, last / SR))
+            a = i
+        last = i
+    if a is not None:
+        chunks.append((a / SR, last / SR))
+    return chunks
+
+
+def from_file(tl, nar):
+    """engine "file": narração gravada (ex.: ElevenLabs) num arquivo só; cada item recorta um trecho
+    ("src": [início, fim] em segundos no arquivo) e entra no frame "from" da timeline."""
+    x, sr = read(ROOT / nar["src"])
+    if x.ndim > 1:
+        x = x.mean(1)
+    x = to_sr(x, sr)
+    x = x / (np.abs(x).max() + 1e-9) * 0.89  # um ganho só para o arquivo todo: mantém o nível relativo das falas
+    print(f"{nar['src']}: {len(x) / SR:.2f}s — trechos de fala: " + ", ".join(f"{a:.2f}–{b:.2f}" for a, b in speech_chunks(x)))
+    meta = {"engine": "file", "src": nar["src"]}
+    for item in nar["items"]:
+        a, b = item["src"]
+        seg = trim_silence(x[int(a * SR):int(b * SR)], SR)
+        seg = fade(seg, SR, 0.004, 0.03)
+        write(BUILD / "vo" / f"{item['id']}.wav", seg)
+        dur = len(seg) / SR
+        meta[item["id"]] = {"from": item["from"], "seconds": round(dur, 3), "src": item["src"]}
+        print(f"{item['id']}: {dur:.2f}s  frames {item['from']}–{item['from'] + dur * tl['fps']:.0f}  | {item['text']}")
+    with open(BUILD / "vo" / "narration.json", "w", encoding="utf-8") as f:
+        json.dump(meta, f, ensure_ascii=False, indent=2)
+
+
 def main():
     tl = load_timeline()
     nar = tl["narration"]
     if not nar.get("enabled", True):
         print("locução desligada (narration.enabled = false) — nada a gerar")
         return
+    if nar.get("engine") == "file":
+        return from_file(tl, nar)
     engine_name, engine, fixes = make_engine(nar)
 
     def phonemes(seg):

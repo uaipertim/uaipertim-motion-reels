@@ -16,15 +16,16 @@
   },
   "beats": {
     "s1": {
-      "inflateEnd": 22,
-      "qBounces": [16, 24, 32],
+      "_doc_inflate": "inflateEnd 0 = o balão já está cheio no frame 0 (só balança e quica); >0 = infla do zero até esse frame",
+      "inflateEnd": 0,
+      "qBounces": [0, 9, 18, 27],
       "pop": 40,
       "title1": 42,
       "title2": 47,
       "title3": 52,
-      "markerStart": 56,
+      "markerStart": 74,
       "markerDur": 10,
-      "tremble": 66
+      "tremble": 84
     },
     "s2": {
       "_doc_shops": "lojinhas brotando do chão, na ordem de TOWN_SHOPS (v3/scenes/Town.tsx)",
@@ -104,8 +105,18 @@
   },
   "narration": {
     "enabled": false,
-    "_doc": "Vídeo 3 não tem locução nem legenda: toda a informação está nos textos de tela (v3/config/texts.ts).",
-    "items": []
+    "_doc": "Narração gravada (ElevenLabs) num arquivo só: engine 'file' recorta cada fala do arquivo ('src': [início, fim] em segundos no mp3) e posiciona no frame 'from' (absoluto). Ordem na tela: frase 1 → 3 → 4 (cortada nas vírgulas, junto dos balões) → 5 → 2. Trilha abaixa music.duckDb durante a fala; SFX ficam. Ligue 'enabled' depois de preencher os 'src' e rode npm run audio:v3.",
+    "engine": "file",
+    "src": "public/audio/narracao_video3.mp3",
+    "items": [
+      { "id": "n1", "from": 2, "src": null, "text": "Ô Glória, responde aí rapidinho!", "_doc": "cena 1: balão '?' cheio e quicando desde o frame 0" },
+      { "id": "n3", "from": 62, "src": null, "text": "qual comércio PRECISA estar aqui?", "_doc": "cena 1: título na tela; o 'PRECISA' falado cai no marcador (s1.markerStart = f74)" },
+      { "id": "n4a", "from": 256, "src": null, "text": "Aquela padaria,", "_doc": "cena 3: balão da padaria (f262)" },
+      { "id": "n4b", "from": 287, "src": null, "text": "o mercadinho,", "_doc": "cena 3: balão do mercadinho (f291)" },
+      { "id": "n4c", "from": 340, "src": null, "text": "a farmácia de confiança…", "_doc": "cena 3: balão da farmácia (f345)" },
+      { "id": "n5", "from": 426, "src": null, "text": "Comenta o nome e marca o dono!", "_doc": "cena 4: 'Comenta e marca o dono' (f424–430)" },
+      { "id": "n2", "from": 588, "src": null, "text": "O UaiPertim tá chegando…", "_doc": "cena 5: logo (f586) → faixa CHEGANDO EM BREVE (f650); 'e a gente quer saber:' fica de fora" }
+    ]
   },
   "music": {
     "bpm": 124,
@@ -126,7 +137,7 @@
     "accents": [40, 494],
     "mutes": [[448, 463]],
     "introHoldSeconds": 0,
-    "duckDb": -9,
+    "duckDb": -11,
     "duckAttack": 0.08,
     "duckRelease": 0.35
   },

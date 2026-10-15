@@ -1,7 +1,7 @@
 import { C } from "../../config/theme";
 
 // Vídeo 3 — "Qual comércio PRECISA estar aqui?": TODOS os textos de tela por cena.
-// Sem narração e sem legenda: estes textos contam a história sozinhos.
+// Sem legenda: estes textos contam a história; a narração (ElevenLabs) só reforça (timeline.json → narration).
 // Tempos em ./timeline.json (fonte única para vídeo e áudio).
 // Regra: nenhum nome de estabelecimento real — só termos genéricos.
 export const TEXTS3 = {

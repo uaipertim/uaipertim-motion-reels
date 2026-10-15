@@ -9,8 +9,8 @@ import { ConfettiBurst, StarPops, Twinkles } from "../../components/Particles";
 import { Marker } from "../../components/Ui";
 import { PopWords } from "../../components/Text";
 
-// CENA 1 · A pergunta — balão de pergunta gigante infla com "?" quicando, estoura em confete
-// e revela o título; "PRECISA" ganha marcador amarelo e treme de ênfase.
+// CENA 1 · A pergunta — balão de pergunta gigante já cheio no frame 0, balançando com o "?" quicando;
+// estoura em confete e revela o título; "PRECISA" ganha marcador amarelo (no "PRECISA" falado) e treme.
 const B = BEATS3.s1;
 const CX = 540;
 const CY = 880;
@@ -33,7 +33,7 @@ const QuestionBalloon: React.FC<{ width: number }> = ({ width }) => (
 export const S1Pergunta: React.FC = () => {
   const f = useCurrentFrame();
 
-  // balão infla (0 → 1.1 → 1), incha antes de estourar e some no pop
+  // balão (inflateEnd > 0: infla 0 → 1.1; inflateEnd 0: já começa cheio) balança até 1, incha antes de estourar e some no pop
   const inflate = f < B.inflateEnd
     ? 1.1 * Easing.out(Easing.cubic)(f / B.inflateEnd)
     : 1 + 0.1 * Math.exp(-(f - B.inflateEnd) * 0.22) * Math.cos((f - B.inflateEnd) * 0.55);
