@@ -23,7 +23,7 @@ import corteA from "../cortes/corte-A.json";
 // Cortes curtos: duração = trecho do original + fecho; textos medidos com as fontes carregadas.
 const corteMetadata = async ({ props }: { props: CorteProps }) => {
   await fontsReady;
-  return { durationInFrames: props.fim - props.inicio + props.fechoDur, props: { ...props, layout: measureCorte(props) } };
+  return { durationInFrames: (props.segura ?? 0) + props.fim - props.inicio + props.fechoDur, props: { ...props, layout: measureCorte(props) } };
 };
 
 // Carrossel "Facim, facim": cada slide é um still; o carrossel = JSON em --props + "slide" (índice, a partir de 0).

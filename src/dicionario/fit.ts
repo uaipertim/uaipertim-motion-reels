@@ -47,7 +47,7 @@ export const fitCover = (word: string, maxWidth: number, maxSize: number): Wrapp
   const sizeFor = (lines: string[]) => Math.min(maxSize, Math.floor(maxWidth / Math.max(...lines.map(at100))));
   let best: string[] = [word];
   let bestSize = sizeFor(best);
-  const words = word.split(/\s+/);
+  const words = word.split(/ +/); // só espaço comum: o NBSP (antes de emoji) não quebra
   for (let i = 1; i < words.length; i++) {
     const cand = [words.slice(0, i).join(" "), words.slice(i).join(" ")];
     const s = sizeFor(cand);

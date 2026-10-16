@@ -218,6 +218,24 @@ npm run carrossel -- 01        # ou: npm run carrossel -- carrosseis/facim/01-an
 
 Saída em `out/carrosseis/facim/NN-tema/`: `slide-1.png` … `slide-N.png` e `capa_3x4.png` (prévia da capa no recorte da grade). **Carrossel novo:** crie `carrosseis/facim/03-tema.json` e rode `npm run carrossel -- 03`. No Studio, a composição abre o slide 1 do C1; para outro, passe o JSON + `"slide": i` em `--props`.
 
+## Cortes curtos (A–D) a partir dos Reels
+
+Composição `CorteCurto` (`src/cortes/Corte.tsx`), 1080×1920, 30 fps, 10 a 16 s. Cada corte é um JSON em `cortes/corte-X.json`. **Nenhuma cena nova:** o trecho é o próprio Reel original renderizado de novo a partir do quadro `inicio` (mesmos componentes, mesmo resultado).
+
+- **Gancho (capa = quadro 0):** painel creme por cima da cena, já completo no quadro 0, com o texto antes do destaque em tinta e o `*destaque*` em coral com marcador amarelo (tratamento das capas). Fica `ganchoDur` quadros e sai. Texto entre y=285 e y=1635, com no máximo 72% da largura. `painelTopo` estende o painel para cobrir um título do original; `leadMax`/`destaqueMax` limitam o tamanho quando o espaço é curto.
+- **`segura` (opcional):** mantém o 1º quadro do trecho parado sob o gancho; o original só anda depois que ele sai (corte D: a URL se digita inteira à vista).
+- **Fecho:** "Manda pra quem…" grande ("Manda" em coral) + logo pequeno no fundo creme da série, por `fechoDur` quadros (≥ 2 s), dentro de x=80–940 e y=220–1480.
+- **Áudio** (`audio/cortes.py`): trilha + efeitos do original no mesmo trecho; embaixo do fecho entra o final do original (acorde final/sting), com emenda de 0,18 s. Normalizado em -14 LUFS (pico ≤ -1,5 dB). Sem voz, exceto com `"narrado": true` (Vídeo 3: usa o mix com a narração do Victor Pinho).
+
+| Corte | Origem (quadros) | Gancho | Fecho | Duração |
+|---|---|---|---|---|
+| A | Vídeo 1, 50–282: celular lotado → "O UaiPertim NÃO é app" | Mais um app? *NÃO!* | Manda pra quem tá com o celular lotado 😂 | 10,4 s |
+| B | Vídeo 2, 118–530: os 3 passos | 3 passos e *pronto* 👇 | Manda pra quem ama pedir em casa 🛍️ | 15,9 s |
+| C | Vídeo 3 narrado, 140–420: lojinhas e balões | Dono de comércio em Glória, *olha isso* 👀 | Manda pra quem tem comércio em Glória | 12,0 s |
+| D | Vídeo 1, 302–540 (+1,4 s parado no 1º quadro): a URL se digitando | É só *digitar isso* 👇 | Manda pra quem odeia baixar app | 12,0 s |
+
+**Gerar:** `npm run corte -- A` → `out/cortes/corte-A.mp4` + `out/cortes/capa-corte-A.png` (quadro 0). Corte novo: crie `cortes/corte-E.json` com os mesmos campos e rode `npm run corte -- E`.
+
 ## Como editar
 
 - **Textos de tela:** `src/config/texts.ts` (Vídeo 1) · `src/v2/config/texts.ts` (Vídeo 2) · `src/v3/config/texts.ts` (Vídeo 3) · `src/v4/config/texts.ts` (Vídeo 4) · `src/story/config/texts.ts` (story)

@@ -1,5 +1,5 @@
 import React from "react";
-import { AbsoluteFill, Audio, Img, Sequence, staticFile, useCurrentFrame } from "remotion";
+import { AbsoluteFill, Audio, Freeze, Img, Sequence, staticFile, useCurrentFrame } from "remotion";
 import { C, FONT, W } from "../config/theme";
 import { pop, popOut } from "../lib/anim";
 import { CremeBackground } from "../components/Decor";
@@ -27,6 +27,9 @@ export type Corte = {
   fecho: string; // "Manda pra quem…"
   fechoDur: number; // quadros do fecho (≥ 60 = 2 s)
   narrado?: boolean; // true = mantém a narração do original (só existe no Vídeo 3)
+  leadMax?: number; // opcional: tamanho máximo do texto antes do destaque (padrão 112)
+  destaqueMax?: number; // opcional: tamanho máximo do destaque (padrão 230)
+  segura?: number; // opcional: quadros com a 1ª cena do trecho parada sob o gancho (o original só anda depois que ele sai)
   painelTopo?: number; // opcional: o painel creme do gancho começa mais acima (para cobrir um título do original)
 };
 type Layout = { lead: Wrapped; hl: Wrapped & { widths: number[] }; fecho: Wrapped };
@@ -45,16 +48,17 @@ export const splitGancho = (g: string) => {
 };
 
 // texto antes do destaque: de preferência numa linha só (até 76 px); se não couber, até 3 linhas
-const leadFit = (lead: string) => {
-  const one = fitWrap(lead, W.black, COVER_W, [112, 100, 92, 84, 76], 1);
-  return one.lines.length <= 1 ? one : fitWrap(lead, W.black, COVER_W, [100, 92, 84, 76], 3);
+const leadFit = (lead: string, max = 112) => {
+  const sizes = [112, 100, 92, 84, 76, 70].filter((v) => v <= max);
+  const one = fitWrap(lead, W.black, COVER_W, sizes, 1);
+  return one.lines.length <= 1 ? one : fitWrap(lead, W.black, COVER_W, sizes.filter((v) => v <= 100), 3);
 };
 
 export const measureCorte = (c: Corte): Layout => {
   const { lead, hl } = splitGancho(c.gancho);
   return {
-    lead: leadFit(lead),
-    hl: fitCover(hl, COVER_W, 230), // mesmo tratamento da palavra das capas (pode ir em 2 linhas)
+    lead: leadFit(lead, c.leadMax),
+    hl: fitCover(hl, COVER_W, c.destaqueMax ?? 230), // mesmo tratamento da palavra das capas (pode ir em 2 linhas)
     fecho: fitWrap(glue(c.fecho), W.black, SAFE.right - SAFE.left, [108, 100, 92, 84, 76, 70], 4),
   };
 };
@@ -157,10 +161,18 @@ export const CorteCurto: React.FC<CorteProps> = (props) => {
   const { layout, ...c } = props;
   if (!layout) throw new Error("CorteCurto: layout é medido no calculateMetadata");
   const Source = SOURCES[c.fonte] as React.FC<{ withAudio?: boolean }>;
-  const trecho = c.fim - c.inicio;
+  const hold = c.segura ?? 0;
+  const trecho = hold + c.fim - c.inicio;
   return (
     <AbsoluteFill style={{ background: C.creme }}>
-      <Sequence durationInFrames={trecho} name={`Trecho do ${c.fonte} (${c.inicio}–${c.fim})`}>
+      {hold > 0 && (
+        <Sequence durationInFrames={hold} name={`Quadro ${c.inicio} do ${c.fonte} parado (sob o gancho)`}>
+          <Freeze frame={c.inicio}>
+            <Source withAudio={false} />
+          </Freeze>
+        </Sequence>
+      )}
+      <Sequence from={hold} durationInFrames={c.fim - c.inicio} name={`Trecho do ${c.fonte} (${c.inicio}–${c.fim})`}>
         <Sequence from={-c.inicio}>
           <Source withAudio={false} />
         </Sequence>
