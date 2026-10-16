@@ -14,9 +14,9 @@
   },
   "seed": 42,
   "outputFormat": "mp3_44100_128",
-  "_doc_pronuncia": "REGRA FIXA DE PRONÚNCIA (vale para TODO texto enviado à ElevenLabs; audio/elevenlabs.py → pronounce()). Só a grafia enviada à API muda; na tela continua 'UaiPertim' e 'Pertim'. A troca é por palavra inteira, ignora maiúsculas, preserva a inicial e aplica as chaves mais longas primeiro. 'Pertim' tem o E ABERTO: 'Pértim' (nunca 'PÊRtim'); a marca 'UaiPertim' vai como 'Uai Pérr-tim' (escolhida entre 4 amostras em 2026-10-16: 'Uai Pértim' ainda saía com o E fechado).",
+  "_doc_pronuncia": "REGRA FIXA DE PRONÚNCIA (vale para TODO texto enviado à ElevenLabs; audio/elevenlabs.py → pronounce()). Só a grafia enviada à API muda; na tela continua 'UaiPertim' e 'Pertim'. A troca é por palavra inteira, ignora maiúsculas, preserva a inicial e aplica as chaves mais longas primeiro. 'Pertim' tem o E ABERTO e a força no final (per-TIM): vai como 'Pérr-tim' (nunca 'PÊRtim'; 'Pértim' ainda saía com o E fechado no 02); a marca 'UaiPertim' vai como 'Uai Pérr-tim' (escolhida entre 4 amostras em 2026-10-16: 'Uai Pértim' ainda saía com o E fechado).",
   "pronuncia": {
     "UaiPertim": "Uai Pérr-tim",
-    "Pertim": "Pértim"
+    "Pertim": "Pérr-tim"
   }
 }

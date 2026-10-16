@@ -290,11 +290,11 @@ npm run audio:setup   # baixa as vozes (Piper pt-BR + Kokoro) e instala as libs 
 
 **Regra fixa da marca: "Facim facim" sem vírgula.** Na tela e na voz: "Facim facim", "FACIM FACIM" (chip do carrossel), nunca "Facim, facim". Vale para todo material novo (o Vídeo 2, já publicado, ficou como estava).
 
-**Regra fixa de pronúncia (todos os vídeos):** "Pertim" se fala com o **E aberto**: "Pértim" (nunca "PÊRtim"). Na tela nada muda (continua "Pertim" e "UaiPertim"); só a grafia enviada à ElevenLabs:
+**Regra fixa de pronúncia (todos os vídeos):** "Pertim" se fala com o **E aberto** e a força no final: "per-TIM" com "pé" aberto (nunca "PÊRtim"). Na tela nada muda (continua "Pertim" e "UaiPertim"); só a grafia enviada à ElevenLabs:
 
 | Na tela | Enviado à voz |
 |---|---|
-| Pertim / pertim | Pértim / pértim |
+| Pertim / pertim | Pérr-tim / pérr-tim ("Pértim" ainda saía com o E fechado) |
 | UaiPertim (a marca) | Uai Pérr-tim ("Uai Pértim" ainda saía com o E fechado) |
 
 O dicionário fica em `audio/voz_oficial.json` → `pronuncia` e é aplicado automaticamente a TODO texto enviado à API (`pronounce()` em `audio/elevenlabs.py`: palavra inteira, sem diferenciar maiúsculas, mantendo a inicial, chaves mais longas primeiro). Palavra nova com pronúncia própria = mais uma entrada nesse dicionário.

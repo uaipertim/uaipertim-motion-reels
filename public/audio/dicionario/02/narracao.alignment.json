@@ -1,157 +1,177 @@
 {
  "script": "Pertim. <break time=\"0.4s\" /> Pertinho. Bem perto. Tipo: A padaria é ali, ó, pertim. <break time=\"0.4s\" /> Assim vai ficar o comércio de Glória: pertim de você. <break time=\"0.4s\" /> Manda pra quem acha que tudo é ali pertim",
  "voice": "LuQ9eaWO9yCQrR73VQFa",
- "text": "Pértim. <break time=\"0.4s\" /> Pertinho. Bem perto. Tipo: A padaria é ali, ó, pértim. <break time=\"0.4s\" /> Assim vai ficar o comércio de Glória: pértim de você. <break time=\"0.4s\" /> Manda pra quem acha que tudo é ali pértim",
+ "text": "Pérr-tim. <break time=\"0.4s\" /> Pertinho. Bem perto. Tipo: A padaria é ali, ó, pérr-tim. <break time=\"0.4s\" /> Assim vai ficar o comércio de Glória: pérr-tim de você. <break time=\"0.4s\" /> Manda pra quem acha que tudo é ali pérr-tim",
  "words": [
   {
-   "w": "Pértim",
+   "w": "Pérr",
    "start": 0.0,
-   "end": 0.58
+   "end": 0.302
+  },
+  {
+   "w": "tim",
+   "start": 0.418,
+   "end": 0.72
   },
   {
    "w": "Pertinho",
-   "start": 1.126,
-   "end": 1.846
+   "start": 1.277,
+   "end": 2.067
   },
   {
    "w": "Bem",
-   "start": 2.067,
-   "end": 2.276
+   "start": 2.31,
+   "end": 2.554
   },
   {
    "w": "perto",
-   "start": 2.368,
-   "end": 2.856
+   "start": 2.67,
+   "end": 3.111
   },
   {
    "w": "Tipo",
-   "start": 2.914,
-   "end": 3.379
+   "start": 3.158,
+   "end": 3.611
   },
   {
    "w": "A",
-   "start": 3.587,
-   "end": 3.646
+   "start": 3.831,
+   "end": 3.901
   },
   {
    "w": "padaria",
-   "start": 3.762,
-   "end": 4.296
+   "start": 4.017,
+   "end": 4.586
   },
   {
    "w": "é",
-   "start": 4.423,
-   "end": 4.54
+   "start": 4.702,
+   "end": 4.748
   },
   {
    "w": "ali",
-   "start": 4.586,
-   "end": 4.865
+   "start": 4.818,
+   "end": 5.085
   },
   {
    "w": "ó",
-   "start": 4.934,
-   "end": 5.004
+   "start": 5.155,
+   "end": 5.271
   },
   {
-   "w": "pértim",
-   "start": 5.085,
-   "end": 5.689
+   "w": "pérr",
+   "start": 5.41,
+   "end": 5.724
+  },
+  {
+   "w": "tim",
+   "start": 5.805,
+   "end": 6.177
   },
   {
    "w": "Assim",
-   "start": 6.211,
-   "end": 6.536
+   "start": 6.745,
+   "end": 7.07
   },
   {
    "w": "vai",
-   "start": 6.583,
-   "end": 6.687
+   "start": 7.129,
+   "end": 7.221
   },
   {
    "w": "ficar",
-   "start": 6.734,
-   "end": 6.989
+   "start": 7.256,
+   "end": 7.523
   },
   {
    "w": "o",
-   "start": 7.036,
-   "end": 7.094
+   "start": 7.558,
+   "end": 7.605
   },
   {
    "w": "comércio",
-   "start": 7.14,
-   "end": 7.628
+   "start": 7.651,
+   "end": 8.092
   },
   {
    "w": "de",
-   "start": 7.686,
-   "end": 7.755
+   "start": 8.15,
+   "end": 8.231
   },
   {
    "w": "Glória",
-   "start": 7.814,
-   "end": 8.278
+   "start": 8.29,
+   "end": 8.719
   },
   {
-   "w": "pértim",
-   "start": 8.487,
-   "end": 8.986
+   "w": "pérr",
+   "start": 8.812,
+   "end": 9.102
+  },
+  {
+   "w": "tim",
+   "start": 9.218,
+   "end": 9.451
   },
   {
    "w": "de",
-   "start": 9.044,
-   "end": 9.125
+   "start": 9.52,
+   "end": 9.59
   },
   {
    "w": "você",
-   "start": 9.183,
-   "end": 9.625
+   "start": 9.648,
+   "end": 10.112
   },
   {
    "w": "Manda",
-   "start": 10.194,
-   "end": 10.553
+   "start": 10.681,
+   "end": 10.995
   },
   {
    "w": "pra",
-   "start": 10.588,
-   "end": 10.739
+   "start": 11.041,
+   "end": 11.157
   },
   {
    "w": "quem",
-   "start": 10.786,
-   "end": 10.925
+   "start": 11.215,
+   "end": 11.343
   },
   {
    "w": "acha",
-   "start": 11.018,
-   "end": 11.238
+   "start": 11.459,
+   "end": 11.656
   },
   {
    "w": "que",
-   "start": 11.297,
-   "end": 11.389
+   "start": 11.703,
+   "end": 11.784
   },
   {
    "w": "tudo",
-   "start": 11.471,
-   "end": 11.761
+   "start": 11.877,
+   "end": 12.19
   },
   {
    "w": "é",
-   "start": 11.807,
-   "end": 11.831
+   "start": 12.26,
+   "end": 12.307
   },
   {
    "w": "ali",
-   "start": 11.865,
-   "end": 12.074
+   "start": 12.365,
+   "end": 12.597
   },
   {
-   "w": "pértim",
-   "start": 12.156,
-   "end": 12.91
+   "w": "pérr",
+   "start": 12.666,
+   "end": 12.852
+  },
+  {
+   "w": "tim",
+   "start": 12.945,
+   "end": 13.468
   }
  ]
 }
