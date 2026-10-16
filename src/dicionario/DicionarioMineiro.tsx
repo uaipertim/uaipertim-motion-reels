@@ -33,6 +33,9 @@ export type Layout = {
   exemplo: Wrapped;
   ponte: Wrapped;
   cta: Wrapped;
+  // posições (y) calculadas para cada episódio ocupar a zona segura inteira, de y=220 a y=1480
+  sig: { headerTop: number; cardTop: number; cardH: number; balloonTop: number; exH: number; shopTop: number };
+  pon: { textTop: number; shopTop: number };
 };
 export type DicionarioProps = Episodio & { timing?: Timing; layout?: Layout };
 
@@ -40,9 +43,20 @@ const SAFE = { left: 80, right: 940, top: 220, bottom: 1480 };
 const CX = (SAFE.left + SAFE.right) / 2; // centro da coluna de texto (cenas 2–4)
 const COVER = { top: 285, bottom: 1635, maxWidth: 0.72 * 1080 - 18, maxSize: 300 };
 const CONTENT_TOP = SAFE.top + 110; // abaixo do selo do topo
-const CARD_PAD = 48;
-const BALLOON = { left: 210, right: SAFE.right, pad: 38 };
-const SHOP_W = 210;
+const CHIP_BOTTOM = SAFE.top + 12 + 32 * 1.1 + 2 * 32 * 0.32; // fim do selo pequeno das cenas 2–4
+// cena do significado: lojinha grande ancorada no pé da zona segura; o balão sai dela, à direita
+const SIG = { cardPad: 56, label: 34, shopW: 300, balloonLeft: 380, balloonPad: 40, balloonOverlap: 200, minGap: 32, maxGap: 120 };
+const BALLOON = { left: SIG.balloonLeft, right: SAFE.right, pad: SIG.balloonPad };
+const SHOP_W = SIG.shopW;
+// cena da ponte: 3 lojinhas ocupando a largura da zona (x 80–940), ancoradas embaixo
+const PON = { shopW: 250, step: 305 };
+// TROCA DE CENA: a cena seguinte entra OVERLAP quadros antes do corte. O TEXTO da cena que sai some primeiro
+// (até 3 quadros antes do corte) e o texto da que entra só começa depois disso (TEXT_IN): nunca há texto
+// sobre texto. Os objetos (card, balão, lojinhas) da cena que sai ficam até o corte: nunca há quadro vazio.
+const OVERLAP = 5;
+const TEXT_IN = OVERLAP - 3;
+const textOut = (t: number, dur: number) => interpolate(t, [dur - OVERLAP - 1, dur - 3], [1, 0], clamp);
+const objOut = (t: number, dur: number) => popOut(t, dur - 2, 2);
 const SHOPS: ShopCharKind[] = ["padaria", "mercado", "farmacia", "pet", "restaurante", "bebidas", "lanchonete", "hortifruti"];
 
 export const nn = (n: number) => String(n).padStart(2, "0");
@@ -50,15 +64,58 @@ export const nn = (n: number) => String(n).padStart(2, "0");
 // texto do CTA na tela: aspas tipográficas e emoji grudado na palavra anterior (não fica sozinho numa linha)
 export const ctaText = (cta: string) => cta.replace(/'([^']+)'/g, "‘$1’").replace(/ (\p{Extended_Pictographic})/gu, "\u00A0$1");
 
-// tamanhos medidos (em calculateMetadata, com as fontes carregadas)
-export const measureLayout = (ep: Episodio): Layout => ({
-  capa: fitCover(ep.palavra, COVER.maxWidth, COVER.maxSize),
-  header: fitWrap(ep.palavra, W.black, SAFE.right - SAFE.left, [150, 130, 112, 96], 1),
-  significado: fitWrap(ep.significado, W.extraBold, SAFE.right - SAFE.left - 2 * CARD_PAD, [72, 66, 60, 54, 50], 3),
-  exemplo: fitWrap(`“${ep.exemplo}”`, W.black, BALLOON.right - BALLOON.left - 2 * BALLOON.pad, [62, 56, 50, 46], 3),
-  ponte: fitWrap(ep.ponte, W.black, SAFE.right - SAFE.left, [96, 88, 80, 72, 66, 60], 5),
-  cta: fitWrap(ctaText(ep.cta), W.black, SAFE.right - SAFE.left, [108, 100, 92, 84, 76, 70], 4),
-});
+// tamanhos e posições medidos (em calculateMetadata, com as fontes carregadas): o conteúdo cresce até
+// preencher a zona segura (y=220 a y=1480), sem passar dela
+const W_COL = SAFE.right - SAFE.left;
+export const measureLayout = (ep: Episodio): Layout => {
+  // --- significado: selo → palavra → card → balão (ao lado da lojinha) → lojinha no pé da zona
+  const shopTop = SAFE.bottom - SIG.shopW * SHOP_RATIO;
+  const exemplo = fitWrap(`“${ep.exemplo}”`, W.black, BALLOON.right - BALLOON.left - 2 * BALLOON.pad, [70, 66, 62, 58, 54, 50, 46], 4);
+  const exH = exemplo.lines.length * exemplo.size * 1.12 + 2 * BALLOON.pad;
+  const balloonTop = shopTop + SIG.balloonOverlap - exH;
+  const cardH = (w: Wrapped) => 2 * SIG.cardPad + SIG.label * 1.2 + 14 + w.lines.length * w.size * 1.14;
+  // par (palavra, significado) mais equilibrado que cabe: maior soma relativa dos dois tamanhos
+  const combos: Array<[number, number]> = [];
+  for (const hs of [190, 170, 150, 130, 112, 96]) for (const ss of [84, 80, 76, 72, 66, 60, 54]) combos.push([hs, ss]);
+  combos.sort((a, b) => b[0] / 190 + b[1] / 84 - (a[0] / 190 + a[1] / 84));
+  let header = fitWrap(ep.palavra, W.black, W_COL, [96], 1);
+  let significado = fitWrap(ep.significado, W.extraBold, W_COL - 2 * SIG.cardPad, [54], 3);
+  for (const [hs, ss] of combos) {
+    const h = fitWrap(ep.palavra, W.black, W_COL, [hs], 1);
+    const sg = fitWrap(ep.significado, W.extraBold, W_COL - 2 * SIG.cardPad, [ss], 3);
+    if (h.lines.length > 1 || sg.lines.length > 3) continue;
+    if (CHIP_BOTTOM + 3 * SIG.minGap + h.size * 1.1 + cardH(sg) <= balloonTop) {
+      header = h;
+      significado = sg;
+      break;
+    }
+  }
+  const gap = Math.min(SIG.maxGap, (balloonTop - CHIP_BOTTOM - header.size * 1.1 - cardH(significado)) / 3);
+  const headerTop = CHIP_BOTTOM + gap;
+  const cardTop = headerTop + header.size * 1.1 + gap;
+  // --- ponte: texto grande centrado entre o selo e as lojinhas, que ficam no pé da zona
+  const ponShopTop = SAFE.bottom - PON.shopW * SHOP_RATIO;
+  const room = ponShopTop - 60 - (CHIP_BOTTOM + 40);
+  let ponte = fitWrap(ep.ponte, W.black, W_COL, [60], 6);
+  for (const size of [124, 116, 108, 100, 92, 84, 76, 70, 64]) {
+    const w = fitWrap(ep.ponte, W.black, W_COL, [size], 5);
+    if (w.lines.length <= 5 && w.lines.length * size * 1.12 <= room) {
+      ponte = w;
+      break;
+    }
+  }
+  const ponH = ponte.lines.length * ponte.size * 1.12;
+  return {
+    capa: fitCover(ep.palavra, COVER.maxWidth, COVER.maxSize),
+    header,
+    significado,
+    exemplo,
+    ponte,
+    cta: fitWrap(ctaText(ep.cta), W.black, W_COL, [108, 100, 92, 84, 76, 70], 4),
+    sig: { headerTop, cardTop, cardH: cardH(significado), balloonTop, exH, shopTop },
+    pon: { textTop: (CHIP_BOTTOM + 40 + ponShopTop - 60) / 2 - ponH / 2, shopTop: ponShopTop },
+  };
+};
 
 const norm = (s: string) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]/g, "");
 
@@ -73,14 +130,18 @@ const Lines: React.FC<{
       {wrapped.lines.map((line, li) => (
         <div key={li} style={{ display: "flex", justifyContent: align === "center" ? "center" : "flex-start", whiteSpace: "nowrap" }}>
           {line.split(" ").map((w, wi) => {
-            const s = pop(t, start + i++ * stagger);
+            // cada palavra anima JÁ na posição final: só aparece (fade) e sobe um pouco; sem escala, sem mexer
+            // na horizontal e sem mudar o espaçamento → nenhuma palavra encosta na outra em quadro nenhum
+            const at = start + i++ * stagger;
+            const rise = pop(t, at, { damping: 14, stiffness: 160 });
+            const fade = interpolate(t, [at, at + 3], [0, 1], clamp);
             return (
               <span
                 key={wi}
                 style={{
                   display: "inline-block", fontFamily: FONT, fontWeight: weight, fontSize: wrapped.size, lineHeight,
                   color: accent?.(w) ?? color, letterSpacing: -1, marginRight: wi < line.split(" ").length - 1 ? wrapped.size * 0.2 : 0,
-                  transform: `translateY(${(1 - s) * 30}px) scale(${s})`, transformOrigin: "50% 80%", textShadow: shadow,
+                  transform: `translateY(${(1 - rise) * 26}px)`, opacity: fade, textShadow: shadow,
                 }}
               >
                 {w}
@@ -157,7 +218,9 @@ const Capa: React.FC<{ ep: Episodio; L: Layout; dur: number }> = ({ ep, L, dur }
   // quique: começa em repouso no frame 0 (quadro completo) e já sai pulando; depois pulsa de leve
   const hop = 30 * Math.abs(Math.sin((Math.PI * t) / 13)) * Math.exp(-t / 26);
   const pulse = 1 + 0.03 * Math.sin((2 * Math.PI * t) / 28);
-  const out = popOut(t, dur - 6, 6);
+  // a capa (selo + palavra, no centro) fica até o corte: o texto que entra (cabeçalho, no topo) não a cruza
+  // e o texto do card só começa no corte
+  const out = interpolate(t, [dur - 4, dur], [1, 0], clamp);
   return (
     <AbsoluteFill style={{ opacity: out, transform: `scale(${0.9 + 0.1 * out})` }}>
       <div style={{ position: "absolute", top, left: 0, right: 0, display: "flex", justifyContent: "center" }}>
@@ -187,54 +250,54 @@ const TopChip: React.FC<{ numero: number; t: number }> = ({ numero, t }) => (
   </div>
 );
 
+const TopChipSeq: React.FC<{ numero: number }> = ({ numero }) => <TopChip numero={numero} t={useCurrentFrame()} />;
+
 // ---------------- CENA 2 · SIGNIFICADO + EXEMPLO ----------------
 const Significado: React.FC<{ ep: Episodio; L: Layout; dur: number; balloonAt: number }> = ({ ep, L, dur, balloonAt }) => {
   const t = useCurrentFrame();
-  const out = popOut(t, dur - 5, 5);
-  const headerTop = SAFE.top + 100;
-  const cardTop = headerTop + L.header.size * 1.05 + 70;
-  const sigH = L.significado.lines.length * L.significado.size * 1.14;
-  const cardH = CARD_PAD + 40 + 12 + sigH + CARD_PAD;
-  const exH = L.exemplo.lines.length * L.exemplo.size * 1.12 + 2 * BALLOON.pad;
-  const shopTop = SAFE.bottom - SHOP_W * SHOP_RATIO;
-  const balloonTop = Math.max(cardTop + cardH + 46, shopTop - 34 - exH);
+  const tx = textOut(t, dur);
+  const ob = objOut(t, dur);
+  const { headerTop, cardTop, cardH, balloonTop, exH, shopTop } = L.sig;
   const b = pop(t, balloonAt, { damping: 9, stiffness: 190 });
   const talking = t >= balloonAt && t < balloonAt + 40;
-  const shopIn = pop(t, 4, { damping: 10, stiffness: 160 });
+  const shopIn = pop(t, 1, { damping: 10, stiffness: 160 });
   return (
-    <AbsoluteFill style={{ opacity: out }}>
-      <TopChip numero={ep.numero} t={t} />
+    <AbsoluteFill>
       {/* palavra (cabeçalho do verbete) */}
-      <div style={{ position: "absolute", top: headerTop, left: SAFE.left, width: SAFE.right - SAFE.left, display: "flex", justifyContent: "center", transform: `scale(${pop(t, 1)})` }}>
+      <div style={{ position: "absolute", top: headerTop, left: SAFE.left, width: SAFE.right - SAFE.left, display: "flex", justifyContent: "center", transform: `scale(${pop(t, TEXT_IN)})`, opacity: tx }}>
         <BigWord lines={L.header.lines} size={L.header.size} />
       </div>
       {/* card do significado */}
       <div
         style={{
           position: "absolute", top: cardTop, left: SAFE.left, width: SAFE.right - SAFE.left, height: cardH, background: "#fff", borderRadius: 44,
-          boxShadow: `0 12px 0 ${C.cremeDeep}, 0 22px 40px rgba(34,28,25,0.12)`, transform: `scale(${pop(t, 3, { damping: 11, stiffness: 170 })})`,
-          padding: CARD_PAD, boxSizing: "border-box",
+          boxShadow: `0 12px 0 ${C.cremeDeep}, 0 22px 40px rgba(34,28,25,0.12)`, transform: `scale(${pop(t, 1, { damping: 11, stiffness: 170 }) * ob})`,
+          padding: SIG.cardPad, boxSizing: "border-box",
         }}
       >
-        <div style={{ fontFamily: FONT, fontWeight: W.black, fontSize: 32, letterSpacing: 3, color: C.coral, lineHeight: "40px", marginBottom: 12 }}>
-          SIGNIFICADO
+        <div style={{ opacity: tx * interpolate(t, [TEXT_IN, TEXT_IN + 3], [0, 1], clamp) }}>
+          <div style={{ fontFamily: FONT, fontWeight: W.black, fontSize: SIG.label, letterSpacing: 3, color: C.coral, lineHeight: `${SIG.label * 1.2}px`, marginBottom: 14 }}>
+            SIGNIFICADO
+          </div>
         </div>
-        <Lines wrapped={L.significado} t={t} start={6} weight={W.extraBold} align="left" lineHeight={1.14} stagger={1} />
+        <div style={{ opacity: tx }}>
+          <Lines wrapped={L.significado} t={t} start={TEXT_IN + 3} weight={W.extraBold} align="left" lineHeight={1.14} stagger={1} />
+        </div>
       </div>
       {/* balão de fala com o exemplo, saindo da lojinha */}
       <div
         style={{
           position: "absolute", top: balloonTop, left: BALLOON.left, width: BALLOON.right - BALLOON.left, height: exH,
-          transform: `scale(${b})`, transformOrigin: "12% 100%", opacity: t >= balloonAt ? 1 : 0,
+          transform: `scale(${b * ob})`, transformOrigin: "0% 100%", opacity: t >= balloonAt ? 1 : 0,
         }}
       >
         <svg width={BALLOON.right - BALLOON.left} height={exH + 40} style={{ position: "absolute", left: 0, top: 0, overflow: "visible" }}>
-          <path d={`M60 ${exH - 6} L28 ${exH + 38} L118 ${exH - 6} Z`} fill={C.amareloDark} transform="translate(0 8)" />
+          <path d={`M30 ${exH - 70} L-46 ${exH + 6} L60 ${exH - 4} Z`} fill={C.amareloDark} transform="translate(0 8)" />
           <rect x={0} y={8} width={BALLOON.right - BALLOON.left} height={exH} rx={40} fill={C.amareloDark} />
-          <path d={`M60 ${exH - 6} L28 ${exH + 38} L118 ${exH - 6} Z`} fill={C.amarelo} />
+          <path d={`M30 ${exH - 70} L-46 ${exH + 6} L60 ${exH - 4} Z`} fill={C.amarelo} />
           <rect x={0} y={0} width={BALLOON.right - BALLOON.left} height={exH} rx={40} fill={C.amarelo} />
         </svg>
-        <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", padding: `0 ${BALLOON.pad}px` }}>
+        <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", padding: `0 ${BALLOON.pad}px`, opacity: tx }}>
           <Lines wrapped={L.exemplo} t={t} start={balloonAt + 2} weight={W.black} stagger={1} />
         </div>
       </div>
@@ -242,7 +305,7 @@ const Significado: React.FC<{ ep: Episodio; L: Layout; dur: number; balloonAt: n
       <div
         style={{
           position: "absolute", left: SAFE.left, top: shopTop, width: SHOP_W,
-          transform: `translateY(${(1 - shopIn) * 300 - (talking ? Math.abs(Math.sin((t - balloonAt) * 0.5)) * 10 : 0)}px)`,
+          transform: `translateY(${-(talking ? Math.abs(Math.sin((t - balloonAt) * 0.5)) * 10 : 0)}px) scale(${shopIn * ob})`, transformOrigin: "50% 100%",
         }}
       >
         <ShopChar
@@ -257,22 +320,19 @@ const Significado: React.FC<{ ep: Episodio; L: Layout; dur: number; balloonAt: n
 // ---------------- CENA 3 · PONTE COM A UAIPERTIM ----------------
 const Ponte: React.FC<{ ep: Episodio; L: Layout; dur: number }> = ({ ep, L, dur }) => {
   const t = useCurrentFrame();
-  const out = popOut(t, dur - 5, 5);
+  const tx = textOut(t, dur);
+  const ob = objOut(t, dur);
   const key = norm(ep.palavra);
   const accent = (w: string) => (norm(w) === "uaipertim" || (key.length > 1 && norm(w) === key) ? C.coral : undefined);
-  const textH = L.ponte.lines.length * L.ponte.size * 1.12;
-  const groupH = textH + 90 + 190 * SHOP_RATIO;
-  const textTop = Math.max(CONTENT_TOP, (CONTENT_TOP + SAFE.bottom) / 2 - groupH / 2);
-  const shopTop = Math.min(SAFE.bottom - 190 * SHOP_RATIO, textTop + textH + 90);
+  const { textTop, shopTop } = L.pon;
   return (
-    <AbsoluteFill style={{ opacity: out }}>
-      <TopChip numero={ep.numero} t={t} />
-      <div style={{ position: "absolute", top: textTop, left: SAFE.left, width: SAFE.right - SAFE.left }}>
-        <Lines wrapped={L.ponte} t={t} start={2} weight={W.black} accent={accent} stagger={2} />
+    <AbsoluteFill>
+      <div style={{ position: "absolute", top: textTop, left: SAFE.left, width: SAFE.right - SAFE.left, opacity: tx }}>
+        <Lines wrapped={L.ponte} t={t} start={TEXT_IN} weight={W.black} accent={accent} stagger={2} />
       </div>
       {/* lojinhas da cidade acendendo */}
       {(["padaria", "mercado", "farmacia"] as ShopCharKind[]).map((k, i) => {
-        const at = 6 + i * 4;
+        const at = 1 + i * 3;
         const s = pop(t, at, { damping: 9, stiffness: 170 });
         const lit = interpolate(t, [at + 10, at + 18], [0.15, 1], clamp);
         const wave = Math.sin((t - at) * 0.3 + i);
@@ -280,11 +340,11 @@ const Ponte: React.FC<{ ep: Episodio; L: Layout; dur: number }> = ({ ep, L, dur 
           <div
             key={k}
             style={{
-              position: "absolute", left: CX - 95 + (i - 1) * 270, top: shopTop, width: 190,
-              transform: `translateY(${(1 - s) * 260 - Math.max(0, wave) * 6}px)`,
+              position: "absolute", left: CX - PON.shopW / 2 + (i - 1) * PON.step, top: shopTop, width: PON.shopW,
+              transform: `translateY(${-Math.max(0, wave) * 6}px) scale(${s * ob})`, transformOrigin: "50% 100%",
             }}
           >
-            <ShopChar kind={k} width={190} mood="happy" look={[0, -0.2]} lit={lit} glow={lit > 0.9 ? 0.4 : 0} awning={0.4 + 0.3 * wave} bulbs={lit} bulbPhase={t + i * 5} />
+            <ShopChar kind={k} width={PON.shopW} mood="happy" look={[0, -0.2]} lit={lit} glow={lit > 0.9 ? 0.4 : 0} awning={0.4 + 0.3 * wave} bulbs={lit} bulbPhase={t + i * 5} />
           </div>
         );
       })}
@@ -305,9 +365,8 @@ const Cta: React.FC<{ ep: Episodio; L: Layout }> = ({ ep, L }) => {
   const breathe = 1 + 0.015 * Math.sin(t * 0.15);
   return (
     <AbsoluteFill>
-      <TopChip numero={ep.numero} t={t} />
       <div style={{ position: "absolute", top: textTop, left: SAFE.left, width: SAFE.right - SAFE.left, transform: `scale(${breathe})` }}>
-        <Lines wrapped={L.cta} t={t} start={1} weight={W.black} accent={accent} stagger={1} lineHeight={1.1} />
+        <Lines wrapped={L.cta} t={t} start={TEXT_IN} weight={W.black} accent={accent} stagger={1} lineHeight={1.1} />
       </div>
       <div
         style={{
@@ -336,14 +395,18 @@ export const DicionarioMineiro: React.FC<DicionarioProps> = (props) => {
       <Sequence from={S.capa.from} durationInFrames={S.capa.duration} name="Capa">
         <Capa ep={ep} L={layout} dur={S.capa.duration} />
       </Sequence>
-      <Sequence from={S.significado.from} durationInFrames={S.significado.duration} name="Significado + exemplo">
-        <Significado ep={ep} L={layout} dur={S.significado.duration} balloonAt={timing.beats.balloon - S.significado.from} />
+      {/* a cena seguinte entra OVERLAP quadros antes do corte, enquanto a anterior sai: nunca há quadro só com o fundo */}
+      <Sequence from={S.significado.from - OVERLAP} durationInFrames={S.significado.duration + OVERLAP} name="Significado + exemplo">
+        <Significado ep={ep} L={layout} dur={S.significado.duration + OVERLAP} balloonAt={timing.beats.balloon - S.significado.from + OVERLAP} />
       </Sequence>
-      <Sequence from={S.ponte.from} durationInFrames={S.ponte.duration} name="Ponte">
-        <Ponte ep={ep} L={layout} dur={S.ponte.duration} />
+      <Sequence from={S.ponte.from - OVERLAP} durationInFrames={S.ponte.duration + OVERLAP} name="Ponte">
+        <Ponte ep={ep} L={layout} dur={S.ponte.duration + OVERLAP} />
       </Sequence>
-      <Sequence from={S.cta.from} durationInFrames={S.cta.duration} name="CTA">
+      <Sequence from={S.cta.from - OVERLAP} durationInFrames={S.cta.duration + OVERLAP} name="CTA">
         <Cta ep={ep} L={layout} />
+      </Sequence>
+      <Sequence from={S.significado.from - OVERLAP} name="Selo (cenas 2–4)">
+        <TopChipSeq numero={ep.numero} />
       </Sequence>
       <Audio src={staticFile(`audio/dicionario/${nn(ep.numero)}/mix.wav`)} />
     </AbsoluteFill>

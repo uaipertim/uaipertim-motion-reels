@@ -6,6 +6,7 @@ out/*
 !out/dicionario/
 out/dicionario/*.png
 !out/cortes/
+!out/carrosseis/
 out/cortes/*.png
 audio/models/
 audio/build/
