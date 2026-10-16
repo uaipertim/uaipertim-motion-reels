@@ -1,0 +1,52 @@
+{
+ "fps": 30,
+ "durationInFrames": 369,
+ "scenes": {
+  "capa": {
+   "from": 0,
+   "duration": 35
+  },
+  "significado": {
+   "from": 35,
+   "duration": 160
+  },
+  "ponte": {
+   "from": 195,
+   "duration": 87
+  },
+  "cta": {
+   "from": 282,
+   "duration": 87
+  }
+ },
+ "beats": {
+  "balloon": 114
+ },
+ "speech": [
+  {
+   "id": "palavra",
+   "scene": "capa",
+   "from": 0,
+   "to": 25
+  },
+  {
+   "id": "significado",
+   "scene": "significado",
+   "from": 39,
+   "to": 186
+  },
+  {
+   "id": "ponte",
+   "scene": "ponte",
+   "from": 199,
+   "to": 274
+  },
+  {
+   "id": "cta",
+   "scene": "cta",
+   "from": 286,
+   "to": 351
+  }
+ ],
+ "episodio": "06-nossinhora.json"
+}

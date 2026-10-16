@@ -15,6 +15,14 @@ import { CoverCard } from "./components/Cover";
 import { COVERS } from "./covers/covers";
 import { DicionarioMineiro, DicionarioProps, Timing, measureLayout, nn } from "./dicionario/DicionarioMineiro";
 import ep01 from "../episodios/dicionario/01-uai.json";
+import { CarrosselFacim, CarrosselProps, SLIDE, measureSlide } from "./carrossel/CarrosselFacim";
+import facim01 from "../carrosseis/facim/01-antes-que-voce-pergunte.json";
+
+// Carrossel "Facim, facim": cada slide é um still; o carrossel = JSON em --props + "slide" (índice, a partir de 0).
+const carrosselMetadata = async ({ props }: { props: CarrosselProps }) => {
+  await fontsReady;
+  return { props: { ...props, layout: measureSlide(props, props.slide ?? 0) } };
+};
 
 // Dicionário Mineiro: duração pela voz (timing.json gerado por audio/dicionario.py) e textos medidos com as fontes carregadas.
 // Episódio = JSON passado em --props (ex.: --props=episodios/dicionario/02-pertim.json); sem --props, abre o 01.
@@ -107,6 +115,16 @@ export const RemotionRoot: React.FC = () => (
       height={1920}
       defaultProps={ep01 as DicionarioProps}
       calculateMetadata={dicionarioMetadata}
+    />
+    <Composition
+      id="CarrosselFacim"
+      component={CarrosselFacim}
+      durationInFrames={1}
+      fps={30}
+      width={SLIDE.width}
+      height={SLIDE.height}
+      defaultProps={{ ...(facim01 as CarrosselProps), slide: 0 }}
+      calculateMetadata={carrosselMetadata}
     />
   </>
 );

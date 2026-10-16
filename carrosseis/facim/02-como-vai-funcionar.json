@@ -1,0 +1,40 @@
+{
+  "numero": 2,
+  "chip": "FACIM, FACIM",
+  "slides": [
+    {
+      "tipo": "capa",
+      "titulo": "Pedir no comércio de Glória vai ser *assim* 👇",
+      "texto": ""
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "1. Escolhe a cidade",
+      "texto": "Abre o link e marca São João Batista do Glória.",
+      "icone": "cidade"
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "2. Escolhe a categoria",
+      "texto": "Mercado, farmácia, padaria, restaurante e mais.",
+      "icone": "categoria"
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "3. Vê quem tá aberto e pede",
+      "texto": "Escolhe a loja, monta o pedido e pronto.",
+      "icone": "loja"
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "E acompanha em tempo real",
+      "texto": "Do comércio até chegar em você.",
+      "icone": "entrega"
+    },
+    {
+      "tipo": "final",
+      "titulo": "Manda pra quem ama pedir em casa 🛍️",
+      "texto": "Segue a gente pra saber quando abrir"
+    }
+  ]
+}

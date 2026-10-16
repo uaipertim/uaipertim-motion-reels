@@ -1,0 +1,122 @@
+{
+ "script": "Facim. <break time=\"0.4s\" /> Facinho. Sem complicação. Tipo: Esse trem é facim, facim. <break time=\"0.4s\" /> Abre o link, escolhe e pede. Facim, facim. <break time=\"0.4s\" /> Manda pra quem fala facim",
+ "voice": "LuQ9eaWO9yCQrR73VQFa",
+ "text": "Facim. <break time=\"0.4s\" /> Facinho. Sem complicação. Tipo: Esse trem é facim, facim. <break time=\"0.4s\" /> Abre o link, escolhe e pede. Facim, facim. <break time=\"0.4s\" /> Manda pra quem fala facim",
+ "words": [
+  {
+   "w": "Facim",
+   "start": 0.0,
+   "end": 0.569
+  },
+  {
+   "w": "Facinho",
+   "start": 1.115,
+   "end": 1.765
+  },
+  {
+   "w": "Sem",
+   "start": 2.02,
+   "end": 2.241
+  },
+  {
+   "w": "complicação",
+   "start": 2.299,
+   "end": 3.1
+  },
+  {
+   "w": "Tipo",
+   "start": 3.228,
+   "end": 3.692
+  },
+  {
+   "w": "Esse",
+   "start": 3.901,
+   "end": 4.168
+  },
+  {
+   "w": "trem",
+   "start": 4.226,
+   "end": 4.493
+  },
+  {
+   "w": "é",
+   "start": 4.586,
+   "end": 4.656
+  },
+  {
+   "w": "facim",
+   "start": 4.807,
+   "end": 5.317
+  },
+  {
+   "w": "facim",
+   "start": 5.561,
+   "end": 6.072
+  },
+  {
+   "w": "Abre",
+   "start": 6.629,
+   "end": 6.931
+  },
+  {
+   "w": "o",
+   "start": 6.966,
+   "end": 6.989
+  },
+  {
+   "w": "link",
+   "start": 7.036,
+   "end": 7.361
+  },
+  {
+   "w": "escolhe",
+   "start": 7.477,
+   "end": 8.127
+  },
+  {
+   "w": "e",
+   "start": 8.208,
+   "end": 8.324
+  },
+  {
+   "w": "pede",
+   "start": 8.417,
+   "end": 8.882
+  },
+  {
+   "w": "Facim",
+   "start": 9.125,
+   "end": 9.683
+  },
+  {
+   "w": "facim",
+   "start": 9.915,
+   "end": 10.461
+  },
+  {
+   "w": "Manda",
+   "start": 11.018,
+   "end": 11.331
+  },
+  {
+   "w": "pra",
+   "start": 11.366,
+   "end": 11.482
+  },
+  {
+   "w": "quem",
+   "start": 11.54,
+   "end": 11.668
+  },
+  {
+   "w": "fala",
+   "start": 11.738,
+   "end": 12.005
+  },
+  {
+   "w": "facim",
+   "start": 12.074,
+   "end": 12.864
+  }
+ ]
+}

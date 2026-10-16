@@ -1,0 +1,157 @@
+{
+ "script": "Quitanda. <break time=\"0.4s\" /> Biscoito, rosca, bolo e pão caseiro do café. Tipo: Passa aí que tem quitanda pro café. <break time=\"0.4s\" /> Padaria também vai estar no UaiPertim. <break time=\"0.4s\" /> Manda pra quem não vive sem quitanda",
+ "voice": "LuQ9eaWO9yCQrR73VQFa",
+ "text": "Quitanda. <break time=\"0.4s\" /> Biscoito, rosca, bolo e pão caseiro do café. Tipo: Passa aí que tem quitanda pro café. <break time=\"0.4s\" /> Padaria também vai estar no Uaipertím. <break time=\"0.4s\" /> Manda pra quem não vive sem quitanda",
+ "words": [
+  {
+   "w": "Quitanda",
+   "start": 0.0,
+   "end": 0.731
+  },
+  {
+   "w": "Biscoito",
+   "start": 1.289,
+   "end": 2.055
+  },
+  {
+   "w": "rosca",
+   "start": 2.159,
+   "end": 2.728
+  },
+  {
+   "w": "bolo",
+   "start": 2.821,
+   "end": 3.193
+  },
+  {
+   "w": "e",
+   "start": 3.251,
+   "end": 3.344
+  },
+  {
+   "w": "pão",
+   "start": 3.413,
+   "end": 3.611
+  },
+  {
+   "w": "caseiro",
+   "start": 3.634,
+   "end": 4.075
+  },
+  {
+   "w": "do",
+   "start": 4.122,
+   "end": 4.191
+  },
+  {
+   "w": "café",
+   "start": 4.238,
+   "end": 4.667
+  },
+  {
+   "w": "Tipo",
+   "start": 4.737,
+   "end": 5.259
+  },
+  {
+   "w": "Passa",
+   "start": 5.41,
+   "end": 5.759
+  },
+  {
+   "w": "aí",
+   "start": 5.782,
+   "end": 5.863
+  },
+  {
+   "w": "que",
+   "start": 5.898,
+   "end": 5.979
+  },
+  {
+   "w": "tem",
+   "start": 6.026,
+   "end": 6.153
+  },
+  {
+   "w": "quitanda",
+   "start": 6.211,
+   "end": 6.757
+  },
+  {
+   "w": "pro",
+   "start": 6.792,
+   "end": 6.931
+  },
+  {
+   "w": "café",
+   "start": 6.954,
+   "end": 7.419
+  },
+  {
+   "w": "Padaria",
+   "start": 8.127,
+   "end": 8.696
+  },
+  {
+   "w": "também",
+   "start": 8.742,
+   "end": 9.067
+  },
+  {
+   "w": "vai",
+   "start": 9.114,
+   "end": 9.23
+  },
+  {
+   "w": "estar",
+   "start": 9.253,
+   "end": 9.567
+  },
+  {
+   "w": "no",
+   "start": 9.625,
+   "end": 9.752
+  },
+  {
+   "w": "Uaipertím",
+   "start": 9.868,
+   "end": 10.762
+  },
+  {
+   "w": "Manda",
+   "start": 11.366,
+   "end": 11.726
+  },
+  {
+   "w": "pra",
+   "start": 11.773,
+   "end": 11.889
+  },
+  {
+   "w": "quem",
+   "start": 11.947,
+   "end": 12.086
+  },
+  {
+   "w": "não",
+   "start": 12.109,
+   "end": 12.237
+  },
+  {
+   "w": "vive",
+   "start": 12.283,
+   "end": 12.55
+  },
+  {
+   "w": "sem",
+   "start": 12.585,
+   "end": 12.701
+  },
+  {
+   "w": "quitanda",
+   "start": 12.748,
+   "end": 13.514
+  }
+ ]
+}

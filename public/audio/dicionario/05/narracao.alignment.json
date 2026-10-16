@@ -1,0 +1,147 @@
+{
+ "script": "Sô. <break time=\"0.4s\" /> Jeito mineiro de chamar alguém. Tipo: Para com isso, sô! <break time=\"0.4s\" /> Ô sô, já segue a gente pra saber quando abrir? <break time=\"0.4s\" /> Manda pra quem não larga o sô",
+ "voice": "LuQ9eaWO9yCQrR73VQFa",
+ "text": "Sô. <break time=\"0.4s\" /> Jeito mineiro de chamar alguém. Tipo: Para com isso, sô! <break time=\"0.4s\" /> Ô sô, já segue a gente pra saber quando abrir? <break time=\"0.4s\" /> Manda pra quem não larga o sô",
+ "words": [
+  {
+   "w": "Sô",
+   "start": 0.0,
+   "end": 0.313
+  },
+  {
+   "w": "Jeito",
+   "start": 0.882,
+   "end": 1.196
+  },
+  {
+   "w": "mineiro",
+   "start": 1.242,
+   "end": 1.614
+  },
+  {
+   "w": "de",
+   "start": 1.66,
+   "end": 1.741
+  },
+  {
+   "w": "chamar",
+   "start": 1.776,
+   "end": 2.148
+  },
+  {
+   "w": "alguém",
+   "start": 2.194,
+   "end": 2.519
+  },
+  {
+   "w": "Tipo",
+   "start": 2.682,
+   "end": 3.158
+  },
+  {
+   "w": "Para",
+   "start": 3.379,
+   "end": 3.669
+  },
+  {
+   "w": "com",
+   "start": 3.715,
+   "end": 3.866
+  },
+  {
+   "w": "isso",
+   "start": 3.982,
+   "end": 4.156
+  },
+  {
+   "w": "sô",
+   "start": 4.226,
+   "end": 4.551
+  },
+  {
+   "w": "Ô",
+   "start": 5.085,
+   "end": 5.213
+  },
+  {
+   "w": "sô",
+   "start": 5.329,
+   "end": 5.561
+  },
+  {
+   "w": "já",
+   "start": 5.631,
+   "end": 5.735
+  },
+  {
+   "w": "segue",
+   "start": 5.805,
+   "end": 6.072
+  },
+  {
+   "w": "a",
+   "start": 6.107,
+   "end": 6.13
+  },
+  {
+   "w": "gente",
+   "start": 6.177,
+   "end": 6.513
+  },
+  {
+   "w": "pra",
+   "start": 6.56,
+   "end": 6.664
+  },
+  {
+   "w": "saber",
+   "start": 6.711,
+   "end": 6.978
+  },
+  {
+   "w": "quando",
+   "start": 7.024,
+   "end": 7.279
+  },
+  {
+   "w": "abrir",
+   "start": 7.314,
+   "end": 7.674
+  },
+  {
+   "w": "Manda",
+   "start": 8.197,
+   "end": 8.51
+  },
+  {
+   "w": "pra",
+   "start": 8.545,
+   "end": 8.661
+  },
+  {
+   "w": "quem",
+   "start": 8.719,
+   "end": 8.847
+  },
+  {
+   "w": "não",
+   "start": 8.882,
+   "end": 9.009
+  },
+  {
+   "w": "larga",
+   "start": 9.056,
+   "end": 9.3
+  },
+  {
+   "w": "o",
+   "start": 9.323,
+   "end": 9.346
+  },
+  {
+   "w": "sô",
+   "start": 9.404,
+   "end": 10.356
+  }
+ ]
+}

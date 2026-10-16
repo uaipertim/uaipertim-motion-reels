@@ -186,6 +186,38 @@ Faz tudo em sequência (`scripts/dicionario.sh`):
 
 **Episódio novo:** crie `episodios/dicionario/09-palavra.json` com os 6 campos e rode `npm run dicionario -- 09`. No Studio, a composição abre o episódio 01; para ver outro, passe o JSON em `--props`.
 
+## Carrossel "Facim, facim" (modelo fixo + JSON por carrossel)
+
+Arte estática 1080×1350 (4:5), um PNG por slide, renderizada pelo mesmo pipeline das capas (React/HTML → PNG no Chromium, via Remotion): composição `CarrosselFacim` em `src/carrossel/CarrosselFacim.tsx`. **Trocar de carrossel = trocar o JSON.**
+
+**Carrossel** = `carrosseis/facim/NN-tema.json`:
+
+```json
+{
+  "numero": 1,
+  "chip": "FACIM, FACIM",
+  "slides": [
+    { "tipo": "capa", "titulo": "Antes que você *pergunte*… 🤔", "texto": "" },
+    { "tipo": "conteudo", "titulo": "Precisa baixar app?", "texto": "Não. O UaiPertim abre direto…", "icone": "navegador" },
+    { "tipo": "final", "titulo": "Manda pra quem ama o comércio de Glória 🧡", "texto": "Segue a gente pra saber quando abrir" }
+  ]
+}
+```
+
+- **capa:** chip, pergunta grande e "arrasta →". A palavra-chave vai entre `*asteriscos*` e ganha coral + marcador amarelo.
+- **conteudo:** título curto + texto (até ~25 palavras; o script avisa se passar) + ícone, num card branco. Tem progresso discreto (2/6) no canto. `icone` (opcional): `navegador`, `gratis`, `cadastro`, `cidade`, `categoria`, `loja`, `entrega`, `calendario`.
+- **final:** "Manda pra quem…" grande ("Manda" em coral) + linha de apoio em `texto` + logo.
+- De 4 a 6 slides. Sem @, sem WhatsApp, sem dados inventados.
+- Margens: ≥ 80 px nas laterais; na capa ≥ 114 px, para o texto caber no recorte 3:4 da grade (que corta ~34 px de cada lado). Tamanhos de fonte e quebras são medidos por slide (`src/dicionario/fit.ts`); emoji nunca fica sozinho numa linha.
+
+**Gerar:**
+
+```bash
+npm run carrossel -- 01        # ou: npm run carrossel -- carrosseis/facim/01-antes-que-voce-pergunte.json
+```
+
+Saída em `out/carrosseis/facim/NN-tema/`: `slide-1.png` … `slide-N.png` e `capa_3x4.png` (prévia da capa no recorte da grade). **Carrossel novo:** crie `carrosseis/facim/03-tema.json` e rode `npm run carrossel -- 03`. No Studio, a composição abre o slide 1 do C1; para outro, passe o JSON + `"slide": i` em `--props`.
+
 ## Como editar
 
 - **Textos de tela:** `src/config/texts.ts` (Vídeo 1) · `src/v2/config/texts.ts` (Vídeo 2) · `src/v3/config/texts.ts` (Vídeo 3) · `src/v4/config/texts.ts` (Vídeo 4) · `src/story/config/texts.ts` (story)

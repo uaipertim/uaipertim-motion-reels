@@ -1,0 +1,97 @@
+{
+ "script": "Nossinhora. <break time=\"0.4s\" /> Espanto. Daqueles grandes. Tipo: Nossinhora, que calor! <break time=\"0.4s\" /> Nossinhora, num precisa baixar nada? <break time=\"0.4s\" /> Manda pra quem fala nossinhora",
+ "voice": "LuQ9eaWO9yCQrR73VQFa",
+ "text": "Nossinhora. <break time=\"0.4s\" /> Espanto. Daqueles grandes. Tipo: Nossinhora, que calor! <break time=\"0.4s\" /> Nossinhora, num precisa baixar nada? <break time=\"0.4s\" /> Manda pra quem fala nossinhora",
+ "words": [
+  {
+   "w": "Nossinhora",
+   "start": 0.0,
+   "end": 0.824
+  },
+  {
+   "w": "Espanto",
+   "start": 1.312,
+   "end": 2.206
+  },
+  {
+   "w": "Daqueles",
+   "start": 2.403,
+   "end": 2.937
+  },
+  {
+   "w": "grandes",
+   "start": 3.019,
+   "end": 3.622
+  },
+  {
+   "w": "Tipo",
+   "start": 3.913,
+   "end": 4.4
+  },
+  {
+   "w": "Nossinhora",
+   "start": 4.667,
+   "end": 5.364
+  },
+  {
+   "w": "que",
+   "start": 5.445,
+   "end": 5.596
+  },
+  {
+   "w": "calor",
+   "start": 5.666,
+   "end": 6.211
+  },
+  {
+   "w": "Nossinhora",
+   "start": 6.745,
+   "end": 7.465
+  },
+  {
+   "w": "num",
+   "start": 7.535,
+   "end": 7.674
+  },
+  {
+   "w": "precisa",
+   "start": 7.721,
+   "end": 8.162
+  },
+  {
+   "w": "baixar",
+   "start": 8.208,
+   "end": 8.615
+  },
+  {
+   "w": "nada",
+   "start": 8.696,
+   "end": 9.23
+  },
+  {
+   "w": "Manda",
+   "start": 9.752,
+   "end": 10.101
+  },
+  {
+   "w": "pra",
+   "start": 10.147,
+   "end": 10.275
+  },
+  {
+   "w": "quem",
+   "start": 10.321,
+   "end": 10.484
+  },
+  {
+   "w": "fala",
+   "start": 10.565,
+   "end": 10.844
+  },
+  {
+   "w": "nossinhora",
+   "start": 10.902,
+   "end": 11.935
+  }
+ ]
+}

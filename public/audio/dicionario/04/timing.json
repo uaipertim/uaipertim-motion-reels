@@ -1,0 +1,52 @@
+{
+ "fps": 30,
+ "durationInFrames": 393,
+ "scenes": {
+  "capa": {
+   "from": 0,
+   "duration": 28
+  },
+  "significado": {
+   "from": 28,
+   "duration": 161
+  },
+  "ponte": {
+   "from": 189,
+   "duration": 127
+  },
+  "cta": {
+   "from": 316,
+   "duration": 77
+  }
+ },
+ "beats": {
+  "balloon": 92
+ },
+ "speech": [
+  {
+   "id": "palavra",
+   "scene": "capa",
+   "from": 0,
+   "to": 17
+  },
+  {
+   "id": "significado",
+   "scene": "significado",
+   "from": 32,
+   "to": 181
+  },
+  {
+   "id": "ponte",
+   "scene": "ponte",
+   "from": 193,
+   "to": 308
+  },
+  {
+   "id": "cta",
+   "scene": "cta",
+   "from": 320,
+   "to": 375
+  }
+ ],
+ "episodio": "04-facim.json"
+}

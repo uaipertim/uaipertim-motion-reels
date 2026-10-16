@@ -1,0 +1,40 @@
+{
+  "numero": 1,
+  "chip": "FACIM, FACIM",
+  "slides": [
+    {
+      "tipo": "capa",
+      "titulo": "Antes que você *pergunte*… 🤔",
+      "texto": ""
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Precisa baixar app?",
+      "texto": "Não. O UaiPertim abre direto no navegador do celular. É só entrar no link.",
+      "icone": "navegador"
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "É pago pra quem compra?",
+      "texto": "Não. Pra quem compra, é grátis.",
+      "icone": "gratis"
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Precisa de cadastro?",
+      "texto": "Pra acompanhar a entrega do seu pedido, sim. Facim, facim.",
+      "icone": "cadastro"
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Quando começa?",
+      "texto": "Em breve, começando por São João Batista do Glória.",
+      "icone": "cidade"
+    },
+    {
+      "tipo": "final",
+      "titulo": "Manda pra quem ama o comércio de Glória 🧡",
+      "texto": "Segue a gente pra saber quando abrir"
+    }
+  ]
+}

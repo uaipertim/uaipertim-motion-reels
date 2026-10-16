@@ -1,0 +1,152 @@
+{
+ "script": "Num dou conta. <break time=\"0.4s\" /> Não consigo. Não aguento. Tipo: Num dou conta de mais um app no celular. <break time=\"0.4s\" /> No UaiPertim, cê nem precisa baixar. <break time=\"0.4s\" /> Manda pra quem num dá conta",
+ "voice": "LuQ9eaWO9yCQrR73VQFa",
+ "text": "Num dou conta. <break time=\"0.4s\" /> Não consigo. Não aguento. Tipo: Num dou conta de mais um app no celular. <break time=\"0.4s\" /> No Uaipertím, cê nem precisa baixar. <break time=\"0.4s\" /> Manda pra quem num dá conta",
+ "words": [
+  {
+   "w": "Num",
+   "start": 0.0,
+   "end": 0.197
+  },
+  {
+   "w": "dou",
+   "start": 0.232,
+   "end": 0.36
+  },
+  {
+   "w": "conta",
+   "start": 0.441,
+   "end": 0.906
+  },
+  {
+   "w": "Não",
+   "start": 1.44,
+   "end": 1.602
+  },
+  {
+   "w": "consigo",
+   "start": 1.637,
+   "end": 2.38
+  },
+  {
+   "w": "Não",
+   "start": 2.543,
+   "end": 2.682
+  },
+  {
+   "w": "aguento",
+   "start": 2.717,
+   "end": 3.344
+  },
+  {
+   "w": "Tipo",
+   "start": 3.471,
+   "end": 3.982
+  },
+  {
+   "w": "Num",
+   "start": 4.249,
+   "end": 4.4
+  },
+  {
+   "w": "dou",
+   "start": 4.458,
+   "end": 4.563
+  },
+  {
+   "w": "conta",
+   "start": 4.621,
+   "end": 4.969
+  },
+  {
+   "w": "de",
+   "start": 5.016,
+   "end": 5.074
+  },
+  {
+   "w": "mais",
+   "start": 5.143,
+   "end": 5.317
+  },
+  {
+   "w": "um",
+   "start": 5.387,
+   "end": 5.445
+  },
+  {
+   "w": "app",
+   "start": 5.538,
+   "end": 5.7
+  },
+  {
+   "w": "no",
+   "start": 5.793,
+   "end": 5.875
+  },
+  {
+   "w": "celular",
+   "start": 5.909,
+   "end": 6.478
+  },
+  {
+   "w": "No",
+   "start": 7.047,
+   "end": 7.21
+  },
+  {
+   "w": "Uaipertím",
+   "start": 7.279,
+   "end": 8.022
+  },
+  {
+   "w": "cê",
+   "start": 8.092,
+   "end": 8.173
+  },
+  {
+   "w": "nem",
+   "start": 8.231,
+   "end": 8.336
+  },
+  {
+   "w": "precisa",
+   "start": 8.382,
+   "end": 8.87
+  },
+  {
+   "w": "baixar",
+   "start": 8.916,
+   "end": 9.439
+  },
+  {
+   "w": "Manda",
+   "start": 10.008,
+   "end": 10.321
+  },
+  {
+   "w": "pra",
+   "start": 10.356,
+   "end": 10.484
+  },
+  {
+   "w": "quem",
+   "start": 10.53,
+   "end": 10.693
+  },
+  {
+   "w": "num",
+   "start": 10.739,
+   "end": 10.867
+  },
+  {
+   "w": "dá",
+   "start": 10.913,
+   "end": 11.006
+  },
+  {
+   "w": "conta",
+   "start": 11.076,
+   "end": 11.796
+  }
+ ]
+}

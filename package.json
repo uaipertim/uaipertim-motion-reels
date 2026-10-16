@@ -16,6 +16,7 @@
     "render:v3": "remotion render Video3-QualComercioPrecisa out/uaipertim_video3_qual-comercio-precisa.mp4",
     "render:v3:narrado": "remotion render Video3-QualComercioPrecisa-Narrado out/uaipertim_video3_qual-comercio-precisa_narrado.mp4",
     "dicionario": "bash scripts/dicionario.sh",
+    "carrossel": "node scripts/carrossel.mjs",
     "render:v4": "remotion render Video4-EleTeAcha out/uaipertim_video4_ele-te-acha.mp4",
     "render:story": "remotion render Story-Conheca-Card1 out/story-conheca/card1.mp4 && remotion render Story-Conheca-Card2 out/story-conheca/card2.mp4 && remotion render Story-Conheca-Card3 out/story-conheca/card3.mp4 && remotion render Story-Conheca-Card4 out/story-conheca/card4.mp4",
     "still": "remotion still Video1-NaoPrecisaBaixar --frame=400 out/still.png",

@@ -1,0 +1,52 @@
+{
+ "fps": 30,
+ "durationInFrames": 360,
+ "scenes": {
+  "capa": {
+   "from": 0,
+   "duration": 20
+  },
+  "significado": {
+   "from": 20,
+   "duration": 123
+  },
+  "ponte": {
+   "from": 143,
+   "duration": 90
+  },
+  "cta": {
+   "from": 233,
+   "duration": 127
+  }
+ },
+ "beats": {
+  "balloon": 75
+ },
+ "speech": [
+  {
+   "id": "palavra",
+   "scene": "capa",
+   "from": 0,
+   "to": 9
+  },
+  {
+   "id": "significado",
+   "scene": "significado",
+   "from": 24,
+   "to": 134
+  },
+  {
+   "id": "ponte",
+   "scene": "ponte",
+   "from": 147,
+   "to": 225
+  },
+  {
+   "id": "cta",
+   "scene": "cta",
+   "from": 237,
+   "to": 302
+  }
+ ],
+ "episodio": "05-so.json"
+}
