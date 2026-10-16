@@ -1,6 +1,6 @@
 {
   "numero": 1,
-  "chip": "FACIM, FACIM",
+  "chip": "FACIM FACIM",
   "slides": [
     {
       "tipo": "capa",
@@ -22,7 +22,7 @@
     {
       "tipo": "conteudo",
       "titulo": "Precisa de cadastro?",
-      "texto": "Pra acompanhar a entrega do seu pedido, sim. Facim, facim.",
+      "texto": "Pra acompanhar a entrega do seu pedido, sim. Facim facim.",
       "icone": "cadastro"
     },
     {

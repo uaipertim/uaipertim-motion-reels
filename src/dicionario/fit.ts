@@ -16,9 +16,12 @@ export type Wrapped = { size: number; lines: string[]; ok?: boolean }; // ok = t
 // Quebra de linha: o MENOR número de linhas possível e, entre as opções com esse número, a mais equilibrada
 // (linhas de largura parecida). Regra fixa: as duas últimas palavras de uma frase (até . ! ? …) nunca ficam
 // em linhas diferentes (ex.: "Pertinho. / Bem perto.", nunca "Pertinho. Bem / perto.").
+// Emoji não conta como palavra: ele vai sempre grudado na última palavra (NBSP) e, com relaxEmoji, a
+// penúltima pode subir para a linha de cima (fitWrap só usa isso quando permite um tamanho maior).
+const EMOJI = /\p{Extended_Pictographic}/u;
 const CLOSES = /[.!?…]["”’)]*$/;
 const widthCache = new Map<string, number>();
-export const wrap = (text: string, size: number, weight: number, maxWidth: number): string[] => {
+export const wrap = (text: string, size: number, weight: number, maxWidth: number, relaxEmoji = false): string[] => {
   const words = text.split(/ +/).filter(Boolean); // só espaço comum: o NBSP (ex.: antes do emoji) não quebra
   const n = words.length;
   if (n === 0) return [];
@@ -30,7 +33,7 @@ export const wrap = (text: string, size: number, weight: number, maxWidth: numbe
   };
   const closes = (i: number) => i === n - 1 || CLOSES.test(words[i]);
   // não pode quebrar antes da palavra i se ela fecha a frase e a anterior não (separaria as duas últimas)
-  const canBreakBefore = (i: number) => i === 0 || !(closes(i) && !closes(i - 1));
+  const canBreakBefore = (i: number) => i === 0 || !(closes(i) && !closes(i - 1)) || (relaxEmoji && EMOJI.test(words[i]));
   // best[j] = [linhas, custo, início da última linha] para as j primeiras palavras
   const best: Array<[number, number, number] | null> = Array(n + 1).fill(null);
   best[0] = [0, 0, 0];
@@ -54,9 +57,15 @@ export const wrap = (text: string, size: number, weight: number, maxWidth: numbe
 // "ok" diz se coube de verdade (com uma lista de um tamanho só, quem chama decide o que fazer).
 export const fitWrap = (text: string, weight: number, maxWidth: number, sizes: number[], maxLines: number): Wrapped => {
   let last: Wrapped = { size: sizes[sizes.length - 1], lines: [text], ok: false };
+  const fitsAll = (lines: string[], size: number) => lines.length <= maxLines && lines.every((l) => measure(l, size, weight) <= maxWidth);
   for (const size of sizes) {
-    const lines = wrap(text, size, weight, maxWidth);
-    const ok = lines.length <= maxLines && lines.every((l) => measure(l, size, weight) <= maxWidth);
+    let lines = wrap(text, size, weight, maxWidth);
+    let ok = fitsAll(lines, size);
+    if (!ok && EMOJI.test(text)) {
+      // a regra estrita não cabe neste tamanho: a penúltima palavra pode subir (o emoji fica com a última)
+      lines = wrap(text, size, weight, maxWidth, true);
+      ok = fitsAll(lines, size);
+    }
     if (ok) return { size, lines, ok };
     last = { size, lines, ok };
   }
