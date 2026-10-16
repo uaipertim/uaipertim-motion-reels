@@ -29,6 +29,7 @@ export type Corte = {
   narrado?: boolean; // true = mantém a narração do original (só existe no Vídeo 3)
   leadMax?: number; // opcional: tamanho máximo do texto antes do destaque (padrão 112)
   destaqueMax?: number; // opcional: tamanho máximo do destaque (padrão 230)
+  ganchoQuique?: boolean; // opcional: o destaque quica + pulsa (como nas capas do Dicionário); quadro 0 igual
   segura?: number; // opcional: quadros com a 1ª cena do trecho parada sob o gancho (o original só anda depois que ele sai)
   painelTopo?: number; // opcional: o painel creme do gancho começa mais acima (para cobrir um título do original)
 };
@@ -96,7 +97,9 @@ const Lines: React.FC<{ w: Wrapped; color?: string; accent?: (word: string, i: n
 const Gancho: React.FC<{ c: Corte; L: Layout }> = ({ c, L }) => {
   const t = useCurrentFrame();
   const out = popOut(t, c.ganchoDur - 8, 8);
-  const pulse = 1 + 0.025 * Math.sin((2 * Math.PI * t) / 26);
+  const pulse = 1 + (c.ganchoQuique ? 0.04 : 0.025) * Math.sin((2 * Math.PI * t) / 26);
+  // quique: em repouso no quadro 0 (a capa não muda) e já sai pulando, amortecendo
+  const hop = c.ganchoQuique ? 34 * Math.abs(Math.sin((Math.PI * t) / 12)) * Math.exp(-t / 40) : 0;
   const hs = L.hl.size;
   const k = hs / 300;
   const leadH = L.lead.lines[0] ? L.lead.lines.length * L.lead.size * 1.1 : 0;
@@ -114,7 +117,7 @@ const Gancho: React.FC<{ c: Corte; L: Layout }> = ({ c, L }) => {
       />
       <div style={{ position: "absolute", top: c.ganchoTopo, left: 0, right: 0 }}>
         {leadH > 0 && <Lines w={L.lead} />}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", transform: `scale(${pulse})`, transformOrigin: "50% 60%" }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", transform: `translateY(${-hop}px) scale(${pulse})`, transformOrigin: "50% 60%" }}>
           {L.hl.lines.map((l, i) => (
             <div key={i} style={{ position: "relative", marginTop: i ? hs * 0.02 : 0 }}>
               {i === last && <Marker width={L.hl.widths[i] + 40 * k} progress={1} thickness={64 * k} style={{ position: "absolute", left: -20 * k, top: 236 * k }} />}
