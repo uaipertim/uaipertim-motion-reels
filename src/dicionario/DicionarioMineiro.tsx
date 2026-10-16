@@ -52,9 +52,10 @@ const SHOP_W = SIG.shopW;
 // cena da ponte: 3 lojinhas ocupando a largura da zona (x 80–940), ancoradas embaixo
 const PON = { shopW: 250, step: 305 };
 const FIM_GAP = 90; // espaço entre o texto do CTA e o logo
-// TROCA DE CENA: a cena seguinte entra OVERLAP quadros antes do corte. O TEXTO da cena que sai some primeiro
-// (até 3 quadros antes do corte) e o texto da que entra só começa depois disso (TEXT_IN): nunca há texto
-// sobre texto. Os objetos (card, balão, lojinhas) da cena que sai ficam até o corte: nunca há quadro vazio.
+// TROCA DE CENA: a cena seguinte entra OVERLAP quadros antes do corte. O texto da cena que sai — e o card e o
+// balão, que ficam no mesmo espaço do texto que entra — somem primeiro (até 3 quadros antes do corte); o texto
+// da que entra só começa depois disso (TEXT_IN): nunca há texto sobre texto, card ou balão de outra cena.
+// Só seguram a tela até o corte os elementos que não cruzam o texto que entra (as lojinhas, embaixo).
 const OVERLAP = 5;
 const TEXT_IN = OVERLAP - 3;
 const textOut = (t: number, dur: number) => interpolate(t, [dur - OVERLAP - 1, dur - 3], [1, 0], clamp);
@@ -244,9 +245,9 @@ const Capa: React.FC<{ ep: Episodio; L: Layout; dur: number }> = ({ ep, L, dur }
   // quique: começa em repouso no frame 0 (quadro completo) e já sai pulando; depois pulsa de leve
   const hop = 30 * Math.abs(Math.sin((Math.PI * t) / 13)) * Math.exp(-t / 26);
   const pulse = 1 + 0.03 * Math.sin((2 * Math.PI * t) / 28);
-  // a capa (selo + palavra, no centro) fica até o corte: o texto que entra (cabeçalho, no topo) não a cruza
-  // e o texto do card só começa no corte
-  const out = interpolate(t, [dur - 4, dur], [1, 0], clamp);
+  // a capa (selo + palavra, no centro) sai até 1 quadro antes do corte; só então o card do significado entra
+  // no mesmo espaço (o cabeçalho, no topo, e a lojinha, embaixo, já podem entrar antes: não cruzam a capa)
+  const out = interpolate(t, [dur - 4, dur - 1], [1, 0], clamp);
   return (
     <AbsoluteFill style={{ opacity: out, transform: `scale(${0.9 + 0.1 * out})` }}>
       <div style={{ position: "absolute", top, left: 0, right: 0, display: "flex", justifyContent: "center" }}>
@@ -286,18 +287,18 @@ const Significado: React.FC<{ ep: Episodio; L: Layout; dur: number; balloonAt: n
   const { headerTop, cardTop, cardH, balloonTop, exH, shopTop } = L.sig;
   const b = pop(t, balloonAt, { damping: 9, stiffness: 190 });
   const talking = t >= balloonAt && t < balloonAt + 40;
-  const shopIn = pop(t, 1, { damping: 10, stiffness: 160 });
+  const shopIn = pop(t, 0, { damping: 11, stiffness: 240 });
   return (
     <AbsoluteFill>
       {/* palavra (cabeçalho do verbete) */}
-      <div style={{ position: "absolute", top: headerTop, left: SAFE.left, width: SAFE.right - SAFE.left, display: "flex", justifyContent: "center", transform: `scale(${pop(t, TEXT_IN)})`, opacity: tx }}>
+      <div style={{ position: "absolute", top: headerTop, left: SAFE.left, width: SAFE.right - SAFE.left, display: "flex", justifyContent: "center", transform: `scale(${pop(t, 0, { damping: 12, stiffness: 220 })})`, opacity: tx * interpolate(t, [0, 3], [0, 1], clamp) }}>
         <BigWord lines={L.header.lines} size={L.header.size} />
       </div>
       {/* card do significado */}
       <div
         style={{
           position: "absolute", top: cardTop, left: SAFE.left, width: SAFE.right - SAFE.left, height: cardH, background: "#fff", borderRadius: 44,
-          boxShadow: `0 12px 0 ${C.cremeDeep}, 0 22px 40px rgba(34,28,25,0.12)`, transform: `scale(${pop(t, 1, { damping: 11, stiffness: 170 }) * ob})`,
+          boxShadow: `0 12px 0 ${C.cremeDeep}, 0 22px 40px rgba(34,28,25,0.12)`, transform: `scale(${pop(t, OVERLAP - 1, { damping: 11, stiffness: 170 }) * (0.9 + 0.1 * tx)})`, opacity: tx,
           padding: SIG.cardPad, boxSizing: "border-box",
         }}
       >
@@ -314,7 +315,7 @@ const Significado: React.FC<{ ep: Episodio; L: Layout; dur: number; balloonAt: n
       <div
         style={{
           position: "absolute", top: balloonTop, left: BALLOON.left, width: BALLOON.right - BALLOON.left, height: exH,
-          transform: `scale(${b * ob})`, transformOrigin: "0% 100%", opacity: t >= balloonAt ? 1 : 0,
+          transform: `scale(${b * (0.9 + 0.1 * tx)})`, transformOrigin: "0% 100%", opacity: t >= balloonAt ? tx : 0,
         }}
       >
         <svg width={BALLOON.right - BALLOON.left} height={exH + 40} style={{ position: "absolute", left: 0, top: 0, overflow: "visible" }}>

@@ -186,7 +186,7 @@ Faz tudo em sequência (`scripts/dicionario.sh`):
 
 **Episódio novo:** crie `episodios/dicionario/09-palavra.json` com os 6 campos e rode `npm run dicionario -- 09`. No Studio, a composição abre o episódio 01; para ver outro, passe o JSON em `--props`.
 
-## Carrossel "Facim, facim" (modelo fixo + JSON por carrossel)
+## Carrossel "Facim facim" (modelo fixo + JSON por carrossel)
 
 Arte estática 1080×1350 (4:5), um PNG por slide, renderizada pelo mesmo pipeline das capas (React/HTML → PNG no Chromium, via Remotion): composição `CarrosselFacim` em `src/carrossel/CarrosselFacim.tsx`. **Trocar de carrossel = trocar o JSON.**
 
@@ -195,7 +195,7 @@ Arte estática 1080×1350 (4:5), um PNG por slide, renderizada pelo mesmo pipeli
 ```json
 {
   "numero": 1,
-  "chip": "FACIM, FACIM",
+  "chip": "FACIM FACIM",
   "slides": [
     { "tipo": "capa", "titulo": "Antes que você *pergunte*… 🤔", "texto": "" },
     { "tipo": "conteudo", "titulo": "Precisa baixar app?", "texto": "Não. O UaiPertim abre direto…", "icone": "navegador" },
@@ -287,6 +287,8 @@ npm run audio:setup   # baixa as vozes (Piper pt-BR + Kokoro) e instala as libs 
 - **SFX:** sintetizados em numpy (`audio/sfx.py`): glup, alarme, boing, carimbo, whoosh, pop mágico, sininho, digitação, tap, plop, confete etc. No Vídeo 4: lupa girando, "plim" triste e desafinado, toldo murchando, check, passinhos, foguetinho e o interruptor do holofote. No Vídeo 3 entram ainda o "fuuu" do balão enchendo, o estouro, o tic-tac de relógio cartoon (nas colcheias da trilha), o "hmm?" das lojinhas (zumbido de kazoo, sem voz humana), o "plim" subindo de tom, o "fiuuu" da etiqueta, a notificação e a mini-comemoração.
 - **Mix:** `audio/mix.py` faz a automação por seção (subidas, respiro, pico) e normaliza em -14 LUFS com limiter. Quando há voz, também faz o ducking da trilha. Nos Vídeos 2, 3 e 4 o limitador é true peak com lookahead (`master.truePeak`), para o pico real ficar abaixo de -1 dBTP depois do AAC.
 - **Vários vídeos:** todos os scripts aceitam `--video v1|v2|v3|v4|story` (padrão `v1`). A saída de cada vídeo vai para `audio/build/<vídeo>` e para o seu `mix.wav`.
+
+**Regra fixa da marca: "Facim facim" sem vírgula.** Na tela e na voz: "Facim facim", "FACIM FACIM" (chip do carrossel), nunca "Facim, facim". Vale para todo material novo (o Vídeo 2, já publicado, ficou como estava).
 
 **Regra fixa de pronúncia (todos os vídeos):** "Pertim" se fala com o **E aberto**: "Pértim" (nunca "PÊRtim"). Na tela nada muda (continua "Pertim" e "UaiPertim"); só a grafia enviada à ElevenLabs:
 
