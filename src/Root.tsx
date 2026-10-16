@@ -17,6 +17,14 @@ import { DicionarioMineiro, DicionarioProps, Timing, measureLayout, nn } from ".
 import ep01 from "../episodios/dicionario/01-uai.json";
 import { CarrosselFacim, CarrosselProps, SLIDE, measureSlide } from "./carrossel/CarrosselFacim";
 import facim01 from "../carrosseis/facim/01-antes-que-voce-pergunte.json";
+import { CorteCurto, CorteProps, measureCorte } from "./cortes/Corte";
+import corteA from "../cortes/corte-A.json";
+
+// Cortes curtos: duração = trecho do original + fecho; textos medidos com as fontes carregadas.
+const corteMetadata = async ({ props }: { props: CorteProps }) => {
+  await fontsReady;
+  return { durationInFrames: props.fim - props.inicio + props.fechoDur, props: { ...props, layout: measureCorte(props) } };
+};
 
 // Carrossel "Facim, facim": cada slide é um still; o carrossel = JSON em --props + "slide" (índice, a partir de 0).
 const carrosselMetadata = async ({ props }: { props: CarrosselProps }) => {
@@ -125,6 +133,16 @@ export const RemotionRoot: React.FC = () => (
       height={SLIDE.height}
       defaultProps={{ ...(facim01 as CarrosselProps), slide: 0 }}
       calculateMetadata={carrosselMetadata}
+    />
+    <Composition
+      id="CorteCurto"
+      component={CorteCurto}
+      durationInFrames={300}
+      fps={30}
+      width={1080}
+      height={1920}
+      defaultProps={corteA as CorteProps}
+      calculateMetadata={corteMetadata}
     />
   </>
 );

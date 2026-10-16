@@ -5,6 +5,8 @@ out/*
 !out/story-conheca/
 !out/dicionario/
 out/dicionario/*.png
+!out/cortes/
+out/cortes/*.png
 audio/models/
 audio/build/
 __pycache__/
