@@ -74,25 +74,29 @@ export const measureLayout = (ep: Episodio): Layout => {
   const exH = exemplo.lines.length * exemplo.size * 1.12 + 2 * BALLOON.pad;
   const balloonTop = shopTop + SIG.balloonOverlap - exH;
   const cardH = (w: Wrapped) => 2 * SIG.cardPad + SIG.label * 1.2 + 14 + w.lines.length * w.size * 1.14;
-  // par (palavra, significado) mais equilibrado que cabe: maior soma relativa dos dois tamanhos
+  // par (palavra, significado) mais equilibrado que cabe: maximiza o MENOR dos dois tamanhos relativos.
+  // A palavra é medida com o espaçamento das capas (fitCover) e nunca passa da largura da zona (x 80–940).
+  const headerH = (h: Wrapped) => (h.lines.length - 1) * h.size * 1.07 + h.size * 1.1;
   const combos: Array<[number, number]> = [];
   for (const hs of [190, 170, 150, 130, 112, 96]) for (const ss of [84, 80, 76, 72, 66, 60, 54]) combos.push([hs, ss]);
-  combos.sort((a, b) => b[0] / 190 + b[1] / 84 - (a[0] / 190 + a[1] / 84));
-  let header = fitWrap(ep.palavra, W.black, W_COL, [96], 1);
+  const score = ([hs, ss]: [number, number]) => Math.min(hs / 190, ss / 84) + 0.01 * (hs / 190 + ss / 84);
+  combos.sort((a, b) => score(b) - score(a));
+  let header: Wrapped = fitCover(ep.palavra, W_COL, 96);
   let significado = fitWrap(ep.significado, W.extraBold, W_COL - 2 * SIG.cardPad, [54], 3);
   for (const [hs, ss] of combos) {
-    const h = fitWrap(ep.palavra, W.black, W_COL, [hs], 1);
+    const h = fitCover(ep.palavra, W_COL, hs);
+    if (h.size < hs) continue; // a palavra não cabe neste tamanho
     const sg = fitWrap(ep.significado, W.extraBold, W_COL - 2 * SIG.cardPad, [ss], 3);
-    if (h.lines.length > 1 || sg.lines.length > 3) continue;
-    if (CHIP_BOTTOM + 3 * SIG.minGap + h.size * 1.1 + cardH(sg) <= balloonTop) {
+    if (sg.lines.length > 3) continue;
+    if (CHIP_BOTTOM + 3 * SIG.minGap + headerH(h) + cardH(sg) <= balloonTop) {
       header = h;
       significado = sg;
       break;
     }
   }
-  const gap = Math.min(SIG.maxGap, (balloonTop - CHIP_BOTTOM - header.size * 1.1 - cardH(significado)) / 3);
+  const gap = Math.min(SIG.maxGap, (balloonTop - CHIP_BOTTOM - headerH(header) - cardH(significado)) / 3);
   const headerTop = CHIP_BOTTOM + gap;
-  const cardTop = headerTop + header.size * 1.1 + gap;
+  const cardTop = headerTop + headerH(header) + gap;
   // --- ponte: texto grande centrado entre o selo e as lojinhas, que ficam no pé da zona
   const ponShopTop = SAFE.bottom - PON.shopW * SHOP_RATIO;
   const room = ponShopTop - 60 - (CHIP_BOTTOM + 40);
