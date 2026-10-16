@@ -1,6 +1,6 @@
 {
  "fps": 30,
- "durationInFrames": 411,
+ "durationInFrames": 413,
  "scenes": {
   "capa": {
    "from": 0,
@@ -12,10 +12,10 @@
   },
   "ponte": {
    "from": 192,
-   "duration": 113
+   "duration": 115
   },
   "cta": {
-   "from": 305,
+   "from": 307,
    "duration": 106
   }
  },
@@ -39,13 +39,13 @@
    "id": "ponte",
    "scene": "ponte",
    "from": 196,
-   "to": 297
+   "to": 299
   },
   {
    "id": "cta",
    "scene": "cta",
-   "from": 309,
-   "to": 393
+   "from": 311,
+   "to": 395
   }
  ],
  "episodio": "02-pertim.json"

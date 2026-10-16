@@ -199,7 +199,7 @@ Arte estática 1080×1350 (4:5), um PNG por slide, renderizada pelo mesmo pipeli
   "slides": [
     { "tipo": "capa", "titulo": "Antes que você *pergunte*… 🤔", "texto": "" },
     { "tipo": "conteudo", "titulo": "Precisa baixar app?", "texto": "Não. O UaiPertim abre direto…", "icone": "navegador" },
-    { "tipo": "final", "titulo": "Manda pra quem ama o comércio de Glória 🧡", "texto": "Segue a gente pra saber quando abrir" }
+    { "tipo": "final", "titulo": "Manda pra quem ama o comércio do Glória 🧡", "texto": "Segue a gente pra saber quando abrir" }
   ]
 }
 ```
@@ -231,7 +231,7 @@ Composição `CorteCurto` (`src/cortes/Corte.tsx`), 1080×1920, 30 fps, 10 a 16 
 |---|---|---|---|---|
 | A | Vídeo 1, 50–282: celular lotado → "O UaiPertim NÃO é app" | Mais um app? *NÃO!* | Manda pra quem tá com o celular lotado 😂 | 10,4 s |
 | B | Vídeo 2, 118–530: os 3 passos | 3 passos e *pronto* 👇 | Manda pra quem ama pedir em casa 🛍️ | 15,9 s |
-| C | Vídeo 3 narrado, 140–420: lojinhas e balões | Dono de comércio em Glória, *olha isso* 👀 | Manda pra quem tem comércio em Glória | 12,0 s |
+| C | Vídeo 3 narrado, 140–420: lojinhas e balões | Dono de comércio no Glória, *olha isso* 👀 | Manda pra quem tem comércio no Glória | 12,0 s |
 | D | Vídeo 1, 302–540 (+1,4 s parado no 1º quadro): a URL se digitando | É só *digitar isso* 👇 | Manda pra quem odeia baixar app | 12,0 s |
 
 **Gerar:** `npm run corte -- A` → `out/cortes/corte-A.mp4` + `out/cortes/capa-corte-A.png` (quadro 0). Corte novo: crie `cortes/corte-E.json` com os mesmos campos e rode `npm run corte -- E`.
@@ -289,6 +289,8 @@ npm run audio:setup   # baixa as vozes (Piper pt-BR + Kokoro) e instala as libs 
 - **Vários vídeos:** todos os scripts aceitam `--video v1|v2|v3|v4|story` (padrão `v1`). A saída de cada vídeo vai para `audio/build/<vídeo>` e para o seu `mix.wav`.
 
 **Regra fixa da marca: "Facim facim" sem vírgula.** Na tela e na voz: "Facim facim", "FACIM FACIM" (chip do carrossel), nunca "Facim, facim". Vale para todo material novo (o Vídeo 2, já publicado, ficou como estava).
+
+**Regra fixa da marca: "O Glória" (masculino).** A cidade é sempre tratada no masculino: "do Glória", "no Glória", "pro Glória" (nunca "de Glória" nem "em Glória"). O nome completo "São João Batista do Glória" continua igual. Vale na tela, na voz e nas legendas.
 
 **Regra fixa de pronúncia (todos os vídeos):** "Pertim" se fala com o **E aberto** e a força no final: "per-TIM" com "pé" aberto (nunca "PÊRtim"). Na tela nada muda (continua "Pertim" e "UaiPertim"); só a grafia enviada à ElevenLabs:
 
