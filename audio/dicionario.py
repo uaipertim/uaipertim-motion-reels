@@ -27,8 +27,7 @@ BAR = 4 * 60 / BPM
 GAP = '<break time="0.4s" />'
 WORD = re.compile(r"[\wÀ-ÿ]+")
 # tempos do modelo (segundos)
-CAPA_MIN, CAPA_MAX = 2.2, 3.0  # capa: a palavra é lida no frame 0 e a capa fica (pulsando) até aqui
-CAPA_FLOOR = 1.6  # se a voz for longa, a capa encurta até aqui para o total caber em 14 s
+SIG_GAP = 0.45  # o significado começa ~0,4–0,5 s depois do fim da palavra falada (a capa fica só esse tempo depois da fala)
 LEAD = 0.12  # a fala de cada cena começa logo depois do corte (o card entra junto)
 TAIL = 0.3  # respiro depois da fala antes do próximo corte (aperta até 0.22 se precisar)
 CTA_MIN = 2.5  # CTA na tela por pelo menos 2 s (com folga)
@@ -110,9 +109,9 @@ def layout(segs):
         sig = lead + dur["significado"] + tail
         ponte = lead + dur["ponte"] + tail
         cta = max(CTA_MIN, lead + dur["cta"] + CTA_HOLD)
-        capa = min(CAPA_MAX, max(CAPA_MIN, dur["palavra"] + 1.6))
-        if capa + sig + ponte + cta > TOTAL_MAX:  # voz longa: a capa encurta primeiro
-            capa = max(CAPA_FLOOR, TOTAL_MAX - (sig + ponte + cta))
+        # capa: a palavra é lida no frame 0 (o trecho cortado tem ~0,02 s de respiro antes da voz); o corte para o
+        # significado vem a tempo de a fala dele começar SIG_GAP depois do fim da palavra
+        capa = dur["palavra"] + 0.02 + SIG_GAP - lead
         total = capa + sig + ponte + cta
         if total <= TOTAL_MAX + 1e-6:
             break

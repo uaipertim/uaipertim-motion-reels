@@ -1,0 +1,157 @@
+{
+ "script": "Trem. <break time=\"0.4s\" /> Qualquer coisa. Objeto, situação, tudo. Tipo: Me passa esse trem aí. <break time=\"0.4s\" /> Aquele trem do mercado? Em breve, dá pra pedir pelo celular. <break time=\"0.4s\" /> Manda pra quem chama tudo de trem",
+ "voice": "LuQ9eaWO9yCQrR73VQFa",
+ "text": "Trem. <break time=\"0.4s\" /> Qualquer coisa. Objeto, situação, tudo. Tipo: Me passa esse trem aí. <break time=\"0.4s\" /> Aquele trem do mercado? Em breve, dá pra pedir pelo celular. <break time=\"0.4s\" /> Manda pra quem chama tudo de trem",
+ "words": [
+  {
+   "w": "Trem",
+   "start": 0.0,
+   "end": 0.36
+  },
+  {
+   "w": "Qualquer",
+   "start": 0.894,
+   "end": 1.231
+  },
+  {
+   "w": "coisa",
+   "start": 1.277,
+   "end": 1.776
+  },
+  {
+   "w": "Objeto",
+   "start": 2.032,
+   "end": 2.752
+  },
+  {
+   "w": "situação",
+   "start": 2.81,
+   "end": 3.564
+  },
+  {
+   "w": "tudo",
+   "start": 3.692,
+   "end": 4.191
+  },
+  {
+   "w": "Tipo",
+   "start": 4.493,
+   "end": 4.957
+  },
+  {
+   "w": "Me",
+   "start": 5.178,
+   "end": 5.294
+  },
+  {
+   "w": "passa",
+   "start": 5.341,
+   "end": 5.596
+  },
+  {
+   "w": "esse",
+   "start": 5.619,
+   "end": 5.77
+  },
+  {
+   "w": "trem",
+   "start": 5.828,
+   "end": 6.026
+  },
+  {
+   "w": "aí",
+   "start": 6.072,
+   "end": 6.339
+  },
+  {
+   "w": "Aquele",
+   "start": 7.07,
+   "end": 7.465
+  },
+  {
+   "w": "trem",
+   "start": 7.535,
+   "end": 7.744
+  },
+  {
+   "w": "do",
+   "start": 7.779,
+   "end": 7.825
+  },
+  {
+   "w": "mercado",
+   "start": 7.872,
+   "end": 8.464
+  },
+  {
+   "w": "Em",
+   "start": 8.777,
+   "end": 8.94
+  },
+  {
+   "w": "breve",
+   "start": 8.998,
+   "end": 9.358
+  },
+  {
+   "w": "dá",
+   "start": 9.416,
+   "end": 9.543
+  },
+  {
+   "w": "pra",
+   "start": 9.601,
+   "end": 9.718
+  },
+  {
+   "w": "pedir",
+   "start": 9.752,
+   "end": 10.054
+  },
+  {
+   "w": "pelo",
+   "start": 10.101,
+   "end": 10.298
+  },
+  {
+   "w": "celular",
+   "start": 10.333,
+   "end": 10.855
+  },
+  {
+   "w": "Manda",
+   "start": 11.459,
+   "end": 11.807
+  },
+  {
+   "w": "pra",
+   "start": 11.854,
+   "end": 11.958
+  },
+  {
+   "w": "quem",
+   "start": 12.016,
+   "end": 12.144
+  },
+  {
+   "w": "chama",
+   "start": 12.19,
+   "end": 12.492
+  },
+  {
+   "w": "tudo",
+   "start": 12.562,
+   "end": 12.817
+  },
+  {
+   "w": "de",
+   "start": 12.864,
+   "end": 12.934
+  },
+  {
+   "w": "trem",
+   "start": 12.992,
+   "end": 13.468
+  }
+ ]
+}

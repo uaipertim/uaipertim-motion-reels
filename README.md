@@ -162,11 +162,11 @@ Uma composição só (`DicionarioMineiro`, 1080×1920, 30 fps, `src/dicionario/D
 { "numero": 1, "palavra": "Uai", "significado": "…", "exemplo": "…", "ponte": "…", "cta": "Manda pra quem fala 'uai' 😂" }
 ```
 
-**Estrutura (tempos saem da voz, 12 a 14 s no total):**
+**Estrutura (tempos saem da voz, 12 a 14 s no total; calculados em `audio/dicionario.py`, que também posiciona a voz na mixagem, e lidos pelo `calculateMetadata`):**
 
 | Cena | O que aparece | Voz |
 |---|---|---|
-| Capa (~0–2 s) | Quadro 0 já completo: selo "DICIONÁRIO MINEIRO #N" + palavra gigante coral com marcador amarelo (tratamento das capas). Quica e pulsa desde o frame 0. | "[palavra]." no frame 0 |
+| Capa (curta: termina para o significado começar ~0,45 s depois do fim da palavra falada) | Quadro 0 já completo: selo "DICIONÁRIO MINEIRO #N" + palavra gigante coral com marcador amarelo (tratamento das capas). Quica e pulsa desde o frame 0. | "[palavra]." no frame 0 |
 | Significado | Palavra no topo, card branco com o significado e balão amarelo com o exemplo, saindo de uma lojinha-personagem (o balão pipoca no "Tipo:") | "[significado] Tipo: [exemplo]" |
 | Ponte | A frase da ponte com "UaiPertim" (e a palavra do episódio) em coral, lojinhas acendendo | "[ponte]" |
 | CTA (≥ 2 s) | "Manda pra quem…" grande (aspas tipográficas, emoji grudado na última palavra) + logo pequeno embaixo. Sem @ nem nome de usuário. | "[cta sem emoji]" |

@@ -1,0 +1,157 @@
+{
+ "script": "Pertim. <break time=\"0.4s\" /> Pertinho. Bem perto. Tipo: A padaria é ali, ó, pertim. <break time=\"0.4s\" /> Assim vai ficar o comércio de Glória: pertim de você. <break time=\"0.4s\" /> Manda pra quem acha que tudo é ali pertim",
+ "voice": "LuQ9eaWO9yCQrR73VQFa",
+ "text": "Pertim. <break time=\"0.4s\" /> Pertinho. Bem perto. Tipo: A padaria é ali, ó, pertim. <break time=\"0.4s\" /> Assim vai ficar o comércio de Glória: pertim de você. <break time=\"0.4s\" /> Manda pra quem acha que tudo é ali pertim",
+ "words": [
+  {
+   "w": "Pertim",
+   "start": 0.0,
+   "end": 0.65
+  },
+  {
+   "w": "Pertinho",
+   "start": 1.219,
+   "end": 1.997
+  },
+  {
+   "w": "Bem",
+   "start": 2.229,
+   "end": 2.438
+  },
+  {
+   "w": "perto",
+   "start": 2.531,
+   "end": 3.019
+  },
+  {
+   "w": "Tipo",
+   "start": 3.077,
+   "end": 3.564
+  },
+  {
+   "w": "A",
+   "start": 3.785,
+   "end": 3.843
+  },
+  {
+   "w": "padaria",
+   "start": 3.959,
+   "end": 4.493
+  },
+  {
+   "w": "é",
+   "start": 4.621,
+   "end": 4.737
+  },
+  {
+   "w": "ali",
+   "start": 4.783,
+   "end": 5.05
+  },
+  {
+   "w": "ó",
+   "start": 5.12,
+   "end": 5.178
+  },
+  {
+   "w": "pertim",
+   "start": 5.236,
+   "end": 5.828
+  },
+  {
+   "w": "Assim",
+   "start": 6.362,
+   "end": 6.711
+  },
+  {
+   "w": "vai",
+   "start": 6.757,
+   "end": 6.861
+  },
+  {
+   "w": "ficar",
+   "start": 6.908,
+   "end": 7.163
+  },
+  {
+   "w": "o",
+   "start": 7.21,
+   "end": 7.268
+  },
+  {
+   "w": "comércio",
+   "start": 7.314,
+   "end": 7.814
+  },
+  {
+   "w": "de",
+   "start": 7.872,
+   "end": 7.941
+  },
+  {
+   "w": "Glória",
+   "start": 7.999,
+   "end": 8.464
+  },
+  {
+   "w": "pertim",
+   "start": 8.638,
+   "end": 9.137
+  },
+  {
+   "w": "de",
+   "start": 9.195,
+   "end": 9.276
+  },
+  {
+   "w": "você",
+   "start": 9.334,
+   "end": 9.752
+  },
+  {
+   "w": "Manda",
+   "start": 10.321,
+   "end": 10.681
+  },
+  {
+   "w": "pra",
+   "start": 10.716,
+   "end": 10.867
+  },
+  {
+   "w": "quem",
+   "start": 10.913,
+   "end": 11.053
+  },
+  {
+   "w": "acha",
+   "start": 11.146,
+   "end": 11.366
+  },
+  {
+   "w": "que",
+   "start": 11.424,
+   "end": 11.529
+  },
+  {
+   "w": "tudo",
+   "start": 11.61,
+   "end": 11.9
+  },
+  {
+   "w": "é",
+   "start": 11.947,
+   "end": 11.97
+  },
+  {
+   "w": "ali",
+   "start": 12.005,
+   "end": 12.214
+  },
+  {
+   "w": "pertim",
+   "start": 12.272,
+   "end": 12.957
+  }
+ ]
+}
