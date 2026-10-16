@@ -1,6 +1,6 @@
 {
  "fps": 30,
- "durationInFrames": 361,
+ "durationInFrames": 398,
  "scenes": {
   "capa": {
    "from": 0,
@@ -8,19 +8,19 @@
   },
   "significado": {
    "from": 38,
-   "duration": 163
+   "duration": 162
   },
   "ponte": {
-   "from": 201,
-   "duration": 85
+   "from": 200,
+   "duration": 123
   },
   "cta": {
-   "from": 286,
+   "from": 323,
    "duration": 75
   }
  },
  "beats": {
-  "balloon": 100
+  "balloon": 98
  },
  "speech": [
   {
@@ -33,19 +33,19 @@
    "id": "significado",
    "scene": "significado",
    "from": 42,
-   "to": 193
+   "to": 192
   },
   {
    "id": "ponte",
    "scene": "ponte",
-   "from": 205,
-   "to": 277
+   "from": 204,
+   "to": 314
   },
   {
    "id": "cta",
    "scene": "cta",
-   "from": 290,
-   "to": 344
+   "from": 327,
+   "to": 376
   }
  ],
  "episodio": "08-num-dou-conta.json"

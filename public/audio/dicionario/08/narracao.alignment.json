@@ -1,7 +1,7 @@
 {
- "script": "Num dou conta. <break time=\"0.4s\" /> Não consigo. Não aguento. Tipo: Num dou conta de mais um app no celular. <break time=\"0.4s\" /> No UaiPertim, cê nem precisa baixar. <break time=\"0.4s\" /> Manda pra quem num dá conta",
+ "script": "Num dou conta. <break time=\"0.4s\" /> Não consigo. Não aguento. Tipo: Num dou conta de mais um app no celular. <break time=\"0.4s\" /> Cê nem precisa baixar. O UaiPertim abre no navegador. <break time=\"0.4s\" /> Manda pra quem num dá conta",
  "voice": "LuQ9eaWO9yCQrR73VQFa",
- "text": "Num dou conta. <break time=\"0.4s\" /> Não consigo. Não aguento. Tipo: Num dou conta de mais um app no celular. <break time=\"0.4s\" /> No Uaipertím, cê nem precisa baixar. <break time=\"0.4s\" /> Manda pra quem num dá conta",
+ "text": "Num dou conta. <break time=\"0.4s\" /> Não consigo. Não aguento. Tipo: Num dou conta de mais um app no celular. <break time=\"0.4s\" /> Cê nem precisa baixar. O Uaipertím abre no navegador. <break time=\"0.4s\" /> Manda pra quem num dá conta",
  "words": [
   {
    "w": "Num",
@@ -15,138 +15,153 @@
   },
   {
    "w": "conta",
-   "start": 0.441,
+   "start": 0.43,
    "end": 0.906
   },
   {
    "w": "Não",
-   "start": 1.44,
-   "end": 1.602
+   "start": 1.474,
+   "end": 1.637
   },
   {
    "w": "consigo",
-   "start": 1.637,
-   "end": 2.38
+   "start": 1.672,
+   "end": 2.368
   },
   {
    "w": "Não",
-   "start": 2.543,
+   "start": 2.531,
    "end": 2.682
   },
   {
    "w": "aguento",
    "start": 2.717,
-   "end": 3.344
+   "end": 3.309
   },
   {
    "w": "Tipo",
-   "start": 3.471,
-   "end": 3.982
+   "start": 3.425,
+   "end": 3.936
   },
   {
    "w": "Num",
-   "start": 4.249,
-   "end": 4.4
+   "start": 4.214,
+   "end": 4.365
   },
   {
    "w": "dou",
-   "start": 4.458,
-   "end": 4.563
+   "start": 4.423,
+   "end": 4.528
   },
   {
    "w": "conta",
-   "start": 4.621,
-   "end": 4.969
+   "start": 4.586,
+   "end": 4.934
   },
   {
    "w": "de",
-   "start": 5.016,
-   "end": 5.074
+   "start": 4.981,
+   "end": 5.039
   },
   {
    "w": "mais",
-   "start": 5.143,
+   "start": 5.12,
    "end": 5.317
   },
   {
    "w": "um",
-   "start": 5.387,
-   "end": 5.445
+   "start": 5.375,
+   "end": 5.433
   },
   {
    "w": "app",
-   "start": 5.538,
-   "end": 5.7
+   "start": 5.526,
+   "end": 5.689
   },
   {
    "w": "no",
-   "start": 5.793,
-   "end": 5.875
+   "start": 5.782,
+   "end": 5.863
   },
   {
    "w": "celular",
-   "start": 5.909,
-   "end": 6.478
+   "start": 5.898,
+   "end": 6.467
   },
   {
-   "w": "No",
+   "w": "Cê",
    "start": 7.047,
-   "end": 7.21
-  },
-  {
-   "w": "Uaipertím",
-   "start": 7.279,
-   "end": 8.022
-  },
-  {
-   "w": "cê",
-   "start": 8.092,
-   "end": 8.173
+   "end": 7.175
   },
   {
    "w": "nem",
-   "start": 8.231,
-   "end": 8.336
+   "start": 7.245,
+   "end": 7.349
   },
   {
    "w": "precisa",
-   "start": 8.382,
-   "end": 8.87
+   "start": 7.396,
+   "end": 7.86
   },
   {
    "w": "baixar",
-   "start": 8.916,
-   "end": 9.439
+   "start": 7.906,
+   "end": 8.371
+  },
+  {
+   "w": "O",
+   "start": 8.615,
+   "end": 8.684
+  },
+  {
+   "w": "Uaipertím",
+   "start": 8.777,
+   "end": 9.451
+  },
+  {
+   "w": "abre",
+   "start": 9.532,
+   "end": 9.822
+  },
+  {
+   "w": "no",
+   "start": 9.88,
+   "end": 9.961
+  },
+  {
+   "w": "navegador",
+   "start": 10.019,
+   "end": 10.728
   },
   {
    "w": "Manda",
-   "start": 10.008,
-   "end": 10.321
+   "start": 11.285,
+   "end": 11.564
   },
   {
    "w": "pra",
-   "start": 10.356,
-   "end": 10.484
+   "start": 11.598,
+   "end": 11.726
   },
   {
    "w": "quem",
-   "start": 10.53,
-   "end": 10.693
+   "start": 11.773,
+   "end": 11.947
   },
   {
    "w": "num",
-   "start": 10.739,
-   "end": 10.867
+   "start": 11.993,
+   "end": 12.109
   },
   {
    "w": "dá",
-   "start": 10.913,
-   "end": 11.006
+   "start": 12.144,
+   "end": 12.237
   },
   {
    "w": "conta",
-   "start": 11.076,
-   "end": 11.796
+   "start": 12.295,
+   "end": 12.91
   }
  ]
 }
