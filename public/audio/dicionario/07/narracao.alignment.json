@@ -1,7 +1,7 @@
 {
  "script": "Quitanda. <break time=\"0.4s\" /> Biscoito, rosca, bolo e pão caseiro do café. Tipo: Passa aí que tem quitanda pro café. <break time=\"0.4s\" /> Padaria também vai estar no UaiPertim. <break time=\"0.4s\" /> Manda pra quem não vive sem quitanda",
  "voice": "LuQ9eaWO9yCQrR73VQFa",
- "text": "Quitanda. <break time=\"0.4s\" /> Biscoito, rosca, bolo e pão caseiro do café. Tipo: Passa aí que tem quitanda pro café. <break time=\"0.4s\" /> Padaria também vai estar no Uaipertím. <break time=\"0.4s\" /> Manda pra quem não vive sem quitanda",
+ "text": "Quitanda. <break time=\"0.4s\" /> Biscoito, rosca, bolo e pão caseiro do café. Tipo: Passa aí que tem quitanda pro café. <break time=\"0.4s\" /> Padaria também vai estar no Uai Pértim. <break time=\"0.4s\" /> Manda pra quem não vive sem quitanda",
  "words": [
   {
    "w": "Quitanda",
@@ -36,17 +36,17 @@
   {
    "w": "caseiro",
    "start": 3.634,
-   "end": 4.075
+   "end": 4.087
   },
   {
    "w": "do",
-   "start": 4.122,
-   "end": 4.191
+   "start": 4.133,
+   "end": 4.203
   },
   {
    "w": "café",
-   "start": 4.238,
-   "end": 4.667
+   "start": 4.249,
+   "end": 4.656
   },
   {
    "w": "Tipo",
@@ -56,102 +56,107 @@
   {
    "w": "Passa",
    "start": 5.41,
-   "end": 5.759
+   "end": 5.735
   },
   {
    "w": "aí",
-   "start": 5.782,
-   "end": 5.863
+   "start": 5.759,
+   "end": 5.84
   },
   {
    "w": "que",
-   "start": 5.898,
-   "end": 5.979
+   "start": 5.875,
+   "end": 5.956
   },
   {
    "w": "tem",
-   "start": 6.026,
-   "end": 6.153
+   "start": 6.002,
+   "end": 6.13
   },
   {
    "w": "quitanda",
-   "start": 6.211,
-   "end": 6.757
+   "start": 6.2,
+   "end": 6.745
   },
   {
    "w": "pro",
-   "start": 6.792,
-   "end": 6.931
+   "start": 6.78,
+   "end": 6.896
   },
   {
    "w": "café",
-   "start": 6.954,
-   "end": 7.419
+   "start": 6.931,
+   "end": 7.326
   },
   {
    "w": "Padaria",
-   "start": 8.127,
-   "end": 8.696
+   "start": 8.034,
+   "end": 8.603
   },
   {
    "w": "também",
-   "start": 8.742,
-   "end": 9.067
+   "start": 8.649,
+   "end": 8.975
   },
   {
    "w": "vai",
-   "start": 9.114,
-   "end": 9.23
+   "start": 9.021,
+   "end": 9.137
   },
   {
    "w": "estar",
-   "start": 9.253,
-   "end": 9.567
+   "start": 9.16,
+   "end": 9.474
   },
   {
    "w": "no",
-   "start": 9.625,
-   "end": 9.752
+   "start": 9.532,
+   "end": 9.659
   },
   {
-   "w": "Uaipertím",
-   "start": 9.868,
-   "end": 10.762
+   "w": "Uai",
+   "start": 9.776,
+   "end": 10.031
+  },
+  {
+   "w": "Pértim",
+   "start": 10.089,
+   "end": 10.681
   },
   {
    "w": "Manda",
-   "start": 11.366,
-   "end": 11.726
+   "start": 11.215,
+   "end": 11.552
   },
   {
    "w": "pra",
-   "start": 11.773,
-   "end": 11.889
+   "start": 11.587,
+   "end": 11.691
   },
   {
    "w": "quem",
-   "start": 11.947,
-   "end": 12.086
+   "start": 11.738,
+   "end": 11.877
   },
   {
    "w": "não",
-   "start": 12.109,
-   "end": 12.237
+   "start": 11.9,
+   "end": 12.016
   },
   {
    "w": "vive",
-   "start": 12.283,
-   "end": 12.55
+   "start": 12.074,
+   "end": 12.318
   },
   {
    "w": "sem",
-   "start": 12.585,
-   "end": 12.701
+   "start": 12.353,
+   "end": 12.481
   },
   {
    "w": "quitanda",
-   "start": 12.748,
-   "end": 13.514
+   "start": 12.527,
+   "end": 13.282
   }
  ]
 }

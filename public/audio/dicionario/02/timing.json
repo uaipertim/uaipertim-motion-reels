@@ -1,51 +1,51 @@
 {
  "fps": 30,
- "durationInFrames": 396,
+ "durationInFrames": 395,
  "scenes": {
   "capa": {
    "from": 0,
-   "duration": 30
+   "duration": 28
   },
   "significado": {
-   "from": 30,
-   "duration": 151
+   "from": 28,
+   "duration": 149
   },
   "ponte": {
-   "from": 181,
-   "duration": 114
+   "from": 177,
+   "duration": 115
   },
   "cta": {
-   "from": 295,
-   "duration": 101
+   "from": 292,
+   "duration": 103
   }
  },
  "beats": {
-  "balloon": 87
+  "balloon": 83
  },
  "speech": [
   {
    "id": "palavra",
    "scene": "capa",
    "from": 0,
-   "to": 20
+   "to": 17
   },
   {
    "id": "significado",
    "scene": "significado",
-   "from": 34,
-   "to": 172
+   "from": 32,
+   "to": 169
   },
   {
    "id": "ponte",
    "scene": "ponte",
-   "from": 185,
-   "to": 287
+   "from": 181,
+   "to": 283
   },
   {
    "id": "cta",
    "scene": "cta",
-   "from": 299,
-   "to": 378
+   "from": 296,
+   "to": 377
   }
  ],
  "episodio": "02-pertim.json"

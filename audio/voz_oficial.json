@@ -6,9 +6,17 @@
   "perfil": "masculina, jovem, sotaque brasileiro; jovial e animada, de conversa (não é locutor de anúncio)",
   "origem": "Biblioteca pública de vozes da ElevenLabs (não precisa ser adicionada à conta para gerar)",
   "model": "eleven_multilingual_v2",
-  "voiceSettings": { "stability": 0.4, "similarity_boost": 0.8, "style": 0.35, "use_speaker_boost": true },
+  "voiceSettings": {
+    "stability": 0.4,
+    "similarity_boost": 0.8,
+    "style": 0.35,
+    "use_speaker_boost": true
+  },
   "seed": 42,
   "outputFormat": "mp3_44100_128",
-  "_doc_pronuncia": "Grafia enviada à API para acertar a pronúncia (o texto de tela continua igual). 'UaiPertim' = uai-per-TIM.",
-  "pronuncia": { "UaiPertim": "Uaipertím" }
+  "_doc_pronuncia": "REGRA FIXA DE PRONÚNCIA (vale para TODO texto enviado à ElevenLabs; audio/elevenlabs.py → pronounce()). Só a grafia enviada à API muda; na tela continua 'UaiPertim' e 'Pertim'. A troca é por palavra inteira, ignora maiúsculas, preserva a inicial e aplica as chaves mais longas primeiro. 'Pertim' tem o E ABERTO: 'Pértim' (nunca 'PÊRtim'); a marca 'UaiPertim' vai separada: 'Uai Pértim'.",
+  "pronuncia": {
+    "UaiPertim": "Uai Pértim",
+    "Pertim": "Pértim"
+  }
 }

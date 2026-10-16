@@ -180,7 +180,7 @@ npm run dicionario -- 01        # ou: npm run dicionario -- episodios/dicionario
 ```
 
 Faz tudo em sequência (`scripts/dicionario.sh`):
-1. `python3 audio/dicionario.py <json>`: narração com a **voz oficial** (`audio/voz_oficial.json`, ElevenLabs; "UaiPertim" vai como "Uaipertím", "num" e "cê" como estão), com o tempo de cada palavra. Calcula os tempos das cenas e salva em `public/audio/dicionario/NN/` (`narracao.mp3`, `timing.json` e `mix.wav`: trilha do projeto + efeitos curtos + ducking de -11 dB sob a voz). O mp3 só é gerado de novo se o texto mudar.
+1. `python3 audio/dicionario.py <json>`: narração com a **voz oficial** (`audio/voz_oficial.json`, ElevenLabs, com a regra fixa de pronúncia abaixo; "num" e "cê" como estão), com o tempo de cada palavra. Calcula os tempos das cenas e salva em `public/audio/dicionario/NN/` (`narracao.mp3`, `timing.json` e `mix.wav`: trilha do projeto + efeitos curtos + ducking de -11 dB sob a voz). O mp3 só é gerado de novo se o texto enviado à voz (já com a pronúncia) mudar.
 2. `remotion render DicionarioMineiro … --props=<json>` → `out/dicionario/dicionario-NN-palavra.mp4`.
 3. Capa = quadro 0 → `out/dicionario/capa-dicionario-NN.png` + prévia do recorte 3:4 (`capa-dicionario-NN_3x4.png`).
 
@@ -287,6 +287,15 @@ npm run audio:setup   # baixa as vozes (Piper pt-BR + Kokoro) e instala as libs 
 - **SFX:** sintetizados em numpy (`audio/sfx.py`): glup, alarme, boing, carimbo, whoosh, pop mágico, sininho, digitação, tap, plop, confete etc. No Vídeo 4: lupa girando, "plim" triste e desafinado, toldo murchando, check, passinhos, foguetinho e o interruptor do holofote. No Vídeo 3 entram ainda o "fuuu" do balão enchendo, o estouro, o tic-tac de relógio cartoon (nas colcheias da trilha), o "hmm?" das lojinhas (zumbido de kazoo, sem voz humana), o "plim" subindo de tom, o "fiuuu" da etiqueta, a notificação e a mini-comemoração.
 - **Mix:** `audio/mix.py` faz a automação por seção (subidas, respiro, pico) e normaliza em -14 LUFS com limiter. Quando há voz, também faz o ducking da trilha. Nos Vídeos 2, 3 e 4 o limitador é true peak com lookahead (`master.truePeak`), para o pico real ficar abaixo de -1 dBTP depois do AAC.
 - **Vários vídeos:** todos os scripts aceitam `--video v1|v2|v3|v4|story` (padrão `v1`). A saída de cada vídeo vai para `audio/build/<vídeo>` e para o seu `mix.wav`.
+
+**Regra fixa de pronúncia (todos os vídeos):** "Pertim" se fala com o **E aberto**: "Pértim" (nunca "PÊRtim"). Na tela nada muda (continua "Pertim" e "UaiPertim"); só a grafia enviada à ElevenLabs:
+
+| Na tela | Enviado à voz |
+|---|---|
+| Pertim / pertim | Pértim / pértim |
+| UaiPertim (a marca) | Uai Pértim |
+
+O dicionário fica em `audio/voz_oficial.json` → `pronuncia` e é aplicado automaticamente a TODO texto enviado à API (`pronounce()` em `audio/elevenlabs.py`: palavra inteira, sem diferenciar maiúsculas, mantendo a inicial, chaves mais longas primeiro). Palavra nova com pronúncia própria = mais uma entrada nesse dicionário.
 
 **Voz oficial da UaiPertim (ElevenLabs):** Victor Pinho (`LuQ9eaWO9yCQrR73VQFa`), modelo `eleven_multilingual_v2`; ajustes, seed e grafias de pronúncia em `audio/voz_oficial.json` (sem a chave). `python3 audio/elevenlabs.py --video v3` lê o roteiro da timeline (`narration.script`) e salva o mp3 + o tempo de cada palavra (`.alignment.json`); com `narration.engine: "file"`, `audio/tts.py` recorta cada fala do mp3 (`src`) e a posiciona no frame `from`. A chave vem do ambiente (Segredos de rede) ou de `XI_API_KEY`, nunca do repositório.
 

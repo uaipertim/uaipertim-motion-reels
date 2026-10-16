@@ -1,7 +1,7 @@
 {
  "script": "Num dou conta. <break time=\"0.4s\" /> Não consigo. Não aguento. Tipo: Num dou conta de mais um app no celular. <break time=\"0.4s\" /> Cê nem precisa baixar. O UaiPertim abre no navegador. <break time=\"0.4s\" /> Manda pra quem num dá conta",
  "voice": "LuQ9eaWO9yCQrR73VQFa",
- "text": "Num dou conta. <break time=\"0.4s\" /> Não consigo. Não aguento. Tipo: Num dou conta de mais um app no celular. <break time=\"0.4s\" /> Cê nem precisa baixar. O Uaipertím abre no navegador. <break time=\"0.4s\" /> Manda pra quem num dá conta",
+ "text": "Num dou conta. <break time=\"0.4s\" /> Não consigo. Não aguento. Tipo: Num dou conta de mais um app no celular. <break time=\"0.4s\" /> Cê nem precisa baixar. O Uai Pértim abre no navegador. <break time=\"0.4s\" /> Manda pra quem num dá conta",
  "words": [
   {
    "w": "Num",
@@ -111,57 +111,62 @@
   {
    "w": "O",
    "start": 8.615,
-   "end": 8.684
+   "end": 8.696
   },
   {
-   "w": "Uaipertím",
-   "start": 8.777,
-   "end": 9.451
+   "w": "Uai",
+   "start": 8.812,
+   "end": 8.998
+  },
+  {
+   "w": "Pértim",
+   "start": 9.056,
+   "end": 9.567
   },
   {
    "w": "abre",
-   "start": 9.532,
-   "end": 9.822
+   "start": 9.683,
+   "end": 10.008
   },
   {
    "w": "no",
-   "start": 9.88,
-   "end": 9.961
+   "start": 10.054,
+   "end": 10.136
   },
   {
    "w": "navegador",
-   "start": 10.019,
-   "end": 10.728
+   "start": 10.194,
+   "end": 10.925
   },
   {
    "w": "Manda",
-   "start": 11.285,
-   "end": 11.564
+   "start": 11.471,
+   "end": 11.714
   },
   {
    "w": "pra",
-   "start": 11.598,
-   "end": 11.726
+   "start": 11.749,
+   "end": 11.877
   },
   {
    "w": "quem",
-   "start": 11.773,
-   "end": 11.947
+   "start": 11.935,
+   "end": 12.132
   },
   {
    "w": "num",
-   "start": 11.993,
-   "end": 12.109
+   "start": 12.19,
+   "end": 12.295
   },
   {
    "w": "dá",
-   "start": 12.144,
-   "end": 12.237
+   "start": 12.341,
+   "end": 12.434
   },
   {
    "w": "conta",
-   "start": 12.295,
-   "end": 12.91
+   "start": 12.492,
+   "end": 13.142
   }
  ]
 }

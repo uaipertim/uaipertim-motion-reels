@@ -36,6 +36,7 @@ export type Layout = {
   // posições (y) calculadas para cada episódio ocupar a zona segura inteira, de y=220 a y=1480
   sig: { headerTop: number; cardTop: number; cardH: number; balloonTop: number; exH: number; shopTop: number };
   pon: { textTop: number; shopTop: number };
+  fim: { textTop: number; logoTop: number; logo: number };
 };
 export type DicionarioProps = Episodio & { timing?: Timing; layout?: Layout };
 
@@ -50,6 +51,7 @@ const BALLOON = { left: SIG.balloonLeft, right: SAFE.right, pad: SIG.balloonPad 
 const SHOP_W = SIG.shopW;
 // cena da ponte: 3 lojinhas ocupando a largura da zona (x 80–940), ancoradas embaixo
 const PON = { shopW: 250, step: 305 };
+const FIM_GAP = 90; // espaço entre o texto do CTA e o logo
 // TROCA DE CENA: a cena seguinte entra OVERLAP quadros antes do corte. O TEXTO da cena que sai some primeiro
 // (até 3 quadros antes do corte) e o texto da que entra só começa depois disso (TEXT_IN): nunca há texto
 // sobre texto. Os objetos (card, balão, lojinhas) da cena que sai ficam até o corte: nunca há quadro vazio.
@@ -87,7 +89,7 @@ export const measureLayout = (ep: Episodio): Layout => {
     const h = fitCover(ep.palavra, W_COL, hs);
     if (h.size < hs) continue; // a palavra não cabe neste tamanho
     const sg = fitWrap(ep.significado, W.extraBold, W_COL - 2 * SIG.cardPad, [ss], 3);
-    if (sg.lines.length > 3) continue;
+    if (!sg.ok) continue;
     if (CHIP_BOTTOM + 3 * SIG.minGap + headerH(h) + cardH(sg) <= balloonTop) {
       header = h;
       significado = sg;
@@ -100,24 +102,44 @@ export const measureLayout = (ep: Episodio): Layout => {
   // --- ponte: texto grande centrado entre o selo e as lojinhas, que ficam no pé da zona
   const ponShopTop = SAFE.bottom - PON.shopW * SHOP_RATIO;
   const room = ponShopTop - 60 - (CHIP_BOTTOM + 40);
+  // de preferência em até 4 linhas (menos linhas soltas); 5 só se nenhum tamanho couber em 4
   let ponte = fitWrap(ep.ponte, W.black, W_COL, [60], 6);
-  for (const size of [124, 116, 108, 100, 92, 84, 76, 70, 64]) {
-    const w = fitWrap(ep.ponte, W.black, W_COL, [size], 5);
-    if (w.lines.length <= 5 && w.lines.length * size * 1.12 <= room) {
-      ponte = w;
-      break;
+  search2: for (const maxL of [4, 5]) {
+    for (const size of [124, 116, 108, 100, 92, 84, 76, 70, 64]) {
+      const w = fitWrap(ep.ponte, W.black, W_COL, [size], maxL);
+      if (w.ok && w.lines.length * size * 1.12 <= room) {
+        ponte = w;
+        break search2;
+      }
     }
   }
   const ponH = ponte.lines.length * ponte.size * 1.12;
+  // --- CTA: texto e logo grandes, o grupo ocupa a zona até o pé (y≈1480), como as outras cenas
+  const ctaRoom = SAFE.bottom - (CHIP_BOTTOM + 40);
+  let cta = fitWrap(ctaText(ep.cta), W.black, W_COL, [70], 4);
+  let logo = 240;
+  search: for (const lg of [360, 330, 300, 270, 240]) {
+    for (const size of [160, 150, 140, 130, 120, 112, 104, 96, 88, 80, 72]) {
+      const w = fitWrap(ctaText(ep.cta), W.black, W_COL, [size], 4);
+      if (w.ok && w.lines.length * size * 1.1 + FIM_GAP + lg <= ctaRoom - 10) {
+        cta = w;
+        logo = lg;
+        break search;
+      }
+    }
+  }
+  const fimH = cta.lines.length * cta.size * 1.1 + FIM_GAP + logo;
+  const fimTop = CHIP_BOTTOM + 40 + (ctaRoom - fimH) / 2;
   return {
     capa: fitCover(ep.palavra, COVER.maxWidth, COVER.maxSize),
     header,
     significado,
     exemplo,
     ponte,
-    cta: fitWrap(ctaText(ep.cta), W.black, W_COL, [108, 100, 92, 84, 76, 70], 4),
+    cta,
     sig: { headerTop, cardTop, cardH: cardH(significado), balloonTop, exH, shopTop },
     pon: { textTop: (CHIP_BOTTOM + 40 + ponShopTop - 60) / 2 - ponH / 2, shopTop: ponShopTop },
+    fim: { textTop: fimTop, logoTop: fimTop + cta.lines.length * cta.size * 1.1 + FIM_GAP, logo },
   };
 };
 
@@ -361,11 +383,7 @@ const Cta: React.FC<{ ep: Episodio; L: Layout }> = ({ ep, L }) => {
   const t = useCurrentFrame();
   const quoted = new Set((ep.cta.match(/'([^']+)'/g) ?? []).flatMap((q) => q.replace(/'/g, "").split(/\s+/).map(norm)));
   const accent = (w: string) => (/^manda$/i.test(w) || quoted.has(norm(w)) ? C.coral : undefined);
-  const logo = 210;
-  const textH = L.cta.lines.length * L.cta.size * 1.1;
-  const groupH = textH + 80 + logo;
-  const textTop = Math.max(CONTENT_TOP, (CONTENT_TOP + SAFE.bottom) / 2 - groupH / 2);
-  const logoTop = Math.min(SAFE.bottom - logo, textTop + textH + 80);
+  const { textTop, logoTop, logo } = L.fim;
   const breathe = 1 + 0.015 * Math.sin(t * 0.15);
   return (
     <AbsoluteFill>
@@ -380,7 +398,7 @@ const Cta: React.FC<{ ep: Episodio; L: Layout }> = ({ ep, L }) => {
       >
         <Img src={staticFile("img/uaipertim_logo.png")} style={{ width: "100%", height: "100%" }} />
       </div>
-      <StarPops frame={t} start={8} cx={CX} cy={logoTop + logo / 2} radius={170} count={7} seed={`dic-logo-${ep.numero}`} size={38} />
+      <StarPops frame={t} start={8} cx={CX} cy={logoTop + logo / 2} radius={logo * 0.85} count={7} seed={`dic-logo-${ep.numero}`} size={38} />
     </AbsoluteFill>
   );
 };

@@ -11,31 +11,56 @@ const measure = (text: string, size: number, weight: number) => {
   return ctx!.measureText(text).width;
 };
 
-export type Wrapped = { size: number; lines: string[] };
+export type Wrapped = { size: number; lines: string[]; ok?: boolean }; // ok = toda linha cabe na largura
 
-// Quebra gulosa por palavra.
+// Quebra de linha: o MENOR número de linhas possível e, entre as opções com esse número, a mais equilibrada
+// (linhas de largura parecida). Regra fixa: as duas últimas palavras de uma frase (até . ! ? …) nunca ficam
+// em linhas diferentes (ex.: "Pertinho. / Bem perto.", nunca "Pertinho. Bem / perto.").
+const CLOSES = /[.!?…]["”’)]*$/;
+const widthCache = new Map<string, number>();
 export const wrap = (text: string, size: number, weight: number, maxWidth: number): string[] => {
-  const lines: string[] = [];
-  let cur = "";
-  for (const w of text.split(/ +/).filter(Boolean)) {  // só espaço comum: o NBSP (ex.: antes do emoji) não quebra
-    const next = cur ? `${cur} ${w}` : w;
-    if (cur && measure(next, size, weight) > maxWidth) {
-      lines.push(cur);
-      cur = w;
-    } else cur = next;
+  const words = text.split(/ +/).filter(Boolean); // só espaço comum: o NBSP (ex.: antes do emoji) não quebra
+  const n = words.length;
+  if (n === 0) return [];
+  const w = (i: number, j: number) => {
+    const t = words.slice(i, j).join(" ");
+    const key = `${weight}|${size}|${t}`;
+    if (!widthCache.has(key)) widthCache.set(key, measure(t, size, weight));
+    return widthCache.get(key)!;
+  };
+  const closes = (i: number) => i === n - 1 || CLOSES.test(words[i]);
+  // não pode quebrar antes da palavra i se ela fecha a frase e a anterior não (separaria as duas últimas)
+  const canBreakBefore = (i: number) => i === 0 || !(closes(i) && !closes(i - 1));
+  // best[j] = [linhas, custo, início da última linha] para as j primeiras palavras
+  const best: Array<[number, number, number] | null> = Array(n + 1).fill(null);
+  best[0] = [0, 0, 0];
+  for (let j = 1; j <= n; j++) {
+    for (let i = j - 1; i >= 0; i--) {
+      if (!best[i] || !canBreakBefore(i)) continue;
+      const lw = w(i, j);
+      if (lw > maxWidth && j - i > 1) break; // linhas maiores que isso também não cabem
+      const slack = Math.max(0, maxWidth - lw) / maxWidth;
+      const cand: [number, number, number] = [best[i]![0] + 1, best[i]![1] + slack * slack + (lw > maxWidth ? 100 : 0), i];
+      if (!best[j] || cand[0] < best[j]![0] || (cand[0] === best[j]![0] && cand[1] < best[j]![1])) best[j] = cand;
+    }
   }
-  if (cur) lines.push(cur);
+  if (!best[n]) return [words.join(" ")];
+  const lines: string[] = [];
+  for (let j = n; j > 0; j = best[j]![2]) lines.unshift(words.slice(best[j]![2], j).join(" "));
   return lines;
 };
 
 // Maior tamanho da lista em que o texto cabe em até maxLines linhas de largura maxWidth.
+// "ok" diz se coube de verdade (com uma lista de um tamanho só, quem chama decide o que fazer).
 export const fitWrap = (text: string, weight: number, maxWidth: number, sizes: number[], maxLines: number): Wrapped => {
+  let last: Wrapped = { size: sizes[sizes.length - 1], lines: [text], ok: false };
   for (const size of sizes) {
     const lines = wrap(text, size, weight, maxWidth);
-    if (lines.length <= maxLines && lines.every((l) => measure(l, size, weight) <= maxWidth)) return { size, lines };
+    const ok = lines.length <= maxLines && lines.every((l) => measure(l, size, weight) <= maxWidth);
+    if (ok) return { size, lines, ok };
+    last = { size, lines, ok };
   }
-  const size = sizes[sizes.length - 1];
-  return { size, lines: wrap(text, size, weight, maxWidth) };
+  return last;
 };
 
 // Palavra da capa: maior tamanho (até maxSize) em que cada linha ocupa no máximo maxWidth.

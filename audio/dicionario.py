@@ -58,7 +58,8 @@ def narrate(ep, dst):
     meta_path = dst.with_suffix(".alignment.json")
     if dst.exists() and meta_path.exists():
         meta = json.load(open(meta_path, encoding="utf-8"))
-        if meta.get("script") == script and meta.get("voice") == voice_id():
+        # o cache vale só se o texto ENVIADO à API (já com a regra de pronúncia) for o mesmo
+        if meta.get("text") == elevenlabs.pronounce(script) and meta.get("voice") == voice_id():
             print(f"narração já gerada para este texto: {dst.relative_to(ROOT)}")
             return parts, meta
     text, audio, al = elevenlabs.speak(script)
@@ -78,11 +79,11 @@ def voice_id():
 
 def segments(parts, words):
     """Trecho de cada parte no mp3 (s) + início da palavra "Tipo" (balão do exemplo)."""
-    voz = json.load(open(ROOT / "audio" / "voz_oficial.json", encoding="utf-8"))
+    import elevenlabs
+
     segs, i = {}, 0
     for key, txt in parts.items():
-        for a, b in voz.get("pronuncia", {}).items():
-            txt = txt.replace(a, b)
+        txt = elevenlabs.pronounce(txt)  # conta as palavras como a voz recebeu ("Uai Pértim" = 2)
         n = len(WORD.findall(txt))
         ws = words[i:i + n]
         assert len(ws) == n, f"alinhamento não bate com o texto em '{key}'"

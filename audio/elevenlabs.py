@@ -22,10 +22,20 @@ from common import ROOT, load_timeline  # noqa: E402
 API = "https://api.elevenlabs.io/v1/text-to-speech/{voice}/with-timestamps?output_format={fmt}"
 
 
+def pronounce(text):
+    """Regra fixa de pronúncia (audio/voz_oficial.json → pronuncia): troca palavras inteiras, sem diferenciar
+    maiúsculas, mantendo a inicial maiúscula/minúscula e aplicando as chaves mais longas primeiro."""
+    voz = json.load(open(ROOT / "audio" / "voz_oficial.json", encoding="utf-8"))
+    for word, spelled in sorted(voz.get("pronuncia", {}).items(), key=lambda kv: -len(kv[0])):
+        def rep(m, spelled=spelled):
+            return spelled if m.group(0)[0].isupper() else spelled[0].lower() + spelled[1:]
+        text = re.sub(rf"(?<![\wÀ-ÿ]){re.escape(word)}(?![\wÀ-ÿ])", rep, text, flags=re.IGNORECASE)
+    return text
+
+
 def speak(text):
     voz = json.load(open(ROOT / "audio" / "voz_oficial.json", encoding="utf-8"))
-    for word, spelled in voz.get("pronuncia", {}).items():
-        text = text.replace(word, spelled)
+    text = pronounce(text)
     body = json.dumps({"text": text, "model_id": voz["model"], "voice_settings": voz["voiceSettings"], "seed": voz["seed"]}).encode()
     headers = {"Content-Type": "application/json"}
     if os.environ.get("XI_API_KEY"):

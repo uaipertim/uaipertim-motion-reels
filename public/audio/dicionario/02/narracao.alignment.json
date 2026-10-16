@@ -1,157 +1,157 @@
 {
  "script": "Pertim. <break time=\"0.4s\" /> Pertinho. Bem perto. Tipo: A padaria é ali, ó, pertim. <break time=\"0.4s\" /> Assim vai ficar o comércio de Glória: pertim de você. <break time=\"0.4s\" /> Manda pra quem acha que tudo é ali pertim",
  "voice": "LuQ9eaWO9yCQrR73VQFa",
- "text": "Pertim. <break time=\"0.4s\" /> Pertinho. Bem perto. Tipo: A padaria é ali, ó, pertim. <break time=\"0.4s\" /> Assim vai ficar o comércio de Glória: pertim de você. <break time=\"0.4s\" /> Manda pra quem acha que tudo é ali pertim",
+ "text": "Pértim. <break time=\"0.4s\" /> Pertinho. Bem perto. Tipo: A padaria é ali, ó, pértim. <break time=\"0.4s\" /> Assim vai ficar o comércio de Glória: pértim de você. <break time=\"0.4s\" /> Manda pra quem acha que tudo é ali pértim",
  "words": [
   {
-   "w": "Pertim",
+   "w": "Pértim",
    "start": 0.0,
-   "end": 0.65
+   "end": 0.58
   },
   {
    "w": "Pertinho",
-   "start": 1.219,
-   "end": 1.997
+   "start": 1.126,
+   "end": 1.846
   },
   {
    "w": "Bem",
-   "start": 2.229,
-   "end": 2.438
+   "start": 2.067,
+   "end": 2.276
   },
   {
    "w": "perto",
-   "start": 2.531,
-   "end": 3.019
+   "start": 2.368,
+   "end": 2.856
   },
   {
    "w": "Tipo",
-   "start": 3.077,
-   "end": 3.564
+   "start": 2.914,
+   "end": 3.379
   },
   {
    "w": "A",
-   "start": 3.785,
-   "end": 3.843
+   "start": 3.587,
+   "end": 3.646
   },
   {
    "w": "padaria",
-   "start": 3.959,
-   "end": 4.493
+   "start": 3.762,
+   "end": 4.296
   },
   {
    "w": "é",
-   "start": 4.621,
-   "end": 4.737
+   "start": 4.423,
+   "end": 4.54
   },
   {
    "w": "ali",
-   "start": 4.783,
-   "end": 5.05
+   "start": 4.586,
+   "end": 4.865
   },
   {
    "w": "ó",
-   "start": 5.12,
-   "end": 5.178
+   "start": 4.934,
+   "end": 5.004
   },
   {
-   "w": "pertim",
-   "start": 5.236,
-   "end": 5.828
+   "w": "pértim",
+   "start": 5.085,
+   "end": 5.689
   },
   {
    "w": "Assim",
-   "start": 6.362,
-   "end": 6.711
+   "start": 6.211,
+   "end": 6.536
   },
   {
    "w": "vai",
-   "start": 6.757,
-   "end": 6.861
+   "start": 6.583,
+   "end": 6.687
   },
   {
    "w": "ficar",
-   "start": 6.908,
-   "end": 7.163
+   "start": 6.734,
+   "end": 6.989
   },
   {
    "w": "o",
-   "start": 7.21,
-   "end": 7.268
+   "start": 7.036,
+   "end": 7.094
   },
   {
    "w": "comércio",
-   "start": 7.314,
-   "end": 7.814
+   "start": 7.14,
+   "end": 7.628
   },
   {
    "w": "de",
-   "start": 7.872,
-   "end": 7.941
+   "start": 7.686,
+   "end": 7.755
   },
   {
    "w": "Glória",
-   "start": 7.999,
-   "end": 8.464
+   "start": 7.814,
+   "end": 8.278
   },
   {
-   "w": "pertim",
-   "start": 8.638,
-   "end": 9.137
+   "w": "pértim",
+   "start": 8.487,
+   "end": 8.986
   },
   {
    "w": "de",
-   "start": 9.195,
-   "end": 9.276
+   "start": 9.044,
+   "end": 9.125
   },
   {
    "w": "você",
-   "start": 9.334,
-   "end": 9.752
+   "start": 9.183,
+   "end": 9.625
   },
   {
    "w": "Manda",
-   "start": 10.321,
-   "end": 10.681
+   "start": 10.194,
+   "end": 10.553
   },
   {
    "w": "pra",
-   "start": 10.716,
-   "end": 10.867
+   "start": 10.588,
+   "end": 10.739
   },
   {
    "w": "quem",
-   "start": 10.913,
-   "end": 11.053
+   "start": 10.786,
+   "end": 10.925
   },
   {
    "w": "acha",
-   "start": 11.146,
-   "end": 11.366
+   "start": 11.018,
+   "end": 11.238
   },
   {
    "w": "que",
-   "start": 11.424,
-   "end": 11.529
+   "start": 11.297,
+   "end": 11.389
   },
   {
    "w": "tudo",
-   "start": 11.61,
-   "end": 11.9
+   "start": 11.471,
+   "end": 11.761
   },
   {
    "w": "é",
-   "start": 11.947,
-   "end": 11.97
+   "start": 11.807,
+   "end": 11.831
   },
   {
    "w": "ali",
-   "start": 12.005,
-   "end": 12.214
+   "start": 11.865,
+   "end": 12.074
   },
   {
-   "w": "pertim",
-   "start": 12.272,
-   "end": 12.957
+   "w": "pértim",
+   "start": 12.156,
+   "end": 12.91
   }
  ]
 }
