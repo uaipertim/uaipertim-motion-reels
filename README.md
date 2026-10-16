@@ -152,6 +152,40 @@ Regras de conteúdo seguidas:
   - Os cards 1–3 fecham com um acorde curto no tempo 1 do 4º compasso (`buttonBars`).
   - No card 4, o acorde final (sting) cai em 3,9s e soa até o fim.
 
+## Série "Dicionário Mineiro" (modelo fixo + JSON por episódio)
+
+Uma composição só (`DicionarioMineiro`, 1080×1920, 30 fps, `src/dicionario/DicionarioMineiro.tsx`). **Trocar de episódio = trocar o JSON**; não existe cena por episódio.
+
+**Episódio** = `episodios/dicionario/NN-palavra.json`:
+
+```json
+{ "numero": 1, "palavra": "Uai", "significado": "…", "exemplo": "…", "ponte": "…", "cta": "Manda pra quem fala 'uai' 😂" }
+```
+
+**Estrutura (tempos saem da voz, 12 a 14 s no total):**
+
+| Cena | O que aparece | Voz |
+|---|---|---|
+| Capa (~0–2 s) | Quadro 0 já completo: selo "DICIONÁRIO MINEIRO #N" + palavra gigante coral com marcador amarelo (tratamento das capas). Quica e pulsa desde o frame 0. | "[palavra]." no frame 0 |
+| Significado | Palavra no topo, card branco com o significado e balão amarelo com o exemplo, saindo de uma lojinha-personagem (o balão pipoca no "Tipo:") | "[significado] Tipo: [exemplo]" |
+| Ponte | A frase da ponte com "UaiPertim" (e a palavra do episódio) em coral, lojinhas acendendo | "[ponte]" |
+| CTA (≥ 2 s) | "Manda pra quem…" grande (aspas tipográficas, emoji grudado na última palavra) + logo pequeno embaixo. Sem @ nem nome de usuário. | "[cta sem emoji]" |
+
+**Zonas seguras (garantidas pelo modelo):** capa entre y=285 e y=1635 com a palavra em no máximo 72% da largura (recortes 3:4 e 4:5 da grade); demais cenas com texto entre x=80 e x=940 e entre y=220 e y=1480. Os tamanhos de fonte e as quebras de linha são medidos para cada episódio (`src/dicionario/fit.ts`, em `calculateMetadata`): palavras longas diminuem e palavras compostas ("Num dou conta") podem ir em 2 linhas.
+
+**Gerar um episódio:**
+
+```bash
+npm run dicionario -- 01        # ou: npm run dicionario -- episodios/dicionario/01-uai.json
+```
+
+Faz tudo em sequência (`scripts/dicionario.sh`):
+1. `python3 audio/dicionario.py <json>`: narração com a **voz oficial** (`audio/voz_oficial.json`, ElevenLabs; "UaiPertim" vai como "Uaipertím", "num" e "cê" como estão), com o tempo de cada palavra. Calcula os tempos das cenas e salva em `public/audio/dicionario/NN/` (`narracao.mp3`, `timing.json` e `mix.wav`: trilha do projeto + efeitos curtos + ducking de -11 dB sob a voz). O mp3 só é gerado de novo se o texto mudar.
+2. `remotion render DicionarioMineiro … --props=<json>` → `out/dicionario/dicionario-NN-palavra.mp4`.
+3. Capa = quadro 0 → `out/dicionario/capa-dicionario-NN.png` + prévia do recorte 3:4 (`capa-dicionario-NN_3x4.png`).
+
+**Episódio novo:** crie `episodios/dicionario/09-palavra.json` com os 6 campos e rode `npm run dicionario -- 09`. No Studio, a composição abre o episódio 01; para ver outro, passe o JSON em `--props`.
+
 ## Como editar
 
 - **Textos de tela:** `src/config/texts.ts` (Vídeo 1) · `src/v2/config/texts.ts` (Vídeo 2) · `src/v3/config/texts.ts` (Vídeo 3) · `src/v4/config/texts.ts` (Vídeo 4) · `src/story/config/texts.ts` (story)

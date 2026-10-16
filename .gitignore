@@ -3,6 +3,8 @@ out/*
 !out/.gitkeep
 !out/*.mp4
 !out/story-conheca/
+!out/dicionario/
+out/dicionario/*.png
 audio/models/
 audio/build/
 __pycache__/

@@ -1,0 +1,52 @@
+{
+ "fps": 30,
+ "durationInFrames": 420,
+ "scenes": {
+  "capa": {
+   "from": 0,
+   "duration": 50
+  },
+  "significado": {
+   "from": 50,
+   "duration": 141
+  },
+  "ponte": {
+   "from": 191,
+   "duration": 154
+  },
+  "cta": {
+   "from": 345,
+   "duration": 75
+  }
+ },
+ "beats": {
+  "balloon": 131
+ },
+ "speech": [
+  {
+   "id": "palavra",
+   "scene": "capa",
+   "from": 0,
+   "to": 10
+  },
+  {
+   "id": "significado",
+   "scene": "significado",
+   "from": 54,
+   "to": 185
+  },
+  {
+   "id": "ponte",
+   "scene": "ponte",
+   "from": 195,
+   "to": 339
+  },
+  {
+   "id": "cta",
+   "scene": "cta",
+   "from": 349,
+   "to": 401
+  }
+ ],
+ "episodio": "01-uai.json"
+}

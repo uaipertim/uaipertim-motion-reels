@@ -25,6 +25,10 @@ VIDEO = os.environ.get("UAI_VIDEO", "v1")
 TIMELINE_PATH = VIDEOS[VIDEO]["timeline"]
 BUILD = VIDEOS[VIDEO]["build"]
 MIX_OUT = VIDEOS[VIDEO]["mix"]
+if os.environ.get("UAI_TIMELINE"):  # timeline gerada por episódio (ex.: Dicionário Mineiro, audio/dicionario.py)
+    TIMELINE_PATH = Path(os.environ["UAI_TIMELINE"])
+    BUILD = Path(os.environ["UAI_BUILD"])
+    MIX_OUT = Path(os.environ["UAI_MIX"])
 MODELS = Path(os.environ.get("UAI_MODELS_DIR", ROOT / "audio" / "models"))
 SR = 48000
 

@@ -1,6 +1,6 @@
 import React from "react";
-import { Composition, Still } from "remotion";
-import "./components/Fonts";
+import { Composition, Still, staticFile } from "remotion";
+import { fontsReady } from "./components/Fonts";
 import { TL } from "./config/timeline";
 import { TL2 } from "./v2/config/timeline";
 import { TL3 } from "./v3/config/timeline";
@@ -13,6 +13,18 @@ import { Video4 } from "./v4/Video4";
 import { StoryCard, StoryPreview } from "./story/StoryConheca";
 import { CoverCard } from "./components/Cover";
 import { COVERS } from "./covers/covers";
+import { DicionarioMineiro, DicionarioProps, Timing, measureLayout, nn } from "./dicionario/DicionarioMineiro";
+import ep01 from "../episodios/dicionario/01-uai.json";
+
+// Dicionário Mineiro: duração pela voz (timing.json gerado por audio/dicionario.py) e textos medidos com as fontes carregadas.
+// Episódio = JSON passado em --props (ex.: --props=episodios/dicionario/02-pertim.json); sem --props, abre o 01.
+const dicionarioMetadata = async ({ props }: { props: DicionarioProps }) => {
+  await fontsReady;
+  const res = await fetch(staticFile(`audio/dicionario/${nn(props.numero)}/timing.json`));
+  if (!res.ok) throw new Error(`Sem timing do episódio ${nn(props.numero)}: rode python3 audio/dicionario.py <json do episódio>`);
+  const timing: Timing = await res.json();
+  return { durationInFrames: timing.durationInFrames, props: { ...props, timing, layout: measureLayout(props) } };
+};
 
 export const RemotionRoot: React.FC = () => (
   <>
@@ -85,6 +97,16 @@ export const RemotionRoot: React.FC = () => (
       width={TLS.width}
       height={TLS.height}
       defaultProps={{ withAudio: true }}
+    />
+    <Composition
+      id="DicionarioMineiro"
+      component={DicionarioMineiro}
+      durationInFrames={420}
+      fps={30}
+      width={1080}
+      height={1920}
+      defaultProps={ep01 as DicionarioProps}
+      calculateMetadata={dicionarioMetadata}
     />
   </>
 );
