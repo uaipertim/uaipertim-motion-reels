@@ -1,6 +1,6 @@
 {
  "fps": 30,
- "durationInFrames": 402,
+ "durationInFrames": 407,
  "scenes": {
   "capa": {
    "from": 0,
@@ -8,19 +8,19 @@
   },
   "significado": {
    "from": 32,
-   "duration": 194
+   "duration": 197
   },
   "ponte": {
-   "from": 226,
-   "duration": 92
+   "from": 229,
+   "duration": 97
   },
   "cta": {
-   "from": 318,
-   "duration": 84
+   "from": 326,
+   "duration": 81
   }
  },
  "beats": {
-  "balloon": 136
+  "balloon": 137
  },
  "speech": [
   {
@@ -33,19 +33,19 @@
    "id": "significado",
    "scene": "significado",
    "from": 36,
-   "to": 217
+   "to": 220
   },
   {
    "id": "ponte",
    "scene": "ponte",
-   "from": 230,
-   "to": 309
+   "from": 233,
+   "to": 318
   },
   {
    "id": "cta",
    "scene": "cta",
-   "from": 322,
-   "to": 384
+   "from": 330,
+   "to": 390
   }
  ],
  "episodio": "07-quitanda.json"

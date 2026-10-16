@@ -1,7 +1,7 @@
 {
  "script": "Num dou conta. <break time=\"0.4s\" /> Não consigo. Não aguento. Tipo: Num dou conta de mais um app no celular. <break time=\"0.4s\" /> Cê nem precisa baixar. O UaiPertim abre no navegador. <break time=\"0.4s\" /> Manda pra quem num dá conta",
  "voice": "LuQ9eaWO9yCQrR73VQFa",
- "text": "Num dou conta. <break time=\"0.4s\" /> Não consigo. Não aguento. Tipo: Num dou conta de mais um app no celular. <break time=\"0.4s\" /> Cê nem precisa baixar. O Uai Pértim abre no navegador. <break time=\"0.4s\" /> Manda pra quem num dá conta",
+ "text": "Num dou conta. <break time=\"0.4s\" /> Não consigo. Não aguento. Tipo: Num dou conta de mais um app no celular. <break time=\"0.4s\" /> Cê nem precisa baixar. O Uai Pérr-tim abre no navegador. <break time=\"0.4s\" /> Manda pra quem num dá conta",
  "words": [
   {
    "w": "Num",
@@ -106,67 +106,72 @@
   {
    "w": "baixar",
    "start": 7.906,
-   "end": 8.371
+   "end": 8.382
   },
   {
    "w": "O",
-   "start": 8.615,
-   "end": 8.696
+   "start": 8.626,
+   "end": 8.707
   },
   {
    "w": "Uai",
-   "start": 8.812,
-   "end": 8.998
+   "start": 8.824,
+   "end": 9.009
   },
   {
-   "w": "Pértim",
+   "w": "Pérr",
    "start": 9.056,
-   "end": 9.567
+   "end": 9.3
+  },
+  {
+   "w": "tim",
+   "start": 9.346,
+   "end": 9.578
   },
   {
    "w": "abre",
-   "start": 9.683,
-   "end": 10.008
+   "start": 9.671,
+   "end": 9.985
   },
   {
    "w": "no",
-   "start": 10.054,
-   "end": 10.136
+   "start": 10.043,
+   "end": 10.124
   },
   {
    "w": "navegador",
-   "start": 10.194,
-   "end": 10.925
+   "start": 10.182,
+   "end": 10.867
   },
   {
    "w": "Manda",
-   "start": 11.471,
-   "end": 11.714
+   "start": 11.447,
+   "end": 11.773
   },
   {
    "w": "pra",
-   "start": 11.749,
-   "end": 11.877
+   "start": 11.819,
+   "end": 11.97
   },
   {
    "w": "quem",
-   "start": 11.935,
-   "end": 12.132
+   "start": 12.028,
+   "end": 12.19
   },
   {
    "w": "num",
-   "start": 12.19,
-   "end": 12.295
+   "start": 12.237,
+   "end": 12.365
   },
   {
    "w": "dá",
-   "start": 12.341,
-   "end": 12.434
+   "start": 12.411,
+   "end": 12.504
   },
   {
    "w": "conta",
-   "start": 12.492,
-   "end": 13.142
+   "start": 12.574,
+   "end": 13.282
   }
  ]
 }

@@ -295,7 +295,7 @@ npm run audio:setup   # baixa as vozes (Piper pt-BR + Kokoro) e instala as libs 
 | Na tela | Enviado à voz |
 |---|---|
 | Pertim / pertim | Pértim / pértim |
-| UaiPertim (a marca) | Uai Pértim |
+| UaiPertim (a marca) | Uai Pérr-tim ("Uai Pértim" ainda saía com o E fechado) |
 
 O dicionário fica em `audio/voz_oficial.json` → `pronuncia` e é aplicado automaticamente a TODO texto enviado à API (`pronounce()` em `audio/elevenlabs.py`: palavra inteira, sem diferenciar maiúsculas, mantendo a inicial, chaves mais longas primeiro). Palavra nova com pronúncia própria = mais uma entrada nesse dicionário.
 
