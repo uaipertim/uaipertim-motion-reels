@@ -1,0 +1,12 @@
+{
+  "numero": 4,
+  "chip": "FACIM FACIM",
+  "slides": [
+    { "tipo": "capa", "titulo": "App ou *navegador*? 🤔", "texto": "" },
+    { "tipo": "conteudo", "titulo": "App", "texto": "Baixa, espera instalar, ocupa espaço e pede atualização.", "icone": "navegador" },
+    { "tipo": "conteudo", "titulo": "UaiPertim", "texto": "Abre o link no navegador e pronto. Nada pra baixar.", "icone": "navegador" },
+    { "tipo": "conteudo", "titulo": "Celular cheio?", "texto": "Não tem problema. O UaiPertim não ocupa espaço.", "icone": "gratis" },
+    { "tipo": "conteudo", "titulo": "É só salvar o link", "texto": "Abre quando quiser, direto do navegador.", "icone": "calendario" },
+    { "tipo": "final", "titulo": "Manda pra quem tá com o celular lotado 😂", "texto": "Segue a gente pra saber quando abrir" }
+  ]
+}

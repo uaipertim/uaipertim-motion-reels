@@ -1,0 +1,12 @@
+{
+  "numero": 3,
+  "chip": "FACIM FACIM",
+  "slides": [
+    { "tipo": "capa", "titulo": "O que vai ter no *UaiPertim*? 🛍️", "texto": "" },
+    { "tipo": "conteudo", "titulo": "Restaurantes e lanches", "texto": "Almoço, janta e aquele lanche da noite.", "icone": "loja" },
+    { "tipo": "conteudo", "titulo": "Mercado e mercearia", "texto": "As compras do dia a dia, sem sair de casa.", "icone": "categoria" },
+    { "tipo": "conteudo", "titulo": "Farmácia", "texto": "O que você precisa, quando precisar.", "icone": "categoria" },
+    { "tipo": "conteudo", "titulo": "Padaria, pet shop, agropecuária e mais", "texto": "O comércio do Glória num lugar só.", "icone": "cidade" },
+    { "tipo": "final", "titulo": "Manda pra quem vive pedindo coisa 😂", "texto": "Segue a gente pra saber quando abrir" }
+  ]
+}
