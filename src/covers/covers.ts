@@ -19,7 +19,7 @@ export const COVERS: Record<string, CoverCardProps> = {
     highlightSize: 185, // "assim, ó" com ~777px (≤ 72% da largura): margem para o zoom do recorte da grade
     markerWidth: 798, // acompanha a largura do destaque
     logoSize: 378, textShift: 38,
-    offsetY: 180, // sem a 3ª linha; bloco (logo + textos + marcador) centrado nos recortes 3:4 e 4:5
+    offsetY: 54, // sem a 3ª linha; bloco (logo + textos + marcador) centrado nos recortes 3:4 e 4:5
     leadSize: 90, // apoio reduzido na mesma proporção do destaque (185/190)
     highlightShift: -19, // mantém o respiro entre as linhas com a linha 1 menor
     markerDrop: 25, // o marcador passa abaixo da ponta da vírgula de "assim,"
@@ -35,7 +35,7 @@ export const COVERS: Record<string, CoverCardProps> = {
     highlightSize: 175, // "PRECISA" com ~729px: já dentro dos 72% da largura
     markerWidth: 790,
     logoSize: 378, textShift: 38,
-    offsetY: 146, // bloco (logo + textos + marcador) centrado nos recortes 3:4 e 4:5
+    offsetY: 54, // bloco (logo + textos + marcador) centrado nos recortes 3:4 e 4:5
     highlightShift: -37, // ~55px entre a cedilha do "ç" e o topo de "PRECISA"
     tailShift: -153, // ~45px entre o marcador e "estar aqui?"
     twinkles: [[130, 400], [950, 430], [900, 300], [215, 640], [865, 600], [140, 1470], [940, 1450], [210, 1590], [880, 1600]],

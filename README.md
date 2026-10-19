@@ -308,7 +308,7 @@ O dicionário fica em `audio/voz_oficial.json` → `pronuncia` e é aplicado aut
 
 **Trocar por voz gravada:** grave as falas `n1`…`n6` como WAV, coloque em `audio/build/vo/` (Vídeo 1) ou `audio/build/v2/vo/` (Vídeo 2) com esses nomes e rode `python3 audio/build_audio.py [--video v2] --no-tts`.
 
-**Capas dos Vídeos 1, 2 e 3** (`Capa-Video1`, `Capa-Video2`, `Capa-Video3`, componente `CoverCard`): logo 10% menor (378 px), ~70 px entre a base do círculo do logo e o topo da 1ª linha, bloco (logo + textos + marcador) centrado em y=960 na zona segura (285–1635), margem lateral ≥ 120 px. A Capa 1 deixou de ser o frame 268 do vídeo e agora usa o mesmo `CoverCard` (config em `src/covers/covers.ts`). Exportar: `npx remotion still Capa-Video1 out/capas/capa_video1.png`.
+**Capas dos Vídeos 1, 2 e 3** (`Capa-Video1`, `Capa-Video2`, `Capa-Video3`, componente `CoverCard`): logo 10% menor (378 px), ~70 px entre a base do círculo do logo e o topo da 1ª linha, topo do círculo do logo fixo em y=425 nas três (posição da capa 1, o bloco mais alto; só a sobra embaixo varia), margem lateral ≥ 120 px. A Capa 1 deixou de ser o frame 268 do vídeo e agora usa o mesmo `CoverCard` (config em `src/covers/covers.ts`). Exportar: `npx remotion still Capa-Video1 out/capas/capa_video1.png`.
 
 ## Notas
 
