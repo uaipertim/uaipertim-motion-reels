@@ -35,17 +35,21 @@ export type CoverCardProps = {
   tailSize?: number; // tamanho da linha 3 (padrão 128, como "é app.")
   tailShift?: number; // sobe/desce só a linha 3
   markerThickness?: number; // espessura do marcador (padrão: proporcional ao destaque; 64 = a do "NÃO")
+  logoSize?: number; // diâmetro do logo (padrão 420; as capas 1–3 usam 378 = −10%, para abrir respiro sob o logo)
+  logoDy?: number; // sobe/desce só o logo
+  textShift?: number; // desce só os textos (linha 1, destaque e linha 3): respiro entre o círculo do logo e a 1ª linha
   logoScale?: number; // 1.024 = o tamanho do logo no frame 268 do Vídeo 1 (ele "respira" na cena)
 };
 
 export const CoverCard: React.FC<CoverCardProps> = ({
   lead, highlight, highlightSize = COVER_LAYOUT.highlight.size, markerWidth, tail, twinkles = V1_TWINKLES, frame = 88, offsetY = 0,
   leadSize = COVER_LAYOUT.line1.size, highlightShift = 0, markerDrop = 0, tailSize = COVER_LAYOUT.tail.size, tailShift = 0, markerThickness, logoScale = 1,
+  logoSize = COVER_LAYOUT.logo.size, logoDy = 0, textShift = 0,
 }) => {
-  const logo = { ...COVER_LAYOUT.logo, cy: COVER_LAYOUT.logo.cy + offsetY };
-  const line1 = { ...COVER_LAYOUT.line1, top: COVER_LAYOUT.line1.top + offsetY };
-  const tl = { top: COVER_LAYOUT.tail.top + offsetY + tailShift, size: tailSize };
-  const hlTop = COVER_LAYOUT.highlight.top + offsetY + highlightShift;
+  const logo = { ...COVER_LAYOUT.logo, size: logoSize, cy: COVER_LAYOUT.logo.cy + offsetY + logoDy };
+  const line1 = { ...COVER_LAYOUT.line1, top: COVER_LAYOUT.line1.top + offsetY + textShift };
+  const tl = { top: COVER_LAYOUT.tail.top + offsetY + textShift + tailShift, size: tailSize };
+  const hlTop = COVER_LAYOUT.highlight.top + offsetY + textShift + highlightShift;
   const k = highlightSize / COVER_LAYOUT.highlight.size;
   const settled = 1000; // PopWords já assentado (sem animação)
   return (

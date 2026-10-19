@@ -103,6 +103,7 @@ export const RemotionRoot: React.FC = () => (
       />
     ))}
     {/* Capas (thumbnails) dos Reels */}
+    <Still id="Capa-Video1" component={CoverCard} width={1080} height={1920} defaultProps={COVERS.video1} />
     <Still id="Capa-Video2" component={CoverCard} width={1080} height={1920} defaultProps={COVERS.video2} />
     <Still id="Capa-Video3" component={CoverCard} width={1080} height={1920} defaultProps={COVERS.video3} />
     <Composition

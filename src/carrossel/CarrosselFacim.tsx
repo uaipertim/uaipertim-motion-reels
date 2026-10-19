@@ -63,7 +63,7 @@ const tokens = (t: string) => {
 
 const Text: React.FC<{
   source: string; wrapped: Wrapped; weight: number; color?: string; align?: "center" | "left"; lineHeight?: number;
-  accent?: (w: string, i: number) => string | undefined; hlColor?: string; markerColor?: string; markerShine?: boolean; markerDrop?: number; markerDrop?: number;
+  accent?: (w: string, i: number) => string | undefined; hlColor?: string; markerColor?: string; markerShine?: boolean; markerDrop?: number;
 }> = ({ source, wrapped, weight, color = C.tinta, align = "center", lineHeight = 1.12, accent, hlColor = C.coral, markerColor = C.amarelo, markerShine = true, markerDrop = 0 }) => {
   const toks = tokens(source);
   let k = 0;
