@@ -1,7 +1,7 @@
 import React from "react";
 import { AbsoluteFill, Img, staticFile } from "remotion";
 import { C, FONT, W } from "../config/theme";
-import { CremeBackground } from "../components/Decor";
+import { CremeBackground, DotGrid, Sunburst } from "../components/Decor";
 import { Twinkles } from "../components/Particles";
 import { GridIcon, PinIcon, ScooterIcon, StoreIcon } from "../components/AppIcons";
 import { fitWrap, Wrapped } from "../dicionario/fit";
@@ -11,16 +11,21 @@ import { fitWrap, Wrapped } from "../dicionario/fit";
 //   capa:     chip + pergunta grande (*palavra-chave* com marcador amarelo) + "arrasta →"
 //   conteudo: título curto + texto (até ~25 palavras) + ícone do tema + progresso (2/6)
 //   final:    "Manda pra quem…" grande + "Segue a gente pra saber quando abrir" + logo
-// Margens laterais ≥ 80 px; na capa, ≥ 114 px (cabe no recorte 3:4 da grade, que corta ~34 px de cada lado).
+// Margens laterais ≥ 80 px; na capa creme (C1–C4), ≥ 114 px; na capa coral (C5 em diante), ≥ 120 px — assim nada
+// encosta na borda no recorte 3:4 da grade (que corta ~34 px de cada lado).
+// CAPA: "coral" (fundo coral, título branco, destaque amarelo com marcador creme, chip invertido) ou "creme" (o modelo
+// antigo). Campo opcional "capa" no JSON; padrão = coral a partir do C5 e creme nos anteriores (já publicados).
 
 export type Icone = "navegador" | "gratis" | "cadastro" | "cidade" | "categoria" | "loja" | "entrega" | "calendario";
 export type Slide = { tipo: "capa" | "conteudo" | "final"; titulo: string; texto?: string; icone?: Icone };
-export type Carrossel = { numero: number; chip: string; slides: Slide[] };
+export type Carrossel = { numero: number; chip: string; capa?: "coral" | "creme"; slides: Slide[] };
 export type CarrosselProps = Carrossel & { slide: number; layout?: { titulo: Wrapped; texto?: Wrapped } };
 
 export const SLIDE = { width: 1080, height: 1350 };
 const M = 80; // margem lateral
-const M_CAPA = 34 + 80; // capa: margem dentro do recorte 3:4
+const M_CAPA_CREME = 34 + 80; // capa creme: margem dentro do recorte 3:4
+const M_CAPA_CORAL = 120; // capa coral: mínimo de 120 px de cada lado
+export const capaCoral = (c: { numero: number; capa?: "coral" | "creme" }) => (c.capa ?? (c.numero >= 5 ? "coral" : "creme")) === "coral";
 const CARD = { left: M, right: SLIDE.width - M, pad: 72 };
 
 const plain = (t: string) => t.replace(/\*/g, "");
@@ -32,7 +37,7 @@ const glueSlide = (s: Slide): Slide => ({ ...s, titulo: glue(s.titulo), texto: s
 // medido em calculateMetadata (fontes carregadas)
 export const measureSlide = (c: Carrossel, i: number) => {
   const s = glueSlide(c.slides[i]);
-  if (s.tipo === "capa") return { titulo: fitWrap(plain(s.titulo), W.black, SLIDE.width - 2 * M_CAPA, [124, 114, 104, 96, 88, 80], 4) };
+  if (s.tipo === "capa") return { titulo: fitWrap(plain(s.titulo), W.black, SLIDE.width - 2 * (capaCoral(c) ? M_CAPA_CORAL : M_CAPA_CREME), [124, 114, 104, 96, 88, 80], 4) };
   if (s.tipo === "final")
     return {
       titulo: fitWrap(plain(s.titulo), W.black, SLIDE.width - 2 * M, [108, 100, 92, 84, 76], 4),
@@ -58,8 +63,8 @@ const tokens = (t: string) => {
 
 const Text: React.FC<{
   source: string; wrapped: Wrapped; weight: number; color?: string; align?: "center" | "left"; lineHeight?: number;
-  accent?: (w: string, i: number) => string | undefined;
-}> = ({ source, wrapped, weight, color = C.tinta, align = "center", lineHeight = 1.12, accent }) => {
+  accent?: (w: string, i: number) => string | undefined; hlColor?: string; markerColor?: string; markerShine?: boolean; markerDrop?: number; markerDrop?: number;
+}> = ({ source, wrapped, weight, color = C.tinta, align = "center", lineHeight = 1.12, accent, hlColor = C.coral, markerColor = C.amarelo, markerShine = true, markerDrop = 0 }) => {
   const toks = tokens(source);
   let k = 0;
   const size = wrapped.size;
@@ -76,14 +81,14 @@ const Text: React.FC<{
               <span key={wi} style={{ fontFamily: FONT, fontWeight: weight, fontSize: size, lineHeight, letterSpacing: -1, color: accent?.(plain(segs.map((s) => s.t).join("")), base + wi) ?? color }}>
                 {segs.map((s, si) =>
                   s.hl ? (
-                    <span key={si} style={{ position: "relative", display: "inline-block", color: C.coral }}>
+                    <span key={si} style={{ position: "relative", display: "inline-block", color: hlColor }}>
                       {/* marcador amarelo (mesma curva do Marker da série), esticado na largura da palavra */}
                       <svg
                         viewBox="0 0 100 20" preserveAspectRatio="none"
-                        style={{ position: "absolute", left: -size * 0.08, width: `calc(100% + ${size * 0.16}px)`, bottom: size * 0.02, height: size * 0.42, overflow: "visible" }}
+                        style={{ position: "absolute", left: -size * 0.08, width: `calc(100% + ${size * 0.16}px)`, bottom: size * (0.02 - markerDrop), height: size * 0.42, overflow: "visible" }}
                       >
-                        <path d="M4 13 C30 9, 62 16, 96 7" stroke={C.amarelo} strokeWidth={size * 0.27} strokeLinecap="round" fill="none" vectorEffect="non-scaling-stroke" />
-                        <path d="M4 10 C30 6, 62 13, 96 4" stroke="#fff" strokeOpacity={0.35} strokeWidth={size * 0.05} strokeLinecap="round" fill="none" vectorEffect="non-scaling-stroke" />
+                        <path d="M4 13 C30 9, 62 16, 96 7" stroke={markerColor} strokeWidth={size * 0.27} strokeLinecap="round" fill="none" vectorEffect="non-scaling-stroke" />
+                        {markerShine && <path d="M4 10 C30 6, 62 13, 96 4" stroke="#fff" strokeOpacity={0.35} strokeWidth={size * 0.05} strokeLinecap="round" fill="none" vectorEffect="non-scaling-stroke" />}
                       </svg>
                       <span style={{ position: "relative" }}>{s.t}</span>
                     </span>
@@ -100,17 +105,17 @@ const Text: React.FC<{
   );
 };
 
-const Chip: React.FC<{ text: string; size: number }> = ({ text, size }) => (
+const Chip: React.FC<{ text: string; size: number; invert?: boolean }> = ({ text, size, invert }) => (
   <div
     style={{
-      display: "inline-flex", alignItems: "center", gap: size * 0.4, background: C.coral, borderRadius: size * 2,
-      padding: `${size * 0.32}px ${size * 0.75}px`, boxShadow: `0 ${size * 0.16}px 0 ${C.coralDark}`,
+      display: "inline-flex", alignItems: "center", gap: size * 0.4, background: invert ? C.creme : C.coral, borderRadius: size * 2,
+      padding: `${size * 0.32}px ${size * 0.75}px`, boxShadow: invert ? `0 ${size * 0.16}px 0 ${C.cremeDeep}` : `0 ${size * 0.16}px 0 ${C.coralDark}`,
     }}
   >
     <svg width={size * 0.9} height={size * 0.9} viewBox="0 0 24 24">
-      <path d="M13 2 L4 14 H11 L10 22 L20 9 H13 Z" fill={C.amarelo} />
+      <path d="M13 2 L4 14 H11 L10 22 L20 9 H13 Z" fill={invert ? C.coral : C.amarelo} />
     </svg>
-    <span style={{ fontFamily: FONT, fontWeight: W.black, fontSize: size, lineHeight: 1.1, color: "#fff", letterSpacing: size * 0.05, whiteSpace: "nowrap" }}>{text}</span>
+    <span style={{ fontFamily: FONT, fontWeight: W.black, fontSize: size, lineHeight: 1.1, color: invert ? C.coral : "#fff", letterSpacing: size * 0.05, whiteSpace: "nowrap" }}>{text}</span>
   </div>
 );
 
@@ -169,29 +174,39 @@ const Logo: React.FC<{ size: number }> = ({ size }) => (
 
 const TWINKLES: Array<[number, number]> = [[50, 520], [1030, 420], [48, 1180], [1032, 1010]];
 
-export const CarrosselFacim: React.FC<CarrosselProps> = ({ chip, slides, slide, layout }) => {
+export const CarrosselFacim: React.FC<CarrosselProps> = ({ numero, chip, capa, slides, slide, layout }) => {
   if (!layout) throw new Error("CarrosselFacim: layout é medido no calculateMetadata");
   const s = glueSlide(slides[slide]);
   const total = slides.length;
+  const coral = s.tipo === "capa" && capaCoral({ numero, capa });
+  const M_CAPA = coral ? M_CAPA_CORAL : M_CAPA_CREME;
   return (
-    <AbsoluteFill style={{ background: C.creme }}>
-      <CremeBackground frame={0} rays raysCenter={[540, 600]} raysOpacity={0.1} />
-      <Twinkles frame={14} seed="facim" points={TWINKLES} size={30} />
+    <AbsoluteFill style={{ background: coral ? C.coral : C.creme }}>
+      {coral ? (
+        <AbsoluteFill style={{ background: C.coral, overflow: "hidden" }}>
+          <Sunburst frame={0} cx={540} cy={600} color={C.coralBg} opacity={0.5} />
+          <DotGrid cols={5} rows={3} color={C.creme} style={{ left: 60, top: 70, opacity: 0.35 }} frame={0} />
+          <div style={{ position: "absolute", right: -170, top: -150, width: 420, height: 420, borderRadius: "50%", border: `5px solid ${C.creme}`, opacity: 0.35 }} />
+        </AbsoluteFill>
+      ) : (
+        <CremeBackground frame={0} rays raysCenter={[540, 600]} raysOpacity={0.1} />
+      )}
+      <Twinkles frame={14} seed="facim" points={TWINKLES} size={30} color={coral ? C.creme : undefined} />
 
       {s.tipo === "capa" && (() => {
         const h = layout.titulo.lines.length * layout.titulo.size * 1.12;
         return (
           <>
             <div style={{ position: "absolute", top: 230, left: 0, right: 0, display: "flex", justifyContent: "center" }}>
-              <Chip text={chip} size={44} />
+              <Chip text={chip} size={44} invert={coral} />
             </div>
             <div style={{ position: "absolute", top: 690 - h / 2, left: M_CAPA, right: M_CAPA }}>
-              <Text source={s.titulo} wrapped={layout.titulo} weight={W.black} />
+              <Text source={s.titulo} wrapped={layout.titulo} weight={W.black} {...(coral ? { color: "#fff", hlColor: C.amarelo, markerColor: C.creme, markerShine: false, markerDrop: 0.07 } : {})} />
             </div>
             <div
               style={{
                 position: "absolute", right: M_CAPA, bottom: 150, fontFamily: FONT, fontWeight: W.extraBold, fontSize: 38,
-                color: C.tinta, opacity: 0.6, letterSpacing: 0.5,
+                color: coral ? C.creme : C.tinta, opacity: coral ? 1 : 0.6, letterSpacing: 0.5,
               }}
             >
               arrasta →

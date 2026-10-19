@@ -204,11 +204,14 @@ Arte estática 1080×1350 (4:5), um PNG por slide, renderizada pelo mesmo pipeli
 }
 ```
 
-- **capa:** chip, pergunta grande e "arrasta →". A palavra-chave vai entre `*asteriscos*` e ganha coral + marcador amarelo.
+- **capa:** chip, pergunta grande e "arrasta →". A palavra-chave vai entre `*asteriscos*`. Dois estilos, escolhidos pelo campo opcional `"capa": "coral" | "creme"` do JSON:
+  - **coral** (padrão a partir do **C5**; Dicionário Mineiro fica creme, para a grade ter ritmo): fundo `#F2502B` com raios `#E7431C` sutis, título branco, palavra de destaque amarela `#F9B233` com marcador creme `#F6EEE2`, chip invertido (fundo creme, texto coral), "arrasta →" creme, pontinhos e arco creme com baixa opacidade. Margem lateral ≥ 120 px.
+  - **creme** (C1–C4, já publicados ou programados; padrão nos números < 5): palavra em coral com marcador amarelo, margem ≥ 114 px. Não renderizar de novo.
+  Só a capa muda: slides de conteúdo e final são iguais nos dois estilos.
 - **conteudo:** título curto + texto (até ~25 palavras; o script avisa se passar) + ícone, num card branco. Tem progresso discreto (2/6) no canto. `icone` (opcional): `navegador`, `gratis`, `cadastro`, `cidade`, `categoria`, `loja`, `entrega`, `calendario`.
 - **final:** "Manda pra quem…" grande ("Manda" em coral) + linha de apoio em `texto` + logo.
 - De 4 a 6 slides. Sem @, sem WhatsApp, sem dados inventados.
-- Margens: ≥ 80 px nas laterais; na capa ≥ 114 px, para o texto caber no recorte 3:4 da grade (que corta ~34 px de cada lado). Tamanhos de fonte e quebras são medidos por slide (`src/dicionario/fit.ts`); emoji nunca fica sozinho numa linha.
+- Margens: ≥ 80 px nas laterais; na capa ≥ 114 px (creme) ou ≥ 120 px (coral), para o texto caber no recorte 3:4 da grade (que corta ~34 px de cada lado). Tamanhos de fonte e quebras são medidos por slide (`src/dicionario/fit.ts`); emoji nunca fica sozinho numa linha.
 
 **Gerar:**
 
