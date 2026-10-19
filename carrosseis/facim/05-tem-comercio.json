@@ -3,7 +3,7 @@
   "chip": "FACIM FACIM",
   "capa": "coral",
   "slides": [
-    { "tipo": "capa", "titulo": "Tem comércio no *Glória*? 🏪", "texto": "" },
+    { "tipo": "capa", "titulo": "Tem comércio no *Glória*? 📍", "texto": "" },
     { "tipo": "conteudo", "titulo": "Seu comércio no celular da cidade", "texto": "Quem é do Glória vai poder pedir de você pelo UaiPertim.", "icone": "loja" },
     { "tipo": "conteudo", "titulo": "Sem app pro cliente baixar", "texto": "O cliente abre o link no navegador e pede.", "icone": "navegador" },
     { "tipo": "conteudo", "titulo": "Feito em Minas", "texto": "Uma plataforma pensada pro comércio das cidades pequenas.", "icone": "cidade" },
