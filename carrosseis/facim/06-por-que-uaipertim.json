@@ -1,0 +1,12 @@
+{
+  "numero": 6,
+  "chip": "FACIM FACIM",
+  "slides": [
+    { "tipo": "capa", "titulo": "Por que *UaiPertim*? 🤔", "texto": "" },
+    { "tipo": "conteudo", "titulo": "Uai", "texto": "O jeito mineiro de se espantar. E de começar qualquer conversa.", "icone": "cidade" },
+    { "tipo": "conteudo", "titulo": "Pertim", "texto": "Pertinho. Bem perto de você.", "icone": "loja" },
+    { "tipo": "conteudo", "titulo": "UaiPertim", "texto": "O comércio da sua cidade, pertim de você, direto do celular.", "icone": "navegador" },
+    { "tipo": "conteudo", "titulo": "Feito em Minas", "texto": "Começando pelo Glória, com o jeito mineiro de atender.", "icone": "cadastro" },
+    { "tipo": "final", "titulo": "Manda pra quem tem orgulho de ser mineiro 💛", "texto": "Segue a gente pra saber quando abrir" }
+  ]
+}
