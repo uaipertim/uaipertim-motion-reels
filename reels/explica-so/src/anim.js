@@ -954,9 +954,10 @@
     draw(ctx, cap, t) {
       const d = cap.diagrama, ev = cap.ev;
       const top = Math.max(diaTop(cap), 850);
-      const P = { x: L.cx, base: top + 450 };            // a base do coreto
+      const duas = d.lojas.length <= 2;                   // duas lojinhas: simétricas, e o selo carimbado na frente da praça
+      const P = { x: L.cx, base: top + (duas ? 390 : 450) };   // a base do coreto
       const pos = [{ x: 220, base: top + 190 }, { x: 830, base: top + 190 }, { x: 220, base: Math.min(1384, top + 530) }];
-      const selo_ = { x: 818, y: Math.min(1340, top + 480), r: 88 };
+      const selo_ = duas ? { x: P.x, y: Math.min(1362, P.base + 115), r: 82 } : { x: 818, y: Math.min(1340, top + 480), r: 88 };
       // a praça: o gramado, o caminho, as árvores e o coreto
       pop(ctx, ent(t, ev.praca, 0.55), P.x, P.base, () => {
         ctx.fillStyle = css(C.verdeLight, 0.55); ctx.beginPath(); ctx.ellipse(P.x, P.base, 250, 74, 0, 0, TAU); ctx.fill();

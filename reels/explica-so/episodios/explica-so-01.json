@@ -66,11 +66,11 @@
       ],
       "fala": [
         {
-          "texto": "Só que o queijo tá ali na padaria, ó.",
-          "apoio": "O queijo tá *na padaria*."
+          "texto": "Só que o queijo tá ali, ó: na padaria, no mercadim…",
+          "apoio": "O queijo tá *na padaria* e *no mercadim*."
         },
         {
-          "texto": "E o mercadim, a farmácia… tá tudo pertim de você, aqui no Glória.",
+          "texto": "Tudo pertim de você, aqui no Glória.",
           "apoio": "Tudo *pertim de você*, aqui no Glória."
         }
       ],
@@ -89,12 +89,8 @@
           {
             "tipo": "mercado",
             "t": "MERCADIM",
-            "em": "mercadim"
-          },
-          {
-            "tipo": "farmacia",
-            "t": "FARMÁCIA",
-            "em": "farmácia"
+            "em": "mercadim",
+            "balao": "queijo"
           }
         ],
         "linhas": {
