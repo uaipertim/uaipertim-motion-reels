@@ -1,0 +1,193 @@
+{
+ "duracao": 52.25,
+ "apoios": [
+  {
+   "cap": 1,
+   "i": 1,
+   "texto": "O comércio do Glória, tudo num lugar só.",
+   "entra": 7.213,
+   "inteira_de": 7.553,
+   "ate": 11.5,
+   "linhas": [
+    "O comércio do Glória,",
+    "tudo num lugar só."
+   ]
+  },
+  {
+   "cap": 2,
+   "i": 1,
+   "texto": "Até o docim da sobremesa.",
+   "entra": 11.8,
+   "inteira_de": 12.14,
+   "ate": 19,
+   "linhas": [
+    "Até o docim da sobremesa."
+   ]
+  },
+  {
+   "cap": 3,
+   "i": 1,
+   "texto": "Escolhe, pede e chega na sua porta.",
+   "entra": 19.3,
+   "inteira_de": 19.64,
+   "ate": 25.75,
+   "linhas": [
+    "Escolhe, pede e chega na sua porta."
+   ]
+  },
+  {
+   "cap": 4,
+   "i": 1,
+   "texto": "Sem fila, sem sol e sem tirar o pijama.",
+   "entra": 26.05,
+   "inteira_de": 26.39,
+   "ate": 32.25,
+   "linhas": [
+    "Sem fila, sem sol e sem tirar o pijama."
+   ]
+  },
+  {
+   "cap": 5,
+   "i": 1,
+   "texto": "Feito em Minas, pro comércio que ocê já conhece.",
+   "entra": 32.55,
+   "inteira_de": 32.89,
+   "ate": 38.75,
+   "linhas": [
+    "Feito em Minas,",
+    "pro comércio que ocê já conhece."
+   ]
+  },
+  {
+   "cap": 6,
+   "i": 1,
+   "texto": "Qual loja do Glória cê quer primeiro?",
+   "entra": 39.05,
+   "inteira_de": 39.39,
+   "ate": 44.75,
+   "linhas": [
+    "Qual loja do Glória cê quer primeiro?"
+   ]
+  }
+ ],
+ "trocas": [
+  {
+   "de": 0,
+   "para": 1,
+   "t0": 3.5,
+   "t1": 4.25
+  },
+  {
+   "de": 1,
+   "para": 2,
+   "t0": 10.75,
+   "t1": 11.5
+  },
+  {
+   "de": 2,
+   "para": 3,
+   "t0": 18.25,
+   "t1": 19
+  },
+  {
+   "de": 3,
+   "para": 4,
+   "t0": 25,
+   "t1": 25.75
+  },
+  {
+   "de": 4,
+   "para": 5,
+   "t0": 31.5,
+   "t1": 32.25
+  },
+  {
+   "de": 5,
+   "para": 6,
+   "t0": 38,
+   "t1": 38.75
+  },
+  {
+   "de": 6,
+   "para": 7,
+   "t0": 44,
+   "t1": 44.75
+  }
+ ],
+ "montagens": [
+  {
+   "n": 0,
+   "t0": 0,
+   "t1": 3.5,
+   "primeira": 0.297,
+   "ultima": 3
+  },
+  {
+   "n": 1,
+   "t0": 4.25,
+   "t1": 10.75,
+   "primeira": 6.021,
+   "ultima": 9.724
+  },
+  {
+   "n": 2,
+   "t0": 11.5,
+   "t1": 18.25,
+   "primeira": 11.75,
+   "ultima": 16.081
+  },
+  {
+   "n": 3,
+   "t0": 19,
+   "t1": 25,
+   "primeira": 19.61,
+   "ultima": 22.787000000000003
+  },
+  {
+   "n": 4,
+   "t0": 25.75,
+   "t1": 31.5,
+   "primeira": 26.36,
+   "ultima": 29.511
+  },
+  {
+   "n": 5,
+   "t0": 32.25,
+   "t1": 38,
+   "primeira": 33.197,
+   "ultima": 35.588
+  },
+  {
+   "n": 6,
+   "t0": 38.75,
+   "t1": 44,
+   "primeira": 39.662,
+   "ultima": 42.721
+  },
+  {
+   "n": 7,
+   "t0": 44.75,
+   "t1": 52.25,
+   "primeira": 45,
+   "ultima": 47.96
+  }
+ ],
+ "fecho": {
+  "ultima_mudanca_de_texto": 48.51,
+  "duracao": 52.25,
+  "logo": {
+   "entra": 45,
+   "parada": 45.9
+  },
+  "t0": 44.75,
+  "t1": 52.25
+ },
+ "capa": {
+  "tamanho": 117,
+  "linhas": [
+   755.9377954101562,
+   678.5845239257812
+  ]
+ },
+ "palavras_sem_peca": []
+}

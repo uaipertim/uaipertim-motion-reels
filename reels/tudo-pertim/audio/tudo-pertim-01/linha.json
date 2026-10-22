@@ -1,0 +1,1186 @@
+{
+ "episodio": "tudo-pertim-01",
+ "titulo": "Prazer, UaiPertim!",
+ "marca": "@uaipertim",
+ "bpm": 120,
+ "duracao": 52.25,
+ "tr": 0.75,
+ "ap_entra": 0.34,
+ "ap_leitura": 1.5,
+ "previa": false,
+ "capitulos": [
+  {
+   "n": 0,
+   "rotulo": "TUDO PERTIM · EP. 01",
+   "tom": "amarelo",
+   "titulo": [
+    "Tá chegando",
+    "no Glória 👀"
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "capa",
+    "marcador": "Glória",
+    "olhos": {
+     "em": "Glória"
+    },
+    "confete": {
+     "em": "novidade"
+    },
+    "buzina": {
+     "em": "pertim"
+    }
+   },
+   "t0": 0.0,
+   "t1": 3.5,
+   "voz_t0": 0.1,
+   "voz_t1": 2.91,
+   "palavras": [
+    {
+     "w": "Ô",
+     "n": "o",
+     "i0": 0,
+     "t0": 0.1,
+     "t1": 0.216
+    },
+    {
+     "w": "Glória,",
+     "n": "gloria",
+     "i0": 2,
+     "t0": 0.297,
+     "t1": 0.588
+    },
+    {
+     "w": "tem",
+     "n": "tem",
+     "i0": 10,
+     "t0": 0.646,
+     "t1": 0.773
+    },
+    {
+     "w": "novidade",
+     "n": "novidade",
+     "i0": 14,
+     "t0": 0.797,
+     "t1": 1.284
+    },
+    {
+     "w": "chegando",
+     "n": "chegando",
+     "i0": 23,
+     "t0": 1.307,
+     "t1": 1.76
+    },
+    {
+     "w": "pertim",
+     "n": "pertim",
+     "i0": 32,
+     "t0": 1.818,
+     "t1": 2.306
+    },
+    {
+     "w": "docês!",
+     "n": "doces",
+     "i0": 41,
+     "t0": 2.364,
+     "t1": 2.91
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Ô Glória, tem novidade chegando pertim docês!",
+     "apoio": null,
+     "t0": 0.1,
+     "t1": 2.91
+    }
+   ],
+   "apoios": [],
+   "seed": 42
+  },
+  {
+   "n": 1,
+   "rotulo": "QUEM SOU EU",
+   "tom": "pessego",
+   "titulo": [
+    "Prazer,",
+    "UaiPertim!"
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "quem",
+    "logo": {
+     "em": "UaiPertim"
+    },
+    "lojas": [
+     {
+      "tipo": "padaria",
+      "em": "comércio"
+     },
+     {
+      "tipo": "mercado",
+      "em": "Glória"
+     },
+     {
+      "tipo": "farmacia",
+      "em": "tudo"
+     },
+     {
+      "tipo": "lanchonete",
+      "em": "lugar"
+     }
+    ],
+    "confete": {
+     "em": "só"
+    }
+   },
+   "t0": 4.25,
+   "t1": 10.75,
+   "voz_t0": 4.5,
+   "voz_t1": 9.992,
+   "palavras": [
+    {
+     "w": "Prazer,",
+     "n": "prazer",
+     "i0": 0,
+     "t0": 4.5,
+     "t1": 5.139
+    },
+    {
+     "w": "eu",
+     "n": "eu",
+     "i0": 8,
+     "t0": 5.313,
+     "t1": 5.487
+    },
+    {
+     "w": "sou",
+     "n": "sou",
+     "i0": 11,
+     "t0": 5.557,
+     "t1": 5.754
+    },
+    {
+     "w": "o",
+     "n": "o",
+     "i0": 15,
+     "t0": 5.928,
+     "t1": 5.951
+    },
+    {
+     "w": "UaiPertim!",
+     "n": "uaipertim",
+     "i0": 17,
+     "t0": 6.021,
+     "t1": 7.043
+    },
+    {
+     "w": "O",
+     "n": "o",
+     "i0": 31,
+     "t0": 7.333,
+     "t1": 7.414
+    },
+    {
+     "w": "comércio",
+     "n": "comercio",
+     "i0": 33,
+     "t0": 7.495,
+     "t1": 7.995
+    },
+    {
+     "w": "do",
+     "n": "do",
+     "i0": 42,
+     "t0": 8.053,
+     "t1": 8.122
+    },
+    {
+     "w": "Glória,",
+     "n": "gloria",
+     "i0": 45,
+     "t0": 8.192,
+     "t1": 8.68
+    },
+    {
+     "w": "tudo",
+     "n": "tudo",
+     "i0": 53,
+     "t0": 8.761,
+     "t1": 9.109
+    },
+    {
+     "w": "num",
+     "n": "num",
+     "i0": 58,
+     "t0": 9.156,
+     "t1": 9.283
+    },
+    {
+     "w": "lugar",
+     "n": "lugar",
+     "i0": 62,
+     "t0": 9.318,
+     "t1": 9.655
+    },
+    {
+     "w": "só.",
+     "n": "so",
+     "i0": 68,
+     "t0": 9.724,
+     "t1": 9.992
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Prazer, eu sou o UaiPertim!",
+     "apoio": null,
+     "t0": 4.5,
+     "t1": 7.043
+    },
+    {
+     "texto": "O comércio do Glória, tudo num lugar só.",
+     "apoio": "O comércio do Glória, *tudo num lugar só*.",
+     "t0": 7.333,
+     "t1": 9.992
+    }
+   ],
+   "apoios": [
+    {
+     "t": 7.213,
+     "texto": "O comércio do Glória, *tudo num lugar só*.",
+     "ate": 11.5
+    }
+   ],
+   "seed": 42
+  },
+  {
+   "n": 2,
+   "rotulo": "O QUE TEM",
+   "tom": "amarelo",
+   "titulo": [
+    "Tem de",
+    "tudo um pouco."
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "vitrine",
+    "lojas": [
+     {
+      "tipo": "padaria",
+      "t": "PADARIA",
+      "em": "Padaria",
+      "item": "pao"
+     },
+     {
+      "tipo": "mercado",
+      "t": "MERCADIM",
+      "em": "mercadim",
+      "item": "cesta"
+     },
+     {
+      "tipo": "farmacia",
+      "t": "FARMÁCIA",
+      "em": "farmácia",
+      "item": "remedio"
+     },
+     {
+      "tipo": "lanchonete",
+      "t": "LANCHONETE",
+      "em": "lanchonete",
+      "item": "lanche"
+     }
+    ],
+    "docim": {
+     "em": "docim"
+    }
+   },
+   "t0": 11.5,
+   "t1": 18.25,
+   "voz_t0": 11.75,
+   "voz_t1": 17.404,
+   "palavras": [
+    {
+     "w": "Padaria,",
+     "n": "padaria",
+     "i0": 0,
+     "t0": 11.75,
+     "t1": 12.516
+    },
+    {
+     "w": "mercadim,",
+     "n": "mercadim",
+     "i0": 9,
+     "t0": 12.609,
+     "t1": 13.341
+    },
+    {
+     "w": "farmácia,",
+     "n": "farmacia",
+     "i0": 19,
+     "t0": 13.55,
+     "t1": 14.339
+    },
+    {
+     "w": "lanchonete…",
+     "n": "lanchonete",
+     "i0": 29,
+     "t0": 14.513,
+     "t1": 15.349
+    },
+    {
+     "w": "até",
+     "n": "ate",
+     "i0": 41,
+     "t0": 15.686,
+     "t1": 15.941
+    },
+    {
+     "w": "o",
+     "n": "o",
+     "i0": 45,
+     "t0": 16.011,
+     "t1": 16.034
+    },
+    {
+     "w": "docim",
+     "n": "docim",
+     "i0": 47,
+     "t0": 16.081,
+     "t1": 16.464
+    },
+    {
+     "w": "da",
+     "n": "da",
+     "i0": 53,
+     "t0": 16.498,
+     "t1": 16.58
+    },
+    {
+     "w": "sobremesa.",
+     "n": "sobremesa",
+     "i0": 56,
+     "t0": 16.638,
+     "t1": 17.404
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Padaria, mercadim, farmácia, lanchonete… até o docim da sobremesa.",
+     "apoio": "Até o *docim* da sobremesa.",
+     "t0": 11.75,
+     "t1": 17.404
+    }
+   ],
+   "apoios": [
+    {
+     "t": 11.8,
+     "texto": "Até o *docim* da sobremesa.",
+     "ate": 19.0
+    }
+   ],
+   "seed": 42
+  },
+  {
+   "n": 3,
+   "rotulo": "COMO FUNCIONA",
+   "tom": "verde",
+   "titulo": [
+    "Escolheu, pediu,",
+    "chegou."
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "pedido",
+    "sacola": {
+     "em": "escolhe"
+    },
+    "itens": [
+     "pao",
+     "queijo",
+     "doce"
+    ],
+    "pedido": {
+     "em": "pedido"
+    },
+    "moto": {
+     "em": "motinha"
+    },
+    "porta": {
+     "em": "porta"
+    },
+    "passos": [
+     "ESCOLHEU",
+     "PEDIU",
+     "CHEGOU"
+    ]
+   },
+   "t0": 19.0,
+   "t1": 25.0,
+   "voz_t0": 19.25,
+   "voz_t1": 23.186,
+   "palavras": [
+    {
+     "w": "Ocê",
+     "n": "oce",
+     "i0": 0,
+     "t0": 19.25,
+     "t1": 19.529
+    },
+    {
+     "w": "escolhe,",
+     "n": "escolhe",
+     "i0": 4,
+     "t0": 19.61,
+     "t1": 20.132
+    },
+    {
+     "w": "faz",
+     "n": "faz",
+     "i0": 13,
+     "t0": 20.295,
+     "t1": 20.515
+    },
+    {
+     "w": "o",
+     "n": "o",
+     "i0": 17,
+     "t0": 20.585,
+     "t1": 20.608
+    },
+    {
+     "w": "pedido",
+     "n": "pedido",
+     "i0": 19,
+     "t0": 20.666,
+     "t1": 21.154
+    },
+    {
+     "w": "e",
+     "n": "e",
+     "i0": 26,
+     "t0": 21.235,
+     "t1": 21.328
+    },
+    {
+     "w": "a",
+     "n": "a",
+     "i0": 28,
+     "t0": 21.363,
+     "t1": 21.386
+    },
+    {
+     "w": "motinha",
+     "n": "motinha",
+     "i0": 30,
+     "t0": 21.433,
+     "t1": 21.851
+    },
+    {
+     "w": "leva",
+     "n": "leva",
+     "i0": 38,
+     "t0": 21.92,
+     "t1": 22.211
+    },
+    {
+     "w": "até",
+     "n": "ate",
+     "i0": 43,
+     "t0": 22.234,
+     "t1": 22.408
+    },
+    {
+     "w": "a",
+     "n": "a",
+     "i0": 47,
+     "t0": 22.431,
+     "t1": 22.454
+    },
+    {
+     "w": "sua",
+     "n": "sua",
+     "i0": 49,
+     "t0": 22.489,
+     "t1": 22.64
+    },
+    {
+     "w": "porta.",
+     "n": "porta",
+     "i0": 53,
+     "t0": 22.687,
+     "t1": 23.186
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Ocê escolhe, faz o pedido e a motinha leva até a sua porta.",
+     "apoio": "Escolhe, pede e *chega na sua porta*.",
+     "t0": 19.25,
+     "t1": 23.186
+    }
+   ],
+   "apoios": [
+    {
+     "t": 19.3,
+     "texto": "Escolhe, pede e *chega na sua porta*.",
+     "ate": 25.75
+    }
+   ],
+   "seed": 42
+  },
+  {
+   "n": 4,
+   "rotulo": "SEM APERTO",
+   "tom": "pessego",
+   "titulo": [
+    "Sem fila,",
+    "sem correria."
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "aperto",
+    "chips": [
+     {
+      "t": "FILA",
+      "icone": "fila",
+      "em": "fila"
+     },
+     {
+      "t": "SOL NA CABEÇA",
+      "icone": "sol",
+      "em": "sol"
+     },
+     {
+      "t": "TIRAR O PIJAMA",
+      "icone": "pijama",
+      "em": "pijama"
+     }
+    ]
+   },
+   "t0": 25.75,
+   "t1": 31.5,
+   "voz_t0": 26.0,
+   "voz_t1": 29.553,
+   "palavras": [
+    {
+     "w": "Sem",
+     "n": "sem",
+     "i0": 0,
+     "t0": 26.0,
+     "t1": 26.267
+    },
+    {
+     "w": "fila,",
+     "n": "fila",
+     "i0": 4,
+     "t0": 26.36,
+     "t1": 26.766
+    },
+    {
+     "w": "sem",
+     "n": "sem",
+     "i0": 10,
+     "t0": 26.859,
+     "t1": 27.022
+    },
+    {
+     "w": "sol",
+     "n": "sol",
+     "i0": 14,
+     "t0": 27.103,
+     "t1": 27.347
+    },
+    {
+     "w": "na",
+     "n": "na",
+     "i0": 18,
+     "t0": 27.382,
+     "t1": 27.451
+    },
+    {
+     "w": "cabeça",
+     "n": "cabeca",
+     "i0": 21,
+     "t0": 27.486,
+     "t1": 28.067
+    },
+    {
+     "w": "e",
+     "n": "e",
+     "i0": 28,
+     "t0": 28.125,
+     "t1": 28.206
+    },
+    {
+     "w": "sem",
+     "n": "sem",
+     "i0": 30,
+     "t0": 28.264,
+     "t1": 28.473
+    },
+    {
+     "w": "tirar",
+     "n": "tirar",
+     "i0": 34,
+     "t0": 28.531,
+     "t1": 28.821
+    },
+    {
+     "w": "o",
+     "n": "o",
+     "i0": 40,
+     "t0": 28.868,
+     "t1": 28.914
+    },
+    {
+     "w": "pijama.",
+     "n": "pijama",
+     "i0": 42,
+     "t0": 28.961,
+     "t1": 29.553
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Sem fila, sem sol na cabeça e sem tirar o pijama.",
+     "apoio": "Sem fila, sem sol e *sem tirar o pijama*.",
+     "t0": 26.0,
+     "t1": 29.553
+    }
+   ],
+   "apoios": [
+    {
+     "t": 26.05,
+     "texto": "Sem fila, sem sol e *sem tirar o pijama*.",
+     "ate": 32.25
+    }
+   ],
+   "seed": 42
+  },
+  {
+   "n": 5,
+   "rotulo": "FEITO EM MINAS",
+   "tom": "verde",
+   "titulo": [
+    "Feito aqui,",
+    "pra gente daqui."
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "minas",
+    "montanhas": {
+     "em": "Minas"
+    },
+    "lojas": {
+     "em": "fortalecer"
+    },
+    "selo": {
+     "t": [
+      "do",
+      "Glória"
+     ],
+     "em": "comércio"
+    },
+    "coracao": {
+     "em": "conhece"
+    }
+   },
+   "t0": 32.25,
+   "t1": 38.0,
+   "voz_t0": 32.5,
+   "voz_t1": 36.18,
+   "palavras": [
+    {
+     "w": "E",
+     "n": "e",
+     "i0": 0,
+     "t0": 32.5,
+     "t1": 32.651
+    },
+    {
+     "w": "é",
+     "n": "e",
+     "i0": 2,
+     "t0": 32.721,
+     "t1": 32.744
+    },
+    {
+     "w": "feito",
+     "n": "feito",
+     "i0": 4,
+     "t0": 32.802,
+     "t1": 33.046
+    },
+    {
+     "w": "em",
+     "n": "em",
+     "i0": 10,
+     "t0": 33.069,
+     "t1": 33.127
+    },
+    {
+     "w": "Minas,",
+     "n": "minas",
+     "i0": 13,
+     "t0": 33.197,
+     "t1": 33.533
+    },
+    {
+     "w": "pra",
+     "n": "pra",
+     "i0": 20,
+     "t0": 33.591,
+     "t1": 33.707
+    },
+    {
+     "w": "fortalecer",
+     "n": "fortalecer",
+     "i0": 24,
+     "t0": 33.754,
+     "t1": 34.311
+    },
+    {
+     "w": "o",
+     "n": "o",
+     "i0": 35,
+     "t0": 34.346,
+     "t1": 34.381
+    },
+    {
+     "w": "comércio",
+     "n": "comercio",
+     "i0": 37,
+     "t0": 34.439,
+     "t1": 34.915
+    },
+    {
+     "w": "que",
+     "n": "que",
+     "i0": 46,
+     "t0": 34.973,
+     "t1": 35.054
+    },
+    {
+     "w": "ocê",
+     "n": "oce",
+     "i0": 50,
+     "t0": 35.089,
+     "t1": 35.217
+    },
+    {
+     "w": "já",
+     "n": "ja",
+     "i0": 54,
+     "t0": 35.368,
+     "t1": 35.519
+    },
+    {
+     "w": "conhece.",
+     "n": "conhece",
+     "i0": 57,
+     "t0": 35.588,
+     "t1": 36.18
+    }
+   ],
+   "frases": [
+    {
+     "texto": "E é feito em Minas, pra fortalecer o comércio que ocê já conhece.",
+     "apoio": "Feito em Minas, pro comércio *que ocê já conhece*.",
+     "t0": 32.5,
+     "t1": 36.18
+    }
+   ],
+   "apoios": [
+    {
+     "t": 32.55,
+     "texto": "Feito em Minas, pro comércio *que ocê já conhece*.",
+     "ate": 38.75
+    }
+   ],
+   "seed": 42
+  },
+  {
+   "n": 6,
+   "rotulo": "SUA VEZ",
+   "tom": "amarelo",
+   "titulo": [
+    "Conta pra",
+    "gente!"
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "comenta",
+    "loja": {
+     "em": "loja"
+    },
+    "baloes": [
+     {
+      "t": "padaria?",
+      "emoji": "🥖",
+      "em": "comentários"
+     },
+     {
+      "t": "sorveteria?",
+      "emoji": "🍦",
+      "em": "comentários"
+     },
+     {
+      "t": "açougue?",
+      "emoji": "🥩",
+      "em": "Glória"
+     },
+     {
+      "t": "pizzaria?",
+      "emoji": "🍕",
+      "em": "Glória"
+     },
+     {
+      "t": "hortifrúti?",
+      "emoji": "🥕",
+      "em": "primeiro"
+     },
+     {
+      "t": "pet shop?",
+      "emoji": "🐶",
+      "em": "primeiro"
+     }
+    ]
+   },
+   "t0": 38.75,
+   "t1": 44.0,
+   "voz_t0": 39.0,
+   "voz_t1": 43.075,
+   "palavras": [
+    {
+     "w": "Fala",
+     "n": "fala",
+     "i0": 0,
+     "t0": 39.0,
+     "t1": 39.313
+    },
+    {
+     "w": "aí",
+     "n": "ai",
+     "i0": 5,
+     "t0": 39.348,
+     "t1": 39.441
+    },
+    {
+     "w": "nos",
+     "n": "nos",
+     "i0": 8,
+     "t0": 39.488,
+     "t1": 39.615
+    },
+    {
+     "w": "comentários:",
+     "n": "comentarios",
+     "i0": 12,
+     "t0": 39.662,
+     "t1": 40.416
+    },
+    {
+     "w": "qual",
+     "n": "qual",
+     "i0": 25,
+     "t0": 40.683,
+     "t1": 40.869
+    },
+    {
+     "w": "loja",
+     "n": "loja",
+     "i0": 30,
+     "t0": 40.892,
+     "t1": 41.171
+    },
+    {
+     "w": "do",
+     "n": "do",
+     "i0": 35,
+     "t0": 41.229,
+     "t1": 41.31
+    },
+    {
+     "w": "Glória",
+     "n": "gloria",
+     "i0": 38,
+     "t0": 41.368,
+     "t1": 41.694
+    },
+    {
+     "w": "cê",
+     "n": "ce",
+     "i0": 45,
+     "t0": 41.728,
+     "t1": 41.821
+    },
+    {
+     "w": "quer",
+     "n": "quer",
+     "i0": 48,
+     "t0": 41.937,
+     "t1": 42.077
+    },
+    {
+     "w": "ver",
+     "n": "ver",
+     "i0": 53,
+     "t0": 42.146,
+     "t1": 42.274
+    },
+    {
+     "w": "aqui",
+     "n": "aqui",
+     "i0": 57,
+     "t0": 42.32,
+     "t1": 42.495
+    },
+    {
+     "w": "primeiro?",
+     "n": "primeiro",
+     "i0": 62,
+     "t0": 42.541,
+     "t1": 43.075
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Fala aí nos comentários: qual loja do Glória cê quer ver aqui primeiro?",
+     "apoio": "Qual loja do Glória *cê quer primeiro*?",
+     "t0": 39.0,
+     "t1": 43.075
+    }
+   ],
+   "apoios": [
+    {
+     "t": 39.05,
+     "texto": "Qual loja do Glória *cê quer primeiro*?",
+     "ate": 44.75
+    }
+   ],
+   "seed": 42
+  },
+  {
+   "n": 7,
+   "rotulo": "PRA NÃO PERDER",
+   "tom": "amarelo",
+   "titulo": [
+    "Em breve",
+    "no Glória."
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "fecho",
+    "logo": {
+     "em": "UaiPertim"
+    },
+    "assinatura": {
+     "t": "Tudo pertim de você.",
+     "em": "Tudo"
+    },
+    "chip": {
+     "t": "Segue @uaipertim",
+     "em": "Segue"
+    },
+    "confete": {
+     "em": "+1.2"
+    }
+   },
+   "t0": 44.75,
+   "t1": 52.25,
+   "voz_t0": 45.0,
+   "voz_t1": 49.354,
+   "palavras": [
+    {
+     "w": "UaiPertim.",
+     "n": "uaipertim",
+     "i0": 0,
+     "t0": 45.0,
+     "t1": 46.068
+    },
+    {
+     "w": "Tudo",
+     "n": "tudo",
+     "i0": 14,
+     "t0": 46.161,
+     "t1": 46.486
+    },
+    {
+     "w": "pertim",
+     "n": "pertim",
+     "i0": 19,
+     "t0": 46.544,
+     "t1": 47.032
+    },
+    {
+     "w": "de",
+     "n": "de",
+     "i0": 28,
+     "t0": 47.067,
+     "t1": 47.113
+    },
+    {
+     "w": "você.",
+     "n": "voce",
+     "i0": 31,
+     "t0": 47.159,
+     "t1": 47.577
+    },
+    {
+     "w": "Segue",
+     "n": "segue",
+     "i0": 37,
+     "t0": 47.81,
+     "t1": 48.135
+    },
+    {
+     "w": "a",
+     "n": "a",
+     "i0": 43,
+     "t0": 48.158,
+     "t1": 48.181
+    },
+    {
+     "w": "gente",
+     "n": "gente",
+     "i0": 45,
+     "t0": 48.228,
+     "t1": 48.506
+    },
+    {
+     "w": "pra",
+     "n": "pra",
+     "i0": 51,
+     "t0": 48.541,
+     "t1": 48.657
+    },
+    {
+     "w": "não",
+     "n": "nao",
+     "i0": 55,
+     "t0": 48.704,
+     "t1": 48.808
+    },
+    {
+     "w": "perder!",
+     "n": "perder",
+     "i0": 59,
+     "t0": 48.843,
+     "t1": 49.354
+    }
+   ],
+   "frases": [
+    {
+     "texto": "UaiPertim. Tudo pertim de você. Segue a gente pra não perder!",
+     "apoio": null,
+     "t0": 45.0,
+     "t1": 49.354
+    }
+   ],
+   "apoios": [],
+   "seed": 42
+  }
+ ],
+ "colocacao": [
+  {
+   "cap": 0,
+   "arquivo": "voz/cap-00.wav",
+   "de_s": 0.0,
+   "ate_s": 3.11,
+   "no_video_s": 0.1,
+   "amostras": 149280,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 1,
+   "arquivo": "voz/cap-01.wav",
+   "de_s": 0.0,
+   "ate_s": 5.6657,
+   "no_video_s": 4.5,
+   "amostras": 271953,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 2,
+   "arquivo": "voz/cap-02.wav",
+   "de_s": 0.0,
+   "ate_s": 5.7585,
+   "no_video_s": 11.75,
+   "amostras": 276411,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 3,
+   "arquivo": "voz/cap-03.wav",
+   "de_s": 0.0,
+   "ate_s": 4.1796,
+   "no_video_s": 19.25,
+   "amostras": 200621,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 4,
+   "arquivo": "voz/cap-04.wav",
+   "de_s": 0.0,
+   "ate_s": 3.6688,
+   "no_video_s": 26.0,
+   "amostras": 176101,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 5,
+   "arquivo": "voz/cap-05.wav",
+   "de_s": 0.0,
+   "ate_s": 3.98,
+   "no_video_s": 32.5,
+   "amostras": 191040,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 6,
+   "arquivo": "voz/cap-06.wav",
+   "de_s": 0.0,
+   "ate_s": 4.3654,
+   "no_video_s": 39.0,
+   "amostras": 209537,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 7,
+   "arquivo": "voz/cap-07.wav",
+   "de_s": 0.0,
+   "ate_s": 4.5047,
+   "no_video_s": 45.0,
+   "amostras": 216225,
+   "fade_ms": [
+    8,
+    60
+   ]
+  }
+ ],
+ "mapa": {
+  "ok": true,
+  "falhas": []
+ }
+}

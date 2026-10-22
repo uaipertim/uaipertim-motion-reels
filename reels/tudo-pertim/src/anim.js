@@ -1043,6 +1043,8 @@
         const e = p(t, ev.lojas[i], ev.lojas[i] + 0.55);
         lojinha(ctx, l.tipo, q.x, q.base, 190, t, { e, alvo: [Lg.x, Lg.y], seed: i, fase: i * 0.5, smile: clamp((t - ev.confete) * 3), box: e >= 1 ? `lojinha ${l.tipo}` : null });
       });
+      // o confete fica atrás da logo oficial (nunca passa por cima dela)
+      confete(ctx, t, ev.confete, Lg.x, Lg.y, 11, { n: 50, v: 1100 });
       if (eg > 0) {
         const u = p(t, ev.logo, ev.logo + 0.9);
         const k = (1 - Math.exp(-6 * u) * Math.cos(11 * u)) * (1 + 0.02 * Math.pow(hop(t), 6) * u);
@@ -1055,7 +1057,6 @@
       }
       sticker(ctx, 'estrela', Lg.x + 175, Lg.y - 120, 84, p(t, ev.logo + 0.4, ev.logo + 0.75), t);
       sticker(ctx, 'coracao', Lg.x - 175, Lg.y + 110, 80, p(t, ev.confete, ev.confete + 0.35), t);
-      confete(ctx, t, ev.confete, Lg.x, Lg.y, 11, { n: 50, v: 1100 });
     },
   };
 
@@ -1136,6 +1137,8 @@
         casinha(ctx, HX, rua - 46, HW, p(t, ev.porta, ev.porta + 0.45), t);
         BOX('casinha', HX - 120 * HK, rua - 46 - 246 * HK, HX + 120 * HK, rua - 46);
       });
+      // o confete fica atrás da sacola e da motinha (a logo oficial nunca fica por baixo dele)
+      confete(ctx, t, ev.porta + 0.15, HX, rua - 240, 17, { n: 40, v: 950 });
       const um = p(t, ev.moto, ev.chega), xm = lerp(60, MX, E.inOutCubic(um));
       const pegou = t >= ev.pega + 0.25;
       const es = ent(t, ev.sacola, 0.45);
@@ -1189,7 +1192,6 @@
         x += ws[i] + gap;
       });
       sticker(ctx, 'coracao', HX + 20, rua - 410, 76, p(t, ev.porta + 0.15, ev.porta + 0.5), t);
-      confete(ctx, t, ev.porta + 0.15, HX, rua - 240, 17, { n: 40, v: 950 });
     },
   };
 
