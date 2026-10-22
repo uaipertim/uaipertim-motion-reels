@@ -1,0 +1,309 @@
+{
+  "id": "tudo-pertim-01",
+  "titulo": "Prazer, UaiPertim!",
+  "marca": "@uaipertim",
+  "bpm": 120,
+  "capitulos": [
+    {
+      "rotulo": "TUDO PERTIM · EP. 01",
+      "tom": "amarelo",
+      "titulo": [
+        "Tá chegando",
+        "no Glória 👀"
+      ],
+      "fala": [
+        {
+          "texto": "Ô Glória, tem novidade chegando pertim docês!",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "capa",
+        "marcador": "Glória",
+        "olhos": {
+          "em": "Glória"
+        },
+        "confete": {
+          "em": "novidade"
+        },
+        "buzina": {
+          "em": "pertim"
+        }
+      }
+    },
+    {
+      "rotulo": "QUEM SOU EU",
+      "tom": "pessego",
+      "titulo": [
+        "Prazer,",
+        "UaiPertim!"
+      ],
+      "fala": [
+        {
+          "texto": "Prazer, eu sou o UaiPertim!",
+          "apoio": null
+        },
+        {
+          "texto": "O comércio do Glória, tudo num lugar só.",
+          "apoio": "O comércio do Glória, *tudo num lugar só*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "quem",
+        "logo": {
+          "em": "UaiPertim"
+        },
+        "lojas": [
+          {
+            "tipo": "padaria",
+            "em": "comércio"
+          },
+          {
+            "tipo": "mercado",
+            "em": "Glória"
+          },
+          {
+            "tipo": "farmacia",
+            "em": "tudo"
+          },
+          {
+            "tipo": "lanchonete",
+            "em": "lugar"
+          }
+        ],
+        "confete": {
+          "em": "só"
+        }
+      },
+      "segura": 0.6
+    },
+    {
+      "rotulo": "O QUE TEM",
+      "tom": "amarelo",
+      "titulo": [
+        "Tem de",
+        "tudo um pouco."
+      ],
+      "fala": [
+        {
+          "texto": "Padaria, mercadim, farmácia, lanchonete… até o docim da sobremesa.",
+          "apoio": "Até o *docim* da sobremesa."
+        }
+      ],
+      "diagrama": {
+        "tipo": "vitrine",
+        "lojas": [
+          {
+            "tipo": "padaria",
+            "t": "PADARIA",
+            "em": "Padaria",
+            "item": "pao"
+          },
+          {
+            "tipo": "mercado",
+            "t": "MERCADIM",
+            "em": "mercadim",
+            "item": "cesta"
+          },
+          {
+            "tipo": "farmacia",
+            "t": "FARMÁCIA",
+            "em": "farmácia",
+            "item": "remedio"
+          },
+          {
+            "tipo": "lanchonete",
+            "t": "LANCHONETE",
+            "em": "lanchonete",
+            "item": "lanche"
+          }
+        ],
+        "docim": {
+          "em": "docim"
+        }
+      },
+      "segura": 0.6
+    },
+    {
+      "rotulo": "COMO FUNCIONA",
+      "tom": "verde",
+      "titulo": [
+        "Escolheu, pediu,",
+        "chegou."
+      ],
+      "fala": [
+        {
+          "texto": "Ocê escolhe, faz o pedido e a motinha leva até a sua porta.",
+          "apoio": "Escolhe, pede e *chega na sua porta*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "pedido",
+        "sacola": {
+          "em": "escolhe"
+        },
+        "itens": [
+          "pao",
+          "queijo",
+          "doce"
+        ],
+        "pedido": {
+          "em": "pedido"
+        },
+        "moto": {
+          "em": "motinha"
+        },
+        "porta": {
+          "em": "porta"
+        },
+        "passos": [
+          "ESCOLHEU",
+          "PEDIU",
+          "CHEGOU"
+        ]
+      },
+      "segura": 0.9,
+      "min": 6.0
+    },
+    {
+      "rotulo": "SEM APERTO",
+      "tom": "pessego",
+      "titulo": [
+        "Sem fila,",
+        "sem correria."
+      ],
+      "fala": [
+        {
+          "texto": "Sem fila, sem sol na cabeça e sem tirar o pijama.",
+          "apoio": "Sem fila, sem sol e *sem tirar o pijama*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "aperto",
+        "chips": [
+          {
+            "t": "FILA",
+            "icone": "fila",
+            "em": "fila"
+          },
+          {
+            "t": "SOL NA CABEÇA",
+            "icone": "sol",
+            "em": "sol"
+          },
+          {
+            "t": "TIRAR O PIJAMA",
+            "icone": "pijama",
+            "em": "pijama"
+          }
+        ]
+      },
+      "min": 5.6
+    },
+    {
+      "rotulo": "FEITO EM MINAS",
+      "tom": "verde",
+      "titulo": [
+        "Feito aqui,",
+        "pra gente daqui."
+      ],
+      "fala": [
+        {
+          "texto": "E é feito em Minas, pra fortalecer o comércio que ocê já conhece.",
+          "apoio": "Feito em Minas, pro comércio *que ocê já conhece*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "minas",
+        "montanhas": {
+          "em": "Minas"
+        },
+        "lojas": {
+          "em": "fortalecer"
+        },
+        "selo": {
+          "t": [
+            "do",
+            "Glória"
+          ],
+          "em": "comércio"
+        },
+        "coracao": {
+          "em": "conhece"
+        }
+      },
+      "segura": 0.6,
+      "min": 5.6
+    },
+    {
+      "rotulo": "SUA VEZ",
+      "tom": "amarelo",
+      "titulo": [
+        "Conta pra",
+        "gente!"
+      ],
+      "fala": [
+        {
+          "texto": "Fala aí nos comentários: qual loja do Glória cê quer ver aqui primeiro?",
+          "apoio": "Qual loja do Glória *cê quer primeiro*?"
+        }
+      ],
+      "diagrama": {
+        "tipo": "comenta",
+        "loja": {
+          "em": "loja"
+        },
+        "baloes": [
+          {
+            "t": "padaria?",
+            "emoji": "🥖",
+            "em": "comentários"
+          },
+          {
+            "t": "sorveteria?",
+            "emoji": "🍦",
+            "em": "Glória"
+          },
+          {
+            "t": "açougue?",
+            "emoji": "🥩",
+            "em": "primeiro"
+          }
+        ]
+      },
+      "segura": 0.7
+    },
+    {
+      "rotulo": "PRA NÃO PERDER",
+      "tom": "amarelo",
+      "titulo": [
+        "Em breve",
+        "no Glória."
+      ],
+      "min": 7.5,
+      "fala": [
+        {
+          "texto": "UaiPertim. Tudo pertim de você. Segue a gente pra não perder!",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "fecho",
+        "logo": {
+          "em": "UaiPertim"
+        },
+        "assinatura": {
+          "t": "Tudo pertim de você.",
+          "em": "Tudo"
+        },
+        "chip": {
+          "t": "Segue @uaipertim",
+          "em": "Segue"
+        },
+        "confete": {
+          "em": "+1.2"
+        }
+      }
+    }
+  ]
+}
