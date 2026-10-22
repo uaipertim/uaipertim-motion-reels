@@ -9,10 +9,11 @@ o roteiro (episodios/<id>.json), e confere o mapa de tempos.
                                                         e sem voz: só para conferir o visual antes de gastar a API. Nunca vira vídeo final.
 
 Tempo de cada capítulo:
-  • a câmera chega no capítulo em t0 (o capítulo 00 começa no quadro 0, já com a capa montada);
+  • o capítulo começa em t0, quando a motinha da troca termina de atravessar (o capítulo 00 começa no quadro 0, já com a capa montada);
   • a voz entra `inicio` s depois (padrão 0,25 s; no capítulo 00, 0,10 s);
   • o capítulo dura até o fim da voz + `segura` (padrão 0,45 s), com mínimo `min` (o fecho usa 7,5 s);
-  • a troca para o próximo capítulo (a motinha na rua da entrega) dura TR = 0,9 s.
+  • o capítulo termina num meio tempo da batida (o fim é arredondado para cima na grade de colcheias do bpm);
+  • a troca para o próximo capítulo (a motinha atravessa a tela e varre o capítulo) dura TR = 1,5 tempo (0,75 s a 120 bpm).
 Linha de apoio: uma por frase (o "apoio" de cada frase no JSON; null = nenhuma), entrando junto com a frase, mas nunca
 antes de a anterior ter ficado 1,5 s inteira na tela (entrada de 0,34 s + 1,5 s + folga = 1,92 s entre trocas). A última
 fica ao menos 1,92 s antes da troca de capítulo.
@@ -49,7 +50,9 @@ AUD = os.path.join(ROOT, 'audio', EP)
 DEST = os.path.join(AUD, 'previa') if PREVIA else AUD
 SCRIPT = json.load(open(os.path.join(ROOT, 'episodios', EP + '.json'), encoding='utf-8'))
 SR_IN, SR = 44100, 48000
-TR = 0.9                      # a troca de capítulo (a motinha na rua)
+BPM = float(SCRIPT.get('bpm', 120))
+BT = 60.0 / BPM               # um tempo da batida
+TR = round(1.5 * BT, 4)       # a troca de capítulo: a motinha atravessa a tela (wipe), no tempo da batida
 AP_ENTRA = 0.34               # a linha de apoio entra em 0,34 s (a anterior sai antes: as duas nunca se sobrepõem)
 AP_LEITURA = 1.5              # e fica ao menos 1,5 s inteira na tela
 AP_PASSO = AP_ENTRA + AP_LEITURA + 0.08
@@ -202,6 +205,7 @@ def main():
             ta = max(f['t0'] - 0.12, t0 + 0.30, (apoios[-1]['t'] + AP_PASSO) if apoios else -9)
             apoios.append({'t': round(ta, 4), 'texto': f['apoio']})
         t1 = max(v1 + c.get('segura', 0.45), t0 + c.get('min', 0), (apoios[-1]['t'] + AP_PASSO) if apoios else 0)
+        t1 = np.ceil(t1 / (BT / 2) - 1e-6) * (BT / 2)      # a troca começa num meio tempo da batida
         for i, a in enumerate(apoios):
             a['ate'] = round(apoios[i + 1]['t'] if i + 1 < len(apoios) else t1 + TR, 4)
         caps.append({'n': n, 'rotulo': c.get('rotulo'), 'tom': c.get('tom', ['creme', 'pessego', 'amarelo', 'verde'][n % 4]),

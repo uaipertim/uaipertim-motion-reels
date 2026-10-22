@@ -3,9 +3,10 @@
  * (reels/explica-so/src/anim.js), com a cara mais jovem e animada da série do TikTok.
  *
  * O episódio inteiro vem de episodios/<id>.json, já com o tempo da narração (audio/<id>/linha.json, de scripts/linha.py).
- * Cada capítulo é um "quadro" de 1080×1920 empilhado no mundo. A ESTRADA DE PROGRESSO — uma rua com tracejado coral —
- * liga os nós numerados 01…07; na troca de capítulo a MOTINHA AMARELA (o mascote, sempre com a sacola da marca) percorre
- * a rua até o próximo nó e a câmera vai junto. O rótulo e o título (2 linhas) entram com "soco" no tempo da batida
+ * Cada capítulo é um quadro de 1080×1920, sempre no mesmo lugar (sem câmera nem estrada). Na troca, a MOTINHA AMARELA
+ * (o mascote, sempre com a sacola da marca) atravessa a tela na horizontal e a passagem dela varre o capítulo atual e
+ * revela o próximo (wipe). Uma barra de progresso estilo stories fica abaixo da marca do topo. O rótulo (adesivo
+ * inclinado) faz "plop" e o título (2 linhas, centralizado) entra com "soco" no tempo da batida
  * (linha.json → bpm), a linha de apoio muda a cada frase e a CENA cresce peça por peça no tempo da voz.
  *
  * O que é vivo: as lojinhas com olhinhos piscam, pulam na batida, sorriem e olham para o que acontece; figurinhas
@@ -14,7 +15,7 @@
  * Cenas (CENAS): capa · quem · vitrine · pedido · aperto · minas · comenta · fecho. Nunca telas, celulares ou
  * interface de app; nunca nomes de lojas reais (só categorias).
  *
- * Regras de quadro: conteúdo entre x 80–940 e y 265–1456; nada (nem a rua) em x ≥ 940 entre y 1060 e 1560;
+ * Regras de quadro: conteúdo entre x 80–940 e y 265–1456; nada (nem a motinha da troca) em x ≥ 940 entre y 1060 e 1560;
  * a marca (logo oficial + UaiPertim + @ do JSON) fica fixa no topo de todos os quadros; o quadro 0 é a capa;
  * no fecho a logo oficial grande fica parada nos 3 últimos segundos.
  */
@@ -32,12 +33,10 @@
   };
   // as variações quentes por capítulo (o brilho de fundo)
   const TONS = { creme: '#FFF1DA', pessego: '#FFC9A6', amarelo: '#FFE08A', verde: '#CDEBBE' };
-  // o quadro de um capítulo (coordenadas locais)
-  const L = { x0: 120, x1: 930, cx: 525, nodeX: 66, nodeY: 446, rotY: 457, tituloTopo: 488 };
-  const BTN = { x: 940, y0: 1060, y1: 1560 };          // a coluna de botões do Reels
-  const RAIL_X2 = 900;
-  const STEP = 1400;                                    // a distância entre um capítulo e o próximo no mundo (perto: a troca nunca fica vazia)                                  // o lado direito da rua (a motinha inteira fica < 940 fora da faixa recortada)
-  const PARK = 150;                                     // a motinha estaciona 150 px depois do nó (sem cobrir o número)
+  // o quadro de um capítulo: título e apoio centrados em x 540 (até 780 px de largura); cena entre x 90 e 930
+  const L = { x0: 90, x1: 930, cx: 510, tx: 540, tw: 780, rotY: 452, tituloTopo: 505, progY: 392 };
+  const BTN = { x: 940, y0: 1060, y1: 1560 };          // a coluna de botões (nada passa por ali)
+  const STEP = 1400;                                    // só para a mistura do tom de fundo entre capítulos
 
   // ---------------------------------------------------------------- utilitários
   const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
@@ -686,7 +685,7 @@
   }
 
   // ---------------------------------------------------------------- estado
-  let LN = null, DUR = 0, TR = 0.9, CAPS = [], CUES = [], RAIL = null, NC = 0;
+  let LN = null, DUR = 0, TR = 0.75, CAPS = [], CUES = [], NC = 0;
   let BOXES = null, OFF = { dx: 0, dy: 0, n: 0 };
   function BOX(name, x0, y0, x1, y1) { if (BOXES) BOXES.push({ cap: OFF.n, nome: name, x0: x0 + OFF.dx, y0: y0 + OFF.dy, x1: x1 + OFF.dx, y1: y1 + OFF.dy }); }
   const FECHO = { ultima: 0, logo: null };              // a última mudança de texto do fecho (regra dos 3 s) e a logo
@@ -710,48 +709,9 @@
   const cue = (t, type, extra = {}) => CUES.push({ t, type, ...extra });
 
   // =====================================================================
-  // A ROTA DA ENTREGA (a rua que liga os nós) e a MOTINHA
+  // A TROCA DE CAPÍTULO: a motinha atravessa a tela na horizontal e a passagem dela varre o capítulo atual e
+  // revela o próximo (wipe), com rastro de poeira e confete. Dura TR (1,5 tempo da batida) e começa num meio tempo.
   // =====================================================================
-  function buildRail() {
-    const xs = [], ys = [];
-    const push = (x, y) => { xs.push(x); ys.push(y); };
-    const line = (x0, y0, x1, y1) => { const n = Math.max(1, Math.ceil(Math.hypot(x1 - x0, y1 - y0) / 4)); for (let i = 1; i <= n; i++) push(lerp(x0, x1, i / n), lerp(y0, y1, i / n)); };
-    const quad = (x0, y0, x1, y1, x2, y2) => { for (let i = 1; i <= 24; i++) { const u = i / 24, v = 1 - u; push(v * v * x0 + 2 * v * u * x1 + u * u * x2, v * v * y0 + 2 * v * u * y1 + u * u * y2); } };
-    const cubic = (x0, y0, x1, y1, x2, y2, x3, y3) => { for (let i = 1; i <= 140; i++) { const u = i / 140, v = 1 - u; push(v * v * v * x0 + 3 * v * v * u * x1 + 3 * v * u * u * x2 + u * u * u * x3, v * v * v * y0 + 3 * v * v * u * y1 + 3 * v * u * u * y2 + u * u * u * y3); } };
-    const idx = { node: [], bottom: [] };
-    const st = CAPS[0].railStart;                       // o começo, embaixo da capa
-    push(st.x, st.y); idx.bottom[0] = 0;
-    const X = L.nodeX;
-    for (let k = 1; k < NC; k++) {
-      const top = k * STEP, prev = (k - 1) * STEP;
-      if (k === 1) {                                    // da capa: desce, vira à esquerda e desce até o nó 01
-        const yv = top + 100;
-        line(st.x, st.y, st.x, yv);
-        quad(st.x, yv, st.x, yv + 60, st.x - 60, yv + 60);
-        line(st.x - 60, yv + 60, X + 60, yv + 60);
-        quad(X + 60, yv + 60, X, yv + 60, X, yv + 120);
-      } else {                                          // de um capítulo ao outro: a rua faz um S (vai à direita e volta)
-        cubic(X, prev + 1440, X, prev + 1560, RAIL_X2, prev + 1470, RAIL_X2, prev + 1600);
-        cubic(RAIL_X2, prev + 1600, RAIL_X2, prev + 1730, X, prev + 1610, X, prev + 1720);
-      }
-      line(xs[xs.length - 1], ys[ys.length - 1], X, top + L.nodeY); idx.node[k] = xs.length - 1;
-      line(X, top + L.nodeY, X, top + 1440); idx.bottom[k] = xs.length - 1;
-    }
-    const cum = new Float64Array(xs.length);
-    for (let i = 1; i < xs.length; i++) cum[i] = cum[i - 1] + Math.hypot(xs[i] - xs[i - 1], ys[i] - ys[i - 1]);
-    // para que lado a motinha olha: o último trecho com andamento horizontal (começa olhando para a esquerda)
-    const face = new Int8Array(xs.length); let f = -1;
-    for (let i = 0; i < xs.length; i++) { const dx = i ? xs[i] - xs[i - 1] : 0, d = i ? Math.hypot(dx, ys[i] - ys[i - 1]) : 0; if (d > 0 && Math.abs(dx) / d > 0.35) f = dx > 0 ? 1 : -1; face[i] = f; }
-    return { xs, ys, cum, face, sNode: idx.node.map((i) => (i === undefined ? 0 : cum[i])), sBottom: idx.bottom.map((i) => cum[i]), sEnd: cum[xs.length - 1] };
-  }
-  function railAt(s) {
-    const { cum, xs, ys } = RAIL;
-    let lo = 0, hi = cum.length - 1;
-    while (hi - lo > 1) { const m = (lo + hi) >> 1; if (cum[m] < s) lo = m; else hi = m; }
-    const u = clamp((s - cum[lo]) / Math.max(1e-6, cum[hi] - cum[lo]));
-    return { i: lo, x: lerp(xs[lo], xs[hi], u), y: lerp(ys[lo], ys[hi], u), ang: Math.atan2(ys[hi] - ys[lo], xs[hi] - xs[lo]) };
-  }
-  // em que capítulo / troca estamos
   function where(t) {
     for (let k = 0; k < NC; k++) {
       const c = CAPS[k];
@@ -761,82 +721,38 @@
     }
     return { k: NC - 1, trans: false, u: 0 };
   }
-  const parkS = (k) => (k === 0 ? 0 : RAIL.sNode[k] + PARK);
-  // a rua pintada: no capítulo, do nó até o pé do quadro (progresso); na troca, até a motinha
-  function litS(t) {
-    const w = where(t), c = CAPS[w.k];
-    if (w.trans) return Math.max(RAIL.sBottom[w.k], motoS(t));
-    if (w.k === 0) return 0;
-    return Math.max(parkS(w.k), lerp(RAIL.sNode[w.k], RAIL.sBottom[w.k], p(t, c.t0, c.t1)));
+  // cada troca varia um pouco: o sentido alterna (capa → 01 da direita para a esquerda), a altura, um pulinho, uma empinada
+  const VARIA = [
+    { base: 1000, pulo: 0, empina: 0 }, { base: 880, pulo: 70, empina: 0 }, { base: 1020, pulo: 0, empina: 0.12 },
+    { base: 900, pulo: 50, empina: 0 }, { base: 970, pulo: 0, empina: 0.1 }, { base: 860, pulo: 80, empina: 0 }, { base: 990, pulo: 30, empina: 0.08 },
+  ];
+  const MOTO_TR = 300;                                   // a motinha da troca: a base fica sempre acima de y 1060 (nunca na coluna de botões)
+  function travessia(k, u) {
+    const v = VARIA[k % VARIA.length], dir = k % 2 === 0 ? -1 : 1;
+    const e = 0.75 * u + 0.25 * E.inOutSine(u);
+    const x = lerp(dir > 0 ? -260 : W + 260, dir > 0 ? W + 260 : -260, e);
+    return { dir, x, base: v.base - v.pulo * Math.sin(Math.PI * u), borda: x - dir * 60, tilt: -dir * v.empina * Math.sin(Math.PI * u) };
   }
-  function motoS(t) {
-    const w = where(t);
-    if (!w.trans) return parkS(w.k);
-    return lerp(parkS(w.k), parkS(w.k + 1), E.inOutCubic(w.u));
-  }
-  function camera(t) {
-    const w = where(t);
-    if (!w.trans) return { x: 0, y: w.k * STEP, w };
-    const e = E.inOutCubic(w.u);
-    return { x: -22 * Math.sin(Math.PI * w.u), y: lerp(w.k * STEP, (w.k + 1) * STEP, e), w };
-  }
-  function drawRail(ctx, t, cam, so) {
-    const { xs, ys } = RAIL, y0 = cam.y - 120, y1 = cam.y + H + 120;
-    const sl = litS(t), head = railAt(sl);
-    const visible = (i) => ys[i] >= y0 && ys[i] <= y1;
-    const startVis = t >= CAPS[0].t1 - 1.0;
-    const path = (i0, i1) => { ctx.beginPath(); let on = false; for (let i = i0; i <= i1; i++) { if (!visible(i) || (!startVis && ys[i] < STEP + 400)) { on = false; continue; } if (!on) { ctx.moveTo(xs[i], ys[i]); on = true; } else ctx.lineTo(xs[i], ys[i]); } };
-    if (so === 'moto') return drawMoto(ctx, t, cam, y0, y1, startVis);
-    ctx.save(); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-    // a rua inteira: o asfalto claro e o tracejado coral apagado
-    path(0, xs.length - 1);
-    ctx.strokeStyle = css(C.cremeDeep, 0.75); ctx.lineWidth = 34; ctx.stroke();
-    ctx.strokeStyle = css(C.papel, 0.9); ctx.lineWidth = 24; ctx.stroke();
-    ctx.setLineDash([18, 16]); ctx.lineDashOffset = 0; ctx.lineCap = 'butt';
-    ctx.strokeStyle = css(C.coral, 0.25); ctx.lineWidth = 5; ctx.stroke();
-    // o trecho já percorrido: tracejado coral forte
-    if (sl > 0.5) { path(0, head.i); ctx.lineTo(head.x, head.y); ctx.strokeStyle = C.coral; ctx.lineWidth = 6; ctx.stroke(); }
-    ctx.setLineDash([]);
-    ctx.restore();
-    // os nós numerados
-    for (let k = 1; k < NC; k++) {
-      const nx = L.nodeX, ny = k * STEP + L.nodeY;
-      if (ny < y0 - 60 || ny > y1 + 60 || (k === 1 && !startVis)) continue;
-      const lit = clamp((t - (CAPS[k].t0 - 0.12)) / 0.25);
-      ctx.save();
-      if (lit > 0) {
-        const fl = p(t, CAPS[k].t0 - 0.12, CAPS[k].t0 + 0.6);
-        if (fl < 1) { ctx.beginPath(); ctx.arc(nx, ny, 28 + 50 * E.outCubic(fl), 0, TAU); ctx.strokeStyle = css(C.amarelo, 0.8 * (1 - fl)); ctx.lineWidth = 5; ctx.stroke(); }
-      }
-      ctx.beginPath(); ctx.arc(nx, ny, 28, 0, TAU);
-      ctx.fillStyle = mixHex(C.papel, C.coral, lit); ctx.shadowColor = 'rgba(120,60,30,0.2)'; ctx.shadowBlur = 10; ctx.fill(); ctx.shadowColor = 'transparent';
-      ctx.lineWidth = 4; ctx.strokeStyle = lit > 0 ? mixHex(C.cremeDeep, C.coralDark, lit) : C.cremeDeep; ctx.stroke();
-      txt(ctx, String(k).padStart(2, '0'), nx, ny + 8, { size: 22, weight: 800, align: 'center', color: lit > 0.5 ? C.branco : C.cinza });
-      ctx.restore();
+  function drawWipe(ctx, t, k, u) {
+    const T = travessia(k, u);
+    // a cortina: uma faixa creme macia ao longo da borda da varredura
+    const g = ctx.createLinearGradient(T.borda - 80, 0, T.borda + 80, 0);
+    g.addColorStop(0, css(C.papel, 0)); g.addColorStop(0.5, css(C.papel, 0.9)); g.addColorStop(1, css(C.papel, 0));
+    ctx.fillStyle = g; ctx.fillRect(T.borda - 80, 0, 160, H);
+    // o confete que fica para trás, ao longo da borda
+    const cores = [C.coral, C.amarelo, C.verde, C.coralLight];
+    for (let i = 0; i < 36; i++) {
+      const x = T.borda - T.dir * (14 + 150 * hash(i, k + 1)), y = (hash(i, k + 3) * (H - 300) + 240 + 260 * u * hash(i, k + 5)) % H;
+      ctx.save(); ctx.translate(x, y); ctx.rotate(u * 9 + i); ctx.globalAlpha = 0.85 * (1 - 0.6 * hash(i, k + 2));
+      ctx.fillStyle = cores[i % 4]; ctx.fillRect(-7, -3, 14, 6); ctx.restore();
     }
-    // o fim da rota: um pino coral
-    const last = NC - 1, ex = L.nodeX, ey = last * STEP + 1440;
-    if (sl >= RAIL.sBottom[last] - 2 && ey > y0 && ey < y1) {
-      ctx.save(); ctx.fillStyle = C.coral; ctx.beginPath(); ctx.arc(ex, ey, 12, 0, TAU); ctx.fill(); ctx.fillStyle = C.papel; ctx.beginPath(); ctx.arc(ex, ey, 5, 0, TAU); ctx.fill(); ctx.restore();
+    // a poeira atrás da motinha
+    for (let i = 0; i < 6; i++) {
+      ctx.fillStyle = css(C.cremeDeep, 0.6 - 0.08 * i);
+      ctx.beginPath(); ctx.arc(T.x - T.dir * (150 + i * 58), T.base - 22 - i * 5 + 6 * Math.sin(u * 12 + i), 26 + 9 * i, 0, TAU); ctx.fill();
     }
-  }
-  function drawMoto(ctx, t, cam, y0, y1, startVis) {
-    if (startVis) {
-      const w = where(t), s = motoS(t), at_ = railAt(s);
-      if (w.k === 0 && !w.trans) return;                // na capa a motinha é da cena (grande); ela mesma sai pela rua na troca
-      const a = 1;
-      // saindo da capa: a motinha grande da cena vai encolhendo até o tamanho da rua
-      const size = w.k === 0 ? lerp(CAPS[0].motoS || 80, 80, E.inOutCubic(clamp(w.u / 0.45))) : 80;
-      if (at_.y > y0 && at_.y < y1) {
-        const sp = w.trans ? Math.sin(Math.PI * w.u) : 0;
-        const dir = RAIL.face[at_.i];
-        let ang = at_.ang; if (dir < 0) ang = Math.PI - ang;
-        while (ang > Math.PI) ang -= TAU; while (ang < -Math.PI) ang += TAU;
-        const tilt = clamp(ang, -0.5, 0.5) * dir * sp;
-        const bob = w.trans ? 0 : 1.5 * Math.sin(t * 9);
-        moto(ctx, at_.x, at_.y + 14 + bob, size, { dir, tilt, roll: s / 12, speed: sp, alpha: a });
-      }
-    }
+    // a motinha, com a sacola da marca na garupa
+    moto(ctx, T.x, T.base, MOTO_TR, { dir: T.dir, tilt: T.tilt, roll: T.x / 30, speed: 1 });
   }
 
   // =====================================================================
@@ -885,11 +801,11 @@
     g.addColorStop(0, 'rgba(200,140,90,0)'); g.addColorStop(1, 'rgba(200,140,90,0.16)');
     ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
   }
-  function brand(ctx) {
-    // véu creme no topo (cobre o conteúdo que passa por baixo na troca de capítulo)
-    const g = ctx.createLinearGradient(0, 230, 0, 410);
+  function brand(ctx, t) {
+    // véu creme no topo, atrás da marca e da barra de progresso
+    const g = ctx.createLinearGradient(0, 230, 0, 412);
     g.addColorStop(0, css('#FBF3E8', 0.96)); g.addColorStop(1, css('#FBF3E8', 0));
-    ctx.fillStyle = g; ctx.fillRect(0, 0, W, 410); ctx.fillStyle = css('#FBF3E8', 0.96); ctx.fillRect(0, 0, W, 230);
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, 412); ctx.fillStyle = css('#FBF3E8', 0.96); ctx.fillRect(0, 0, W, 230);
     const d = 58, nameW = tw('UaiPertim', 28, 900), handleW = tw(LN.marca, 20, 500, 0.3);
     const gw = d + 14 + Math.max(nameW, handleW), x0 = 540 - gw / 2, cy = 334;
     logo(ctx, x0 + d / 2, cy, d);
@@ -898,43 +814,73 @@
     txt(ctx, 'Pertim', tx + w1, cy - 2, { size: 28, weight: 900, color: C.coral });
     txt(ctx, LN.marca, tx, cy + 23, { size: 20, weight: 500, color: C.cinza, ls: 0.3 });
     BOX('marca', x0, cy - d / 2, x0 + gw, cy + d / 2);
+    // a barra de progresso (estilo stories): um segmento por capítulo, sem a capa, preenchendo em coral.
+    // Aparece na 1ª troca; o segmento do fecho termina de encher 3 s antes do fim (o fecho fica parado)
+    const a = clamp((t - CAPS[0].t1) / TR);
+    if (a > 0 && NC > 1) {
+      const n = NC - 1, gap = 10, w0 = 560, sw = (w0 - gap * (n - 1)) / n, bx = 540 - w0 / 2, y = L.progY, h = 10;
+      ctx.save(); ctx.globalAlpha *= a;
+      for (let i = 0; i < n; i++) {
+        const c = CAPS[i + 1], fim = i === n - 1 ? DUR - 3 : c.t1;
+        const f = clamp((t - c.t0) / Math.max(0.1, fim - c.t0)), x = bx + i * (sw + gap);
+        rr(ctx, x, y - h / 2, sw, h, h / 2); ctx.fillStyle = css(C.coral, 0.16); ctx.fill();
+        if (f > 0) { rr(ctx, x, y - h / 2, Math.max(h, sw * f), h, h / 2); ctx.fillStyle = C.coral; ctx.fill(); }
+      }
+      ctx.restore();
+      if (a >= 1) BOX('progresso', bx, y - h / 2, bx + w0, y + h / 2);
+    }
   }
 
   // =====================================================================
-  // CABEÇALHO DO CAPÍTULO (rótulo + título fixo) e LINHA DE APOIO
+  // CABEÇALHO DO CAPÍTULO (rótulo em adesivo + título centralizado) e LINHA DE APOIO
   // =====================================================================
+  // o adesivo inclinado (rótulo dos capítulos e o chip da capa): fundo amarelo ou coral, borda branca, entra com "plop"
+  function adesivo(ctx, s, x, y, e, o = {}) {
+    if (e <= 0.002) return null;
+    const size = o.size || 26, h = o.h || 58, coral = !!o.coral, rot = (o.rot ?? (coral ? 3 : -4)) * DEG;
+    const w = 2 * 26 + tw(s, size, 900, 3), k = E.outBack(clamp(e), 3.2);
+    ctx.save(); ctx.translate(x, y); ctx.rotate(rot * (1 + 0.8 * (1 - clamp(e)))); ctx.scale(k, k); ctx.globalAlpha *= clamp(e * 4);
+    rr(ctx, -w / 2, -h / 2, w, h, 14);
+    ctx.shadowColor = 'rgba(120,60,30,0.22)'; ctx.shadowBlur = 12; ctx.shadowOffsetY = 5;
+    ctx.lineWidth = 9; ctx.strokeStyle = C.branco; ctx.stroke(); ctx.shadowColor = 'transparent';
+    ctx.fillStyle = coral ? C.coral : C.amarelo; ctx.fill();
+    txt(ctx, s, -w / 2 + 26, size * 0.36, { size, weight: 900, ls: 3, color: coral ? C.branco : C.tinta });
+    ctx.restore();
+    const hw = (w / 2) * Math.cos(rot) + (h / 2) * Math.abs(Math.sin(rot)) + 5, hh = (h / 2) * Math.cos(rot) + (w / 2) * Math.abs(Math.sin(rot)) + 5;
+    if (o.box && e >= 1) BOX(o.box, x - hw, y - hh, x + hw, y + hh);
+    return { w, h, hw, hh };
+  }
   function layoutTitulo(cap) {
-    const s = fitSize(cap.titulo, 900, L.x1 - L.x0, 94, -0.02);
+    const s = fitSize(cap.titulo, 900, L.tw, 100, -0.02);
     cap.ts = s;
     cap.tb = [L.tituloTopo + 0.78 * s, L.tituloTopo + 0.78 * s + 1.04 * s];
-    cap.apY = cap.tb[1] + 0.25 * s + 62;
-    cap.apX = L.x0; cap.apAlign = 'left';
+    cap.apY = cap.tb[1] + 0.25 * s + 54;
+    cap.apX = L.tx; cap.apAlign = 'center';
+    const rows = Math.max(0, ...cap.apoios.map((a) => apoioRows(cap, a).length));
+    // a cena começa logo abaixo da última linha de apoio (ou do título, se o capítulo não tem apoio)
+    cap.cenaTop = rows ? cap.apY + 52 * (rows - 1) + 46 : cap.tb[1] + 0.25 * s + 30;
   }
-  const ANTES = 0.55;                                   // o rótulo e o título já entram durante a troca (a tela nunca fica vazia)
   const SOCO = 0.3;                                     // o "soco": zoom rápido (de 1,45×) com leve overshoot, em 0,3 s
-  // o tempo de cada linha do título: a 1ª no tempo da batida mais perto de (t0 − ANTES), a 2ª meio tempo depois
-  const tituloT = (cap) => { const b = snapBeat(cap.t0 - ANTES); return [b, b + BT / 2]; };
+  // o título bate no tempo da batida: a 1ª linha no 1º tempo cheio depois de a varredura passar do meio, a 2ª meio tempo depois;
+  // o rótulo faz "plop" meio tempo antes da 1ª linha
+  const tituloT = (cap) => { const b = Math.ceil((cap.t0 - 0.4 * TR) / BT - 1e-6) * BT; return [b, b + BT / 2]; };
+  const rotuloT = (cap) => Math.max(tituloT(cap)[0] - BT / 2, cap.t0 - 0.45 * TR);
   function header(ctx, cap, t) {
-    const t0 = cap.t0 - (cap.n > 0 ? ANTES : 0);
-    const n = cap.rotulo.length, k = Math.round(n * p(t, t0 - 0.1, t0 + 0.32));
-    if (k > 0) {
-      const s = cap.rotulo.slice(0, k);
-      const w = txt(ctx, s, L.x0, L.rotY, { size: 26, weight: 800, color: C.coral, ls: 4, box: k === n ? 'rótulo' : null });
-      if (k < n || (t - t0) < 0.7) { const blink = k < n || Math.floor((t - t0) * 4) % 2 === 0; if (blink) { ctx.fillStyle = C.coral; ctx.fillRect(L.x0 + w + 8, L.rotY - 21, 13, 24); } }
-    }
+    const tr = rotuloT(cap);
+    adesivo(ctx, cap.rotulo, L.tx, L.rotY, p(t, tr, tr + 0.35), { coral: cap.n % 2 === 0, box: 'rótulo' });
     const s = cap.ts, tl = tituloT(cap);
     cap.titulo.forEach((ln, i) => {
-      const u = p(t, tl[i], tl[i] + SOCO);
       if (t < tl[i]) return;
+      const u = p(t, tl[i], tl[i] + SOCO);
       const k = u >= 1 ? 1 : lerp(1.45, 1, E.outBack(u, 2.8));
-      const w = tw(ln, s, 900, -0.02 * s), cx = L.x0 + w / 2, cy = cap.tb[i] - 0.3 * s;
-      ctx.save(); ctx.globalAlpha = clamp(u * 5); ctx.translate(cx, cy); ctx.scale(k, k); ctx.translate(-cx, -cy);
-      txt(ctx, ln, L.x0, cap.tb[i], { size: s, weight: 900, color: i === 1 ? C.coral : C.tinta, ls: -0.02 * s, box: u > 0.5 ? `título, linha ${i + 1}` : null });
+      const w = tw(ln, s, 900, -0.02 * s), x0 = L.tx - w / 2, cy = cap.tb[i] - 0.3 * s;
+      ctx.save(); ctx.globalAlpha = clamp(u * 5); ctx.translate(L.tx, cy); ctx.scale(k, k); ctx.translate(-L.tx, -cy);
+      txt(ctx, ln, x0, cap.tb[i], { size: s, weight: 900, color: i === 1 ? C.coral : C.tinta, ls: -0.02 * s, box: u > 0.5 ? `título, linha ${i + 1}` : null });
       ctx.restore();
     });
   }
   function apoioRows(cap, a) {
-    if (!a._rows) a._rows = layoutRich(a.texto, cap.apAlign === 'center' ? 840 : L.x1 - L.x0);
+    if (!a._rows) a._rows = layoutRich(a.texto, L.tw);
     return a._rows;
   }
   function drawApoio(ctx, cap, t) {
@@ -971,26 +917,27 @@
   }
 
   // =====================================================================
-  // CENAS
+  // CENAS (a área da cena vai de cap.cenaTop, logo abaixo do apoio, até PE = y 1450, e de x 90 a 930)
   // =====================================================================
   const CENAS = {};
-  const diaTop = (cap) => cap.apY + 70;                  // onde a cena pode começar (abaixo do apoio)
+  const PE = 1450;                                      // o pé da cena (a zona segura vai até y 1456)
   // a lojinha viva: brota (e 0..1), pisca, pula na batida, olha para `alvo` e sorri (smile 0..1)
   function lojinha(ctx, kind, x, base, w, t, o = {}) {
     const e = o.e ?? 1;
     if (e <= 0.002) return;
     const k = E.outBack(clamp(e), 2.2);
-    const pulo = o.pula === false ? 0 : (o.altura ?? 9) * hop(t, o.fase || 0) * clamp(e * 2 - 1);
+    const pulo = o.pula === false ? 0 : (o.altura ?? 11) * hop(t, o.fase || 0) * clamp(e * 2 - 1);
     const look = o.alvo ? [clamp((o.alvo[0] - x) / 420, -1, 1), clamp((o.alvo[1] - (base - w * 0.75)) / 420, -1, 1)] : (o.look || [0, 0.2]);
     ctx.save(); ctx.translate(x, base); ctx.scale(lerp(0.6, 1, k), k); ctx.translate(-x, -base - pulo);
     shop(ctx, kind, x, base, w, { blink: o.blink ?? blinkAt(t, o.seed || 0), look, smile: o.smile || 0, lit: o.lit ?? 1, swing: o.swing || 0 });
     ctx.restore();
-    if (o.box) BOX(o.box, x - w * 0.5, base - w * 1.27, x + w * 0.5, base);
+    if (o.box) BOX(o.box, x - w * 0.5, base - w * ALTURA_LOJA, x + w * 0.5, base);
   }
   const ALTURA_LOJA = 1.27;                             // a lojinha (com a placa) tem 1,27 × a largura de altura
 
-  // ---- capa (capítulo 00 = quadro 0): chip, "Tá chegando / no Glória 👀" com os olhinhos piscando, a motinha que
-  //      chega freando e derrapando (no quadro 0 ela já está na derrapada, inteira na tela) e confete
+  // ---- capa (capítulo 00 = quadro 0): o adesivo "TUDO PERTIM · EP. NN", "Tá chegando / no Glória 👀" com os olhinhos
+  //      piscando e a motinha grande chegando freando e derrapando (no quadro 0 ela já está na derrapada, inteira na
+  //      tela); confete; no fim ela arranca para a esquerda e a troca vem pela direita
   CENAS.capa = {
     setup(cap) {
       const d = cap.diagrama;
@@ -999,48 +946,45 @@
       cap.linhaW = (ln, S) => { const temOlhos = ln.includes(OLHOS); const tx = ln.replace(OLHOS, '').trimEnd(); return tw(tx, S, 900, ls(S)) + (temOlhos ? tw(' ', S, 900) + OLHOS_W(S) : 0); };
       let S = 176;
       while (S > 40 && cap.titulo.some((l) => cap.linhaW(l, S) > 760)) S -= 1;   // nenhuma linha passa de 72% da largura (778 px)
-      const MS = 250;                                       // a motinha da capa
-      const chipH = 64, ilH = MS * 1.02;
+      const MS = 320;                                       // a motinha da capa
+      // a altura do adesivo inclinado (a mesma conta de adesivo(): h 64, −4°, mais a folga da borda)
+      const aw = 2 * 26 + tw(cap.rotulo, 26, 900, 3), rot = 4 * DEG;
+      const chipH = 2 * (32 * Math.cos(rot) + (aw / 2) * Math.sin(rot) + 5), ilH = MS * 1.0;
       const titleH = 0.78 * S + 1.0 * S + 0.2 * S;
-      const total = chipH + 50 + titleH + 60 + ilH;
+      const total = chipH + 44 + titleH + 56 + ilH;
       const top = 960 - total / 2;                          // o bloco centrado no recorte 3:4 (y 240–1680)
       const Ly = {};
       Ly.chipY = top + chipH / 2;
-      Ly.b1 = top + chipH + 50 + 0.78 * S; Ly.b2 = Ly.b1 + 1.0 * S;
+      Ly.b1 = top + chipH + 44 + 0.78 * S; Ly.b2 = Ly.b1 + 1.0 * S;
       Ly.moto = { x: 600, base: top + total };
       Ly.top = top; Ly.bottom = top + total;
       Object.assign(cap, { capaS: S, Ly, motoS: MS });
       cap.apY = Ly.bottom + 80; cap.apX = 540; cap.apAlign = 'center';
-      cap.railStart = { x: Ly.moto.x, y: Ly.moto.base - 14 };   // a rua começa debaixo da motinha da capa
       cap.ev.olhos = at(cap, d.olhos && d.olhos.em, cap.t0 + 0.6);
       cap.ev.confete = at(cap, d.confete && d.confete.em, cap.t0 + 1.2);
-      cap.ev.buzina = at(cap, d.buzina && d.buzina.em, cap.t1 - 1.4);
+      cap.ev.buzina = Math.min(at(cap, d.buzina && d.buzina.em, cap.t1 - 1.4), cap.t1 - 0.95);
+      cap.ev.sai = cap.t1 - 0.5;                            // a motinha arranca e sai pela esquerda
       cue(0.0, 'skid'); cue(0.5, 'jump');
-      cue(cap.ev.olhos, 'blink'); cue(cap.ev.confete, 'confete'); cue(cap.ev.buzina, 'horn');
-      cue(cap.t1 - 1.0, 'railstart');
+      cue(cap.ev.olhos, 'blink'); cue(cap.ev.confete, 'confete'); cue(cap.ev.buzina, 'horn'); cue(cap.ev.sai, 'moto', { d: 0.5 });
     },
     draw(ctx, cap, t) {
       const d = cap.diagrama, Ly = cap.Ly, S = cap.capaS, ev = cap.ev;
-      chip(ctx, cap.rotulo, 540, Ly.chipY, { size: 24, align: 'center', ls: 3, h: 64, color: C.coral, box: 'chip' });
-      // o confete do "novidade" sai de trás do título
-      confete(ctx, t, ev.confete, 540, Ly.b1 - S * 0.3, 7, { n: 46, v: 1000, spread: 3.0 });
+      adesivo(ctx, cap.rotulo, 540, Ly.chipY, 1, { coral: false, rot: -4, h: 64, size: 26, box: 'chip' });
+      confete(ctx, t, ev.confete, 540, Ly.b1 - S * 0.3, 7, { n: 50, v: 1050, spread: 3.0 });
       cap.titulo.forEach((ln, i) => {
         const y = i ? Ly.b2 : Ly.b1, col = i ? C.coral : C.tinta, ls = -0.03 * S;
         const w = cap.linhaW(ln, S), x0 = 540 - w / 2;
         const temOlhos = ln.includes(OLHOS), tx = ln.replace(OLHOS, '').trimEnd();
-        // o marcador amarelo atrás da palavra-chave
         const mi = d.marcador ? tx.toLowerCase().indexOf(d.marcador.toLowerCase()) : -1;
         if (mi >= 0) {
           const pre = tx.slice(0, mi), mw = tw(tx.slice(mi, mi + d.marcador.length), S, 900, ls), mx = x0 + (pre ? tw(pre, S, 900, ls) + ls : 0);
           marker(ctx, mx, y, mw, S, 1, C.amarelo);
           BOX('palavra-chave', mx, y - S * 0.76, mx + mw, y + S * 0.22);
         }
-        // um pulinho do título em cada tempo forte (de leve; no quadro 0 está parado)
-        const pulso = 1 + 0.025 * Math.pow(hop(t), 8) * clamp(t / 0.6);
+        const pulso = 1 + 0.025 * Math.pow(hop(t), 8) * clamp(t / 0.6);   // um pulinho nos tempos fortes (no quadro 0, parado)
         ctx.save(); ctx.translate(540, y - S * 0.3); ctx.scale(pulso, pulso); ctx.translate(-540, -(y - S * 0.3));
         const wt = txt(ctx, tx, x0, y, { size: S, weight: 900, color: col, ls });
         if (temOlhos) {
-          // os olhinhos: no quadro 0 olham para a motinha; depois piscam e olham em volta
           const fase = t - ev.olhos, look = fase < 0 ? [0.5, 0.7] : [0.9 * Math.sin(fase * 2.4), 0.3 * Math.cos(fase * 1.7)];
           const pisca = fase < 0 ? 0 : Math.max(blinkAt(t, 3), fase < 0.18 ? Math.sin(Math.PI * fase / 0.18) : 0);
           olhos(ctx, x0 + wt + tw(' ', S, 900), y, S, pisca, look);
@@ -1049,29 +993,25 @@
         BOX(`título, linha ${i + 1}`, x0, y - S * 0.76, x0 + w, y + S * 0.22);
       });
       // a motinha (o mascote) chegando da direita: no quadro 0 está freando, inclinada, com fumaça e a marca do pneu
-      if (t < cap.t1) {
-        const M = Ly.moto, MS = cap.motoS, u = p(t, 0, 0.75);
-        const x = M.x + 34 * (1 - E.outCubic(u));
-        const tilt = -0.16 * Math.exp(-u * 3.2) * Math.cos(u * 10);
-        const buz = p(t, ev.buzina, ev.buzina + 0.4), pulo = 22 * Math.sin(Math.PI * buz) + 3 * hop(t) * clamp(t - 0.8);
-        // as marcas do pneu (ficam) e a fumacinha (some)
-        ctx.save(); ctx.lineCap = 'round';
-        for (const [dy, a] of [[-2, 0.32], [6, 0.18]]) {
-          ctx.strokeStyle = css(C.tinta, a); ctx.lineWidth = 7;
-          ctx.beginPath(); ctx.moveTo(x + MS * 0.22, M.base + dy); ctx.lineTo(Math.min(900, x + MS * 0.22 + 230), M.base + dy); ctx.stroke();
-        }
-        const fu = clamp(1 - t / 1.1);
-        for (let i = 0; i < 5; i++) {
-          const ph = clamp(t / 1.1 + i * 0.08), r = 22 + 30 * ph + 6 * i;
-          ctx.fillStyle = css(C.cremeDeep, 0.85 * fu); ctx.beginPath(); ctx.arc(x + MS * 0.38 + i * 34 + 40 * ph, M.base - 18 - i * 6 - 30 * ph, r, 0, TAU); ctx.fill();
-        }
-        ctx.restore();
-        moto(ctx, x, M.base - pulo, MS, { dir: -1, tilt, roll: -x / 30, speed: 0.6 * (1 - u) });
-        BOX('motinha', x - MS * 0.6, M.base - MS * 0.98, x + MS * 0.55, M.base);
+      const M = Ly.moto, MS = cap.motoS, u = p(t, 0, 0.75), us = p(t, ev.sai, cap.t1);
+      const x = M.x + 34 * (1 - E.outCubic(u)) - 1000 * E.inCubic(us);
+      const tilt = -0.16 * Math.exp(-u * 3.2) * Math.cos(u * 10) + 0.1 * Math.sin(Math.PI * us);
+      const buz = p(t, ev.buzina, ev.buzina + 0.4), pulo = 26 * Math.sin(Math.PI * buz) + 4 * hop(t) * clamp(t - 0.8) * (1 - us);
+      ctx.save(); ctx.lineCap = 'round';
+      for (const [dy, a] of [[-2, 0.32], [7, 0.18]]) {
+        ctx.strokeStyle = css(C.tinta, a); ctx.lineWidth = 8;
+        ctx.beginPath(); ctx.moveTo(M.x + 34 + MS * 0.22, M.base + dy); ctx.lineTo(Math.min(915, M.x + MS * 0.22 + 300), M.base + dy); ctx.stroke();
       }
-      // figurinhas: brilho e "UAI!" pipocando junto do confete
-      sticker(ctx, 'uai', 225, Ly.chipY, 92, p(t, ev.confete + 0.15, ev.confete + 0.5), t);
-      sticker(ctx, 'brilho', 855, Ly.chipY, 60, p(t, ev.confete + 0.05, ev.confete + 0.4), t);
+      const fu = clamp(1 - t / 1.1);
+      for (let i = 0; i < 5; i++) {
+        const ph = clamp(t / 1.1 + i * 0.08), r = 26 + 34 * ph + 6 * i;
+        ctx.fillStyle = css(C.cremeDeep, 0.85 * fu); ctx.beginPath(); ctx.arc(Math.min(860, x + MS * 0.36 + i * 34 + 30 * ph), M.base - 20 - i * 6 - 30 * ph, r, 0, TAU); ctx.fill();
+      }
+      ctx.restore();
+      moto(ctx, x, M.base - pulo, MS, { dir: -1, tilt, roll: -x / 30, speed: Math.max(0.6 * (1 - u), us) });
+      if (us === 0) BOX('motinha', x - MS * 0.6, M.base - MS * 0.98, x + MS * 0.55, M.base);
+      sticker(ctx, 'uai', 200, Ly.chipY + 10, 96, p(t, ev.confete + 0.15, ev.confete + 0.5), t);
+      sticker(ctx, 'brilho', 880, Ly.chipY, 62, p(t, ev.confete + 0.05, ev.confete + 0.4), t);
     },
   };
 
@@ -1088,37 +1028,34 @@
       cue(ev.confete, 'confete');
     },
     draw(ctx, cap, t) {
-      const d = cap.diagrama, ev = cap.ev, top = Math.max(diaTop(cap), 860);
-      const Lg = { x: L.cx, y: top + 205, D: 250 };
-      const pos = [{ x: 210, base: top + 300 }, { x: 840, base: top + 300 }, { x: 290, base: top + 565 }, { x: 760, base: top + 565 }];
+      const d = cap.diagrama, ev = cap.ev, T = cap.cenaTop;
+      const Lg = { x: L.cx, y: T + 160, D: 300 };
+      const pos = [{ x: 185, base: T + 310 }, { x: 835, base: T + 310 }, { x: 300, base: PE - 12 }, { x: 720, base: PE - 12 }];
       const eg = p(t, ev.logo, ev.logo + 0.5);
-      // o gramado da praça e o coreto (entram com a logo)
-      pop(ctx, eg, Lg.x, top + 520, () => {
-        ctx.fillStyle = css(C.verdeLight, 0.55); ctx.beginPath(); ctx.ellipse(Lg.x, top + 520, 400, 70, 0, 0, TAU); ctx.fill();
-        ctx.strokeStyle = css(C.papel, 0.95); ctx.lineWidth = 10; ctx.beginPath(); ctx.ellipse(Lg.x, top + 520, 330, 46, 0, 0, TAU); ctx.stroke();
-        coreto(ctx, Lg.x, top + 560, 150, t);
-        BOX('praça', Lg.x - 75, top + 360, Lg.x + 75, top + 560);
+      pop(ctx, eg, Lg.x, PE - 40, () => {
+        ctx.fillStyle = css(C.verdeLight, 0.55); ctx.beginPath(); ctx.ellipse(Lg.x, PE - 40, 420, 62, 0, 0, TAU); ctx.fill();
+        ctx.strokeStyle = css(C.papel, 0.95); ctx.lineWidth = 12; ctx.beginPath(); ctx.ellipse(Lg.x, PE - 40, 345, 42, 0, 0, TAU); ctx.stroke();
+        coreto(ctx, Lg.x, PE - 12, 200, t);
+        BOX('praça', Lg.x - 100, PE - 270, Lg.x + 100, PE - 12);
       }, 1.4);
-      // as lojinhas brotando em volta, olhando para a logo, piscando e pulando na batida
       d.lojas.forEach((l, i) => {
         const q = pos[i]; if (!q) return;
         const e = p(t, ev.lojas[i], ev.lojas[i] + 0.55);
-        lojinha(ctx, l.tipo, q.x, q.base, 150, t, { e, alvo: [Lg.x, Lg.y], seed: i, fase: i * 0.5, smile: clamp((t - ev.confete) * 3), box: e >= 1 ? `lojinha ${l.tipo}` : null });
+        lojinha(ctx, l.tipo, q.x, q.base, 190, t, { e, alvo: [Lg.x, Lg.y], seed: i, fase: i * 0.5, smile: clamp((t - ev.confete) * 3), box: e >= 1 ? `lojinha ${l.tipo}` : null });
       });
-      // a logo oficial: entra com mola (o arquivo, nunca redesenhada) e respira na batida
       if (eg > 0) {
         const u = p(t, ev.logo, ev.logo + 0.9);
         const k = (1 - Math.exp(-6 * u) * Math.cos(11 * u)) * (1 + 0.02 * Math.pow(hop(t), 6) * u);
         ctx.save(); ctx.globalAlpha *= clamp(u * 6); ctx.translate(Lg.x, Lg.y); ctx.scale(k, k);
-        ctx.shadowColor = 'rgba(200,70,30,0.28)'; ctx.shadowBlur = 34; ctx.shadowOffsetY = 12;
+        ctx.shadowColor = 'rgba(200,70,30,0.28)'; ctx.shadowBlur = 38; ctx.shadowOffsetY = 14;
         ctx.beginPath(); ctx.arc(0, 0, Lg.D / 2 - 2, 0, TAU); ctx.fillStyle = C.coral; ctx.fill(); ctx.shadowColor = 'transparent';
         logo(ctx, 0, 0, Lg.D);
         ctx.restore();
         if (u >= 1) BOX('logo oficial', Lg.x - Lg.D / 2, Lg.y - Lg.D / 2, Lg.x + Lg.D / 2, Lg.y + Lg.D / 2);
       }
-      sticker(ctx, 'estrela', Lg.x + 150, Lg.y - 110, 66, p(t, ev.logo + 0.4, ev.logo + 0.75), t);
-      sticker(ctx, 'coracao', Lg.x - 155, Lg.y + 95, 62, p(t, ev.confete, ev.confete + 0.35), t);
-      confete(ctx, t, ev.confete, Lg.x, Lg.y, 11, { n: 44 });
+      sticker(ctx, 'estrela', Lg.x + 175, Lg.y - 120, 84, p(t, ev.logo + 0.4, ev.logo + 0.75), t);
+      sticker(ctx, 'coracao', Lg.x - 175, Lg.y + 110, 80, p(t, ev.confete, ev.confete + 0.35), t);
+      confete(ctx, t, ev.confete, Lg.x, Lg.y, 11, { n: 50, v: 1100 });
     },
   };
 
@@ -1134,40 +1071,36 @@
       cue(ev.docim, 'heart'); cue(ev.docim + 0.05, 'confete');
     },
     draw(ctx, cap, t) {
-      const d = cap.diagrama, ev = cap.ev, top = Math.max(diaTop(cap), 860);
-      const B = top + 380, W_ = 168, xs = [221, 423, 625, 827];
+      const d = cap.diagrama, ev = cap.ev;
+      const B = PE - 200, W_ = 196, xs = [190, 405, 620, 835];
       d.lojas.forEach((l, i) => {
         const x = xs[i], tl = ev.lojas[i], aceso = p(t, tl, tl + 0.3);
         const e = p(t, cap.t0 + 0.05 + i * 0.07, cap.t0 + 0.5 + i * 0.07);
-        // o brilho quando acende
         if (aceso > 0) {
-          const g = ctx.createRadialGradient(x, B - 110, 10, x, B - 110, 170);
+          const g = ctx.createRadialGradient(x, B - 130, 10, x, B - 130, 200);
           g.addColorStop(0, css(C.amareloLight, 0.55 * aceso)); g.addColorStop(1, css(C.amareloLight, 0));
-          ctx.fillStyle = g; ctx.fillRect(x - 170, B - 280, 340, 300);
+          ctx.fillStyle = g; ctx.fillRect(x - 200, B - 330, 400, 350);
         }
         const dorme = 1 - aceso;                          // antes de acender: olhinhos fechados
         lojinha(ctx, l.tipo, x, B, W_, t, { e, lit: 0.12 + 0.88 * aceso, blink: Math.max(0.95 * dorme, blinkAt(t, i + 4)), pula: aceso > 0.5, fase: i * 0.25,
-          smile: aceso, alvo: [x, B - 400], swing: 7 * Math.sin((t - tl) * 7) * Math.exp(-Math.max(0, t - tl) * 2.4) * (t > tl ? 1 : 0), box: e >= 1 ? `lojinha ${l.t}` : null });
-        // o item da lojinha pula em cima da placa
+          smile: aceso, alvo: [x, B - 450], swing: 7 * Math.sin((t - tl) * 7) * Math.exp(-Math.max(0, t - tl) * 2.4) * (t > tl ? 1 : 0), box: e >= 1 ? `lojinha ${l.t}` : null });
         if (t >= tl && ITENS[l.item]) {
-          const ei = p(t, tl + 0.1, tl + 0.45), y = B - W_ * ALTURA_LOJA - 62 - 26 * hop(t, 0.5 + i * 0.25) * clamp((t - tl - 0.45) * 3);
-          pop(ctx, ei, x, y + 30, () => ITENS[l.item](ctx, x, y, 92), 2.4);
-          if (ei >= 1) BOX(`item ${l.item}`, x - 48, y - 46, x + 48, y + 40);
+          const ei = p(t, tl + 0.1, tl + 0.45), y = B - W_ * ALTURA_LOJA - 80 - 30 * hop(t, 0.5 + i * 0.25) * clamp((t - tl - 0.45) * 3);
+          pop(ctx, ei, x, y + 36, () => ITENS[l.item](ctx, x, y, 115), 2.4);
+          if (ei >= 1) BOX(`item ${l.item}`, x - 58, y - 58, x + 58, y + 48);
         }
-        // o nome embaixo
         const ec = E.outCubic(p(t, tl + 0.15, tl + 0.45));
-        if (ec > 0) chip(ctx, l.t, x, B + 32, { size: 18, align: 'center', h: 40, pad: 14, ls: 1.5, alpha: ec, border: 'none', bg: C.tinta, color: C.papel, shadow: false, box: ec > 0.99 ? `placa ${l.t}` : null });
+        if (ec > 0) chip(ctx, l.t, x, B + 40, { size: 20, align: 'center', h: 46, pad: 14, ls: 1.5, alpha: ec, border: 'none', bg: C.tinta, color: C.papel, shadow: false, box: ec > 0.99 ? `placa ${l.t}` : null });
       });
-      // o docim da sobremesa: o pote pula no meio, com coraçõezinhos e confete
       const ed = p(t, ev.docim, ev.docim + 0.45);
       if (ed > 0) {
-        const y = B + 145 - 10 * hop(t) * clamp((t - ev.docim - 0.45) * 3);
-        pop(ctx, ed, L.cx, y + 40, () => ITENS.doce(ctx, L.cx, y, 130), 2.6);
-        if (ed >= 1) BOX('docim', L.cx - 52, y - 58, L.cx + 52, y + 42);
+        const y = PE - 52 - 12 * hop(t) * clamp((t - ev.docim - 0.45) * 3);
+        pop(ctx, ed, L.cx, y + 44, () => ITENS.doce(ctx, L.cx, y, 140), 2.6);
+        if (ed >= 1) BOX('docim', L.cx - 56, y - 62, L.cx + 56, y + 44);
       }
-      sticker(ctx, 'coracao', L.cx - 120, B + 140, 56, p(t, ev.docim + 0.12, ev.docim + 0.45), t);
-      sticker(ctx, 'coracao', L.cx + 125, B + 120, 46, p(t, ev.docim + 0.2, ev.docim + 0.55), t);
-      confete(ctx, t, ev.docim + 0.05, L.cx, B + 120, 13, { n: 36, v: 850 });
+      sticker(ctx, 'coracao', L.cx - 140, PE - 70, 70, p(t, ev.docim + 0.12, ev.docim + 0.45), t);
+      sticker(ctx, 'coracao', L.cx + 145, PE - 90, 58, p(t, ev.docim + 0.2, ev.docim + 0.55), t);
+      confete(ctx, t, ev.docim + 0.05, L.cx, PE - 80, 13, { n: 44, v: 1000 });
     },
   };
 
@@ -1190,76 +1123,73 @@
       cue(ev.porta + 0.15, 'confete');
     },
     draw(ctx, cap, t) {
-      const d = cap.diagrama, ev = cap.ev, top = Math.max(diaTop(cap), 860);
-      const rua = top + 400;
-      const HX = 792, HW = 236, HK = HW / 220;             // a casinha (cabe inteira antes de x 940)
-      const S = { x: 300, bot: rua - 64, w: 170, h: 150 };
-      const MS = 200, MX = 520;
+      const d = cap.diagrama, ev = cap.ev, T = cap.cenaTop;
+      const rua = PE - 150;
+      const HX = 765, HW = 290, HK = HW / 220;             // a casinha (cabe inteira antes de x 940)
+      const S = { x: 250, bot: rua - 70, w: 220, h: 195 };
+      const MS = 260, MX = 455;
       const ec = ent(t, cap.t0 + 0.15, 0.5);
       enter(ctx, ec, L.cx, rua, () => {
-        ctx.fillStyle = C.cremeDeep; rr(ctx, L.x0, rua - 52, L.x1 - L.x0, 20, 7); ctx.fill();
-        ctx.fillStyle = css('#D9C2A6', 0.8); rr(ctx, L.x0, rua - 32, L.x1 - L.x0, 66, 12); ctx.fill();
-        ctx.save(); ctx.setLineDash([32, 24]); ctx.lineWidth = 7; ctx.strokeStyle = C.coral; ctx.beginPath(); ctx.moveTo(L.x0 + 24, rua + 2); ctx.lineTo(L.x1 - 24, rua + 2); ctx.stroke(); ctx.restore();
+        ctx.fillStyle = C.cremeDeep; rr(ctx, 90, rua - 58, 840, 22, 8); ctx.fill();
+        ctx.fillStyle = css('#D9C2A6', 0.8); rr(ctx, 90, rua - 36, 840, 76, 14); ctx.fill();
+        ctx.save(); ctx.setLineDash([36, 26]); ctx.lineWidth = 8; ctx.strokeStyle = C.coral; ctx.beginPath(); ctx.moveTo(114, rua + 2); ctx.lineTo(906, rua + 2); ctx.stroke(); ctx.restore();
         casinha(ctx, HX, rua - 46, HW, p(t, ev.porta, ev.porta + 0.45), t);
         BOX('casinha', HX - 120 * HK, rua - 46 - 246 * HK, HX + 120 * HK, rua - 46);
       });
-      // a motinha: entra pela esquerda, passa debaixo da sacola (que pula na garupa) e para na porta
-      const um = p(t, ev.moto, ev.chega), xm = lerp(L.x0 + 70, MX, E.inOutCubic(um));
+      const um = p(t, ev.moto, ev.chega), xm = lerp(60, MX, E.inOutCubic(um));
       const pegou = t >= ev.pega + 0.25;
-      // a sacola: aparece, os itens caem dentro, ganha o check e, quando a motinha passa, pula para a garupa
       const es = ent(t, ev.sacola, 0.45);
       if (es > 0 && !pegou) {
         const uj = p(t, ev.pega, ev.pega + 0.25);
-        const k = lerp(1, 0.22, E.inCubic(uj)), jx = lerp(S.x, xm - 0.38 * MS, uj), jy = lerp(S.bot, rua + 20 - 0.45 * MS, uj) - 60 * Math.sin(Math.PI * uj);
+        const k = lerp(1, 0.2, E.inCubic(uj)), jx = lerp(S.x, xm - 0.38 * MS, uj), jy = lerp(S.bot, rua + 22 - 0.45 * MS, uj) - 70 * Math.sin(Math.PI * uj);
         let sq = 0; ev.itens.forEach((x) => { const v = p(t, x + 0.28, x + 0.5); if (v > 0 && v < 1) sq = Math.max(sq, Math.sin(Math.PI * v)); });
         ctx.save(); ctx.translate(jx, jy); ctx.scale(k * (1 + 0.04 * sq), k * (1 - 0.05 * sq)); ctx.translate(-S.x, -S.bot);
         enter(ctx, es, S.x, S.bot, () => {
           const tp = S.bot - S.h;
-          ctx.strokeStyle = C.coralDark; ctx.lineWidth = 10; ctx.lineCap = 'round';
-          for (const dx of [-38, 38]) { ctx.beginPath(); ctx.moveTo(S.x + dx - 22, tp + 4); ctx.bezierCurveTo(S.x + dx - 22, tp - 56, S.x + dx + 22, tp - 56, S.x + dx + 22, tp + 4); ctx.stroke(); }
-          // os itens caindo (por trás da frente da sacola)
+          ctx.strokeStyle = C.coralDark; ctx.lineWidth = 13; ctx.lineCap = 'round';
+          for (const dx of [-50, 50]) { ctx.beginPath(); ctx.moveTo(S.x + dx - 28, tp + 4); ctx.bezierCurveTo(S.x + dx - 28, tp - 72, S.x + dx + 28, tp - 72, S.x + dx + 28, tp + 4); ctx.stroke(); }
           (d.itens || []).forEach((it, i) => {
             const t0 = ev.itens[i]; if (t < t0 || !ITENS[it]) return;
-            const v = p(t, t0, t0 + 0.3), y = lerp(top + 40, tp - 18, E.inCubic(v)), x = S.x + (i - 1) * 40;
-            ctx.save(); ctx.translate(x, y); ctx.rotate((i - 1) * 0.25 * v); ITENS[it](ctx, 0, 0, 84); ctx.restore();
+            const v = p(t, t0, t0 + 0.3), y = lerp(T + 30, tp - 22, E.inCubic(v)), x = S.x + (i - 1) * 52;
+            ctx.save(); ctx.translate(x, y); ctx.rotate((i - 1) * 0.25 * v); ITENS[it](ctx, 0, 0, 110); ctx.restore();
           });
-          ctx.fillStyle = C.papel; ctx.beginPath(); ctx.moveTo(S.x - S.w / 2, tp); ctx.lineTo(S.x + S.w / 2, tp); ctx.lineTo(S.x + S.w / 2 + 10, S.bot); ctx.lineTo(S.x - S.w / 2 - 10, S.bot); ctx.closePath();
-          ctx.shadowColor = 'rgba(120,60,30,0.2)'; ctx.shadowBlur = 16; ctx.fill(); ctx.shadowColor = 'transparent';
+          ctx.fillStyle = C.papel; ctx.beginPath(); ctx.moveTo(S.x - S.w / 2, tp); ctx.lineTo(S.x + S.w / 2, tp); ctx.lineTo(S.x + S.w / 2 + 12, S.bot); ctx.lineTo(S.x - S.w / 2 - 12, S.bot); ctx.closePath();
+          ctx.shadowColor = 'rgba(120,60,30,0.2)'; ctx.shadowBlur = 18; ctx.fill(); ctx.shadowColor = 'transparent';
           ctx.lineWidth = 3; ctx.strokeStyle = C.cremeDeep; ctx.stroke();
-          ctx.fillStyle = C.coral; ctx.fillRect(S.x - S.w / 2, tp, S.w, 22);
-          logo(ctx, S.x, tp + 22 + (S.h - 22) / 2, Math.min(100, S.h - 36));
+          ctx.fillStyle = C.coral; ctx.fillRect(S.x - S.w / 2, tp, S.w, 28);
+          logo(ctx, S.x, tp + 28 + (S.h - 28) / 2, Math.min(130, S.h - 44));
         });
         ctx.restore();
-        if (uj === 0 && es >= 1) BOX('sacola', S.x - S.w / 2 - 10, S.bot - S.h - 56, S.x + S.w / 2 + 10, S.bot);
-        check(ctx, S.x + S.w / 2 + 2, S.bot - S.h + 6, 34, p(t, ev.pedido, ev.pedido + 0.4) * (1 - uj), { box: uj === 0 && t >= ev.pedido + 0.4 ? 'check' : null });
+        if (uj === 0 && es >= 1) BOX('sacola', S.x - S.w / 2 - 12, S.bot - S.h - 70, S.x + S.w / 2 + 12, S.bot);
+        check(ctx, S.x + S.w / 2 + 4, S.bot - S.h + 8, 42, p(t, ev.pedido, ev.pedido + 0.4) * (1 - uj), { box: uj === 0 && t >= ev.pedido + 0.4 ? 'check' : null });
       }
       if (t >= ev.moto - 0.05) {
         const sp = Math.sin(Math.PI * um);
-        const bob = um >= 1 ? 3 * hop(t) : -3 * Math.abs(Math.sin(t * 22)) * sp;
+        const bob = um >= 1 ? 4 * hop(t) : -4 * Math.abs(Math.sin(t * 22)) * sp;
         ctx.save(); ctx.globalAlpha *= clamp((t - ev.moto + 0.05) / 0.2);
-        if (sp > 0.1) for (let i = 0; i < 4; i++) { const ph = (t * 3 + i / 4) % 1; ctx.fillStyle = css(C.cremeDeep, 0.6 * (1 - ph) * sp); ctx.beginPath(); ctx.arc(xm - 120 - ph * 70, rua + 10 - ph * 25, 10 + 12 * ph, 0, TAU); ctx.fill(); }
-        moto(ctx, xm, rua + 20 + bob, MS, { dir: 1, tilt: -0.04 * sp, roll: xm / 18, speed: sp });
+        if (sp > 0.1) for (let i = 0; i < 4; i++) { const ph = (t * 3 + i / 4) % 1; ctx.fillStyle = css(C.cremeDeep, 0.6 * (1 - ph) * sp); ctx.beginPath(); ctx.arc(xm - 150 - ph * 80, rua + 10 - ph * 30, 13 + 15 * ph, 0, TAU); ctx.fill(); }
+        moto(ctx, xm, rua + 22 + bob, MS, { dir: 1, tilt: -0.04 * sp, roll: xm / 18, speed: sp });
         ctx.restore();
-        if (um >= 1) BOX('motinha', MX - MS * 0.55, rua + 20 - MS * 0.98, MX + MS * 0.6, rua + 20);
+        if (um >= 1) BOX('motinha', MX - MS * 0.55, rua + 22 - MS * 0.98, MX + MS * 0.55, rua + 22);
       }
       // os 3 passos: ESCOLHEU · PEDIU · CHEGOU, cada um com o check quando acontece
-      const passos = d.passos || [], sz = 24, gap = 18;
-      const ws = passos.map((s) => 2 * 18 + 34 + 10 + tw(s, sz, 800, 2));
+      const passos = d.passos || [], sz = 28, gap = 20;
+      const ws = passos.map((s) => 2 * 20 + 40 + 10 + tw(s, sz, 800, 2));
       let x = L.cx - (ws.reduce((a, b) => a + b, 0) + gap * (passos.length - 1)) / 2;
-      const y = rua + 112;
+      const y = rua + 104;
       passos.forEach((s, i) => {
         const e = p(t, ev.passos[i], ev.passos[i] + 0.35);
         if (e > 0) {
           const xx = x;
           pop(ctx, e, xx + ws[i] / 2, y, () => {
-            chip(ctx, s, xx, y, { size: sz, h: 60, pad: 18, ls: 2, w: ws[i], bg: C.verde, color: C.branco, border: 'none', box: e >= 1 ? `passo ${s}` : null });
-            check(ctx, xx + ws[i] - 18 - 17, y, 17, clamp(e * 1.5 - 0.3), { bg: C.verdeDark });
+            chip(ctx, s, xx, y, { size: sz, h: 66, pad: 20, ls: 2, w: ws[i], bg: C.verde, color: C.branco, border: 'none', box: e >= 1 ? `passo ${s}` : null });
+            check(ctx, xx + ws[i] - 20 - 20, y, 20, clamp(e * 1.5 - 0.3), { bg: C.verdeDark });
           }, 2.2);
         }
         x += ws[i] + gap;
       });
-      sticker(ctx, 'coracao', HX + 18, rua - 330, 58, p(t, ev.porta + 0.15, ev.porta + 0.5), t);
-      confete(ctx, t, ev.porta + 0.15, HX, rua - 200, 17, { n: 30, v: 800 });
+      sticker(ctx, 'coracao', HX + 20, rua - 410, 76, p(t, ev.porta + 0.15, ev.porta + 0.5), t);
+      confete(ctx, t, ev.porta + 0.15, HX, rua - 240, 17, { n: 40, v: 950 });
     },
   };
 
@@ -1274,34 +1204,33 @@
       cue(ev.casa, 'pop', { f: 520 }); cue(ev.casa + 0.3, 'door');
     },
     draw(ctx, cap, t) {
-      const d = cap.diagrama, ev = cap.ev, top = Math.max(diaTop(cap), 860);
+      const d = cap.diagrama, ev = cap.ev, T = cap.cenaTop;
       d.chips.forEach((c, i) => {
         const t0 = ev.chips[i], e = p(t, t0, t0 + 0.4);
         if (e <= 0) return;
-        const y = top + 60 + i * 108, sz = 38;
-        const w = 2 * 30 + sz * 1.35 + 10 + tw(c.t, sz, 800, 2), x = L.cx - w / 2;
+        const y = T + 62 + i * 118, sz = 46;
+        const w = 2 * 34 + sz * 1.35 + 10 + tw(c.t, sz, 800, 2), x = L.cx - w / 2;
         const rk = E.outCubic(p(t, t0 + 0.32, t0 + 0.55));
-        const tremida = 4 * Math.sin((t - t0 - 0.32) * 40) * Math.exp(-Math.max(0, t - t0 - 0.32) * 8) * (t > t0 + 0.32 ? 1 : 0);
+        const tremida = 5 * Math.sin((t - t0 - 0.32) * 40) * Math.exp(-Math.max(0, t - t0 - 0.32) * 8) * (t > t0 + 0.32 ? 1 : 0);
         ctx.save(); ctx.translate(tremida, 0);
         pop(ctx, e, L.cx, y, () => {
-          chip(ctx, c.t, x, y, { size: sz, h: 88, pad: 30, ls: 2, w, icon: c.icone, color: mixHex(C.tinta, C.cinza, 0.4 * rk), iconColor: C.coral, box: e >= 1 ? `chip ${c.t}` : null });
+          chip(ctx, c.t, x, y, { size: sz, h: 104, pad: 34, ls: 2, w, icon: c.icone, color: mixHex(C.tinta, C.cinza, 0.4 * rk), iconColor: C.coral, box: e >= 1 ? `chip ${c.t}` : null });
           if (rk > 0) {
-            ctx.save(); ctx.strokeStyle = C.coral; ctx.lineWidth = 8; ctx.lineCap = 'round';
-            ctx.beginPath(); ctx.moveTo(x + 14, y + 6); ctx.lineTo(x + 14 + (w - 28) * rk, y - 6); ctx.stroke(); ctx.restore();
+            ctx.save(); ctx.strokeStyle = C.coral; ctx.lineWidth = 10; ctx.lineCap = 'round';
+            ctx.beginPath(); ctx.moveTo(x + 16, y + 7); ctx.lineTo(x + 16 + (w - 32) * rk, y - 7); ctx.stroke(); ctx.restore();
           }
         }, 2.3);
         ctx.restore();
       });
-      // a entrega em casa: a casinha abre, a motinha está na porta e a lojinha comemora
-      const base = Math.min(1436, top + 570), ea = p(t, ev.casa, ev.casa + 0.5);
+      const base = PE - 10, ea = p(t, ev.casa, ev.casa + 0.5);
       if (ea > 0) {
-        pop(ctx, ea, 690, base, () => { casinha(ctx, 690, base, 210, p(t, ev.casa + 0.3, ev.casa + 0.7), t); }, 1.8);
-        lojinha(ctx, 'padaria', 250, base, 130, t, { e: p(t, ev.casa + 0.1, ev.casa + 0.6), alvo: [690, base - 120], smile: 1, seed: 7 });
-        const xm = lerp(330, 470, E.outCubic(p(t, ev.casa + 0.05, ev.casa + 0.7)));
-        ctx.save(); ctx.globalAlpha *= clamp(ea * 3); moto(ctx, xm, base - 3 * hop(t), 150, { dir: 1, roll: xm / 14 }); ctx.restore();
-        if (ea >= 1) BOX('entrega em casa', 185, base - 230, 805, base);
+        pop(ctx, ea, 700, base, () => { casinha(ctx, 700, base, 240, p(t, ev.casa + 0.3, ev.casa + 0.7), t); }, 1.8);
+        lojinha(ctx, 'padaria', 195, base, 170, t, { e: p(t, ev.casa + 0.1, ev.casa + 0.6), alvo: [700, base - 140], smile: 1, seed: 7 });
+        const xm = lerp(320, 450, E.outCubic(p(t, ev.casa + 0.05, ev.casa + 0.7)));
+        ctx.save(); ctx.globalAlpha *= clamp(ea * 3); moto(ctx, xm, base - 4 * hop(t), 200, { dir: 1, roll: xm / 14 }); ctx.restore();
+        if (ea >= 1) BOX('entrega em casa', 110, base - 268, 831, base);
       }
-      sticker(ctx, 'brilho', 845, base - 250, 52, p(t, ev.casa + 0.45, ev.casa + 0.8), t);
+      sticker(ctx, 'brilho', 880, base - 300, 64, p(t, ev.casa + 0.45, ev.casa + 0.8), t);
     },
   };
 
@@ -1317,94 +1246,93 @@
       cue(ev.selo, 'stamp'); cue(ev.coracao, 'heart'); cue(ev.coracao + 0.05, 'confete');
     },
     draw(ctx, cap, t) {
-      const d = cap.diagrama, ev = cap.ev, top = Math.max(diaTop(cap), 860);
-      const chao = Math.min(1436, top + 570);
-      // os morros (três camadas de verde) sobem do chão
+      const d = cap.diagrama, ev = cap.ev, T = cap.cenaTop;
+      const chao = PE;
       const em = E.outBack(p(t, ev.morros, ev.morros + 0.7), 1.4);
       if (em > 0) {
-        ctx.save(); ctx.beginPath(); ctx.rect(L.x0 - 40, top, L.x1 - L.x0 + 80, chao - top - 60); ctx.clip();
-        const camadas = [[C.verdeLight, 0.75, [[L.x0 - 40, 170], [330, 300], [560, 210], [800, 330], [L.x1 + 40, 230]]],
-          [C.verde, 0.9, [[L.x0 - 40, 120], [250, 230], [470, 140], [690, 250], [L.x1 + 40, 150]]],
-          [C.verdeDark, 0.85, [[L.x0 - 40, 60], [380, 120], [620, 70], [L.x1 + 40, 110]]]];
+        ctx.save(); ctx.beginPath(); ctx.rect(90, T, 840, chao - T - 70); ctx.clip();
+        const camadas = [[C.verdeLight, 0.75, [[50, 200], [330, 360], [560, 250], [800, 400], [970, 280]]],
+          [C.verde, 0.9, [[50, 140], [250, 270], [470, 170], [690, 300], [970, 180]]],
+          [C.verdeDark, 0.85, [[50, 70], [380, 140], [620, 80], [970, 130]]]];
         camadas.forEach(([cor, a, pts], j) => {
-          const base = chao - 60, h = em * (1 - j * 0.04);
+          const base = chao - 70, h = em * (1 - j * 0.04);
           ctx.fillStyle = css(cor, a); ctx.beginPath(); ctx.moveTo(pts[0][0], base);
           pts.forEach(([x, hh], i) => { const nx = pts[i + 1]; if (!nx) { ctx.lineTo(x, base - hh * h); return; } const mx = (x + nx[0]) / 2; ctx.quadraticCurveTo(x, base - hh * h, mx, base - (hh + nx[1]) / 2 * h); });
           ctx.lineTo(pts[pts.length - 1][0], base); ctx.closePath(); ctx.fill();
         });
         ctx.restore();
-        ctx.fillStyle = css(C.verdeLight, 0.6 * clamp(em)); rr(ctx, L.x0, chao - 64, L.x1 - L.x0, 30, 15); ctx.fill();
-        if (em >= 1) BOX('morros', L.x0, chao - 400, L.x1, chao - 34);
+        ctx.fillStyle = css(C.verdeLight, 0.6 * clamp(em)); rr(ctx, 90, chao - 74, 840, 34, 17); ctx.fill();
+        if (em >= 1) BOX('morros', 90, chao - 470, 930, chao - 40);
       }
-      // as lojinhas juntas, pulando na mesma batida e sorrindo
       ['padaria', 'mercado', 'farmacia'].forEach((k, i) => {
-        const e = p(t, ev.lojas + i * 0.1, ev.lojas + i * 0.1 + 0.55), x = [255, 525, 795][i];
-        lojinha(ctx, k, x, chao - 40, 160, t, { e, alvo: [430, top + 150], smile: clamp((t - ev.lojas - 0.3) * 2), seed: i + 9, altura: 12 });
-        if (e >= 1) BOX(`lojinha ${k}`, x - 80, chao - 40 - 160 * ALTURA_LOJA, x + 80, chao - 40);
+        const e = p(t, ev.lojas + i * 0.1, ev.lojas + i * 0.1 + 0.55), x = [200, 510, 820][i];
+        lojinha(ctx, k, x, chao - 40, 210, t, { e, alvo: [330, T + 130], smile: clamp((t - ev.lojas - 0.3) * 2), seed: i + 9, altura: 14 });
+        if (e >= 1) BOX(`lojinha ${k}`, x - 105, chao - 40 - 210 * ALTURA_LOJA, x + 105, chao - 40);
       });
-      // o selo "do Glória" carimbado
-      const es = p(t, ev.selo, ev.selo + 0.4), sx = 790, sy = top + 115, sr = 80;
+      const es = p(t, ev.selo, ev.selo + 0.4), sx = 805, sy = T + 120, sr = 96;
       if (es > 0) {
         const k = lerp(1.7, 1, E.outCubic(es)), r = -10 * DEG + 18 * DEG * (1 - E.outCubic(es));
         ctx.save(); ctx.globalAlpha *= clamp(es * 2.5); ctx.translate(sx, sy); ctx.rotate(r); ctx.scale(k, k); selo(ctx, 0, 0, sr, d.selo.t); ctx.restore();
         if (es >= 1) BOX('selo', sx - sr - 6, sy - sr - 6, sx + sr + 6, sy + sr + 6);
       }
-      // o coração que bate na batida
       const ec = p(t, ev.coracao, ev.coracao + 0.45);
       if (ec > 0) {
-        const cx = 400, cy = top + 125, bate = 1 + 0.08 * Math.pow(hop(t), 10) * clamp((t - ev.coracao - 0.45) * 3);
+        const cx = 330, cy = T + 130, bate = 1 + 0.08 * Math.pow(hop(t), 10) * clamp((t - ev.coracao - 0.45) * 3);
         ctx.save(); ctx.translate(cx, cy); ctx.scale(bate, bate); ctx.translate(-cx, -cy);
-        sticker(ctx, 'coracao', cx, cy, 150, ec, 0);
+        sticker(ctx, 'coracao', cx, cy, 190, ec, 0);
         ctx.restore();
-        if (ec >= 1) BOX('coração', cx - 80, cy - 70, cx + 80, cy + 70);
+        if (ec >= 1) BOX('coração', cx - 100, cy - 90, cx + 100, cy + 90);
       }
-      confete(ctx, t, ev.coracao + 0.05, 400, top + 125, 19, { n: 36, v: 850 });
-      sticker(ctx, 'estrela', 590, top + 60, 50, p(t, ev.coracao + 0.2, ev.coracao + 0.5), t);
+      confete(ctx, t, ev.coracao + 0.05, 330, T + 130, 19, { n: 44, v: 1000 });
+      sticker(ctx, 'estrela', 575, T + 60, 64, p(t, ev.coracao + 0.2, ev.coracao + 0.5), t);
     },
   };
 
-  // ---- comenta: a lojinha-mistério ("?") olha para cima e os balões de comentário brotam, com emoji e figurinha
+  // ---- comenta: a lojinha-mistério ("?"), grande e no centro, olha para os balões de comentário que brotam em volta,
+  //      em ondas (emoji + texto + "pop"), com figurinhas de coração e estrela pipocando entre eles
   CENAS.comenta = {
+    // onde cada balão brota (até 6): três linhas, dos dois lados; a última fica ao lado do telhado da lojinha
+    POS: [{ x: 260, y: 55, dir: 1 }, { x: 720, y: 40, dir: -1 }, { x: 300, y: 190, dir: 1 }, { x: 700, y: 205, dir: -1 }, { x: 760, y: 345, dir: -1 }, { x: 245, y: 345, dir: 1 }],
+    FIG: [{ x: 510, y: 120, k: 'coracao' }, { x: 880, y: 140, k: 'estrela' }, { x: 505, y: 265, k: 'estrela' }, { x: 140, y: 268, k: 'coracao' }, { x: 900, y: 270, k: 'brilho' }, { x: 130, y: 150, k: 'brilho' }],
     setup(cap) {
       const d = cap.diagrama, ev = cap.ev;
-      ev.loja = at(cap, d.loja && d.loja.em, cap.t0 + 0.3);
       let prev = cap.t0;
-      ev.baloes = d.baloes.map((b) => (prev = Math.max(at(cap, b.em, prev + 0.6), prev + 0.4)));
-      ev.loja = Math.min(ev.loja, ev.baloes[0] + 0.2);
+      ev.baloes = d.baloes.map((b) => (prev = Math.max(at(cap, b.em, prev + 0.6), prev + 0.18)));
+      ev.loja = Math.min(at(cap, d.loja && d.loja.em, cap.t0 + 0.3), ev.baloes[0] + 0.1);
       cue(ev.loja, 'sprout', { i: 1 }); cue(ev.loja + 0.3, 'jump');
-      ev.baloes.forEach((x, i) => { cue(x, 'pop', { f: 640 + 90 * i }); cue(x + 0.25, 'tick'); });
+      ev.baloes.forEach((x, i) => { cue(x, 'pop', { f: 600 + 70 * i }); if (i % 2) cue(x + 0.2, 'tick'); });
     },
     draw(ctx, cap, t) {
-      const d = cap.diagrama, ev = cap.ev, top = Math.max(diaTop(cap), 860);
-      const base = Math.min(1436, top + 570);
-      const pos = [{ x: 300, y: top + 70, dir: 1 }, { x: 735, y: top + 175, dir: -1 }, { x: 290, y: top + 285, dir: 1 }];
-      // os balões
+      const d = cap.diagrama, ev = cap.ev, T = cap.cenaTop, POS = CENAS.comenta.POS, FIG = CENAS.comenta.FIG;
+      const base = PE - 8, sz = 32, ew = 44, h = 82;
+      // a lojinha-mistério, grande e no centro: a placa com "?", olha para o último balão que brotou
+      const el = p(t, ev.loja, ev.loja + 0.55);
+      const alvo = ev.baloes.reduce((a, x, i) => (t >= x && POS[i] ? [POS[i].x, T + POS[i].y] : a), [510, T]);
+      lojinha(ctx, 'misterio', 510, base, 260, t, { e: el, alvo, seed: 12, smile: 0.6, swing: 6 * Math.sin(t * 4), altura: 12, box: el >= 1 ? 'lojinha ?' : null });
+      // os balões (em ondas)
       d.baloes.forEach((b, i) => {
-        const q = pos[i]; if (!q) return;
+        const q = POS[i]; if (!q) return;
         const e = p(t, ev.baloes[i], ev.baloes[i] + 0.4);
         if (e <= 0) return;
         const fl = 5 * Math.sin((t - ev.baloes[i]) * 2.4 + i);
-        const sz = 38, ew = 48, w = 34 + ew + 12 + tw(b.t, sz, 800, 0) + 30, h = 88;
-        const x0 = q.x - w / 2, y0 = q.y - h / 2 + fl;
-        pop(ctx, e, q.x, q.y + h / 2, () => {
+        const w = 28 + ew + 10 + tw(b.t, sz, 800, 0) + 26, qy = T + q.y;
+        const x0 = q.x - w / 2, y0 = qy - h / 2 + fl;
+        pop(ctx, e, q.x, qy + h / 2, () => {
           ctx.save();
           ctx.shadowColor = 'rgba(120,60,30,0.18)'; ctx.shadowBlur = 16; ctx.shadowOffsetY = 6;
           rr(ctx, x0, y0, w, h, h / 2); ctx.fillStyle = C.papel; ctx.fill(); ctx.shadowColor = 'transparent';
           ctx.lineWidth = 4; ctx.strokeStyle = C.coral; ctx.stroke();
-          // o biquinho aponta para a lojinha (embaixo, no meio)
-          const bx = q.x + q.dir * w * 0.18;
-          ctx.beginPath(); ctx.moveTo(bx - 16, y0 + h - 2); ctx.lineTo(bx + q.dir * 26, y0 + h + 26); ctx.lineTo(bx + 16, y0 + h - 2); ctx.closePath();
-          ctx.fillStyle = C.papel; ctx.fill(); ctx.beginPath(); ctx.moveTo(bx - 16, y0 + h); ctx.lineTo(bx + q.dir * 26, y0 + h + 26); ctx.lineTo(bx + 16, y0 + h); ctx.stroke();
-          txt(ctx, b.emoji || '', x0 + 34, y0 + h / 2 + 15, { size: 40, weight: 500 });
-          txt(ctx, b.t, x0 + 34 + ew + 12, y0 + h / 2 + 13, { size: sz, weight: 800, color: C.tinta });
+          const bx = q.x + q.dir * w * 0.2;                 // o biquinho aponta para a lojinha
+          ctx.beginPath(); ctx.moveTo(bx - 15, y0 + h - 2); ctx.lineTo(bx + q.dir * 24, y0 + h + 24); ctx.lineTo(bx + 15, y0 + h - 2); ctx.closePath();
+          ctx.fillStyle = C.papel; ctx.fill(); ctx.beginPath(); ctx.moveTo(bx - 15, y0 + h); ctx.lineTo(bx + q.dir * 24, y0 + h + 24); ctx.lineTo(bx + 15, y0 + h); ctx.stroke();
+          txt(ctx, b.emoji || '', x0 + 28, y0 + h / 2 + 14, { size: 38, weight: 500 });
+          txt(ctx, b.t, x0 + 28 + ew + 10, y0 + h / 2 + 11, { size: sz, weight: 800, color: C.tinta });
           ctx.restore();
         }, 2.4);
-        if (e >= 1) BOX(`balão ${b.t}`, x0, q.y - h / 2 - 6, x0 + w, q.y + h / 2 + 32);
-        sticker(ctx, ['coracao', 'estrela', 'brilho'][i % 3], q.dir > 0 ? x0 + w + 6 : x0 - 6, y0 + 4, 44, p(t, ev.baloes[i] + 0.2, ev.baloes[i] + 0.5), t);
+        if (e >= 1) BOX(`balão ${b.t}`, x0, qy - h / 2 - 6, x0 + w, qy + h / 2 + 30);
       });
-      // a lojinha-mistério: a placa com "?", olha para os balões
-      const el = p(t, ev.loja, ev.loja + 0.55), alvo = ev.baloes.reduce((a, x, i) => (t >= x ? [pos[i].x, pos[i].y] : a), [525, top]);
-      lojinha(ctx, 'misterio', 640, base, 190, t, { e: el, alvo, seed: 12, smile: 0.5, swing: 5 * Math.sin(t * 4), box: el >= 1 ? 'lojinha ?' : null });
+      // as figurinhas pipocando entre os balões, junto de cada um
+      FIG.forEach((f, i) => { if (ev.baloes[i] !== undefined) sticker(ctx, f.k, f.x, T + f.y, 54, p(t, ev.baloes[i] + 0.15, ev.baloes[i] + 0.45), t); });
     },
   };
 
@@ -1423,11 +1351,9 @@
       cue(ev.logo, 'logo'); cue(ev.ass, 'tick'); cue(ev.chip, 'pop', { f: 700 }); cue(ev.seta, 'whoosh'); cue(ev.confete, 'confete');
     },
     draw(ctx, cap, t) {
-      const d = cap.diagrama, ev = cap.ev;
-      const top = Math.max(cap.tb[1] + 0.25 * cap.ts + 40, 790);
-      const D = 360, ly = top + D / 2 + 10;
-      confete(ctx, t, ev.confete, L.cx, ly - 40, 23, { n: 60, v: 1100, dur: 2.0, spread: 3.2 });
-      // a logo oficial: entra com mola e PARA (fica fixa até o fim)
+      const d = cap.diagrama, ev = cap.ev, T = cap.cenaTop;
+      const D = 400, ly = T + 20 + D / 2;
+      confete(ctx, t, ev.confete, L.cx, ly - 40, 23, { n: 64, v: 1150, dur: 2.0, spread: 3.2 });
       const e = p(t, ev.logo, ev.logo + 0.9);
       if (e > 0) {
         const k = e >= 1 ? 1 : E.outBack(clamp(e / 0.75), 1.8);
@@ -1439,12 +1365,11 @@
         ctx.restore();
         if (e >= 1) BOX('logo oficial', L.cx - D / 2, ly - D / 2, L.cx + D / 2, ly + D / 2);
       }
-      // a assinatura: "Tudo pertim de você."
       const ea = E.outCubic(p(t, ev.ass, ev.ass + 0.45));
-      const ay = ly + D / 2 + 72;
+      const ay = ly + D / 2 + 80;
       if (ea > 0 && d.assinatura) {
-        const s1 = 'Tudo ', s2 = d.assinatura.t.replace(/^Tudo\s+/, ''), sz = 46;
-        const w1 = tw(s1, sz, 900, -0.5), w2 = tw(s2, sz, 900, -0.5), x0 = L.cx - (w1 + w2) / 2;
+        const s1 = 'Tudo ', s2 = d.assinatura.t.replace(/^Tudo\s+/, ''), sz = 54;
+        const w1 = tw(s1, sz, 900, -0.5), w2 = tw(s2, sz, 900, -0.5), x0 = L.tx - (w1 + w2) / 2;
         ctx.save(); ctx.globalAlpha *= ea; ctx.translate(0, 14 * (1 - ea));
         marker(ctx, x0 + w1, ay, w2 - sz * 0.25, sz, E.outCubic(p(t, ev.ass + 0.15, ev.ass + 0.5)), css(C.amarelo, 0.9));
         txt(ctx, s1, x0, ay, { size: sz, weight: 900, color: C.tinta, ls: -0.5 });
@@ -1452,20 +1377,19 @@
         ctx.restore();
         if (ea >= 1) BOX('assinatura', x0, ay - sz * 0.76, x0 + w1 + w2, ay + sz * 0.22);
       }
-      // o chip "Segue @uaipertim" e a seta
-      const cy = ay + 100, ec = p(t, ev.chip, ev.chip + 0.45);
+      const cy = ay + 108, ec = p(t, ev.chip, ev.chip + 0.45);
       if (ec > 0) {
-        const s = d.chip.t, w = 2 * 30 + tw(s, 38, 800, 0);
-        pop(ctx, ec, L.cx, cy, () => chip(ctx, s, L.cx, cy, { size: 38, weight: 800, ls: 0, h: 88, pad: 30, align: 'center', bg: C.coral, color: C.branco, border: 'none', box: ec >= 1 ? 'chip Segue' : null }), 2);
+        const s = d.chip.t, w = 2 * 32 + tw(s, 42, 800, 0);
+        pop(ctx, ec, L.tx, cy, () => chip(ctx, s, L.tx, cy, { size: 42, weight: 800, ls: 0, h: 96, pad: 32, align: 'center', bg: C.coral, color: C.branco, border: 'none', box: ec >= 1 ? 'chip Segue' : null }), 2);
         const es = E.outCubic(p(t, ev.seta, ev.seta + 0.55));
         if (es > 0) {
-          const x1 = L.cx - w / 2 - 18, y1 = cy, x0 = L.x0 + 10, y0 = cy - 150;
+          const x1 = L.tx - w / 2 - 18, y1 = cy, x0 = 110, y0 = cy - 160;
           const cxp = x0 - 10, cyp = cy + 10;
-          ctx.save(); ctx.strokeStyle = C.coral; ctx.lineWidth = 8; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+          ctx.save(); ctx.strokeStyle = C.coral; ctx.lineWidth = 9; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
           ctx.beginPath(); ctx.moveTo(x0, y0);
           for (let u = 0.02; u <= es + 1e-6; u += 0.02) { const v = 1 - u; ctx.lineTo(v * v * x0 + 2 * v * u * cxp + u * u * x1, v * v * y0 + 2 * v * u * cyp + u * u * y1); }
           ctx.stroke();
-          if (es > 0.95) { ctx.beginPath(); ctx.moveTo(x1 - 22, y1 - 16); ctx.lineTo(x1, y1); ctx.lineTo(x1 - 24, y1 + 14); ctx.stroke(); }
+          if (es > 0.95) { ctx.beginPath(); ctx.moveTo(x1 - 24, y1 - 17); ctx.lineTo(x1, y1); ctx.lineTo(x1 - 26, y1 + 15); ctx.stroke(); }
           ctx.restore();
           if (es >= 1) BOX('seta', x0 - 10, y0, x1 + 4, cy + 20);
         }
@@ -1484,29 +1408,32 @@
   }
   function frame(ctx, t) {
     ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over'; ctx.shadowColor = 'transparent';
-    const cam = camera(t);
-    background(ctx, t, cam);
+    const w = where(t);
+    background(ctx, t, { y: (w.k + (w.trans ? E.inOutSine(w.u) : 0)) * STEP });
     ctx.save();
-    // nada passa pela coluna de botões do Reels
+    // nada passa pela coluna de botões
     ctx.beginPath(); ctx.rect(0, 0, W, H); ctx.rect(BTN.x, BTN.y0, W - BTN.x, BTN.y1 - BTN.y0); ctx.clip('evenodd');
-    ctx.save(); ctx.translate(-cam.x, -cam.y);
-    drawRail(ctx, t, cam, 'rua');                     // a rua por baixo das cenas
-    ctx.restore();
-    for (let k = 0; k < NC; k++) {
-      const top = k * STEP - cam.y, c = CAPS[k];
-      if (top >= H || top <= -H) continue;
-      if (t < c.t0 - TR - 0.02 || t > c.t1 + TR + 0.02) continue;   // só o capítulo atual (e o vizinho, durante a troca)
-      ctx.save(); ctx.translate(-cam.x, top);
-      OFF = { dx: -cam.x, dy: top, n: k };
-      drawChap(ctx, CAPS[k], t);
-      ctx.restore();
+    if (!w.trans) {
+      OFF = { dx: 0, dy: 0, n: w.k };
+      drawChap(ctx, CAPS[w.k], t);
+    } else {
+      // a varredura: do lado de onde a motinha ainda não passou, o capítulo atual; do lado de trás dela, o próximo
+      const T = travessia(w.k, w.u);
+      const lados = T.dir > 0 ? [[T.borda, W], [0, T.borda]] : [[0, T.borda], [T.borda, W]];
+      [w.k, w.k + 1].forEach((k, i) => {
+        const [a, b] = lados[i];
+        if (b - a <= 0.5) return;
+        ctx.save(); ctx.beginPath(); ctx.rect(a, 0, b - a, H); ctx.clip();
+        OFF = { dx: 0, dy: 0, n: k };
+        drawChap(ctx, CAPS[k], t);
+        ctx.restore();
+      });
+      OFF = { dx: 0, dy: 0, n: -1 };
+      drawWipe(ctx, t, w.k, w.u);
     }
     OFF = { dx: 0, dy: 0, n: -1 };
-    ctx.save(); ctx.translate(-cam.x, -cam.y);
-    drawRail(ctx, t, cam, 'moto');                    // a motinha passa na frente das cenas
     ctx.restore();
-    ctx.restore();
-    brand(ctx);
+    brand(ctx, t);
   }
   let bufS = null, bufA = null;
   function renderAt(ctx, t, o = {}) {
@@ -1537,10 +1464,13 @@
       if (!CENAS[cap.diagrama.tipo]) throw new Error('tipo de cena desconhecido: ' + cap.diagrama.tipo);
       if (cap.diagrama.tipo !== 'capa') layoutTitulo(cap);
       CENAS[cap.diagrama.tipo].setup(cap, k);
-      if (k > 0) { cue(CAPS[k - 1].t1, 'trans', { d: TR, k }); cue(cap.t0 - 0.1, 'node', { k }); tituloT(cap).forEach((x, i) => cue(x, 'punch', { i })); }
+      if (k > 0) {
+        cue(CAPS[k - 1].t1, 'trans', { d: TR, k, dir: travessia(k - 1, 0).dir });   // a motinha atravessando (o som anda junto)
+        cue(rotuloT(cap), 'pop', { f: 820 });                                        // o "plop" do adesivo do rótulo
+        tituloT(cap).forEach((x, i) => cue(x, 'punch', { i }));
+      }
       cap.apoios.forEach((a, i) => { if (k > 0 || i > 0) cue(a.t, 'apoio'); });
     });
-    RAIL = buildRail();
     CUES.sort((a, b) => a.t - b.t);
   }
 

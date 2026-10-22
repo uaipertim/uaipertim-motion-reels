@@ -429,7 +429,9 @@ PENTA = [76, 79, 81, 84, 86, 88, 91, 93, 96, 98]
 for c in CUES['cues']:
     t, ty, d = c['t'], c['type'], c.get('d', 0.3)
     if ty == 'trans':
-        place_pan(sfx, moto_engine(d + 0.2), t - 0.05, 0.42, -0.6, 0.6); place_pan(sfx, whoosh(d, 260, 2600, 0.55, 1.1), t, 0.2, -0.6, 0.6)
+        sd = c.get('dir', 1)                                  # o som anda com a motinha, de um lado ao outro
+        place_pan(sfx, moto_engine(d + 0.25), t - 0.05, 0.46, -0.8 * sd, 0.8 * sd); place_pan(sfx, whoosh(d, 260, 2600, 0.55, 1.1), t, 0.22, -0.8 * sd, 0.8 * sd)
+        place(sfx, sparkle(), t + d * 0.4, 0.12)
     elif ty == 'moto':
         place_pan(sfx, moto_engine(d + 0.15), t - 0.05, 0.5, -0.7, 0.3)
     elif ty == 'horn':

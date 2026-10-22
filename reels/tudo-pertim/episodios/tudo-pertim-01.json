@@ -262,11 +262,26 @@
           {
             "t": "sorveteria?",
             "emoji": "🍦",
-            "em": "Glória"
+            "em": "comentários"
           },
           {
             "t": "açougue?",
             "emoji": "🥩",
+            "em": "Glória"
+          },
+          {
+            "t": "pizzaria?",
+            "emoji": "🍕",
+            "em": "Glória"
+          },
+          {
+            "t": "hortifrúti?",
+            "emoji": "🥕",
+            "em": "primeiro"
+          },
+          {
+            "t": "pet shop?",
+            "emoji": "🐶",
             "em": "primeiro"
           }
         ]

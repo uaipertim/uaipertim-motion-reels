@@ -1,6 +1,37 @@
 # Série TUDO PERTIM — a série do @uaipertim no TikTok (45–60 s, em capítulos)
 
-Vídeos curtos e animados que apresentam a UaiPertim ao Glória, em capítulos. O motor nasceu do da [EXPLICA, SÔ!](../explica-so) (o mesmo fluxo: um JSON por episódio, `--previa` sem API, revisão de zonas seguras e storyboard), com uma cara **mais jovem, animada e viva**, que põe a marca em destaque. A pasta `reels/explica-so/` (Instagram) não é alterada por esta série.
+Vídeos curtos e animados que apresentam a UaiPertim ao Glória, em capítulos. O motor nasceu do da [EXPLICA, SÔ!](../explica-so) e mantém a **ideia** de animação dela: a cena se constrói peça por peça no ritmo da voz, os personagens são vivos e os efeitos são sincronizados. Também mantém o fluxo: um JSON por episódio, `--previa` sem API, revisão de zonas seguras e storyboard.
+
+A **estrutura** é outra:
+- não há estrada lateral com nós numerados;
+- a troca de capítulo é a motinha atravessando a tela;
+- o progresso é uma barra estilo stories no topo;
+- título e apoio ficam centralizados, com o rótulo em adesivo;
+- as cenas são maiores e ocupam a área central inteira.
+
+A cara é **mais jovem, animada e viva**, com a marca em destaque. A pasta `reels/explica-so/` (Instagram) não é alterada por esta série.
+
+## A estrutura do vídeo
+
+1. **Troca de capítulo (wipe com a motinha).**
+   - A motinha (o mascote, com a sacola da logo oficial) atravessa a tela na horizontal, de um lado ao outro. A passagem dela **varre** o capítulo atual e revela o próximo: de um lado da borda ainda está o capítulo que sai, e do outro, o que entra.
+   - Ao longo da borda passa uma faixa creme macia com confete, e atrás da motinha fica um rastro de poeira. O som do motor anda junto, de um lado ao outro.
+   - Dura **1,5 tempo da batida** (0,75 s a 120 bpm) e começa num meio tempo: o `linha.py` arredonda o fim de cada capítulo para a grade de colcheias do bpm.
+   - Cada troca varia um pouco (tabela `VARIA` em `src/anim.js`): o sentido alterna (da capa para o 01 ela vai da direita para a esquerda), a altura muda, e algumas trocas têm pulinho ou empinada.
+   - A motinha da troca sempre passa acima de y 1060, nunca pela coluna de botões.
+2. **Progresso.** Uma barra discreta logo abaixo da marca do topo (y ≈ 392, dentro da zona segura), estilo stories.
+   - Tem um segmento arredondado por capítulo, sem contar a capa, e cada um enche em coral durante o seu capítulo.
+   - O segmento do fecho termina de encher 3 s antes do fim, para o fecho ficar parado.
+   - A barra aparece na primeira troca; a capa (quadro 0) não a mostra.
+3. **Layout do capítulo.**
+   - **Rótulo** do capítulo como **adesivo inclinado** (fundo amarelo ou coral alternando, borda branca, leve rotação). Entra com "plop" meio tempo antes do título, em y ≈ 452.
+   - **Título** centralizado e grande (Poppins Black, até 100 px; 2 linhas, tinta + coral). Entra com **soco** na batida: a 1ª linha no 1º tempo cheio depois de a varredura passar do meio, a 2ª meio tempo depois.
+   - **Linha de apoio** centralizada logo abaixo do título (até 780 px de largura), com as regras de marcador e quebra abaixo.
+   - **Cena** do pé do apoio até **y 1450**, de x 90 a 930. Lojinhas, motinha, chips, balões e itens são cerca de 30% maiores que no primeiro corte da série. Nada passa pela coluna de botões (x ≥ 940 entre y 1060 e 1560): o motor recorta essa faixa.
+4. **Capa (quadro 0).**
+   - O adesivo "TUDO PERTIM · EP. NN", o título grande com o 👀 em olhinhos desenhados e a motinha grande chegando freando e derrapando. No quadro 0 ela já está na derrapada, inteira na tela.
+   - O bloco fica centrado no recorte 3:4.
+   - No fim da capa, a motinha arranca para a esquerda, e a troca vem pela direita.
 
 | Episódio | Tema | Capítulos | Estado |
 |---|---|---|---|
@@ -20,10 +51,10 @@ A prévia (`--previa`) vai para `output/<id>/previa/`, fora do git. A cópia par
 1. **Ritmo.**
    - Capítulos de **5–7 s** (a capa e o fecho têm regra própria). O `linha.py` confere e para se algum sair da faixa.
    - Trilha animada no BPM do episódio (`"bpm"` no JSON, 118–124; padrão 120): bumbo em todos os tempos, palma no 2 e no 4, chimbal, baixo em colcheias, acordes "pluck" no contratempo e um sininho (Dó → Sol → Lá menor → Fá).
-   - **Títulos com "soco":** cada linha entra com zoom rápido (de 1,45×) e leve overshoot, em 0,3 s. A 1ª linha cai no tempo da batida mais perto da entrada do capítulo, e a 2ª, meio tempo depois. O som do soco (bumbo + palma) cai junto.
+   - **Títulos com "soco":** cada linha entra com zoom rápido (de 1,45×) e leve overshoot, em 0,3 s, no tempo da batida. O som do soco (bumbo + palma) cai junto, e o "plop" do adesivo do rótulo vem meio tempo antes.
 2. **Personagens.**
    - **As lojinhas com olhinhos** piscam, pulam na batida, sorriem (a boca abre e mostra a linguinha) e olham para o que acontece na cena: a logo, a motinha, os balões.
-   - **A motinha amarela é o mascote:** cruza a tela em todo episódio pela estrada de progresso, sempre com **a sacola da marca na garupa** (a logo oficial, nunca espelhada). Na capa ela chega freando e derrapando e, na troca, sai pela própria estrada.
+   - **A motinha amarela é o mascote:** cruza a tela em toda troca de capítulo e entrega a sacola na cena do pedido. Leva sempre **a sacola da marca na garupa**, com a logo oficial, nunca espelhada. Na capa ela chega freando e derrapando.
 3. **Elementos vivos.**
    - Figurinhas que pipocam: estrela, coração, brilho e "UAI!".
    - Confete nos destaques.
@@ -34,7 +65,6 @@ A prévia (`--previa`) vai para `output/<id>/previa/`, fora do git. A cópia par
    - Ela também aparece em pontos-chave: no meio da praça (cap. 01), na sacola e na garupa da motinha, e grande e parada no fecho.
    - A assinatura "Tudo **pertim de você**." vem com marcador amarelo.
 5. **Mantém da EXPLICA, SÔ!**
-   - A estrada de progresso com os capítulos numerados.
    - A paleta: coral `#F2502B`, coral profundo `#E7431C`, creme `#F6EEE2`, amarelo `#F9B233`, verde `#3E9E4E` e tinta `#221C19`.
    - Poppins (Black, ExtraBold e Medium, de `public/fonts`).
    - O fundo creme com raios de sol.
@@ -63,7 +93,7 @@ A prévia (`--previa`) vai para `output/<id>/previa/`, fora do git. A cópia par
     - 9:16, 1080×1920, 60 fps, **45–60 s**.
     - Conteúdo entre **x 80–940 e y 265–1456**. Nada em **x ≥ 940 entre y 1060 e 1560**: o motor recorta essa coluna, e a revisão confere caixa por caixa e pixel por pixel.
     - Essa área já fica dentro da interface do TikTok (≈ 130 px no topo, 380 px embaixo e 140 px à direita). A `zonas-seguras.jpg` desenha também esse contorno, em azul.
-    - **Capa** = quadro 0: cada linha do título com ≤ 72% da largura (778 px), conteúdo entre y 285–1635, bloco (chip + título + motinha) centrado no recorte 3:4.
+    - **Capa** = quadro 0: cada linha do título com ≤ 72% da largura (778 px), conteúdo entre y 285–1635, bloco (adesivo + título + motinha) centrado no recorte 3:4.
 
 ## Fazer o próximo episódio (só pelo JSON)
 
@@ -119,7 +149,7 @@ A chave do ElevenLabs fica **só em Segredos de rede**: a rede da nuvem põe o c
 }
 ```
 
-- **Os capítulos:** o **capítulo 0 é a capa** (cena `capa`), e o seu `rotulo` ("TUDO PERTIM · EP. NN") vira o chip da capa. Os capítulos 1… ganham os nós 01…. O último é sempre o `fecho`, com `"min": 7.5`.
+- **Os capítulos:** o **capítulo 0 é a capa** (cena `capa`), e o seu `rotulo` ("TUDO PERTIM · EP. NN") vira o adesivo da capa. Cada capítulo 1… ganha um segmento na barra de progresso. O último é sempre o `fecho`, com `"min": 7.5`.
 - **`bpm`:** o andamento da trilha e da entrada dos títulos (118–124).
 - **`fala`:** as frases do capítulo, na ordem. O texto falado é a junção delas e vai **inteiro numa geração só**.
 - **`apoio`:** a linha de apoio que entra com a frase (`null` = nenhuma). Aceita `*marcador amarelo*` e `~coral~`.
@@ -132,13 +162,13 @@ A chave do ElevenLabs fica **só em Segredos de rede**: a rede da nuvem põe o c
 
 | `tipo` | Visual | Campos |
 |---|---|---|
-| `capa` | Chip, título grande (palavra no marcador amarelo, olhinhos 👀 piscando), a motinha chegando freando e derrapando (no quadro 0 já está na derrapada, com fumaça e marca de pneu), confete, figurinhas "UAI!" e brilho, buzina | `marcador`, `olhos: {em}`, `confete: {em}`, `buzina: {em}` |
+| `capa` | Adesivo do episódio, título grande (palavra no marcador amarelo, olhinhos 👀 piscando), a motinha chegando freando e derrapando (no quadro 0 já está na derrapada, com fumaça e marca de pneu), confete, figurinhas "UAI!" e brilho, buzina | `marcador`, `olhos: {em}`, `confete: {em}`, `buzina: {em}` |
 | `quem` | A logo oficial entra com mola no meio da praça; as lojinhas brotam em volta (olhando para a logo) e o coreto; estrela, coração e confete | `logo: {em}`, `lojas: [{tipo, em}]` (até 4), `confete: {em}` |
 | `vitrine` | 4 lojinhas dormindo acendem uma a uma (brilho, placa balançando, olhinhos abrindo), cada uma com o seu item pulando na batida e a plaquinha do nome; o docim pula no fim, com corações e confete | `lojas: [{tipo, t, em, item: pao\|cesta\|remedio\|lanche\|queijo\|doce}]` (até 4), `docim: {em}` |
 | `pedido` | A sacola da marca enche (itens caindo), ganha o check; a motinha cruza, a sacola pula para a garupa e ela para na porta da casinha, que abre; os passos ESCOLHEU · PEDIU · CHEGOU com check | `sacola: {em}`, `itens: [pao, queijo, doce]`, `pedido: {em}`, `moto: {em}`, `porta: {em}`, `passos: [3 textos]` |
 | `aperto` | 3 chips com ícone (fila, sol, pijama…) pulam com "boing", tremem e são riscados um a um; embaixo, a casinha abre, a motinha chega e a lojinha comemora | `chips: [{t, icone: fila\|sol\|pijama\|chuva\|chinelo, em}]` (3) |
 | `minas` | Os morros de Minas sobem; 3 lojinhas brotam juntas, pulam na mesma batida e sorriem; o selo "do Glória" é carimbado; o coração bate na batida, com confete | `montanhas: {em}`, `lojas: {em}`, `selo: {t: [linha pequena, linha grande], em}`, `coracao: {em}` |
-| `comenta` | A lojinha-mistério (placa com "?") olha para os balões de comentário que brotam (emoji + texto), cada um com uma figurinha | `loja: {em}`, `baloes: [{t, emoji, em}]` (até 3) |
+| `comenta` | A lojinha-mistério (placa com "?"), grande e no centro, olha para os balões de comentário que brotam em volta, em ondas de 2 (emoji + texto + "pop"), com figurinhas de coração, estrela e brilho pipocando entre eles | `loja: {em}`, `baloes: [{t, emoji, em}]` (até 6; dois com o mesmo `em` brotam juntos, um logo depois do outro) |
 | `fecho` | Título do capítulo, a logo oficial grande e fixa, a assinatura "Tudo pertim de você.", chip "Segue @uaipertim" com seta e confete final | `logo: {em}`, `assinatura: {t, em}`, `chip: {t, em}`, `confete: {em}` |
 
 **Cena nova:** é um bloco `CENAS.<nome> = { setup(cap), draw(ctx, cap, t) }` em `src/anim.js`.
@@ -146,7 +176,7 @@ A chave do ElevenLabs fica **só em Segredos de rede**: a rede da nuvem põe o c
 - No `setup`, resolva os tempos com `at(cap, "palavra")` e registre os sons com `cue(t, 'tipo')`.
 - No `draw`, use as peças prontas: `lojinha` (com olhinhos, pulo na batida, olhar e sorriso), `moto` (com a sacola da marca), `casinha`, `coreto`, `selo`, `sticker` (estrela, coração, brilho, "UAI!"), `confete`, `olhos`, os `ITENS`, `chip` (com `ICONES`), `check`, `marker`, `hop` (o pulinho na batida), `enter`/`pop`/`ent`.
 - Marque as peças com `BOX(nome, …)` para a revisão.
-- O resto vem sozinho: título com soco, apoio, estrada de progresso, motinha, câmera, marca, zonas seguras e caixas da revisão.
+- O resto vem sozinho: rótulo em adesivo, título com soco, apoio, a troca com a motinha, a barra de progresso, a marca, as zonas seguras e as caixas da revisão. A cena vai de `cap.cenaTop` (o pé do apoio) até `PE` (y 1450).
 
 ## Estrutura
 
@@ -160,7 +190,7 @@ scripts/render.cjs        cues | info | capa | video | stills (Chromium headless
 scripts/revisao_capa.py   regra das capas (recorte 3:4, play, contador, y 285–1635, palavra-chave ≤ 72%)
 scripts/qa.py             revisão técnica → revisao/relatorio-tecnico.txt + zonas-seguras.jpg (com o contorno do TikTok)
 scripts/storyboard.py     montagem + pronto, por capítulo
-src/anim.js               motor (window.TUDO): estrada de progresso, motinha, câmera, cabeçalho com soco, apoio, cenas, marca
+src/anim.js               motor (window.TUDO): troca com a motinha (wipe), barra de progresso, adesivo + título com soco, apoio, cenas, marca
 src/index.html            página de render e de prévia no navegador (?ep=<id>, com som; ?previa para os tempos estimados)
 ```
 
