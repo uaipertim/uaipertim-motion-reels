@@ -1,7 +1,7 @@
 {
- "script": "Num dou conta. <break time=\"0.4s\" /> Não consigo. Não aguento. Tipo: Num dou conta de mais um app no celular. <break time=\"0.4s\" /> Cê nem precisa baixar. O UaiPertim abre no navegador. <break time=\"0.4s\" /> Manda pra quem num dá conta",
+ "script": "Num dou conta. <break time=\"0.4s\" /> Não consigo. Não aguento. Tipo: Num dou conta de subir esse morro de novo. <break time=\"0.4s\" /> Num dá conta de ir até a loja? Em breve, a loja vem até você. <break time=\"0.4s\" /> Manda pra quem num dá conta",
  "voice": "LuQ9eaWO9yCQrR73VQFa",
- "text": "Num dou conta. <break time=\"0.4s\" /> Não consigo. Não aguento. Tipo: Num dou conta de mais um app no celular. <break time=\"0.4s\" /> Cê nem precisa baixar. O Uai Pérr-tim abre no navegador. <break time=\"0.4s\" /> Manda pra quem num dá conta",
+ "text": "Num dou conta. <break time=\"0.4s\" /> Não consigo. Não aguento. Tipo: Num dou conta de subir esse morro de novo. <break time=\"0.4s\" /> Num dá conta de ir até a loja? Em breve, a loja vem até você. <break time=\"0.4s\" /> Manda pra quem num dá conta",
  "words": [
   {
    "w": "Num",
@@ -15,163 +15,183 @@
   },
   {
    "w": "conta",
-   "start": 0.43,
-   "end": 0.906
+   "start": 0.441,
+   "end": 0.929
   },
   {
    "w": "Não",
-   "start": 1.474,
-   "end": 1.637
+   "start": 1.498,
+   "end": 1.66
   },
   {
    "w": "consigo",
-   "start": 1.672,
-   "end": 2.368
+   "start": 1.695,
+   "end": 2.392
   },
   {
    "w": "Não",
-   "start": 2.531,
-   "end": 2.682
+   "start": 2.566,
+   "end": 2.717
   },
   {
    "w": "aguento",
-   "start": 2.717,
-   "end": 3.309
+   "start": 2.752,
+   "end": 3.367
   },
   {
    "w": "Tipo",
-   "start": 3.425,
-   "end": 3.936
+   "start": 3.483,
+   "end": 3.994
   },
   {
    "w": "Num",
-   "start": 4.214,
-   "end": 4.365
+   "start": 4.296,
+   "end": 4.447
   },
   {
    "w": "dou",
-   "start": 4.423,
-   "end": 4.528
+   "start": 4.505,
+   "end": 4.609
   },
   {
    "w": "conta",
-   "start": 4.586,
-   "end": 4.934
+   "start": 4.667,
+   "end": 5.004
   },
   {
    "w": "de",
-   "start": 4.981,
-   "end": 5.039
+   "start": 5.05,
+   "end": 5.097
   },
   {
-   "w": "mais",
-   "start": 5.12,
-   "end": 5.317
+   "w": "subir",
+   "start": 5.155,
+   "end": 5.399
   },
   {
-   "w": "um",
-   "start": 5.375,
-   "end": 5.433
+   "w": "esse",
+   "start": 5.422,
+   "end": 5.573
   },
   {
-   "w": "app",
-   "start": 5.526,
-   "end": 5.689
+   "w": "morro",
+   "start": 5.654,
+   "end": 5.921
   },
   {
-   "w": "no",
-   "start": 5.782,
-   "end": 5.863
+   "w": "de",
+   "start": 5.968,
+   "end": 6.037
   },
   {
-   "w": "celular",
-   "start": 5.898,
-   "end": 6.467
+   "w": "novo",
+   "start": 6.095,
+   "end": 6.571
   },
   {
-   "w": "Cê",
-   "start": 7.047,
-   "end": 7.175
-  },
-  {
-   "w": "nem",
-   "start": 7.245,
-   "end": 7.349
-  },
-  {
-   "w": "precisa",
-   "start": 7.396,
-   "end": 7.86
-  },
-  {
-   "w": "baixar",
-   "start": 7.906,
-   "end": 8.382
-  },
-  {
-   "w": "O",
-   "start": 8.626,
-   "end": 8.707
-  },
-  {
-   "w": "Uai",
-   "start": 8.824,
-   "end": 9.009
-  },
-  {
-   "w": "Pérr",
-   "start": 9.056,
-   "end": 9.3
-  },
-  {
-   "w": "tim",
-   "start": 9.346,
-   "end": 9.578
-  },
-  {
-   "w": "abre",
-   "start": 9.671,
-   "end": 9.985
-  },
-  {
-   "w": "no",
-   "start": 10.043,
-   "end": 10.124
-  },
-  {
-   "w": "navegador",
-   "start": 10.182,
-   "end": 10.867
-  },
-  {
-   "w": "Manda",
-   "start": 11.447,
-   "end": 11.773
-  },
-  {
-   "w": "pra",
-   "start": 11.819,
-   "end": 11.97
-  },
-  {
-   "w": "quem",
-   "start": 12.028,
-   "end": 12.19
-  },
-  {
-   "w": "num",
-   "start": 12.237,
-   "end": 12.365
+   "w": "Num",
+   "start": 7.152,
+   "end": 7.326
   },
   {
    "w": "dá",
-   "start": 12.411,
-   "end": 12.504
+   "start": 7.384,
+   "end": 7.488
   },
   {
    "w": "conta",
-   "start": 12.574,
-   "end": 13.282
+   "start": 7.546,
+   "end": 7.941
+  },
+  {
+   "w": "de",
+   "start": 7.999,
+   "end": 8.081
+  },
+  {
+   "w": "ir",
+   "start": 8.115,
+   "end": 8.173
+  },
+  {
+   "w": "até",
+   "start": 8.208,
+   "end": 8.406
+  },
+  {
+   "w": "a",
+   "start": 8.464,
+   "end": 8.487
+  },
+  {
+   "w": "loja",
+   "start": 8.557,
+   "end": 9.044
+  },
+  {
+   "w": "Em",
+   "start": 9.404,
+   "end": 9.567
+  },
+  {
+   "w": "breve",
+   "start": 9.613,
+   "end": 10.089
+  },
+  {
+   "w": "a",
+   "start": 10.194,
+   "end": 10.275
+  },
+  {
+   "w": "loja",
+   "start": 10.344,
+   "end": 10.646
+  },
+  {
+   "w": "vem",
+   "start": 10.693,
+   "end": 10.855
+  },
+  {
+   "w": "até",
+   "start": 10.879,
+   "end": 11.006
+  },
+  {
+   "w": "você",
+   "start": 11.064,
+   "end": 11.447
+  },
+  {
+   "w": "Manda",
+   "start": 12.167,
+   "end": 12.504
+  },
+  {
+   "w": "pra",
+   "start": 12.55,
+   "end": 12.678
+  },
+  {
+   "w": "quem",
+   "start": 12.725,
+   "end": 12.864
+  },
+  {
+   "w": "num",
+   "start": 12.899,
+   "end": 13.003
+  },
+  {
+   "w": "dá",
+   "start": 13.05,
+   "end": 13.142
+  },
+  {
+   "w": "conta",
+   "start": 13.201,
+   "end": 13.886
   }
  ]
 }

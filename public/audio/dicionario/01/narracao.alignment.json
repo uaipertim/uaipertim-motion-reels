@@ -1,7 +1,7 @@
 {
- "script": "Uai. <break time=\"0.4s\" /> Interjeição de surpresa ou de dúvida. Tipo: Uai, cê já chegou? <break time=\"0.4s\" /> Uai, num precisa baixar app? Num precisa. É pelo navegador. <break time=\"0.4s\" /> Manda pra quem fala uai",
+ "script": "Uai. <break time=\"0.4s\" /> Interjeição de surpresa ou de dúvida. Tipo: Uai, cê já chegou? <break time=\"0.4s\" /> Uai, o comércio do Glória entregando em casa? Em breve. <break time=\"0.4s\" /> Manda pra quem fala uai",
  "voice": "LuQ9eaWO9yCQrR73VQFa",
- "text": "Uai. <break time=\"0.4s\" /> Interjeição de surpresa ou de dúvida. Tipo: Uai, cê já chegou? <break time=\"0.4s\" /> Uai, num precisa baixar app? Num precisa. É pelo navegador. <break time=\"0.4s\" /> Manda pra quem fala uai",
+ "text": "Uai. <break time=\"0.4s\" /> Interjeição de surpresa ou de dúvida. Tipo: Uai, cê já chegou? <break time=\"0.4s\" /> Uai, o comércio do Glória entregando em casa? Em breve. <break time=\"0.4s\" /> Manda pra quem fala uai",
  "words": [
   {
    "w": "Uai",
@@ -36,107 +36,107 @@
   {
    "w": "dúvida",
    "start": 2.81,
-   "end": 3.355
+   "end": 3.402
   },
   {
    "w": "Tipo",
-   "start": 3.518,
-   "end": 3.994
+   "start": 3.576,
+   "end": 4.11
   },
   {
    "w": "Uai",
-   "start": 4.156,
-   "end": 4.458
-  },
-  {
-   "w": "cê",
-   "start": 4.505,
+   "start": 4.284,
    "end": 4.586
   },
   {
+   "w": "cê",
+   "start": 4.632,
+   "end": 4.714
+  },
+  {
    "w": "já",
-   "start": 4.656,
-   "end": 4.76
+   "start": 4.783,
+   "end": 4.888
   },
   {
    "w": "chegou",
-   "start": 4.795,
-   "end": 5.19
+   "start": 4.923,
+   "end": 5.364
   },
   {
    "w": "Uai",
-   "start": 5.747,
-   "end": 6.095
+   "start": 5.921,
+   "end": 6.327
   },
   {
-   "w": "num",
-   "start": 6.246,
-   "end": 6.397
+   "w": "o",
+   "start": 6.478,
+   "end": 6.571
   },
   {
-   "w": "precisa",
-   "start": 6.42,
-   "end": 6.815
+   "w": "comércio",
+   "start": 6.629,
+   "end": 7.082
   },
   {
-   "w": "baixar",
-   "start": 6.861,
-   "end": 7.291
+   "w": "do",
+   "start": 7.14,
+   "end": 7.221
   },
   {
-   "w": "app",
-   "start": 7.314,
-   "end": 7.732
+   "w": "Glória",
+   "start": 7.279,
+   "end": 7.639
   },
   {
-   "w": "Num",
-   "start": 7.906,
-   "end": 8.081
+   "w": "entregando",
+   "start": 7.709,
+   "end": 8.348
   },
   {
-   "w": "precisa",
-   "start": 8.127,
-   "end": 8.893
+   "w": "em",
+   "start": 8.371,
+   "end": 8.417
   },
   {
-   "w": "É",
-   "start": 9.218,
-   "end": 9.276
+   "w": "casa",
+   "start": 8.475,
+   "end": 8.975
   },
   {
-   "w": "pelo",
-   "start": 9.392,
-   "end": 9.636
+   "w": "Em",
+   "start": 9.183,
+   "end": 9.346
   },
   {
-   "w": "navegador",
-   "start": 9.683,
-   "end": 10.542
+   "w": "breve",
+   "start": 9.381,
+   "end": 9.892
   },
   {
    "w": "Manda",
-   "start": 11.262,
-   "end": 11.61
+   "start": 10.449,
+   "end": 10.82
   },
   {
    "w": "pra",
-   "start": 11.645,
-   "end": 11.761
+   "start": 10.867,
+   "end": 11.006
   },
   {
    "w": "quem",
-   "start": 11.819,
-   "end": 11.935
+   "start": 11.053,
+   "end": 11.204
   },
   {
    "w": "fala",
-   "start": 12.005,
-   "end": 12.272
+   "start": 11.285,
+   "end": 11.61
   },
   {
    "w": "uai",
-   "start": 12.353,
-   "end": 13.003
+   "start": 11.703,
+   "end": 12.26
   }
  ]
 }

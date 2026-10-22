@@ -1,97 +1,117 @@
 {
- "script": "Nossinhora. <break time=\"0.4s\" /> Espanto. Daqueles grandes. Tipo: Nossinhora, que calor! <break time=\"0.4s\" /> Nossinhora, num precisa baixar nada? <break time=\"0.4s\" /> Manda pra quem fala nossinhora",
+ "script": "Nossinhora. <break time=\"0.4s\" /> Espanto. Daqueles grandes. Tipo: Nossinhora, que calor! <break time=\"0.4s\" /> Nossinhora, o comércio do Glória todo num lugar só? <break time=\"0.4s\" /> Manda pra quem fala nossinhora",
  "voice": "LuQ9eaWO9yCQrR73VQFa",
- "text": "Nossinhora. <break time=\"0.4s\" /> Espanto. Daqueles grandes. Tipo: Nossinhora, que calor! <break time=\"0.4s\" /> Nossinhora, num precisa baixar nada? <break time=\"0.4s\" /> Manda pra quem fala nossinhora",
+ "text": "Nossinhora. <break time=\"0.4s\" /> Espanto. Daqueles grandes. Tipo: Nossinhora, que calor! <break time=\"0.4s\" /> Nossinhora, o comércio do Glória todo num lugar só? <break time=\"0.4s\" /> Manda pra quem fala nossinhora",
  "words": [
   {
    "w": "Nossinhora",
    "start": 0.0,
-   "end": 0.824
+   "end": 0.882
   },
   {
    "w": "Espanto",
-   "start": 1.312,
-   "end": 2.206
+   "start": 1.382,
+   "end": 2.299
   },
   {
    "w": "Daqueles",
-   "start": 2.403,
-   "end": 2.937
+   "start": 2.508,
+   "end": 3.042
   },
   {
    "w": "grandes",
-   "start": 3.019,
-   "end": 3.622
+   "start": 3.123,
+   "end": 3.762
   },
   {
    "w": "Tipo",
-   "start": 3.913,
-   "end": 4.4
+   "start": 4.087,
+   "end": 4.586
   },
   {
    "w": "Nossinhora",
-   "start": 4.667,
-   "end": 5.364
+   "start": 4.911,
+   "end": 5.608
   },
   {
    "w": "que",
-   "start": 5.445,
-   "end": 5.596
+   "start": 5.689,
+   "end": 5.84
   },
   {
    "w": "calor",
-   "start": 5.666,
-   "end": 6.211
+   "start": 5.909,
+   "end": 6.455
   },
   {
    "w": "Nossinhora",
-   "start": 6.745,
-   "end": 7.465
+   "start": 6.989,
+   "end": 7.755
+  },
+  {
+   "w": "o",
+   "start": 7.848,
+   "end": 7.918
+  },
+  {
+   "w": "comércio",
+   "start": 7.988,
+   "end": 8.522
+  },
+  {
+   "w": "do",
+   "start": 8.58,
+   "end": 8.649
+  },
+  {
+   "w": "Glória",
+   "start": 8.719,
+   "end": 9.056
+  },
+  {
+   "w": "todo",
+   "start": 9.172,
+   "end": 9.543
   },
   {
    "w": "num",
-   "start": 7.535,
-   "end": 7.674
+   "start": 9.601,
+   "end": 9.706
   },
   {
-   "w": "precisa",
-   "start": 7.721,
-   "end": 8.162
+   "w": "lugar",
+   "start": 9.752,
+   "end": 10.066
   },
   {
-   "w": "baixar",
-   "start": 8.208,
-   "end": 8.615
-  },
-  {
-   "w": "nada",
-   "start": 8.696,
-   "end": 9.23
+   "w": "só",
+   "start": 10.136,
+   "end": 10.437
   },
   {
    "w": "Manda",
-   "start": 9.752,
-   "end": 10.101
+   "start": 11.088,
+   "end": 11.436
   },
   {
    "w": "pra",
-   "start": 10.147,
-   "end": 10.275
+   "start": 11.494,
+   "end": 11.633
   },
   {
    "w": "quem",
-   "start": 10.321,
-   "end": 10.484
+   "start": 11.691,
+   "end": 11.842
   },
   {
    "w": "fala",
-   "start": 10.565,
-   "end": 10.844
+   "start": 11.912,
+   "end": 12.19
   },
   {
    "w": "nossinhora",
-   "start": 10.902,
-   "end": 11.935
+   "start": 12.249,
+   "end": 13.189
   }
  ]
 }
