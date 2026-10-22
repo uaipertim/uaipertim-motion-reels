@@ -4,7 +4,7 @@ import { C, FONT, W } from "../../config/theme";
 import { clamp, pop, squash } from "../../lib/anim";
 import { StarPops } from "../../components/Particles";
 import { ScooterIcon } from "../../components/AppIcons";
-import { Apoio, Fundo, Loja, Rodape, Titulo, Toldo } from "./kit";
+import { Apoio, Cena, Fundo, Loja, Rodape, Titulo, Toldo } from "./kit";
 import { EXPLICA_SO as T } from "./texts";
 import tl from "./config/explica-so.json";
 
@@ -30,7 +30,8 @@ export const ExplicaSo1: React.FC = () => {
   const pts = Array.from({ length: 55 }, (_, k) => k * 20);
   return (
     <>
-      <Fundo f={f} raios={[540, 880]} seed="es1" />
+      <Fundo f={f} raios={[540, 1060]} seed="es1" />
+      <Cena k={1.2} py={900} dy={160}>
       {/* as lojinhas ao longo da rua */}
       {SHOPS.map((s, i) => (
         <Loja key={s.kind} f={f} kind={s.kind} x={s.x} ground={RUA(s.x) - 40} w={170} at={B.shops[i]} seed={`es1${i}`} look={[mt >= 0 ? Math.max(-1, Math.min(1, (mx - s.x) / 300)) : 0, 0.3]} lit={0.8} />
@@ -58,6 +59,7 @@ export const ExplicaSo1: React.FC = () => {
         </div>
       )}
       <StarPops frame={f} start={B.sting} cx={540} cy={900} radius={180} count={9} seed="es1st" size={46} />
+      </Cena>
       <StarPops frame={f} start={B.title} cx={540} cy={460} radius={260} count={7} seed="es1t" size={44} />
       {/* o chip SÉRIE NOVA carimbando */}
       {f >= B.chip - 6 && (
@@ -69,7 +71,7 @@ export const ExplicaSo1: React.FC = () => {
         </div>
       )}
       <Titulo f={f} linhas={T.card1.titulo} at={B.title} top={400} size={124} />
-      <Apoio f={f} linhas={T.card1.apoio} at={B.support} top={565} size={52} gap={64} />
+      <Apoio f={f} linhas={T.card1.apoio} at={B.support} top={570} size={56} gap={68} />
       <Rodape f={f} at={B.foot} />
       <Toldo f={f} cortina={{ drop: B.curtainDrop, open: B.curtainOpen, dur: B.curtainDur }} />
     </>

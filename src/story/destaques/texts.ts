@@ -10,7 +10,7 @@ export const DUVIDAS: Record<"card1" | "card2" | "card3" | "card4", CardTexto> =
   card1: { titulo: [L(["Dúvidas?"])], emoji: "🤔", apoio: [L("As perguntas que mais"), L("chegam pra gente.")] },
   card2: { titulo: [L("É ", ["pago"], " pra"), L("quem compra?")], apoio: [L("Não. Pra quem"), L("compra, é ", ["grátis."])] },
   card3: { titulo: [L(["Onde"]), L("vai funcionar?")], apoio: [L("Começando pelo ", ["Glória."]), L("Depois, mais"), L("cidades de Minas.")] },
-  card4: { titulo: [L(["Quando"], " começa?")], apoio: [L(["Em breve."], " Ativa o sininho 🔔"), L("no perfil pra saber primeiro.")] },
+  card4: { titulo: [L(["Quando"], " começa?")], apoio: [L("Ativa o ", ["sininho"], " 🔔"), L("no perfil pra saber primeiro.")] },
 };
 
 export const LOJISTA: Record<"card1" | "card2" | "card3" | "card4", CardTexto> = {

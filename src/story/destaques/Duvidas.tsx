@@ -6,13 +6,13 @@ import { ConfettiBurst, StarPops } from "../../components/Particles";
 import { Ribbon, SwingBell } from "../../components/Ui";
 import { MapPin, Tree } from "../../components/Scenery";
 import { ScooterIcon } from "../../components/AppIcons";
-import { Apoio, Chao, Emoji, Fundo, Loja, Rodape, Titulo, Toldo } from "./kit";
+import { Apoio, CHAO, Cena, Chao, Emoji, FILA4, Fundo, LOJA_W, Loja, Rodape, Titulo, Toldo } from "./kit";
 import { DUVIDAS as T } from "./texts";
 import tl from "./config/duvidas.json";
 
 // DESTAQUE "DÚVIDAS" — 4 cenas animadas na linguagem do Story "Conheça" (toldo, raios, lojinhas com olhos, brilhos).
 const B = tl.beats;
-const GROUND = 1462;
+const GROUND = CHAO;
 
 // ---------------------------------------------------------------- balão "?"
 const Balao: React.FC<{ size: number; color?: string; q?: string }> = ({ size, color = C.coral, q = "#fff" }) => (
@@ -28,7 +28,7 @@ const Balao: React.FC<{ size: number; color?: string; q?: string }> = ({ size, c
 // toldo cai e abre; um balão "?" gigante pula no centro ("boing"); as lojinhas olham pra cima, pensativas
 // (olhos indo de um lado pro outro); "?" pequenos flutuando.
 const SHOPS1 = [
-  { kind: "padaria", x: 160 }, { kind: "mercado", x: 400 }, { kind: "farmacia", x: 680 }, { kind: "pet", x: 920 },
+  { kind: "padaria", x: FILA4[0] }, { kind: "mercado", x: FILA4[1] }, { kind: "farmacia", x: FILA4[2] }, { kind: "pet", x: FILA4[3] },
 ] as const;
 export const Duvidas1: React.FC = () => {
   const f = useCurrentFrame();
@@ -39,7 +39,8 @@ export const Duvidas1: React.FC = () => {
   const look: [number, number] = [Math.sin(f * 0.07) * 0.9, -0.75];
   return (
     <>
-      <Fundo f={f} raios={[540, 900]} seed="dv1" />
+      <Fundo f={f} raios={[540, 1000]} seed="dv1" />
+      <Cena k={1.2} py={870} dy={130}>
       {/* "?" pequenos subindo e sumindo */}
       {b.qs.map((q, i) => {
         const t = (f - q) % 80;
@@ -62,11 +63,12 @@ export const Duvidas1: React.FC = () => {
         </div>
       )}
       <StarPops frame={f} start={b.balloon + 12} cx={540} cy={870} radius={270} count={8} seed="dv1st" size={50} />
+      </Cena>
       <Chao y={GROUND} at={b.shops[0]} f={f} />
       {SHOPS1.map((s, i) => (
-        <Loja key={s.kind} f={f} kind={s.kind} x={s.x} ground={GROUND} w={170} at={b.shops[i]} seed={`dv1${i}`} mood="worried" look={look} />
+        <Loja key={s.kind} f={f} kind={s.kind} x={s.x} ground={GROUND} w={LOJA_W} at={b.shops[i]} seed={`dv1${i}`} mood="worried" look={look} />
       ))}
-      <Titulo f={f} linhas={T.card1.titulo} at={b.title} top={300} size={110} after={<Emoji f={f} e={T.card1.emoji!} size={110} />} />
+      <Titulo f={f} linhas={T.card1.titulo} at={b.title} top={290} size={120} after={<Emoji f={f} e={T.card1.emoji!} size={120} />} />
       <Apoio f={f} linhas={T.card1.apoio} at={b.support} top={440} />
       <Rodape f={f} at={b.foot} />
       <Toldo f={f} cortina={{ drop: b.curtainDrop, open: b.curtainOpen, dur: b.curtainDur }} />
@@ -77,7 +79,7 @@ export const Duvidas1: React.FC = () => {
 // ---------------------------------------------------------------- CARD 2 · "É pago pra quem compra?"
 // etiqueta de preço balançando com "R$ ?"; o carimbo verde "GRÁTIS" desce e carimba; as lojinhas sorriem; confete.
 const SHOPS2 = [
-  { kind: "restaurante", x: 150 }, { kind: "hortifruti", x: 390 }, { kind: "lanchonete", x: 690 }, { kind: "bebidas", x: 930 },
+  { kind: "restaurante", x: FILA4[0] }, { kind: "hortifruti", x: FILA4[1] }, { kind: "lanchonete", x: FILA4[2] }, { kind: "bebidas", x: FILA4[3] },
 ] as const;
 // a etiqueta de preço, em pé (o furo do barbante em cima)
 const Etiqueta: React.FC<{ w: number; texto: string; stamped: number }> = ({ w, texto, stamped }) => (
@@ -99,7 +101,8 @@ export const Duvidas2: React.FC = () => {
   const happy = f >= b.stamp;
   return (
     <>
-      <Fundo f={f} raios={[540, 1000]} seed="dv2" />
+      <Fundo f={f} raios={[540, 1060]} seed="dv2" />
+      <Cena k={1.22} py={690} dy={72}>
       {/* a etiqueta pendurada num barbante, balançando */}
       <div style={{ position: "absolute", left: 540, top: 690, transform: `rotate(${swing}deg) scale(${tagIn})`, transformOrigin: "0 0" }}>
         <svg width={6} height={70} style={{ position: "absolute", left: -3, top: 0 }}><path d="M3 0 V70" stroke={C.tinta} strokeWidth="5" strokeLinecap="round" /></svg>
@@ -123,15 +126,16 @@ export const Duvidas2: React.FC = () => {
       <ConfettiBurst frame={f} start={b.confetti} x={-20} y={900} angle={-50} spread={36} power={44} count={24} seed="dv2cL" />
       <ConfettiBurst frame={f} start={b.confetti} x={1100} y={900} angle={-130} spread={36} power={44} count={24} seed="dv2cR" />
       <StarPops frame={f} start={b.stamp} cx={540} cy={1040} radius={240} count={8} seed="dv2st" size={50} />
+      </Cena>
       <Chao y={GROUND} at={b.shops[0]} f={f} />
       {SHOPS2.map((s, i) => (
         <Loja
-          key={s.kind} f={f} kind={s.kind} x={s.x} ground={GROUND} w={170} at={b.shops[i]} seed={`dv2${i}`}
+          key={s.kind} f={f} kind={s.kind} x={s.x} ground={GROUND} w={LOJA_W} at={b.shops[i]} seed={`dv2${i}`}
           mood={happy ? "happy" : "surprised"} look={happy ? [0, 0] : [(540 - s.x) / 500, -0.8]} sparkle={happy ? Math.min(1, (f - b.stamp) / 8) : 0} hop={happy ? 12 : 4}
         />
       ))}
-      <Titulo f={f} linhas={T.card2.titulo} at={b.title} top={290} size={96} />
-      <Apoio f={f} linhas={T.card2.apoio} at={b.support} top={520} />
+      <Titulo f={f} linhas={T.card2.titulo} at={b.title} top={290} size={108} />
+      <Apoio f={f} linhas={T.card2.apoio} at={b.support} top={540} />
       <Rodape f={f} at={b.foot} />
       <Toldo f={f} />
     </>
@@ -152,7 +156,8 @@ export const Duvidas3: React.FC = () => {
   const [psx, psy] = squash(f, b.pinLand, 0.25);
   return (
     <>
-      <Fundo f={f} raios={GLORIA} seed="dv3" />
+      <Fundo f={f} raios={[540, 1050]} seed="dv3" />
+      <Cena k={1.12} py={760} dy={10}>
       {/* o mapinha: uma forma simples de Minas, com rio e estradinhas */}
       <div style={{ position: "absolute", left: MAP.x, top: MAP.y, width: MAP.w, height: MAP.h, transform: `scale(${mapIn}) rotate(${Math.sin(f * 0.04) * 0.6}deg)`, transformOrigin: "50% 60%" }}>
         <svg width={MAP.w} height={MAP.h} viewBox="0 0 780 560" style={{ overflow: "visible" }}>
@@ -192,11 +197,14 @@ export const Duvidas3: React.FC = () => {
         </div>
       )}
       <StarPops frame={f} start={b.pinLand} cx={GLORIA[0]} cy={GLORIA[1] - 100} radius={150} count={7} seed="dv3st" size={44} />
+      </Cena>
+      <Chao y={GROUND} at={b.shops[0]} f={f} />
       {/* lojinhas nos cantos, de olho no mapa */}
-      <Loja f={f} kind="padaria" x={150} ground={GROUND} w={150} at={b.shops[0]} seed="dv3a" look={[0.8, -0.6]} />
-      <Loja f={f} kind="mercado" x={930} ground={GROUND} w={150} at={b.shops[1]} seed="dv3b" look={[-0.8, -0.6]} />
-      <Titulo f={f} linhas={T.card3.titulo} at={b.title} top={290} size={96} />
-      <Apoio f={f} linhas={T.card3.apoio} at={b.support} top={520} size={50} gap={60} />
+      {(["padaria", "mercado", "farmacia", "pet"] as const).map((k, i) => (
+        <Loja key={k} f={f} kind={k} x={FILA4[i]} ground={GROUND} w={LOJA_W} at={b.shops[i % 2] + (i >> 1) * 4} seed={`dv3${i}`} look={[(500 - FILA4[i]) / 500, -0.8]} />
+      ))}
+      <Titulo f={f} linhas={T.card3.titulo} at={b.title} top={290} size={108} />
+      <Apoio f={f} linhas={T.card3.apoio} at={b.support} top={540} size={52} gap={62} />
       <Rodape f={f} at={b.foot} />
       <Toldo f={f} />
     </>
@@ -218,30 +226,32 @@ export const Duvidas4: React.FC = () => {
     <>
       <Fundo f={f} raios={[540, 860]} seed="dv4" />
       {/* a rua ao fundo e a motinha passando */}
-      <div style={{ position: "absolute", left: 0, right: 0, top: 1380, height: 70, background: C.cremeDeep, opacity: 0.8 }} />
-      <svg width={1080} height={10} style={{ position: "absolute", left: 0, top: 1410 }}><path d="M0 5 H1080" stroke={C.coral} strokeWidth="6" strokeDasharray="34 26" /></svg>
+      <div style={{ position: "absolute", left: 0, right: 0, top: GROUND - 6, height: 44, background: C.cremeDeep }} />
+      <svg width={1080} height={10} style={{ position: "absolute", left: 0, top: GROUND + 12 }}><path d="M0 5 H1080" stroke={C.coral} strokeWidth="6" strokeDasharray="34 26" /></svg>
       {mp > 0 && mp < 1 && (
-        <div style={{ position: "absolute", left: mx - 110, top: 1250 + Math.abs(Math.sin(f * 0.9)) * -6, width: 220 }}>
+        <div style={{ position: "absolute", left: mx - 110, top: GROUND - 200 + Math.abs(Math.sin(f * 0.9)) * -6, width: 230, zIndex: 2 }}>
           <ScooterIcon size={220} wheelSpin={f * 24} />
         </div>
       )}
-      <Loja f={f} kind="lanchonete" x={150} ground={1384} w={140} at={b.shops[0]} seed="dv4a" look={[Math.sin(f * 0.06), -0.5]} />
-      <Loja f={f} kind="pet" x={930} ground={1384} w={140} at={b.shops[1]} seed="dv4b" look={[Math.sin(f * 0.06 + 2), -0.5]} />
+      <Loja f={f} kind="lanchonete" x={FILA4[0]} ground={GROUND} w={LOJA_W} at={b.shops[0]} seed="dv4a" look={[Math.sin(f * 0.06), -0.5]} />
+      <Loja f={f} kind="pet" x={FILA4[3]} ground={GROUND} w={LOJA_W} at={b.shops[1]} seed="dv4b" look={[Math.sin(f * 0.06 + 2), -0.5]} />
       {/* a faixa EM BREVE */}
       {f >= b.ribbon && (
-        <div style={{ position: "absolute", top: 410, left: 540 - 330 }}>
+        <div style={{ position: "absolute", top: 440, left: 540 - 330 }}>
           <Ribbon text="EM BREVE" width={660} height={100} progress={ribbonP} fontSize={58} color={C.amarelo} foldColor={C.amareloDark} rollColor={C.amareloLight} textColor={C.tinta} />
         </div>
       )}
       {/* o sininho grande */}
+      <Cena k={1.25} py={830} dy={70}>
       <div style={{ position: "absolute", left: 540 - 220, top: 830 - 220, width: 440, height: 440, borderRadius: "50%", background: "radial-gradient(circle, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0) 66%)", transform: `scale(${bellIn * glow})` }} />
       <div style={{ position: "absolute", left: 540 - 150, top: 830 - 150, transform: `scale(${bellIn})` }}>
         <SwingBell size={300} frame={f} rings={b.bellRings} waveColor={C.coral} />
       </div>
       <StarPops frame={f} start={b.sting} cx={540} cy={830} radius={220} count={9} seed="dv4st" size={50} />
       {b.bellRings.map((r) => <StarPops key={r} frame={f} start={r} cx={540} cy={800} radius={190} count={5} seed={`dv4r${r}`} size={36} />)}
+      </Cena>
       <Titulo f={f} linhas={T.card4.titulo} at={b.title} top={290} size={100} />
-      <Apoio f={f} linhas={T.card4.apoio} at={b.support} top={1030} size={52} gap={64} />
+      <Apoio f={f} linhas={T.card4.apoio} at={b.support} top={1150} size={58} gap={70} />
       <Rodape f={f} at={b.foot} />
       <Toldo f={f} />
     </>

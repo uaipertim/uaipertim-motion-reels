@@ -259,6 +259,8 @@ Os destaques seguem o padrão do Story "Conheça".
 - `out/destaques/<nome>/card-N.mp4` + `card-N.png` (o quadro final);
 - `storyboard.jpg`, com 3 quadros por card: 0,5 s, 2 s e 5,5 s.
 
+**Layout** (como o card 1 do "Conheça"): título e apoio em cima (a partir de y 290), a cena no meio, o chão com as lojinhas em y 1600 e o rodapé logo abaixo, até y ~1734. Nada importante passa de y 1780, onde fica a barra de resposta do story. `python3 scripts/destaque_comparacao.py` gera `out/destaques/comparacao.jpg`, com o card 1 do "Conheça" ao lado de Dúvidas 1, Lojista 2 e Explica, Sô! 1.
+
 **Capas dos destaques:** `npm run destaque -- capas` → `out/destaques/capas/{conheca,duvidas,lojista,explica-so}.png`.
 
 - **Composição:** `Destaque-Capa`, em `src/story/DestaqueCapa.tsx`.

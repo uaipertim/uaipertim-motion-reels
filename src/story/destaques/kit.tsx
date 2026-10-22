@@ -14,6 +14,16 @@ import type { Mood } from "../../components/Phone";
 // (destaque em coral) e o rodapé com a logo oficial. Zona segura: conteúdo entre y 250–1600 e x 80–1000.
 
 export const CARD = { frames: 180, fps: 30 };
+// layout vertical (como o Card1 do "Conheça", que apoia as lojinhas no chão perto do pé da tela):
+// título e apoio em cima (y 290+), cena no meio, chão com as lojinhas em CHAO, rodapé logo abaixo (até ~y 1734).
+export const CHAO = 1600;
+export const FILA4 = [185, 412, 668, 895]; // 4 lojinhas de LOJA_W lado a lado, dentro de x 80–1000
+export const LOJA_W = 196;
+
+// a cena central ampliada/deslocada sem mexer nas animações: escala k em torno de (px, py) + desce dy
+export const Cena: React.FC<{ k: number; px?: number; py: number; dy?: number; children: React.ReactNode }> = ({ k, px = 540, py, dy = 0, children }) => (
+  <AbsoluteFill style={{ transform: `translateY(${dy}px) scale(${k})`, transformOrigin: `${px}px ${py}px` }}>{children}</AbsoluteFill>
+);
 
 // ---------------------------------------------------------------- toldo
 const STRIPES = [C.coral, "#fff", C.amarelo, "#fff"];
@@ -112,11 +122,11 @@ export type Linha = Trecho[];
 export const L = (...p: Array<string | [string]>): Linha => p.map((x) => (typeof x === "string" ? { t: x } : { t: x[0], c: true }));
 
 export const Titulo: React.FC<{ f: number; linhas: Linha[]; at: number; top: number; size?: number; gap?: number; after?: React.ReactNode }> = ({
-  f, linhas, at, top, size = 96, gap = 104, after,
+  f, linhas, at, top, size = 108, gap, after,
 }) => (
   <>
     {linhas.map((ln, i) => (
-      <div key={i} style={{ position: "absolute", top: top + i * gap, left: 0, right: 0 }}>
+      <div key={i} style={{ position: "absolute", top: top + i * (gap ?? size * 1.08), left: 0, right: 0 }}>
         <PopWords
           parts={ln.map((p) => ({ t: p.t, color: p.c ? C.coral : undefined }))} frame={f} start={at + i * 6} stagger={3} size={size}
           after={i === linhas.length - 1 ? after : undefined}
@@ -125,7 +135,7 @@ export const Titulo: React.FC<{ f: number; linhas: Linha[]; at: number; top: num
     ))}
   </>
 );
-export const Apoio: React.FC<{ f: number; linhas: Linha[]; at: number; top: number; size?: number; gap?: number }> = ({ f, linhas, at, top, size = 54, gap = 66 }) => (
+export const Apoio: React.FC<{ f: number; linhas: Linha[]; at: number; top: number; size?: number; gap?: number }> = ({ f, linhas, at, top, size = 58, gap = 70 }) => (
   <>
     {linhas.map((ln, i) => (
       <div key={i} style={{ position: "absolute", top: top + i * gap, left: 0, right: 0 }}>
@@ -146,7 +156,7 @@ export const Emoji: React.FC<{ f: number; e: string; size: number }> = ({ f, e, 
 export const Rodape: React.FC<{ f: number; at: number }> = ({ f, at }) => {
   const e = pop(f, at, { damping: 12, stiffness: 160 });
   return (
-    <div style={{ position: "absolute", top: 1504, left: 0, right: 0, display: "flex", justifyContent: "center", alignItems: "center", gap: 18, opacity: Math.min(1, e * 1.4), transform: `translateY(${(1 - e) * 30}px)` }}>
+    <div style={{ position: "absolute", top: CHAO + 50, left: 0, right: 0, display: "flex", justifyContent: "center", alignItems: "center", gap: 18, opacity: Math.min(1, e * 1.4), transform: `translateY(${(1 - e) * 30}px)` }}>
       <Img src={staticFile("img/uaipertim_logo.png")} style={{ width: 84, height: 84, filter: "drop-shadow(0 6px 10px rgba(198,58,23,0.25))", transform: `rotate(${Math.sin(f * 0.08) * 3}deg)` }} />
       <span style={{ fontFamily: FONT, fontWeight: W.extraBold, fontSize: 40, color: C.tinta, letterSpacing: -0.5 }}>
         Tudo <span style={{ color: C.coral }}>pertim de você.</span>

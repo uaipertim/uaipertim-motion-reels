@@ -4,14 +4,14 @@ import { C, FONT, W } from "../../config/theme";
 import { clamp, float, lerp, pop, squash, wiggle } from "../../lib/anim";
 import { ConfettiBurst, FloatingHearts, StarPops } from "../../components/Particles";
 import { ChatIcon, MegaphoneIcon, PaperPlaneIcon, ScooterIcon, WaveHandIcon } from "../../components/AppIcons";
-import { Apoio, Chao, Emoji, Fundo, Loja, Rodape, Titulo, Toldo } from "./kit";
+import { Apoio, CHAO, Cena, Chao, Emoji, Fundo, Loja, Rodape, Titulo, Toldo } from "./kit";
 import { LOJISTA as T } from "./texts";
 import tl from "./config/lojista.json";
 
 // DESTAQUE "LOJISTA" — 4 cenas animadas na linguagem do Story "Conheça". Nunca celular nem tela: o "celular da
 // cidade" vira ondas e linhas pontilhadas da lojinha até as casinhas da cidade.
 const B = tl.beats;
-const GROUND = 1462;
+const GROUND = CHAO;
 
 // ---------------------------------------------------------------- CARD 1 · "Tem comércio no Glória? 👀"
 // toldo cai e abre; uma lojinha grande no centro, olhos olhando pros lados e piscando; as outras espiando pelas bordas.
@@ -29,13 +29,13 @@ export const Lojista1: React.FC = () => {
     <>
       <Fundo f={f} raios={[540, 1050]} seed="lj1" />
       <Chao y={GROUND} at={b.shop} f={f} />
-      {f >= b.peek[0] && <Loja f={f} kind="mercado" x={pl.x} ground={GROUND} w={170} at={b.peek[0]} seed="lj1a" rot={pl.rot} look={[0.9, -0.2]} mood="surprised" />}
-      {f >= b.peek[1] && <Loja f={f} kind="farmacia" x={pr.x} ground={GROUND} w={170} at={b.peek[1]} seed="lj1b" rot={pr.rot} look={[-0.9, -0.2]} mood="surprised" />}
-      <div style={{ position: "absolute", left: 540 - 260, top: 1000, width: 520, height: 520, borderRadius: "50%", background: "radial-gradient(circle, rgba(255,222,120,0.55), rgba(249,178,51,0) 66%)", transform: `scale(${pop(f, b.shop) * (0.9 + 0.1 * Math.sin(f * 0.15))})` }} />
-      <Loja f={f} kind="padaria" x={540} ground={GROUND} w={380} at={b.shop} seed="lj1c" look={[lookX, 0]} lit={1} bulbs={1} hop={5} sparkle={f > b.sparkle ? 0.6 + 0.4 * Math.sin(f * 0.2) : 0} />
-      <StarPops frame={f} start={b.sparkle} cx={540} cy={1180} radius={250} count={9} seed="lj1st" size={52} />
-      <Titulo f={f} linhas={T.card1.titulo} at={b.title} top={300} size={100} after={<Emoji f={f} e={T.card1.emoji!} size={100} />} />
-      <Apoio f={f} linhas={T.card1.apoio} at={b.support} top={530} size={56} />
+      {f >= b.peek[0] && <Loja f={f} kind="mercado" x={pl.x} ground={GROUND} w={210} at={b.peek[0]} seed="lj1a" rot={pl.rot} look={[0.9, -0.2]} mood="surprised" />}
+      {f >= b.peek[1] && <Loja f={f} kind="farmacia" x={pr.x} ground={GROUND} w={210} at={b.peek[1]} seed="lj1b" rot={pr.rot} look={[-0.9, -0.2]} mood="surprised" />}
+      <div style={{ position: "absolute", left: 540 - 320, top: 1060, width: 640, height: 640, borderRadius: "50%", background: "radial-gradient(circle, rgba(255,222,120,0.55), rgba(249,178,51,0) 66%)", transform: `scale(${pop(f, b.shop) * (0.9 + 0.1 * Math.sin(f * 0.15))})` }} />
+      <Loja f={f} kind="padaria" x={540} ground={GROUND} w={460} at={b.shop} seed="lj1c" look={[lookX, 0]} lit={1} bulbs={1} hop={5} sparkle={f > b.sparkle ? 0.6 + 0.4 * Math.sin(f * 0.2) : 0} />
+      <StarPops frame={f} start={b.sparkle} cx={540} cy={1290} radius={300} count={9} seed="lj1st" size={52} />
+      <Titulo f={f} linhas={T.card1.titulo} at={b.title} top={290} size={112} after={<Emoji f={f} e={T.card1.emoji!} size={112} />} />
+      <Apoio f={f} linhas={T.card1.apoio} at={b.support} top={550} size={60} />
       <Rodape f={f} at={b.foot} />
       <Toldo f={f} cortina={{ drop: b.curtainDrop, open: b.curtainOpen, dur: b.curtainDur }} />
     </>
@@ -46,7 +46,7 @@ export const Lojista1: React.FC = () => {
 // SEM celular: a lojinha no centro emite ondas e linhas pontilhadas até casinhas em volta, que acendem as janelas
 // uma a uma; a motinha sai da loja levando uma sacola.
 const SHOP2 = { x: 540, ground: 1110, w: 250 };
-const CASAS: Array<[number, number]> = [[190, 860], [890, 860], [200, 1330], [880, 1330]];
+const CASAS: Array<[number, number]> = [[240, 860], [840, 860], [245, 1330], [835, 1330]];
 const Casinha: React.FC<{ w: number; lit: number; roof: string }> = ({ w, lit, roof }) => {
   const win = lit > 0.5 ? "#FFE48A" : "#8A7A6E";
   return (
@@ -68,7 +68,9 @@ export const Lojista2: React.FC = () => {
   const mx = lerp(SHOP2.x + 60, dest[0] - 70, mp), my = lerp(SHOP2.ground + 30, dest[1] + 20, mp);
   return (
     <>
-      <Fundo f={f} raios={[SHOP2.x, cy]} seed="lj2" />
+      <Fundo f={f} raios={[SHOP2.x, cy + 120]} seed="lj2" />
+      <Chao y={GROUND} at={b.lines[2] - 8} f={f} />
+      <Cena k={1.2} py={700} dy={62}>
       {/* ondas saindo da lojinha */}
       {f >= b.waves &&
         [0, 15, 30].map((d) => {
@@ -106,8 +108,9 @@ export const Lojista2: React.FC = () => {
           </div>
         </div>
       )}
-      <Titulo f={f} linhas={T.card2.titulo} at={b.title} top={290} size={90} gap={100} />
-      <Apoio f={f} linhas={T.card2.apoio} at={b.support} top={510} size={52} gap={62} />
+      </Cena>
+      <Titulo f={f} linhas={T.card2.titulo} at={b.title} top={290} size={96} gap={104} />
+      <Apoio f={f} linhas={T.card2.apoio} at={b.support} top={520} size={54} gap={64} />
       <Rodape f={f} at={b.foot} />
       <Toldo f={f} />
     </>
@@ -127,8 +130,10 @@ export const Lojista3: React.FC = () => {
   return (
     <>
       <Fundo f={f} raios={[540, 1150]} seed="lj3" />
+      <Chao y={GROUND} at={b.shop} f={f} />
+      <Cena k={1.2} py={1462} dy={GROUND - 1462}>
       {/* o holofote: um cone de luz do canto direito até a lojinha */}
-      <svg width={1080} height={1920} style={{ position: "absolute", left: 0, top: 0, opacity: spot }}>
+      <svg width={1080} height={1920} style={{ position: "absolute", left: -80, top: 0, opacity: spot }}>
         <defs>
           <linearGradient id="lj3luz" x1="1" y1="0" x2="0.3" y2="1">
             <stop offset="0" stopColor="#FFE9A8" stopOpacity="0.95" />
@@ -139,11 +144,10 @@ export const Lojista3: React.FC = () => {
         <rect x="880" y="660" width="110" height="80" rx="18" fill={C.tinta} transform="rotate(32 935 700)" />
         <circle cx="905" cy="740" r="30" fill="#FFE9A8" />
       </svg>
-      <Chao y={GROUND} at={b.shop} f={f} />
-      <Loja f={f} kind="lanchonete" x={560} ground={GROUND} w={320} at={b.shop} seed="lj3c" lit={1} glow={on ? 0.5 + 0.2 * Math.sin(f * 0.15) : spot * 0.3} sparkle={on ? 1 : 0} bulbs={1} hop={on ? 10 : 4} />
+      <Loja f={f} kind="lanchonete" x={560} ground={1462} w={320} at={b.shop} seed="lj3c" lit={1} glow={on ? 0.5 + 0.2 * Math.sin(f * 0.15) : spot * 0.3} sparkle={on ? 1 : 0} bulbs={1} hop={on ? 10 : 4} />
       {/* o megafone */}
       {f >= b.mega && (
-        <div style={{ position: "absolute", left: 110, top: 1010, width: 200, transform: `scale(${megaIn}) rotate(${-8 + Math.sin(f * 0.3) * 4}deg)`, transformOrigin: "20% 60%" }}>
+        <div style={{ position: "absolute", left: 160, top: 1010, width: 200, transform: `scale(${megaIn}) rotate(${-8 + Math.sin(f * 0.3) * 4}deg)`, transformOrigin: "20% 60%" }}>
           <MegaphoneIcon size={200} />
           {[0, 12].map((d) => {
             const t = (f - b.mega + d) % 24;
@@ -164,11 +168,12 @@ export const Lojista3: React.FC = () => {
           </div>
         </div>
       )}
+      </Cena>
       <ConfettiBurst frame={f} start={b.confetti} x={-20} y={1000} angle={-52} spread={36} power={46} count={24} seed="lj3cL" />
       <ConfettiBurst frame={f} start={b.confetti} x={1100} y={1000} angle={-128} spread={36} power={46} count={24} seed="lj3cR" />
-      <StarPops frame={f} start={b.seal} cx={560} cy={1180} radius={240} count={10} seed="lj3st" size={52} />
-      <Titulo f={f} linhas={T.card3.titulo} at={b.title} top={290} size={96} />
-      <Apoio f={f} linhas={T.card3.apoio} at={b.support} top={512} size={52} gap={62} />
+      <StarPops frame={f} start={b.seal} cx={560} cy={1290} radius={280} count={10} seed="lj3st" size={52} />
+      <Titulo f={f} linhas={T.card3.titulo} at={b.title} top={290} size={108} />
+      <Apoio f={f} linhas={T.card3.apoio} at={b.support} top={540} size={54} gap={64} />
       <Rodape f={f} at={b.foot} />
       <Toldo f={f} />
     </>
@@ -177,7 +182,7 @@ export const Lojista3: React.FC = () => {
 
 // ---------------------------------------------------------------- CARD 4 · "Quer saber mais?"
 // um aviãozinho de papel sai da lojinha fazendo uma curva e voa até um balão de mensagem que pulsa; a lojinha acena.
-const SHOP4 = { x: 280, ground: 1450, w: 280 };
+const SHOP4 = { x: 320, ground: 1450, w: 280 };
 const BAL = { x: 760, y: 860 };
 export const Lojista4: React.FC = () => {
   const f = useCurrentFrame();
@@ -193,7 +198,9 @@ export const Lojista4: React.FC = () => {
   const waveAng = f >= b.wave ? Math.sin((f - b.wave) * 0.45) * 22 : 0;
   return (
     <>
-      <Fundo f={f} raios={[BAL.x, BAL.y]} seed="lj4" />
+      <Fundo f={f} raios={[BAL.x, BAL.y + 60]} seed="lj4" />
+      <Chao y={GROUND} at={b.shop} f={f} />
+      <Cena k={1.22} py={SHOP4.ground} dy={GROUND - SHOP4.ground}>
       {/* rastro pontilhado do aviãozinho */}
       {u > 0 && (
         <svg width={1080} height={1920} style={{ position: "absolute", left: 0, top: 0 }}>
@@ -223,15 +230,15 @@ export const Lojista4: React.FC = () => {
         </div>
       )}
       <StarPops frame={f} start={b.sting} cx={BAL.x} cy={BAL.y} radius={200} count={9} seed="lj4st" size={50} />
-      <Chao y={SHOP4.ground} at={b.shop} f={f} />
       <Loja f={f} kind="restaurante" x={SHOP4.x} ground={SHOP4.ground} w={SHOP4.w} at={b.shop} seed="lj4c" lit={1} look={[0.8, -0.5]} hop={8} />
       {f >= b.wave && (
         <div style={{ position: "absolute", left: SHOP4.x + 120, top: SHOP4.ground - 330, transform: `rotate(${waveAng}deg) scale(${pop(f, b.wave)})`, transformOrigin: "40% 90%" }}>
           <WaveHandIcon size={130} />
         </div>
       )}
-      <Titulo f={f} linhas={T.card4.titulo} at={b.title} top={300} size={100} />
-      <Apoio f={f} linhas={T.card4.apoio} at={b.support} top={430} size={58} />
+      </Cena>
+      <Titulo f={f} linhas={T.card4.titulo} at={b.title} top={290} size={100} />
+      <Apoio f={f} linhas={T.card4.apoio} at={b.support} top={440} size={62} />
       <Rodape f={f} at={b.foot} />
       <Toldo f={f} />
     </>
