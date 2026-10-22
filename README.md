@@ -240,6 +240,14 @@ Composição `CorteCurto` (`src/cortes/Corte.tsx`), 1080×1920, 30 fps, 10 a 16 
 
 **Gerar:** `npm run corte -- A` → `out/cortes/corte-A.mp4` + `out/cortes/capa-corte-A.png` (quadro 0). Corte novo: crie `cortes/corte-E.json` com os mesmos campos e rode `npm run corte -- E`.
 
+## Série "Explica, Sô!" (vídeos explicativos em capítulos, 30–45 s)
+
+O motor em canvas da Série Explica, adaptado à cara da UaiPertim, fica em [`reels/explica-so/`](reels/explica-so/README.md). Cada episódio é só um JSON (`reels/explica-so/episodios/<id>.json`) e um comando (`scripts/episodio.sh <id>`).
+
+- **Visual:** fundo creme com raios de sol, a rota da entrega com a motinha amarela ligando os capítulos, as lojinhas com olhinhos e o marcador amarelo. Usa a logo oficial de `public/img` e a Poppins de `public/fonts`.
+- **Voz:** a voz oficial (`audio/voz_oficial.json`), com a pronúncia de `audio/elevenlabs.py`.
+- **Episódio 1:** "Faltou um trem?" (`explica-so-01`).
+
 ## Como editar
 
 - **Textos de tela:** `src/config/texts.ts` (Vídeo 1) · `src/v2/config/texts.ts` (Vídeo 2) · `src/v3/config/texts.ts` (Vídeo 3) · `src/v4/config/texts.ts` (Vídeo 4) · `src/story/config/texts.ts` (story)

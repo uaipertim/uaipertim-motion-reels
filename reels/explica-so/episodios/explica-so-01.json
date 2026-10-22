@@ -1,0 +1,229 @@
+{
+  "id": "explica-so-01",
+  "titulo": "Faltou um trem?",
+  "marca": "@uaipertim",
+  "capitulos": [
+    {
+      "rotulo": "EXPLICA, SÔ! · EP. 01",
+      "tom": "creme",
+      "titulo": [
+        "Faltou um",
+        "trem?"
+      ],
+      "fala": [
+        {
+          "texto": "Faltou um trem em casa, sô?",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "capa",
+        "marcador": "trem",
+        "pulo": {
+          "em": "trem"
+        }
+      }
+    },
+    {
+      "rotulo": "O CAUSO",
+      "tom": "pessego",
+      "titulo": [
+        "Café passadim,",
+        "mesa posta…"
+      ],
+      "fala": [
+        {
+          "texto": "Café passadim, mesa posta… e cadê o queijo?",
+          "apoio": "Cadê o *queijo*?"
+        },
+        {
+          "texto": "E sair de casa agora? Uai, dá uma preguiça…",
+          "apoio": "Sair de casa agora? *Preguiça*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "mesa",
+        "xicara": {
+          "em": "Café"
+        },
+        "prato": {
+          "em": "mesa"
+        },
+        "vazio": {
+          "em": "queijo"
+        },
+        "preguica": {
+          "em": "preguiça"
+        }
+      }
+    },
+    {
+      "rotulo": "O GLÓRIA TEM",
+      "tom": "amarelo",
+      "titulo": [
+        "O queijo",
+        "tá ali, ó."
+      ],
+      "fala": [
+        {
+          "texto": "Só que o queijo tá ali, ó.",
+          "apoio": null
+        },
+        {
+          "texto": "Na padaria, no mercadim, na farmácia…",
+          "apoio": null
+        },
+        {
+          "texto": "tudo pertim de você, aqui no Glória.",
+          "apoio": "Tudo *pertim de você*, aqui no Glória."
+        }
+      ],
+      "diagrama": {
+        "tipo": "praca",
+        "praca": {
+          "em": "+0.15"
+        },
+        "lojas": [
+          {
+            "tipo": "padaria",
+            "t": "PADARIA",
+            "em": "padaria"
+          },
+          {
+            "tipo": "mercado",
+            "t": "MERCADIM",
+            "em": "mercadim"
+          },
+          {
+            "tipo": "farmacia",
+            "t": "FARMÁCIA",
+            "em": "farmácia"
+          }
+        ],
+        "linhas": {
+          "em": "pertim"
+        },
+        "selo": {
+          "t": [
+            "do",
+            "Glória"
+          ],
+          "em": "Glória"
+        }
+      }
+    },
+    {
+      "rotulo": "A SACOLA",
+      "tom": "verde",
+      "titulo": [
+        "Ocê escolhe",
+        "o que faltou."
+      ],
+      "fala": [
+        {
+          "texto": "Ocê escolhe o queijo, o pão de sal, aquele docim…",
+          "apoio": null
+        },
+        {
+          "texto": "do comércio que ocê já conhece.",
+          "apoio": "Do comércio que ocê *já conhece*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "sacola",
+        "sacola": {
+          "em": "+0.2"
+        },
+        "itens": [
+          {
+            "tipo": "queijo",
+            "t": "QUEIJO",
+            "em": "queijo"
+          },
+          {
+            "tipo": "pao",
+            "t": "PÃO DE SAL",
+            "em": "pão"
+          },
+          {
+            "tipo": "doce",
+            "t": "DOCIM",
+            "em": "docim"
+          }
+        ],
+        "check": {
+          "em": "conhece"
+        }
+      }
+    },
+    {
+      "rotulo": "CHEGOU",
+      "tom": "pessego",
+      "titulo": [
+        "E chega",
+        "na sua porta."
+      ],
+      "fala": [
+        {
+          "texto": "E chega na sua porta.",
+          "apoio": null
+        },
+        {
+          "texto": "Sem fila, sem chuva e sem tirar o chinelo.",
+          "apoio": "Sem fila, sem chuva, *sem tirar o chinelo*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "entrega",
+        "moto": {
+          "em": "chega"
+        },
+        "porta": {
+          "em": "porta"
+        },
+        "chips": [
+          {
+            "t": "FILA",
+            "icone": "fila",
+            "em": "fila"
+          },
+          {
+            "t": "CHUVA",
+            "icone": "chuva",
+            "em": "chuva"
+          },
+          {
+            "t": "TIRAR O CHINELO",
+            "icone": "chinelo",
+            "em": "chinelo"
+          }
+        ]
+      }
+    },
+    {
+      "rotulo": "PRA NÃO PERDER",
+      "tom": "amarelo",
+      "titulo": [
+        "Em breve",
+        "no Glória"
+      ],
+      "min": 7.5,
+      "fala": [
+        {
+          "texto": "É o UaiPertim. Chegando em breve no Glória. Segue a gente pra não perder!",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "fecho",
+        "logo": {
+          "em": "UaiPertim"
+        },
+        "chip": {
+          "t": "Segue @uaipertim",
+          "em": "Segue"
+        }
+      }
+    }
+  ]
+}
