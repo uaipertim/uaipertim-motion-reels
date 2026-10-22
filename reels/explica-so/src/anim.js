@@ -948,7 +948,7 @@
       ev.lojas = d.lojas.map((l) => (prev = Math.max(at(cap, l.em, prev + 0.6), prev + 0.25)));
       ev.linhas = Math.max(at(cap, d.linhas.em, cap.t1 - 2.2), ev.lojas[ev.lojas.length - 1] + 0.3);
       ev.selo = Math.max(at(cap, d.selo.em, cap.t1 - 1.2), ev.linhas + 0.4);
-      cue(ev.praca, 'pop', { f: 480 }); ev.lojas.forEach((x, i) => cue(x, 'sprout', { i }));
+      cue(ev.praca, 'pop', { f: 480 }); ev.lojas.forEach((x, i) => { cue(x, 'sprout', { i }); if (d.lojas[i].balao) cue(x + 0.3, 'pop', { f: 760 }); });
       cue(ev.linhas, 'dots', { d: 0.6 }); cue(ev.selo, 'stamp');
     },
     draw(ctx, cap, t) {
@@ -995,6 +995,25 @@
           chip(ctx, l.t, q.x, q.base + 30, { size: 20, align: 'center', h: 42, pad: 16, ls: 2, alpha: ec, border: 'none', bg: C.tinta, color: C.papel, shadow: false, box: ec > 0.99 ? `placa ${l.t}` : null });
         }
         BOX(`lojinha ${l.t}`, q.x - 86, q.base - 222, q.x + 86, q.base);
+        // o balãozinho em cima da lojinha (ex.: o queijo está NA padaria)
+        if (l.balao && ITENS[l.balao]) {
+          const eb = p(t, ev.lojas[i] + 0.3, ev.lojas[i] + 0.7);
+          if (eb > 0) {
+            const bx = q.x + (q.x < P.x ? 175 : -175), by = q.base - 150, br = 62, fl = 3 * Math.sin((t - ev.lojas[i]) * 3);
+            pop(ctx, eb, bx, by + br, () => {
+              ctx.save(); ctx.translate(0, fl);
+              ctx.fillStyle = C.papel; ctx.strokeStyle = C.coral; ctx.lineWidth = 4;
+              ctx.shadowColor = 'rgba(120,60,30,0.18)'; ctx.shadowBlur = 14; ctx.shadowOffsetY = 5;
+              ctx.beginPath(); ctx.arc(bx, by, br, 0, TAU); ctx.fill(); ctx.shadowColor = 'transparent'; ctx.stroke();
+              const sx = q.x < P.x ? -1 : 1;                      // o biquinho aponta para a lojinha
+              ctx.beginPath(); ctx.moveTo(bx + sx * br * 0.55, by + br * 0.7); ctx.lineTo(bx + sx * (br + 26), by + br + 18); ctx.lineTo(bx + sx * br * 0.92, by + br * 0.3);
+              ctx.fillStyle = C.papel; ctx.fill(); ctx.beginPath(); ctx.moveTo(bx + sx * br * 0.55, by + br * 0.7); ctx.lineTo(bx + sx * (br + 26), by + br + 18); ctx.lineTo(bx + sx * br * 0.92, by + br * 0.3); ctx.stroke();
+              ITENS[l.balao](ctx, bx, by + 2, 92);
+              ctx.restore();
+            }, 2);
+            if (eb >= 1) BOX(`balão ${l.balao}`, bx - br, by - br, bx + br, by + br + 18);
+          }
+        }
       });
       // o selo "do Glória"
       const es = p(t, ev.selo, ev.selo + 0.4);

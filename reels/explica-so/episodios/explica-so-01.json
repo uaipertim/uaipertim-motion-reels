@@ -12,7 +12,7 @@
       ],
       "fala": [
         {
-          "texto": "Faltou um trem em casa, sô?",
+          "texto": "Faltou um trem em casa?",
           "apoio": null
         }
       ],
@@ -66,15 +66,11 @@
       ],
       "fala": [
         {
-          "texto": "Só que o queijo tá ali, ó.",
-          "apoio": null
+          "texto": "Só que o queijo tá ali na padaria, ó.",
+          "apoio": "O queijo tá *na padaria*."
         },
         {
-          "texto": "Na padaria, no mercadim, na farmácia…",
-          "apoio": null
-        },
-        {
-          "texto": "tudo pertim de você, aqui no Glória.",
+          "texto": "E o mercadim, a farmácia… tá tudo pertim de você, aqui no Glória.",
           "apoio": "Tudo *pertim de você*, aqui no Glória."
         }
       ],
@@ -87,7 +83,8 @@
           {
             "tipo": "padaria",
             "t": "PADARIA",
-            "em": "padaria"
+            "em": "padaria",
+            "balao": "queijo"
           },
           {
             "tipo": "mercado",

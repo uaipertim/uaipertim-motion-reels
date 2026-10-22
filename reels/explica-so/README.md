@@ -4,7 +4,7 @@ Vídeos curtos que explicam uma coisa do dia a dia em capítulos, com a cara da 
 
 | Episódio | Tema | Capítulos | Saída |
 |---|---|---|---|
-| **explica-so-01** | "Faltou um trem?" | 00 capa · 01 o causo · 02 o Glória tem · 03 a sacola · 04 chegou · 05 fecho | [`output/explica-so-01/`](output/explica-so-01) · 39,7 s |
+| **explica-so-01** | "Faltou um trem?" | 00 capa · 01 o causo · 02 o Glória tem · 03 a sacola · 04 chegou · 05 fecho | [`output/explica-so-01/`](output/explica-so-01) · 39,9 s |
 
 Em cada episódio, `output/<id>/` traz:
 
@@ -15,7 +15,7 @@ Em cada episódio, `output/<id>/` traz:
 
 ## Estado do explica-so-01
 
-Pronto e aprovado (`output/explica-so-01/revisao/relatorio-tecnico.txt` termina em `RESULTADO: aprovado`): 39,67 s, voz oficial com seed 42 em todos os capítulos (uma geração inteira cada). O "é" de "Pérr-tim" (caps. 02 e 05) foi conferido pelo alinhamento: F1 de 582 e 532 Hz, na faixa do "é" aberto de "Café" (527 Hz), não do "ê" fechado de "cadê" (413 Hz).
+Pronto e aprovado (`output/explica-so-01/revisao/relatorio-tecnico.txt` termina em `RESULTADO: aprovado`): 39,88 s, voz oficial com seed 42 em todos os capítulos (uma geração inteira cada). Na 2ª versão, só os capítulos 00 (sem o "sô") e 02 (o queijo na padaria) foram gerados de novo. O "é" de "Pérr-tim" foi conferido pelo alinhamento: F1 de 606 Hz (cap. 02) e 532 Hz (cap. 05), na faixa do "é" aberto de "Café" (527 Hz), não do "ê" fechado de "cadê" (413 Hz).
 
 ## A cara da UaiPertim (o que muda em relação ao motor do Hospeda)
 
@@ -141,7 +141,7 @@ A narração gerada (`audio/<id>/voz/cap-NN.wav` + `falas.json`) fica no reposit
 |---|---|---|
 | `capa` | Chip, título grande com a palavra no marcador amarelo, a pontuação final que pula, a mesa com a xícara e o lugar vazio | `marcador`, `pulo: {em}` |
 | `mesa` | Mesa com toalha xadrez; xícara de café com fumacinha; prato com talheres; lugar vazio tracejado com "?" pulsando; sofá com almofada, "z z z" e chinelos | `xicara: {em}`, `prato: {em}`, `vazio: {em}`, `preguica: {em}` |
-| `praca` | Praça com gramado, árvores e coreto; lojinhas com olhinhos brotando do chão, com a placa do nome; linhas pontilhadas coral até a praça; selo coral de carimbo | `praca: {em}`, `lojas: [{tipo: padaria\|mercado\|farmacia\|loja, t, em}]` (até 3), `linhas: {em}`, `selo: {t: [linha pequena, linha grande], em}` |
+| `praca` | Praça com gramado, árvores e coreto; lojinhas com olhinhos brotando do chão, com a placa do nome; linhas pontilhadas coral até a praça; selo coral de carimbo | `praca: {em}`, `lojas: [{tipo: padaria\|mercado\|farmacia\|loja, t, em, balao?: queijo\|pao\|doce}]` (até 3; `balao` põe o item num balãozinho ao lado da lojinha), `linhas: {em}`, `selo: {t: [linha pequena, linha grande], em}` |
 | `sacola` | Sacola de papel com a logo oficial; os itens aparecem, caem dentro e ficam saindo pela boca; os nomes em chips; check verde | `sacola: {em}`, `itens: [{tipo: queijo\|pao\|doce, t, em}]` (até 3), `check: {em}` |
 | `entrega` | Rua com tracejado coral; a motinha entra e para na porta; a porta da casinha abre com luz; chips riscados em coral | `moto: {em}`, `porta: {em}`, `chips: [{t, icone: fila\|chuva\|chinelo, em}]` (2 + 1 por linha) |
 | `fecho` | Título do capítulo, a logo oficial grande e fixa, chip coral com seta | `logo: {em}`, `chip: {t, em}` |
