@@ -1,0 +1,13 @@
+{
+  "numero": 7,
+  "chip": "FACIM FACIM",
+  "capa": "coral",
+  "slides": [
+    { "tipo": "capa", "titulo": "Quer saber *primeiro*? 🔔", "texto": "" },
+    { "tipo": "conteudo", "titulo": "1. Segue o perfil", "texto": "Toca em Seguir aqui no nosso perfil.", "icone": "seguir" },
+    { "tipo": "conteudo", "titulo": "2. Toca no sininho", "texto": "Ele aparece no canto de cima do perfil.", "icone": "sino" },
+    { "tipo": "conteudo", "titulo": "3. Marca o que quer receber", "texto": "Posts, stories e reels: marca tudo.", "icone": "check" },
+    { "tipo": "conteudo", "titulo": "Pronto!", "texto": "Quando o UaiPertim abrir no Glória, ocê fica sabendo primeiro.", "icone": "cidade" },
+    { "tipo": "final", "titulo": "Manda pra quem não pode perder 👀", "texto": "Segue a gente pra saber quando abrir" }
+  ]
+}

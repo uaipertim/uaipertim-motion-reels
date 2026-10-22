@@ -1,0 +1,13 @@
+{
+  "numero": 8,
+  "chip": "FACIM FACIM",
+  "capa": "coral",
+  "slides": [
+    { "tipo": "capa", "titulo": "Por que comprar *pertim*? 💛", "texto": "" },
+    { "tipo": "conteudo", "titulo": "O dinheiro fica no Glória", "texto": "Cada compra ajuda o comércio da cidade a crescer.", "icone": "dinheiro" },
+    { "tipo": "conteudo", "titulo": "Ocê conhece quem vende", "texto": "É o vizinho, o conhecido, gente daqui.", "icone": "loja" },
+    { "tipo": "conteudo", "titulo": "Deu problema?", "texto": "Ocê sabe onde fica a loja e com quem falar.", "icone": "cadastro" },
+    { "tipo": "conteudo", "titulo": "O Glória mais forte", "texto": "Comércio vivo é mais movimento e mais emprego na cidade.", "icone": "cidade" },
+    { "tipo": "final", "titulo": "Manda pra quem compra no Glória 🧡", "texto": "Segue a gente pra saber quando abrir" }
+  ]
+}

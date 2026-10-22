@@ -19,6 +19,15 @@ import { CarrosselFacim, CarrosselProps, SLIDE, measureSlide } from "./carrossel
 import facim01 from "../carrosseis/facim/01-antes-que-voce-pergunte.json";
 import { CorteCurto, CorteProps, measureCorte } from "./cortes/Corte";
 import corteA from "../cortes/corte-A.json";
+import { StoryDestaque, DestaqueProps, STORY, measureDestaque } from "./story/StoryDestaque";
+import { DestaqueCapa } from "./story/DestaqueCapa";
+import duvidas from "../stories/destaques/duvidas.json";
+
+// Stories de destaque: um card = JSON em --props + "card" (índice, a partir de 0); textos medidos com as fontes carregadas.
+const destaqueMetadata = async ({ props }: { props: DestaqueProps }) => {
+  await fontsReady;
+  return { props: { ...props, layout: measureDestaque(props, props.card ?? 0) } };
+};
 
 // Cortes curtos: duração = trecho do original + fecho; textos medidos com as fontes carregadas.
 const corteMetadata = async ({ props }: { props: CorteProps }) => {
@@ -145,5 +154,16 @@ export const RemotionRoot: React.FC = () => (
       defaultProps={corteA as CorteProps}
       calculateMetadata={corteMetadata}
     />
+    <Composition
+      id="Story-Destaque"
+      component={StoryDestaque}
+      durationInFrames={STORY.frames}
+      fps={STORY.fps}
+      width={STORY.width}
+      height={STORY.height}
+      defaultProps={{ ...(duvidas as DestaqueProps), card: 0 }}
+      calculateMetadata={destaqueMetadata}
+    />
+    <Still id="Destaque-Capa" component={DestaqueCapa} width={1080} height={1920} defaultProps={{ icone: "conheca" as const }} />
   </>
 );

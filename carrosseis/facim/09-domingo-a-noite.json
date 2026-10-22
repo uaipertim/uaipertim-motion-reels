@@ -1,0 +1,13 @@
+{
+  "numero": 9,
+  "chip": "FACIM FACIM",
+  "capa": "coral",
+  "slides": [
+    { "tipo": "capa", "titulo": "Domingo à noite e a geladeira *vazia*? 🌙", "texto": "" },
+    { "tipo": "conteudo", "titulo": "Bateu a fome", "texto": "Aquele lanche, uma pizza, um açaí…", "icone": "lanche" },
+    { "tipo": "conteudo", "titulo": "Mas sair de casa?", "texto": "De pijama, no sofá? Uai, nem pensar.", "icone": "sofa" },
+    { "tipo": "conteudo", "titulo": "Em breve, é só pedir", "texto": "Do comércio do Glória que estiver aberto.", "icone": "loja" },
+    { "tipo": "conteudo", "titulo": "E chega pertim de você", "texto": "Sem tirar o pijama.", "icone": "entrega" },
+    { "tipo": "final", "titulo": "Marca quem vive com fome no domingo 😂", "texto": "Segue a gente pra saber quando abrir" }
+  ]
+}

@@ -16,7 +16,9 @@ import { fitWrap, Wrapped } from "../dicionario/fit";
 // CAPA: "coral" (fundo coral, título branco, destaque amarelo com marcador creme, chip invertido) ou "creme" (o modelo
 // antigo). Campo opcional "capa" no JSON; padrão = coral a partir do C5 e creme nos anteriores (já publicados).
 
-export type Icone = "navegador" | "gratis" | "cadastro" | "cidade" | "categoria" | "loja" | "entrega" | "calendario";
+export type Icone =
+  | "navegador" | "gratis" | "cadastro" | "cidade" | "categoria" | "loja" | "entrega" | "calendario"
+  | "seguir" | "sino" | "check" | "dinheiro" | "lanche" | "sofa" | "duvida" | "mensagem";
 export type Slide = { tipo: "capa" | "conteudo" | "final"; titulo: string; texto?: string; icone?: Icone };
 export type Carrossel = { numero: number; chip: string; capa?: "coral" | "creme"; slides: Slide[] };
 export type CarrosselProps = Carrossel & { slide: number; layout?: { titulo: Wrapped; texto?: Wrapped } };
@@ -29,8 +31,13 @@ export const capaCoral = (c: { numero: number; capa?: "coral" | "creme" }) => (c
 const CARD = { left: M, right: SLIDE.width - M, pad: 72 };
 
 const plain = (t: string) => t.replace(/\*/g, "");
-// emoji grudado na palavra anterior (NBSP): nunca fica sozinho numa linha
-export const glue = (t: string) => t.replace(/ +(\p{Extended_Pictographic})/gu, "\u00A0$1");
+// emoji grudado na palavra anterior (NBSP): nunca fica sozinho numa linha; "pertim de você", "do Glória" e
+// "no Glória" também nunca se separam
+export const glue = (t: string) =>
+  t
+    .replace(/ +(\p{Extended_Pictographic})/gu, "\u00A0$1")
+    .replace(/(\*?pertim) +(de) +(você)/giu, "$1\u00A0$2\u00A0$3")
+    .replace(/\b([dn]o) +(\*?Glória)/gu, "$1\u00A0$2");
 
 const glueSlide = (s: Slide): Slide => ({ ...s, titulo: glue(s.titulo), texto: s.texto ? glue(s.texto) : s.texto });
 
@@ -61,10 +68,10 @@ const tokens = (t: string) => {
   );
 };
 
-const Text: React.FC<{
+export const Text: React.FC<{
   source: string; wrapped: Wrapped; weight: number; color?: string; align?: "center" | "left"; lineHeight?: number;
-  accent?: (w: string, i: number) => string | undefined; hlColor?: string; markerColor?: string; markerShine?: boolean; markerDrop?: number;
-}> = ({ source, wrapped, weight, color = C.tinta, align = "center", lineHeight = 1.12, accent, hlColor = C.coral, markerColor = C.amarelo, markerShine = true, markerDrop = 0 }) => {
+  accent?: (w: string, i: number) => string | undefined; hlColor?: string; markerColor?: string; markerShine?: boolean; markerDrop?: number; lineStyle?: (li: number) => React.CSSProperties;
+}> = ({ source, wrapped, weight, color = C.tinta, align = "center", lineHeight = 1.12, accent, hlColor = C.coral, markerColor = C.amarelo, markerShine = true, markerDrop = 0, lineStyle }) => {
   const toks = tokens(source);
   let k = 0;
   const size = wrapped.size;
@@ -76,7 +83,7 @@ const Text: React.FC<{
         const base = k;
         k += n;
         return (
-          <div key={li} style={{ display: "flex", whiteSpace: "nowrap", gap: size * 0.22 }}>
+          <div key={li} style={{ display: "flex", whiteSpace: "nowrap", gap: size * 0.22, ...lineStyle?.(li) }}>
             {words.map((segs, wi) => (
               <span key={wi} style={{ fontFamily: FONT, fontWeight: weight, fontSize: size, lineHeight, letterSpacing: -1, color: accent?.(plain(segs.map((s) => s.t).join("")), base + wi) ?? color }}>
                 {segs.map((s, si) =>
@@ -105,7 +112,7 @@ const Text: React.FC<{
   );
 };
 
-const Chip: React.FC<{ text: string; size: number; invert?: boolean }> = ({ text, size, invert }) => (
+export const Chip: React.FC<{ text: string; size: number; invert?: boolean }> = ({ text, size, invert }) => (
   <div
     style={{
       display: "inline-flex", alignItems: "center", gap: size * 0.4, background: invert ? C.creme : C.coral, borderRadius: size * 2,
@@ -124,7 +131,7 @@ const ICON = 100;
 const Svg: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <svg width={ICON} height={ICON} viewBox="0 0 100 100">{children}</svg>
 );
-const ICONS: Record<Icone, React.ReactNode> = {
+export const ICONS: Record<Icone, React.ReactNode> = {
   navegador: (
     <Svg>
       <rect x="26" y="8" width="48" height="84" rx="10" fill={C.coral} />
@@ -158,6 +165,81 @@ const ICONS: Record<Icone, React.ReactNode> = {
       <rect x="28" y="12" width="8" height="18" rx="4" fill={C.tinta} />
       <rect x="64" y="12" width="8" height="18" rx="4" fill={C.tinta} />
       <path d="M50 46 L55 57 L67 58 L58 66 L61 78 L50 71 L39 78 L42 66 L33 58 L45 57 Z" fill={C.amarelo} />
+    </Svg>
+  ),
+  // seguir: pessoinha com o "+" amarelo
+  seguir: (
+    <Svg>
+      <circle cx="40" cy="32" r="17" fill={C.coral} />
+      <path d="M10 86 C10 60 70 60 70 86 Z" fill={C.coral} />
+      <circle cx="74" cy="58" r="19" fill={C.amarelo} />
+      <path d="M74 48 V68 M64 58 H84" stroke="#fff" strokeWidth="7" strokeLinecap="round" />
+    </Svg>
+  ),
+  // sino: o sininho com o badalo amarelo e o som
+  sino: (
+    <Svg>
+      <path d="M50 14 C33 14 26 28 26 44 V60 L16 74 H84 L74 60 V44 C74 28 67 14 50 14 Z" fill={C.coral} />
+      <rect x="44" y="8" width="12" height="10" rx="5" fill={C.coralDark} />
+      <circle cx="50" cy="82" r="9" fill={C.amarelo} />
+      <path d="M86 30 Q93 40 88 52 M14 30 Q7 40 12 52" stroke={C.amarelo} strokeWidth="6" strokeLinecap="round" fill="none" />
+    </Svg>
+  ),
+  // check: o quadradinho marcado
+  check: (
+    <Svg>
+      <rect x="12" y="12" width="76" height="76" rx="18" fill={C.coral} />
+      <path d="M28 52 L44 68 L74 34" stroke="#fff" strokeWidth="12" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+      <circle cx="84" cy="16" r="9" fill={C.amarelo} />
+    </Svg>
+  ),
+  // dinheiro: a nota coral com as moedas amarelas
+  dinheiro: (
+    <Svg>
+      <rect x="8" y="22" width="76" height="46" rx="8" fill={C.coral} transform="rotate(-8 46 45)" />
+      <circle cx="46" cy="45" r="12" fill="#fff" transform="rotate(-8 46 45)" />
+      <ellipse cx="70" cy="80" rx="20" ry="8" fill={C.amareloDark} />
+      <rect x="50" y="68" width="40" height="12" fill={C.amareloDark} />
+      <ellipse cx="70" cy="68" rx="20" ry="8" fill={C.amarelo} />
+      <ellipse cx="70" cy="68" rx="11" ry="4" fill="none" stroke="#fff" strokeOpacity="0.6" strokeWidth="3" />
+    </Svg>
+  ),
+  // lanche: o sanduíche
+  lanche: (
+    <Svg>
+      <path d="M14 46 C14 22 86 22 86 46 Z" fill={C.amarelo} />
+      <circle cx="38" cy="34" r="2.5" fill="#fff" /><circle cx="52" cy="30" r="2.5" fill="#fff" /><circle cx="64" cy="36" r="2.5" fill="#fff" />
+      <path d="M10 52 Q20 46 30 52 T50 52 T70 52 T90 52 V58 H10 Z" fill={C.verde} />
+      <rect x="12" y="58" width="76" height="12" rx="6" fill={C.coral} />
+      <rect x="14" y="72" width="72" height="14" rx="7" fill={C.amareloDark} />
+    </Svg>
+  ),
+  // sofá: coral, com a almofada amarela
+  sofa: (
+    <Svg>
+      <rect x="20" y="28" width="60" height="34" rx="10" fill={C.coral} />
+      <rect x="14" y="52" width="72" height="22" rx="8" fill={C.coralDark} />
+      <rect x="6" y="42" width="18" height="36" rx="8" fill={C.coral} />
+      <rect x="76" y="42" width="18" height="36" rx="8" fill={C.coral} />
+      <rect x="28" y="36" width="24" height="18" rx="6" fill={C.amarelo} transform="rotate(-10 40 45)" />
+      <rect x="14" y="78" width="7" height="10" rx="3" fill={C.tinta} />
+      <rect x="79" y="78" width="7" height="10" rx="3" fill={C.tinta} />
+    </Svg>
+  ),
+  // dúvida: o balão com "?"
+  duvida: (
+    <Svg>
+      <path d="M50 12 C26 12 10 26 10 46 C10 58 16 67 26 73 L22 90 L42 78 C45 79 47 80 50 80 C74 80 90 66 90 46 C90 26 74 12 50 12 Z" fill={C.coral} />
+      <path d="M40 36 C40 26 60 26 60 37 C60 45 50 46 50 54" stroke="#fff" strokeWidth="8" strokeLinecap="round" fill="none" />
+      <circle cx="50" cy="66" r="5" fill={C.amarelo} />
+    </Svg>
+  ),
+  // mensagem: o envelope com o coraçãozinho
+  mensagem: (
+    <Svg>
+      <rect x="10" y="24" width="80" height="56" rx="10" fill={C.coral} />
+      <path d="M14 30 L50 56 L86 30" stroke="#fff" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+      <path d="M78 20 C70 14 64 22 70 28 L78 34 L86 28 C92 22 86 14 78 20 Z" fill={C.amarelo} />
     </Svg>
   ),
   cidade: <PinIcon size={ICON} color={C.coral} />,
@@ -265,7 +347,7 @@ export const CarrosselFacim: React.FC<CarrosselProps> = ({ numero, chip, capa, s
         const top = (SLIDE.height - h) / 2 + 20;
         return (
           <div style={{ position: "absolute", top, left: M, right: M, display: "flex", flexDirection: "column", alignItems: "center" }}>
-            <Text source={s.titulo} wrapped={t} weight={W.black} lineHeight={1.1} accent={(w, i) => (i === 0 && /^manda$/i.test(w) ? C.coral : undefined)} />
+            <Text source={s.titulo} wrapped={t} weight={W.black} lineHeight={1.1} accent={(w, i) => (i === 0 && /^(manda|marca)$/i.test(w) ? C.coral : undefined)} />
             <div style={{ height: 48 }} />
             <Text source={s.texto ?? ""} wrapped={x} weight={W.extraBold} lineHeight={1.25} color="#5A4A42" />
             <div style={{ height: 90 }} />

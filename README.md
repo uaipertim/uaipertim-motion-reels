@@ -209,7 +209,7 @@ Arte estática 1080×1350 (4:5), um PNG por slide, renderizada pelo mesmo pipeli
   - **creme** (C1–C4, já publicados ou programados; padrão nos números < 5): palavra em coral com marcador amarelo, margem ≥ 114 px. Não renderizar de novo.
   **Regra para capas coral:** usar só emojis claros ou amarelos (ex.: 👀 😂 🤔 💛 ✨), nunca vermelhos ou laranja (somem no coral; o 📍 e o 🏪 foram descartados no C5).
   Só a capa muda: slides de conteúdo e final são iguais nos dois estilos.
-- **conteudo:** título curto + texto (até ~25 palavras; o script avisa se passar) + ícone, num card branco. Tem progresso discreto (2/6) no canto. `icone` (opcional): `navegador`, `gratis`, `cadastro`, `cidade`, `categoria`, `loja`, `entrega`, `calendario`.
+- **conteudo:** título curto + texto (até ~25 palavras; o script avisa se passar) + ícone, num card branco. Tem progresso discreto (2/6) no canto. `icone` (opcional): `navegador`, `gratis`, `cadastro`, `cidade`, `categoria`, `loja`, `entrega`, `calendario`, `seguir`, `sino`, `check`, `dinheiro`, `lanche`, `sofa`.
 - **final:** "Manda pra quem…" grande ("Manda" em coral) + linha de apoio em `texto` + logo.
 - De 4 a 6 slides. Sem @, sem WhatsApp, sem dados inventados.
 - Margens: ≥ 80 px nas laterais; na capa ≥ 114 px (creme) ou ≥ 120 px (coral), para o texto caber no recorte 3:4 da grade (que corta ~34 px de cada lado). Tamanhos de fonte e quebras são medidos por slide (`src/dicionario/fit.ts`); emoji nunca fica sozinho numa linha.
@@ -221,6 +221,31 @@ npm run carrossel -- 01        # ou: npm run carrossel -- carrosseis/facim/01-an
 ```
 
 Saída em `out/carrosseis/facim/NN-tema/`: `slide-1.png` … `slide-N.png` e `capa_3x4.png` (prévia da capa no recorte da grade). **Carrossel novo:** crie `carrosseis/facim/03-tema.json` e rode `npm run carrossel -- 03`. No Studio, a composição abre o slide 1 do C1; para outro, passe o JSON + `"slide": i` em `--props`.
+
+**Publicados no modelo coral:** C5, C6, **C7** "Quer saber *primeiro*? 🔔" (como ativar o sininho), **C8** "Por que comprar *pertim*? 💛" e **C9** "Domingo à noite e a geladeira *vazia*? 🌙". A quebra de linha do carrossel também segura "pertim de você", "do Glória" e "no Glória" juntos, e o slide final pinta de coral a 1ª palavra "Manda" ou "Marca".
+
+## Stories de destaque (modelo genérico por JSON) + capas dos destaques
+
+Composição `Story-Destaque` (`src/story/StoryDestaque.tsx`), 1080×1920, 30 fps, 6 s por card. **Destaque novo = um JSON** em `stories/destaques/<nome>.json`:
+
+```json
+{ "nome": "duvidas", "cards": [ { "titulo": "Dúvidas? 🤔", "texto": "As perguntas que mais chegam pra gente.", "icone": "duvida", "chip": "opcional" } ] }
+```
+
+- **Visual:** fundo creme com raios de sol (o do Story "Conheça"), ícone num círculo (os mesmos ícones do carrossel, `icone`), chip opcional, título Poppins Black e texto ExtraBold.
+- **Rodapé discreto:** a logo oficial pequena + "Tudo pertim de você.", sem @.
+- **Animação:** tudo entra até 1,2 s e fica parado; só o fundo segue vivo.
+- **Cards independentes:** cada card se explica sozinho, sem "1/4" nem "arrasta", porque o destaque pode abrir em qualquer um.
+- **Zona segura:** conteúdo entre y 250–1600 e x 80–1000. Os tamanhos e as quebras são medidos por card, com as mesmas regras do carrossel.
+- **Trilha leve:** sintetizada pelo projeto (`audio/destaque_trilha.py` → `public/audio/destaques/trilha.wav`), em −14 LUFS. Sem narração.
+
+**Gerar:** `npm run destaque -- duvidas` → `out/destaques/duvidas/card-N.mp4` + `card-N.png` (o quadro final). Destaques prontos: `duvidas` (4 cards), `lojista` (4) e `explica-so` (1).
+
+**Capas dos destaques:** `npm run destaque -- capas` → `out/destaques/capas/{conheca,duvidas,lojista,explica-so}.png`.
+
+- **Composição:** `Destaque-Capa`, em `src/story/DestaqueCapa.tsx`.
+- **Visual:** fundo coral liso e ícone creme no mesmo traço nos 4, sem texto. Cada ícone ocupa 380 px e fica a no máximo ~230 px do centro, dentro do círculo de 600 px que o Instagram recorta.
+- **Prévia:** `previa.png` mostra as 4 em círculos, como no perfil.
 
 ## Cortes curtos (A–D) a partir dos Reels
 
