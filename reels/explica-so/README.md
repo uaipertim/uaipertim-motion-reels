@@ -4,7 +4,7 @@ Vídeos curtos que explicam uma coisa do dia a dia em capítulos, com a cara da 
 
 | Episódio | Tema | Capítulos | Saída |
 |---|---|---|---|
-| **explica-so-01** | "Faltou um trem?" | 00 capa · 01 o causo · 02 o Glória tem · 03 a sacola · 04 chegou · 05 fecho | `output/explica-so-01/` (gerado quando a voz estiver liberada; ver "Estado") |
+| **explica-so-01** | "Faltou um trem?" | 00 capa · 01 o causo · 02 o Glória tem · 03 a sacola · 04 chegou · 05 fecho | [`output/explica-so-01/`](output/explica-so-01) · 39,7 s |
 
 Em cada episódio, `output/<id>/` traz:
 
@@ -15,7 +15,7 @@ Em cada episódio, `output/<id>/` traz:
 
 ## Estado do explica-so-01
 
-O motor, as cenas e o roteiro estão prontos e conferidos numa **prévia sem voz** (`--previa`, abaixo). A narração ainda não foi gerada: em 22/10/2026 a API do ElevenLabs recusou a chave dos Segredos de rede (`HTTP 401 invalid_api_key`, inclusive em `/v1/user`). Como manda a regra, o `voz.py` parou e a voz não foi trocada. Depois de corrigir a chave, rode `scripts/episodio.sh explica-so-01`.
+Pronto e aprovado (`output/explica-so-01/revisao/relatorio-tecnico.txt` termina em `RESULTADO: aprovado`): 39,67 s, voz oficial com seed 42 em todos os capítulos (uma geração inteira cada). O "é" de "Pérr-tim" (caps. 02 e 05) foi conferido pelo alinhamento: F1 de 582 e 532 Hz, na faixa do "é" aberto de "Café" (527 Hz), não do "ê" fechado de "cadê" (413 Hz).
 
 ## A cara da UaiPertim (o que muda em relação ao motor do Hospeda)
 
