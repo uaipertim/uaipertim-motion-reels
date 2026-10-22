@@ -131,9 +131,18 @@ def main(voice=None, out=None):
 
     # --- master: normaliza loudness e limita picos ---
     meter = pyln.Meter(SR)
-    lufs = meter.integrated_loudness(mix)
-    mix *= db(TARGET_LUFS - lufs)
     ceiling = db(tl.get("master", {}).get("ceilingDb", -1.5))  # pico de amostra antes do AAC
+    # master.loudnessPasses (padrão 1): repete normalização + limitador para o resultado final cair em -14 LUFS
+    for _pass in range(tl.get("master", {}).get("loudnessPasses", 1)):
+        mix = _master(mix, meter, ceiling, tl, n)
+    mix = np.clip(mix, -ceiling, ceiling)
+    final_lufs = meter.integrated_loudness(mix)
+    _write(tl, out, mix, final_lufs, fps, n, voice, voice_on)
+
+
+def _master(mix, meter, ceiling, tl, n):
+    lufs = meter.integrated_loudness(mix)
+    mix = mix * db(TARGET_LUFS - lufs)
     if tl.get("master", {}).get("truePeak", False):
         # limitador true peak com lookahead: detecta picos entre amostras (sobreamostragem 4x),
         # abaixa o ganho ~2 ms ANTES do pico e solta em ~80 ms (evita estouro após o AAC)
@@ -156,9 +165,10 @@ def main(voice=None, out=None):
         peak_env = np.interp(np.arange(n), np.arange(0, n, D)[:len(peak_env)] + D // 2, peak_env)
         gain = np.minimum(1.0, ceiling / np.maximum(peak_env, 1e-9))
         mix *= gain[:, None]
-    mix = np.clip(mix, -ceiling, ceiling)
-    final_lufs = meter.integrated_loudness(mix)
+    return mix
 
+
+def _write(tl, out, mix, final_lufs, fps, n, voice, voice_on):
     write(out, mix.astype(np.float32))
     if tl.get("splitScenes"):
         # story: um WAV por card (mesma trilha, cortada nas fronteiras das cenas)

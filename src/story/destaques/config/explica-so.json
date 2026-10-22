@@ -1,0 +1,136 @@
+{
+ "_doc": "Story de destaque 'Explica, Sô!': 1 card(s) de 6 s (180 frames). FONTE ÚNICA DE TEMPOS (30 fps) para vídeo e áudio, como no 'Conheça': 'beats' = frames LOCAIS de cada card. A trilha é UMA só (a mesma do 'Conheça'), cortada em card1..cardN.wav. Depois de editar: npm run destaque -- explica-so.",
+ "fps": 30,
+ "width": 1080,
+ "height": 1920,
+ "durationInFrames": 180,
+ "splitScenes": true,
+ "scenes": {
+  "card1": {
+   "name": "Explica, Sô!",
+   "from": 0,
+   "duration": 180
+  }
+ },
+ "transitions": {},
+ "beats": {
+  "card1": {
+   "curtainDrop": 0,
+   "curtainOpen": 14,
+   "curtainDur": 16,
+   "road": 24,
+   "shops": [
+    28,
+    34,
+    40
+   ],
+   "chip": 34,
+   "title": 42,
+   "support": 64,
+   "play": 56,
+   "moto": 30,
+   "sting": 116,
+   "foot": 20
+  }
+ },
+ "narration": {
+  "enabled": false,
+  "_doc": "Sem locução e sem legenda: os textos de tela estão em src/story/destaques/texts.ts.",
+  "items": []
+ },
+ "music": {
+  "bpm": 124,
+  "offsetSeconds": 0,
+  "segmentSeconds": 6,
+  "barsPerSegment": 4,
+  "_doc": "A mesma trilha do Story 'Conheça' (124 bpm, Dó maior, uke + marimba + glock + baixo), numa frase de 6 s: dois compassos de groove (C, G) e o acorde final/sting no 3º compasso (frame 116), como no card 4 do 'Conheça'.",
+  "chords": [
+   "C",
+   "G",
+   "C"
+  ],
+  "buttonBars": [],
+  "sections": {
+   "peak": [
+    0,
+    1
+   ],
+   "final": [
+    2,
+    2
+   ]
+  },
+  "introHoldSeconds": 0,
+  "duckDb": -9,
+  "duckAttack": 0.08,
+  "duckRelease": 0.35
+ },
+ "master": {
+  "ceilingDb": -1.5,
+  "truePeak": true,
+  "loudnessPasses": 4
+ },
+ "sfx": [
+  {
+   "sound": "curtain",
+   "scene": "card1",
+   "at": "curtainDrop",
+   "gain": -7
+  },
+  {
+   "sound": "fwip",
+   "scene": "card1",
+   "at": "curtainOpen",
+   "gain": -11
+  },
+  {
+   "sound": "whoosh_up",
+   "scene": "card1",
+   "at": "road",
+   "gain": -15
+  },
+  {
+   "sound": "plop",
+   "scene": "card1",
+   "at": "shops",
+   "gain": -13,
+   "vary": true
+  },
+  {
+   "sound": "stamp_light",
+   "scene": "card1",
+   "at": "chip",
+   "gain": -6
+  },
+  {
+   "sound": "boing",
+   "scene": "card1",
+   "at": "title",
+   "gain": -9
+  },
+  {
+   "sound": "pop",
+   "scene": "card1",
+   "at": "support",
+   "gain": -13
+  },
+  {
+   "sound": "pop_magic",
+   "scene": "card1",
+   "at": "play",
+   "gain": -10
+  },
+  {
+   "sound": "motor",
+   "scene": "card1",
+   "at": "moto",
+   "gain": -15
+  },
+  {
+   "sound": "sting",
+   "scene": "card1",
+   "at": "sting",
+   "gain": -5
+  }
+ ]
+}

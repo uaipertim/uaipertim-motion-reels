@@ -1,0 +1,337 @@
+{
+ "_doc": "Story de destaque 'Lojista': 4 card(s) de 6 s (180 frames). FONTE ÚNICA DE TEMPOS (30 fps) para vídeo e áudio, como no 'Conheça': 'beats' = frames LOCAIS de cada card. A trilha é UMA só (a mesma do 'Conheça'), cortada em card1..cardN.wav. Depois de editar: npm run destaque -- lojista.",
+ "fps": 30,
+ "width": 1080,
+ "height": 1920,
+ "durationInFrames": 720,
+ "splitScenes": true,
+ "scenes": {
+  "card1": {
+   "name": "Tem comércio?",
+   "from": 0,
+   "duration": 180
+  },
+  "card2": {
+   "name": "No celular da cidade",
+   "from": 180,
+   "duration": 180
+  },
+  "card3": {
+   "name": "Parceiro",
+   "from": 360,
+   "duration": 180
+  },
+  "card4": {
+   "name": "Saber mais",
+   "from": 540,
+   "duration": 180
+  }
+ },
+ "transitions": {},
+ "beats": {
+  "card1": {
+   "curtainDrop": 0,
+   "curtainOpen": 14,
+   "curtainDur": 16,
+   "shop": 30,
+   "peek": [
+    44,
+    52
+   ],
+   "title": 38,
+   "support": 62,
+   "sparkle": 46,
+   "foot": 20
+  },
+  "card2": {
+   "title": 4,
+   "shop": 10,
+   "support": 30,
+   "waves": 40,
+   "lines": [
+    50,
+    56,
+    62,
+    68
+   ],
+   "lightDelay": 10,
+   "moto": 98,
+   "motoDur": 44,
+   "foot": 10
+  },
+  "card3": {
+   "title": 4,
+   "shop": 10,
+   "spot": 16,
+   "support": 30,
+   "mega": 46,
+   "seal": 64,
+   "confetti": 66,
+   "foot": 10
+  },
+  "card4": {
+   "title": 4,
+   "shop": 10,
+   "support": 28,
+   "plane": 44,
+   "planeDur": 28,
+   "balloon": 72,
+   "wave": 20,
+   "sting": 116,
+   "foot": 10
+  }
+ },
+ "narration": {
+  "enabled": false,
+  "_doc": "Sem locução e sem legenda: os textos de tela estão em src/story/destaques/texts.ts.",
+  "items": []
+ },
+ "music": {
+  "bpm": 124,
+  "offsetSeconds": 0,
+  "segmentSeconds": 6,
+  "barsPerSegment": 4,
+  "_doc": "Uma trilha de 24s em 4 frases de 6s (uma por card). Cada frase começa num tempo forte exatamente no início do card (0, 6, 12, 18s); 3 compassos de groove e, no tempo 1 do 4º compasso, um 'button' (acorde curto) que fecha o card num tempo forte. No card 4 o acorde final/sting cai no 3º compasso (frame 116 do card) e soa até o fim.",
+  "chords": [
+   "C",
+   "G",
+   "Am",
+   "F",
+   "C",
+   "G",
+   "Am",
+   "F",
+   "Am",
+   "F",
+   "G",
+   "C",
+   "C",
+   "G",
+   "C"
+  ],
+  "buttonBars": [
+   3,
+   7,
+   11
+  ],
+  "sections": {
+   "intro": [
+    0,
+    2
+   ],
+   "grooveA": [
+    4,
+    6
+   ],
+   "grooveB": [
+    8,
+    10
+   ],
+   "peak": [
+    12,
+    13
+   ],
+   "final": [
+    14,
+    14
+   ]
+  },
+  "introHoldSeconds": 0,
+  "duckDb": -9,
+  "duckAttack": 0.08,
+  "duckRelease": 0.35
+ },
+ "master": {
+  "ceilingDb": -1.5,
+  "truePeak": true,
+  "loudnessPasses": 4
+ },
+ "sfx": [
+  {
+   "sound": "curtain",
+   "scene": "card1",
+   "at": "curtainDrop",
+   "gain": -7
+  },
+  {
+   "sound": "fwip",
+   "scene": "card1",
+   "at": "curtainOpen",
+   "gain": -11
+  },
+  {
+   "sound": "pop_magic",
+   "scene": "card1",
+   "at": "shop",
+   "gain": -8
+  },
+  {
+   "sound": "plop",
+   "scene": "card1",
+   "at": "peek",
+   "gain": -12,
+   "vary": true
+  },
+  {
+   "sound": "pop",
+   "scene": "card1",
+   "at": "title",
+   "gain": -11
+  },
+  {
+   "sound": "sininho",
+   "scene": "card1",
+   "at": "sparkle",
+   "gain": -12
+  },
+  {
+   "sound": "pop",
+   "scene": "card1",
+   "at": "support",
+   "gain": -13
+  },
+  {
+   "sound": "pop",
+   "scene": "card2",
+   "at": "title",
+   "gain": -12
+  },
+  {
+   "sound": "plop",
+   "scene": "card2",
+   "at": "shop",
+   "gain": -11
+  },
+  {
+   "sound": "pop",
+   "scene": "card2",
+   "at": "support",
+   "gain": -13
+  },
+  {
+   "sound": "whoosh_up",
+   "scene": "card2",
+   "at": "waves",
+   "gain": -15
+  },
+  {
+   "sound": "plim@2",
+   "scene": "card2",
+   "at": "lines[0]",
+   "gain": -12,
+   "offset": 10
+  },
+  {
+   "sound": "plim@4",
+   "scene": "card2",
+   "at": "lines[1]",
+   "gain": -12,
+   "offset": 10
+  },
+  {
+   "sound": "plim@7",
+   "scene": "card2",
+   "at": "lines[2]",
+   "gain": -12,
+   "offset": 10
+  },
+  {
+   "sound": "plim@9",
+   "scene": "card2",
+   "at": "lines[3]",
+   "gain": -12,
+   "offset": 10
+  },
+  {
+   "sound": "motor",
+   "scene": "card2",
+   "at": "moto",
+   "gain": -13
+  },
+  {
+   "sound": "pop",
+   "scene": "card3",
+   "at": "title",
+   "gain": -12
+  },
+  {
+   "sound": "plop",
+   "scene": "card3",
+   "at": "shop",
+   "gain": -11
+  },
+  {
+   "sound": "switch_on",
+   "scene": "card3",
+   "at": "spot",
+   "gain": -11
+  },
+  {
+   "sound": "pop",
+   "scene": "card3",
+   "at": "support",
+   "gain": -13
+  },
+  {
+   "sound": "whoosh",
+   "scene": "card3",
+   "at": "mega",
+   "gain": -14
+  },
+  {
+   "sound": "stamp",
+   "scene": "card3",
+   "at": "seal",
+   "gain": -5
+  },
+  {
+   "sound": "confete",
+   "scene": "card3",
+   "at": "confetti",
+   "gain": -11
+  },
+  {
+   "sound": "brilho",
+   "scene": "card3",
+   "at": "confetti",
+   "gain": -14,
+   "offset": 3
+  },
+  {
+   "sound": "pop",
+   "scene": "card4",
+   "at": "title",
+   "gain": -12
+  },
+  {
+   "sound": "plop",
+   "scene": "card4",
+   "at": "shop",
+   "gain": -11
+  },
+  {
+   "sound": "pop",
+   "scene": "card4",
+   "at": "support",
+   "gain": -13
+  },
+  {
+   "sound": "slide_whistle",
+   "scene": "card4",
+   "at": "plane",
+   "gain": -12
+  },
+  {
+   "sound": "notif",
+   "scene": "card4",
+   "at": "balloon",
+   "gain": -9
+  },
+  {
+   "sound": "sting",
+   "scene": "card4",
+   "at": "sting",
+   "gain": -5
+  }
+ ]
+}

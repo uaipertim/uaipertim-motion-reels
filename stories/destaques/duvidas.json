@@ -1,9 +1,0 @@
-{
-  "nome": "duvidas",
-  "cards": [
-    { "titulo": "Dúvidas? 🤔", "texto": "As perguntas que mais chegam pra gente.", "icone": "duvida" },
-    { "titulo": "É pago pra quem compra?", "texto": "Não. Pra quem compra, é grátis.", "icone": "gratis" },
-    { "titulo": "Onde vai funcionar?", "texto": "Começando pelo Glória. Depois, mais cidades de Minas.", "icone": "cidade" },
-    { "titulo": "Quando começa?", "texto": "Em breve. Ativa o sininho 🔔 no perfil pra saber primeiro.", "icone": "sino" }
-  ]
-}

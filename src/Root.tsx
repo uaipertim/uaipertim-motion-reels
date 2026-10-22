@@ -19,15 +19,8 @@ import { CarrosselFacim, CarrosselProps, SLIDE, measureSlide } from "./carrossel
 import facim01 from "../carrosseis/facim/01-antes-que-voce-pergunte.json";
 import { CorteCurto, CorteProps, measureCorte } from "./cortes/Corte";
 import corteA from "../cortes/corte-A.json";
-import { StoryDestaque, DestaqueProps, STORY, measureDestaque } from "./story/StoryDestaque";
 import { DestaqueCapa } from "./story/DestaqueCapa";
-import duvidas from "../stories/destaques/duvidas.json";
-
-// Stories de destaque: um card = JSON em --props + "card" (índice, a partir de 0); textos medidos com as fontes carregadas.
-const destaqueMetadata = async ({ props }: { props: DestaqueProps }) => {
-  await fontsReady;
-  return { props: { ...props, layout: measureDestaque(props, props.card ?? 0) } };
-};
+import { DESTAQUES, DESTAQUE_IDS, DestaqueCard, DestaqueNome } from "./story/destaques/Destaques";
 
 // Cortes curtos: duração = trecho do original + fecho; textos medidos com as fontes carregadas.
 const corteMetadata = async ({ props }: { props: CorteProps }) => {
@@ -154,16 +147,21 @@ export const RemotionRoot: React.FC = () => (
       defaultProps={corteA as CorteProps}
       calculateMetadata={corteMetadata}
     />
-    <Composition
-      id="Story-Destaque"
-      component={StoryDestaque}
-      durationInFrames={STORY.frames}
-      fps={STORY.fps}
-      width={STORY.width}
-      height={STORY.height}
-      defaultProps={{ ...(duvidas as DestaqueProps), card: 0 }}
-      calculateMetadata={destaqueMetadata}
-    />
+    {/* Stories de destaque (Dúvidas, Lojista, Explica, Sô!): 1 composição (e 1 MP4) por card, como no "Conheça" */}
+    {(Object.keys(DESTAQUES) as DestaqueNome[]).flatMap((nome) =>
+      DESTAQUES[nome].map((_, i) => (
+        <Composition
+          key={`${nome}${i}`}
+          id={`Destaque-${DESTAQUE_IDS[nome]}-Card${i + 1}`}
+          component={DestaqueCard}
+          durationInFrames={180}
+          fps={30}
+          width={1080}
+          height={1920}
+          defaultProps={{ nome, card: i, withAudio: true }}
+        />
+      )),
+    )}
     <Still id="Destaque-Capa" component={DestaqueCapa} width={1080} height={1920} defaultProps={{ icone: "conheca" as const }} />
   </>
 );

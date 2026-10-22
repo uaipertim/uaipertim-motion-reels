@@ -224,22 +224,40 @@ Saída em `out/carrosseis/facim/NN-tema/`: `slide-1.png` … `slide-N.png` e `ca
 
 **Publicados no modelo coral:** C5, C6, **C7** "Quer saber *primeiro*? 🔔" (como ativar o sininho), **C8** "Por que comprar *pertim*? 💛" e **C9** "Domingo à noite e a geladeira *vazia*? 🌙". A quebra de linha do carrossel também segura "pertim de você", "do Glória" e "no Glória" juntos, e o slide final pinta de coral a 1ª palavra "Manda" ou "Marca".
 
-## Stories de destaque (modelo genérico por JSON) + capas dos destaques
+## Stories de destaque (Dúvidas, Lojista, Explica, Sô!) + capas dos destaques
 
-Composição `Story-Destaque` (`src/story/StoryDestaque.tsx`), 1080×1920, 30 fps, 6 s por card. **Destaque novo = um JSON** em `stories/destaques/<nome>.json`:
+Os destaques seguem o padrão do Story "Conheça".
 
-```json
-{ "nome": "duvidas", "cards": [ { "titulo": "Dúvidas? 🤔", "texto": "As perguntas que mais chegam pra gente.", "icone": "duvida", "chip": "opcional" } ] }
-```
+**Cenas:** cada card é uma cena animada própria, um componente por card, em `src/story/destaques/`:
+- `Duvidas.tsx`: cards 1–4.
+- `Lojista.tsx`: cards 1–4.
+- `ExplicaSo.tsx`: card 1.
+- `kit.tsx`: as peças em comum.
 
-- **Visual:** fundo creme com raios de sol (o do Story "Conheça"), ícone num círculo (os mesmos ícones do carrossel, `icone`), chip opcional, título Poppins Black e texto ExtraBold.
-- **Rodapé discreto:** a logo oficial pequena + "Tudo pertim de você.", sem @.
-- **Animação:** tudo entra até 1,2 s e fica parado; só o fundo segue vivo.
-- **Cards independentes:** cada card se explica sozinho, sem "1/4" nem "arrasta", porque o destaque pode abrir em qualquer um.
-- **Zona segura:** conteúdo entre y 250–1600 e x 80–1000. Os tamanhos e as quebras são medidos por card, com as mesmas regras do carrossel.
-- **Trilha leve:** sintetizada pelo projeto (`audio/destaque_trilha.py` → `public/audio/destaques/trilha.wav`), em −14 LUFS. Sem narração.
+**Formato:** 1080×1920, 30 fps, 6 s por card, 1 composição e 1 MP4 por card (`Destaque-Duvidas-Card1` …).
 
-**Gerar:** `npm run destaque -- duvidas` → `out/destaques/duvidas/card-N.mp4` + `card-N.png` (o quadro final). Destaques prontos: `duvidas` (4 cards), `lojista` (4) e `explica-so` (1).
+**Linguagem do "Conheça":**
+- Toldo listrado no topo; a cortina cai e abre no 1º card de cada destaque.
+- Fundo creme com raios de sol girando.
+- As lojinhas-personagem (`ShopChar`) piscando, olhando e reagindo.
+- Brilhos, confete e textos que pipocam palavra por palavra, com a palavra de destaque em coral.
+- Rodapé com a logo oficial + "Tudo pertim de você.", sem @.
+- Nada fica parado: depois que tudo entra, olhos, balanço, raios e partículas seguem vivos.
+- Os textos entram até ~3 s e ficam ≥ 2,5 s inteiros e parados.
+- Os textos ficam em `src/story/destaques/texts.ts`, já quebrados pelas regras fixas.
+
+**Tempos:** `src/story/destaques/config/<nome>.json` (beats por card, 30 fps) é a fonte única para vídeo e áudio, como no "Conheça".
+
+**Áudio** (`python3 audio/destaque.py <nome>`):
+- A seção `music` é a mesma do "Conheça": 124 bpm, Dó maior, ukulele + marimba + glock + baixo, frases de 6 s com acorde no fim e sting no último card.
+- Os efeitos (`audio/sfx.py`) caem nos beats.
+- Mix contínuo em −14 LUFS, com pico ≤ −1,5 dBTP (`master.loudnessPasses`), cortado em `public/audio/destaques/<nome>/card1..N.wav`.
+- Como no "Conheça", cada card sozinho fica entre −11 e −16 LUFS: o card com o sting soa mais forte.
+
+**Gerar:** `npm run destaque -- duvidas` (ou `lojista`, `explica-so`). O comando gera:
+- o áudio;
+- `out/destaques/<nome>/card-N.mp4` + `card-N.png` (o quadro final);
+- `storyboard.jpg`, com 3 quadros por card: 0,5 s, 2 s e 5,5 s.
 
 **Capas dos destaques:** `npm run destaque -- capas` → `out/destaques/capas/{conheca,duvidas,lojista,explica-so}.png`.
 

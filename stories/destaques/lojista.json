@@ -1,9 +1,0 @@
-{
-  "nome": "lojista",
-  "cards": [
-    { "titulo": "Tem comércio no Glória? 👀", "texto": "Esse destaque é pra você.", "icone": "loja" },
-    { "titulo": "Seu comércio no celular da cidade", "texto": "Quem é do Glória vai poder pedir de você.", "icone": "cidade" },
-    { "titulo": "Parceiro desde o começo", "texto": "Os primeiros comércios parceiros entram na nossa divulgação.", "icone": "check" },
-    { "titulo": "Quer saber mais?", "texto": "Chama a gente no direct 📩", "icone": "mensagem" }
-  ]
-}

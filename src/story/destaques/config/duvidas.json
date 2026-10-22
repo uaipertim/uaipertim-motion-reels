@@ -1,0 +1,355 @@
+{
+ "_doc": "Story de destaque 'Dúvidas': 4 card(s) de 6 s (180 frames). FONTE ÚNICA DE TEMPOS (30 fps) para vídeo e áudio, como no 'Conheça': 'beats' = frames LOCAIS de cada card. A trilha é UMA só (a mesma do 'Conheça'), cortada em card1..cardN.wav. Depois de editar: npm run destaque -- duvidas.",
+ "fps": 30,
+ "width": 1080,
+ "height": 1920,
+ "durationInFrames": 720,
+ "splitScenes": true,
+ "scenes": {
+  "card1": {
+   "name": "Dúvidas?",
+   "from": 0,
+   "duration": 180
+  },
+  "card2": {
+   "name": "É pago?",
+   "from": 180,
+   "duration": 180
+  },
+  "card3": {
+   "name": "Onde?",
+   "from": 360,
+   "duration": 180
+  },
+  "card4": {
+   "name": "Quando?",
+   "from": 540,
+   "duration": 180
+  }
+ },
+ "transitions": {},
+ "beats": {
+  "card1": {
+   "curtainDrop": 0,
+   "curtainOpen": 14,
+   "curtainDur": 16,
+   "balloon": 30,
+   "shops": [
+    40,
+    45,
+    50,
+    55
+   ],
+   "title": 42,
+   "support": 64,
+   "qs": [
+    72,
+    92,
+    112,
+    132
+   ],
+   "foot": 20
+  },
+  "card2": {
+   "tag": 4,
+   "title": 8,
+   "support": 32,
+   "stamp": 56,
+   "shops": [
+    12,
+    16,
+    20,
+    24
+   ],
+   "confetti": 58,
+   "foot": 10
+  },
+  "card3": {
+   "title": 4,
+   "map": 10,
+   "pin": 18,
+   "pinLand": 30,
+   "support": 38,
+   "pins": [
+    62,
+    68,
+    74,
+    80,
+    86
+   ],
+   "shops": [
+    14,
+    20
+   ],
+   "foot": 10
+  },
+  "card4": {
+   "title": 4,
+   "ribbon": 14,
+   "ribbonDur": 22,
+   "bell": 20,
+   "bellRings": [
+    34,
+    74,
+    114
+   ],
+   "support": 44,
+   "moto": 96,
+   "motoDur": 60,
+   "sting": 116,
+   "shops": [
+    12,
+    18
+   ],
+   "foot": 10
+  }
+ },
+ "narration": {
+  "enabled": false,
+  "_doc": "Sem locução e sem legenda: os textos de tela estão em src/story/destaques/texts.ts.",
+  "items": []
+ },
+ "music": {
+  "bpm": 124,
+  "offsetSeconds": 0,
+  "segmentSeconds": 6,
+  "barsPerSegment": 4,
+  "_doc": "Uma trilha de 24s em 4 frases de 6s (uma por card). Cada frase começa num tempo forte exatamente no início do card (0, 6, 12, 18s); 3 compassos de groove e, no tempo 1 do 4º compasso, um 'button' (acorde curto) que fecha o card num tempo forte. No card 4 o acorde final/sting cai no 3º compasso (frame 116 do card) e soa até o fim.",
+  "chords": [
+   "C",
+   "G",
+   "Am",
+   "F",
+   "C",
+   "G",
+   "Am",
+   "F",
+   "Am",
+   "F",
+   "G",
+   "C",
+   "C",
+   "G",
+   "C"
+  ],
+  "buttonBars": [
+   3,
+   7,
+   11
+  ],
+  "sections": {
+   "intro": [
+    0,
+    2
+   ],
+   "grooveA": [
+    4,
+    6
+   ],
+   "grooveB": [
+    8,
+    10
+   ],
+   "peak": [
+    12,
+    13
+   ],
+   "final": [
+    14,
+    14
+   ]
+  },
+  "introHoldSeconds": 0,
+  "duckDb": -9,
+  "duckAttack": 0.08,
+  "duckRelease": 0.35
+ },
+ "master": {
+  "ceilingDb": -1.5,
+  "truePeak": true,
+  "loudnessPasses": 4
+ },
+ "sfx": [
+  {
+   "sound": "curtain",
+   "scene": "card1",
+   "at": "curtainDrop",
+   "gain": -7
+  },
+  {
+   "sound": "fwip",
+   "scene": "card1",
+   "at": "curtainOpen",
+   "gain": -11
+  },
+  {
+   "sound": "boing",
+   "scene": "card1",
+   "at": "balloon",
+   "gain": -6
+  },
+  {
+   "sound": "plop",
+   "scene": "card1",
+   "at": "shops",
+   "gain": -13,
+   "vary": true
+  },
+  {
+   "sound": "pop",
+   "scene": "card1",
+   "at": "title",
+   "gain": -11
+  },
+  {
+   "sound": "pop",
+   "scene": "card1",
+   "at": "support",
+   "gain": -13
+  },
+  {
+   "sound": "boing_small",
+   "scene": "card1",
+   "at": "qs",
+   "gain": -16,
+   "vary": true
+  },
+  {
+   "sound": "pop",
+   "scene": "card2",
+   "at": "title",
+   "gain": -12
+  },
+  {
+   "sound": "whoosh_down",
+   "scene": "card2",
+   "at": "tag",
+   "gain": -13
+  },
+  {
+   "sound": "plop",
+   "scene": "card2",
+   "at": "shops",
+   "gain": -14,
+   "vary": true
+  },
+  {
+   "sound": "pop",
+   "scene": "card2",
+   "at": "support",
+   "gain": -13
+  },
+  {
+   "sound": "whistle_drop",
+   "scene": "card2",
+   "at": "stamp",
+   "gain": -14,
+   "offset": -9
+  },
+  {
+   "sound": "stamp",
+   "scene": "card2",
+   "at": "stamp",
+   "gain": -5
+  },
+  {
+   "sound": "confete",
+   "scene": "card2",
+   "at": "confetti",
+   "gain": -11
+  },
+  {
+   "sound": "cheer",
+   "scene": "card2",
+   "at": "confetti",
+   "gain": -14,
+   "offset": 4
+  },
+  {
+   "sound": "pop",
+   "scene": "card3",
+   "at": "title",
+   "gain": -12
+  },
+  {
+   "sound": "whoosh_up",
+   "scene": "card3",
+   "at": "map",
+   "gain": -14
+  },
+  {
+   "sound": "pin_drop",
+   "scene": "card3",
+   "at": "pin",
+   "gain": -8
+  },
+  {
+   "sound": "chime",
+   "scene": "card3",
+   "at": "pinLand",
+   "gain": -11
+  },
+  {
+   "sound": "pop",
+   "scene": "card3",
+   "at": "support",
+   "gain": -13
+  },
+  {
+   "sound": "plop",
+   "scene": "card3",
+   "at": "pins",
+   "gain": -11,
+   "vary": true
+  },
+  {
+   "sound": "plop",
+   "scene": "card3",
+   "at": "shops",
+   "gain": -15,
+   "vary": true
+  },
+  {
+   "sound": "pop",
+   "scene": "card4",
+   "at": "title",
+   "gain": -12
+  },
+  {
+   "sound": "fwip",
+   "scene": "card4",
+   "at": "ribbon",
+   "gain": -9
+  },
+  {
+   "sound": "pop",
+   "scene": "card4",
+   "at": "bell",
+   "gain": -12
+  },
+  {
+   "sound": "bell",
+   "scene": "card4",
+   "at": "bellRings",
+   "gain": -9
+  },
+  {
+   "sound": "pop",
+   "scene": "card4",
+   "at": "support",
+   "gain": -13
+  },
+  {
+   "sound": "motor",
+   "scene": "card4",
+   "at": "moto",
+   "gain": -14
+  },
+  {
+   "sound": "sting",
+   "scene": "card4",
+   "at": "sting",
+   "gain": -5
+  }
+ ]
+}
