@@ -3,11 +3,11 @@ import { AbsoluteFill } from "remotion";
 import { C } from "../config/theme";
 
 // CAPAS DOS DESTAQUES (1080×1920): fundo coral liso e um ícone creme no centro, sem texto. O Instagram recorta a
-// capa num círculo central, então o ícone cabe num círculo de 600 px (cada desenho ocupa um quadrado de 380 px: o ponto mais longe do centro fica a ~230 px).
+// capa no círculo central da largura toda (1080 px): cada desenho ocupa um quadrado de 630 px (~57% do diâmetro), centrado.
 // Mesmo traço nos 4: formas cheias creme com recortes coral (como os ícones do carrossel, numa cor só).
 
 export type CapaIcone = "conheca" | "duvidas" | "lojista" | "explica-so";
-const S = 380; // o ícone ocupa um quadrado de 380 px: cabe com folga no círculo de 600 px (diagonal de 537 px)
+const S = 630; // o ícone ocupa um quadrado de 630 px: ~57% do círculo da largura toda (1080 px), que o Instagram usa por padrão
 const K = C.creme, O = C.coral;
 
 const ICONES: Record<CapaIcone, React.ReactNode> = {

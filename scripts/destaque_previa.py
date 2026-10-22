@@ -1,5 +1,5 @@
 """Prévia das capas dos destaques como aparecem no perfil: o Instagram mostra o centro da capa num círculo.
-Linha de cima: o círculo do quadrado central (1080 px); linha de baixo: o círculo de 600 px (o recorte mais justo).
+Mostra o círculo da largura toda (1080 px), o recorte padrão.
     python3 scripts/destaque_previa.py   -> out/destaques/capas/previa.png
 """
 import os
@@ -12,9 +12,9 @@ font = ImageFont.truetype(os.path.join(ROOT, "public", "fonts", "poppins-latin-5
 small = ImageFont.truetype(os.path.join(ROOT, "public", "fonts", "poppins-latin-500-normal.woff2"), 20)
 R, GAP, X0 = 200, 70, 60
 W = X0 * 2 + len(CAPAS) * R + (len(CAPAS) - 1) * GAP
-sheet = Image.new("RGB", (W, 2 * (R + 120) + 40), (255, 255, 255))
+sheet = Image.new("RGB", (W, R + 160), (255, 255, 255))
 dr = ImageDraw.Draw(sheet)
-for row, (lado, nota) in enumerate([(1080, "círculo do quadrado central (1080 px)"), (600, "círculo de 600 px")]):
+for row, (lado, nota) in enumerate([(1080, "círculo da largura toda (1080 px), o padrão do Instagram")]):
     y0 = 30 + row * (R + 140)
     dr.text((X0, y0 - 22), nota, font=small, fill=(140, 140, 140))
     for i, (nome, rot) in enumerate(CAPAS):

@@ -19,7 +19,8 @@ import { fitWrap, Wrapped } from "../dicionario/fit";
 export type Icone =
   | "navegador" | "gratis" | "cadastro" | "cidade" | "categoria" | "loja" | "entrega" | "calendario"
   | "seguir" | "sino" | "check" | "dinheiro" | "lanche" | "sofa" | "duvida" | "mensagem";
-export type Slide = { tipo: "capa" | "conteudo" | "final"; titulo: string; texto?: string; icone?: Icone };
+// quebra (opcional, só na capa): as linhas do título já definidas; o corpo diminui até todas caberem na margem
+export type Slide = { tipo: "capa" | "conteudo" | "final"; titulo: string; texto?: string; icone?: Icone; quebra?: string[] };
 export type Carrossel = { numero: number; chip: string; capa?: "coral" | "creme"; slides: Slide[] };
 export type CarrosselProps = Carrossel & { slide: number; layout?: { titulo: Wrapped; texto?: Wrapped } };
 
@@ -44,7 +45,16 @@ const glueSlide = (s: Slide): Slide => ({ ...s, titulo: glue(s.titulo), texto: s
 // medido em calculateMetadata (fontes carregadas)
 export const measureSlide = (c: Carrossel, i: number) => {
   const s = glueSlide(c.slides[i]);
-  if (s.tipo === "capa") return { titulo: fitWrap(plain(s.titulo), W.black, SLIDE.width - 2 * (capaCoral(c) ? M_CAPA_CORAL : M_CAPA_CREME), [124, 114, 104, 96, 88, 80], 4) };
+  if (s.tipo === "capa") {
+    const larg = SLIDE.width - 2 * (capaCoral(c) ? M_CAPA_CORAL : M_CAPA_CREME), sizes = [124, 114, 104, 96, 88, 80, 72];
+    if (s.quebra?.length) {
+      const lines = s.quebra.map((l) => glue(plain(l)));
+      if (lines.join(" ").replace(/\u00A0/g, " ") !== plain(s.titulo).replace(/\u00A0/g, " ")) throw new Error("capa: a quebra não bate com o título");
+      const size = sizes.find((z) => lines.every((l) => fitWrap(l, W.black, larg, [z], 1).ok)) ?? sizes[sizes.length - 1];
+      return { titulo: { size, lines, ok: true } };
+    }
+    return { titulo: fitWrap(plain(s.titulo), W.black, larg, sizes, 4) };
+  }
   if (s.tipo === "final")
     return {
       titulo: fitWrap(plain(s.titulo), W.black, SLIDE.width - 2 * M, [108, 100, 92, 84, 76], 4),

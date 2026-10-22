@@ -244,8 +244,8 @@ Composição `Story-Destaque` (`src/story/StoryDestaque.tsx`), 1080×1920, 30 fp
 **Capas dos destaques:** `npm run destaque -- capas` → `out/destaques/capas/{conheca,duvidas,lojista,explica-so}.png`.
 
 - **Composição:** `Destaque-Capa`, em `src/story/DestaqueCapa.tsx`.
-- **Visual:** fundo coral liso e ícone creme no mesmo traço nos 4, sem texto. Cada ícone ocupa 380 px e fica a no máximo ~230 px do centro, dentro do círculo de 600 px que o Instagram recorta.
-- **Prévia:** `previa.png` mostra as 4 em círculos, como no perfil.
+- **Visual:** fundo coral liso e ícone creme no mesmo traço nos 4, sem texto. Cada ícone ocupa um quadrado de 630 px centrado (~57% do círculo da largura toda, 1080 px, que o Instagram usa por padrão).
+- **Prévia:** `previa.png` mostra as 4 no círculo de 1080 px, como no perfil.
 
 ## Cortes curtos (A–D) a partir dos Reels
 

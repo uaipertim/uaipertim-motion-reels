@@ -3,7 +3,7 @@
   "chip": "FACIM FACIM",
   "capa": "coral",
   "slides": [
-    { "tipo": "capa", "titulo": "Domingo à noite e a geladeira *vazia*? 🌙", "texto": "" },
+    { "tipo": "capa", "titulo": "Domingo à noite e a geladeira *vazia*? 🌙", "texto": "", "quebra": ["Domingo à noite", "e a geladeira", "vazia? 🌙"] },
     { "tipo": "conteudo", "titulo": "Bateu a fome", "texto": "Aquele lanche, uma pizza, um açaí…", "icone": "lanche" },
     { "tipo": "conteudo", "titulo": "Mas sair de casa?", "texto": "De pijama, no sofá? Uai, nem pensar.", "icone": "sofa" },
     { "tipo": "conteudo", "titulo": "Em breve, é só pedir", "texto": "Do comércio do Glória que estiver aberto.", "icone": "loja" },
