@@ -1082,45 +1082,46 @@
     },
     draw(ctx, cap, t) {
       const d = cap.diagrama, ev = cap.ev;
-      const top = Math.max(diaTop(cap), 860);
-      const rua = top + 330;                                // o meio da rua
+      // a cena em escala 1,25 e o bloco descido: os chips terminam em y 1440
+      const rua = 1206;                                     // o meio da rua
+      const HX = 776, HW = 288, HK = HW / 220;              // a casinha (cabe inteira antes de x 940)
       const ec = ent(t, ev.cena, 0.5);
       enter(ctx, ec, L.cx, rua, () => {
         // a calçada e a rua com o tracejado coral
-        ctx.fillStyle = C.cremeDeep; rr(ctx, L.x0, rua - 44, L.x1 - L.x0, 18, 6); ctx.fill();
-        ctx.fillStyle = css('#D9C2A6', 0.8); rr(ctx, L.x0, rua - 26, L.x1 - L.x0, 56, 10); ctx.fill();
-        ctx.save(); ctx.setLineDash([26, 20]); ctx.lineWidth = 6; ctx.strokeStyle = C.coral; ctx.beginPath(); ctx.moveTo(L.x0 + 20, rua + 2); ctx.lineTo(L.x1 - 20, rua + 2); ctx.stroke(); ctx.restore();
-        casinha(ctx, 800, rua - 40, 230, p(t, ev.porta, ev.porta + 0.45), t);
-        BOX('casinha', 680, rua - 40 - 262, 920, rua - 40);
+        ctx.fillStyle = C.cremeDeep; rr(ctx, L.x0, rua - 56, L.x1 - L.x0, 22, 7); ctx.fill();
+        ctx.fillStyle = css('#D9C2A6', 0.8); rr(ctx, L.x0, rua - 34, L.x1 - L.x0, 70, 12); ctx.fill();
+        ctx.save(); ctx.setLineDash([32, 24]); ctx.lineWidth = 7; ctx.strokeStyle = C.coral; ctx.beginPath(); ctx.moveTo(L.x0 + 24, rua + 2); ctx.lineTo(L.x1 - 24, rua + 2); ctx.stroke(); ctx.restore();
+        casinha(ctx, HX, rua - 50, HW, p(t, ev.porta, ev.porta + 0.45), t);
+        BOX('casinha', HX - 120 * HK, rua - 50 - 246 * HK, HX + 120 * HK, rua - 50);
       });
       // a motinha: entra pela esquerda e para na porta
       if (t >= ev.moto - 0.05) {
         const u = p(t, ev.moto, ev.chega), e = E.inOutCubic(u);
-        const x = lerp(L.x0 + 40, 560, e), sp = Math.sin(Math.PI * u);
+        const x = lerp(L.x0 + 60, 500, e), sp = Math.sin(Math.PI * u);
         const bob = u >= 1 ? 2 * Math.sin((t - ev.chega) * 9) * Math.exp(-(t - ev.chega) * 2) : -3 * Math.abs(Math.sin(t * 22)) * sp;
         ctx.save(); ctx.globalAlpha *= clamp((t - ev.moto + 0.05) / 0.2);
-        moto(ctx, x, rua + 18 + bob, 170, { dir: 1, tilt: -0.04 * sp, roll: x / 18, speed: sp });
+        moto(ctx, x, rua + 24 + bob, 212, { dir: 1, tilt: -0.04 * sp, roll: x / 18, speed: sp });
         // poeirinha
-        if (sp > 0.1) for (let i = 0; i < 4; i++) { const ph = (t * 3 + i / 4) % 1; ctx.fillStyle = css(C.cremeDeep, 0.6 * (1 - ph) * sp); ctx.beginPath(); ctx.arc(x - 100 - ph * 60, rua + 10 - ph * 20, 8 + 10 * ph, 0, TAU); ctx.fill(); }
+        if (sp > 0.1) for (let i = 0; i < 4; i++) { const ph = (t * 3 + i / 4) % 1; ctx.fillStyle = css(C.cremeDeep, 0.6 * (1 - ph) * sp); ctx.beginPath(); ctx.arc(x - 125 - ph * 75, rua + 14 - ph * 25, 10 + 12 * ph, 0, TAU); ctx.fill(); }
         ctx.restore();
-        if (u >= 1) BOX('motinha', 560 - 90, rua + 18 - 170, 560 + 90, rua + 18);
+        if (u >= 1) BOX('motinha', 500 - 112, rua + 24 - 212, 500 + 112, rua + 24);
       }
       // os chips riscados: sem fila, sem chuva, sem tirar o chinelo
       const rows = [[0, 1], [2]], gap = 22;
       rows.forEach((row, j) => {
-        const ws = row.map((i) => (d.chips[i] ? 26 * 2 + 30 * 1.35 + 10 + tw(d.chips[i].t, 30, 800, 2) : 0));
+        const ws = row.map((i) => (d.chips[i] ? 30 * 2 + 36 * 1.35 + 10 + tw(d.chips[i].t, 36, 800, 2) : 0));
         let x = L.cx - (ws.reduce((a, b) => a + b, 0) + gap * (row.length - 1)) / 2;
-        const y = rua + 112 + j * 96;
+        const y = rua + 98 + j * 94;
         row.forEach((i, k) => {
           const c = d.chips[i]; if (!c) return;
           const t0 = ev.chips[i], e = ent(t, t0, 0.35);
           if (e > 0) {
             const rk = E.outCubic(p(t, t0 + 0.18, t0 + 0.42));
             pop(ctx, e, x + ws[k] / 2, y, () => {
-              chip(ctx, c.t, x, y, { size: 30, h: 76, pad: 26, ls: 2, icon: c.icone, color: mixHex(C.tinta, C.cinza, rk), iconColor: C.coral, box: e > 0.99 ? `chip ${c.t}` : null });
+              chip(ctx, c.t, x, y, { size: 36, h: 86, pad: 30, ls: 2, icon: c.icone, color: mixHex(C.tinta, C.cinza, 0.35 * rk), iconColor: C.coral, box: e > 0.99 ? `chip ${c.t}` : null });
               if (rk > 0) {
-                ctx.save(); ctx.strokeStyle = C.coral; ctx.lineWidth = 5; ctx.lineCap = 'round';
-                ctx.beginPath(); ctx.moveTo(x + 14, y + 4); ctx.lineTo(x + 14 + (ws[k] - 28) * rk, y - 4); ctx.stroke(); ctx.restore();
+                ctx.save(); ctx.strokeStyle = C.coral; ctx.lineWidth = 6; ctx.lineCap = 'round';
+                ctx.beginPath(); ctx.moveTo(x + 16, y + 5); ctx.lineTo(x + 16 + (ws[k] - 32) * rk, y - 5); ctx.stroke(); ctx.restore();
               }
             }, 1.7);
           }
@@ -1130,7 +1131,7 @@
     },
   };
 
-  // ---- fecho: título "Em breve / no Glória", a LOGO OFICIAL grande e fixa e o chip "Segue @uaipertim" com seta
+  // ---- fecho: título "Em breve / no Glória.", a LOGO OFICIAL grande e fixa e o chip "Segue @uaipertim" com seta
   CENAS.fecho = {
     setup(cap) {
       const d = cap.diagrama, ev = cap.ev;

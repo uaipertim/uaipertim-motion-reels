@@ -41,7 +41,7 @@ O motor, as cenas e o roteiro estão prontos e conferidos numa **prévia sem voz
    - **Quebra de linha:** nunca separa as duas últimas palavras de uma frase. O emoji gruda na última palavra. "pertim de você", "do Glória" e "no Glória" ficam sempre juntos.
    - Em 2 linhas, a quebra é a mais equilibrada, de preferência depois de vírgula.
 7. **Fecho (6–8 s; `min` 7,5).**
-   - Título "Em breve / no Glória".
+   - Título "Em breve / no Glória.".
    - A **logo oficial grande** entra com mola e para. Ela fica **parada e visível nos 3 últimos segundos** (o motor nunca a deixa entrar depois de fim − 3,9 s).
    - Chip coral "Segue @uaipertim", com uma seta desenhada.
    - Todo texto do fecho fica **≥ 3 s parado** antes do fim.
