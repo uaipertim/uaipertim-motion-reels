@@ -181,7 +181,7 @@ const Lines: React.FC<{
   );
 };
 
-const BookIcon: React.FC<{ size: number; color?: string }> = ({ size, color = "#fff" }) => (
+export const BookIcon: React.FC<{ size: number; color?: string }> = ({ size, color = "#fff" }) => (
   <svg width={size} height={size * 0.78} viewBox="0 0 100 78">
     <path d="M50 14 C38 4 18 4 4 8 L4 70 C18 66 38 66 50 76 Z" fill={color} />
     <path d="M50 14 C62 4 82 4 96 8 L96 70 C82 66 62 66 50 76 Z" fill={color} opacity={0.82} />
@@ -205,7 +205,7 @@ const Chip: React.FC<{ numero: number; size: number }> = ({ numero, size }) => (
 );
 
 // palavra-título com o mesmo tratamento das capas (coral, sombra coral escura, marcador amarelo)
-const BigWord: React.FC<{ lines: string[]; size: number; widths?: number[] }> = ({ lines, size, widths }) => {
+export const BigWord: React.FC<{ lines: string[]; size: number; widths?: number[] }> = ({ lines, size, widths }) => {
   const k = size / 300;
   const last = lines.length - 1;
   return (
@@ -233,7 +233,7 @@ const BigWord: React.FC<{ lines: string[]; size: number; widths?: number[] }> = 
 };
 
 // altura do bloco da palavra (do topo da 1ª linha até o fim do marcador)
-const bigWordHeight = (lines: number, size: number) => (lines - 1) * size * 1.07 + size * (236 / 300) + 64 * (size / 300) * 2.2;
+export const bigWordHeight = (lines: number, size: number) => (lines - 1) * size * 1.07 + size * (236 / 300) + 64 * (size / 300) * 2.2;
 
 // ---------------- CENA 1 · CAPA (quadro 0 já completo) ----------------
 const Capa: React.FC<{ ep: Episodio; L: Layout; dur: number }> = ({ ep, L, dur }) => {

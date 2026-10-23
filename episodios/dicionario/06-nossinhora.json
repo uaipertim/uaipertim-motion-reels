@@ -4,5 +4,6 @@
   "significado": "Espanto. Daqueles grandes.",
   "exemplo": "Nossinhora, que calor!",
   "ponte": "Nossinhora, num precisa baixar nada?",
-  "cta": "Manda pra quem fala 'nossinhora' 😂"
+  "cta": "Manda pra quem fala 'nossinhora' 😂",
+  "capa": {"ilustracao": "espanto", "fundo": "pessego", "cor": "coral"}
 }

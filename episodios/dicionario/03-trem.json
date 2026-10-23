@@ -4,5 +4,6 @@
   "significado": "Qualquer coisa. Objeto, situação, tudo.",
   "exemplo": "Me passa esse trem aí.",
   "ponte": "Aquele trem do mercado? Em breve, dá pra pedir pelo celular.",
-  "cta": "Manda pra quem chama tudo de trem 😂"
+  "cta": "Manda pra quem chama tudo de trem 😂",
+  "capa": {"ilustracao": "trenzinho", "fundo": "creme", "cor": "amarelo"}
 }

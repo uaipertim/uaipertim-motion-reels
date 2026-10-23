@@ -4,5 +4,6 @@
   "significado": "Biscoito, rosca, bolo e pão caseiro do café.",
   "exemplo": "Passa aí que tem quitanda pro café.",
   "ponte": "Padaria também vai estar no UaiPertim.",
-  "cta": "Manda pra quem não vive sem quitanda 😂"
+  "cta": "Manda pra quem não vive sem quitanda 😂",
+  "capa": {"ilustracao": "cesta", "fundo": "creme", "cor": "amarelo"}
 }

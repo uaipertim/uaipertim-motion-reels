@@ -186,6 +186,18 @@ Faz tudo em sequência (`scripts/dicionario.sh`):
 
 **Episódio novo:** crie `episodios/dicionario/09-palavra.json` com os 6 campos e rode `npm run dicionario -- 09`. No Studio, a composição abre o episódio 01; para ver outro, passe o JSON em `--props`.
 
+**Capas novas dos Reels (PNG para subir como capa, o vídeo não muda):** composições estáticas `CapaDicionario-01` … `CapaDicionario-07` (`src/dicionario/CapaDicionario.tsx`), 1080×1920, com tudo dentro do recorte 3:4 da grade (x 110–970, y 300–1620): selo "DICIONÁRIO MINEIRO · #NN" no topo (número 2,3× o texto do selo), ilustração grande no estilo das lojinhas (y ~440–1060), a palavra no tratamento do `BigWord` (coral, sombra, marcador amarelo; tamanho pelo mesmo `fitCover`, ≤ 72% da largura) e a linha "cê sabe o que significa?" (Poppins Medium, tinta). Cada JSON do episódio tem o campo `capa`:
+
+```json
+"capa": { "ilustracao": "cesta", "fundo": "creme", "cor": "amarelo" }
+```
+
+- `ilustracao`: `balao-uai`, `casa-loja`, `trenzinho`, `joia`, `aceno`, `espanto`, `cesta`.
+- `fundo`: `creme` ou `pessego` (#FBE3CC), alternando na sequência.
+- `cor`: `coral`, `verde`, `amarelo` ou `amarelo-verde`; tinge os raios de sol e o halo atrás da ilustração (a palavra continua coral).
+
+**Gerar:** `npm run capas:dicionario` → `out/capas/dicionario/capa-dicionario-NN-palavra.png` + `recorte-3x4.png` (as 7 no recorte da grade, com a zona segura tracejada) + `grade-previa.png` (a grade do perfil em 3 colunas, na ordem combinada, recortada em 3:4).
+
 ## Carrossel "Facim facim" (modelo fixo + JSON por carrossel)
 
 Arte estática 1080×1350 (4:5), um PNG por slide, renderizada pelo mesmo pipeline das capas (React/HTML → PNG no Chromium, via Remotion): composição `CarrosselFacim` em `src/carrossel/CarrosselFacim.tsx`. **Trocar de carrossel = trocar o JSON.**

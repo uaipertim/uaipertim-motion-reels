@@ -20,6 +20,21 @@ import facim01 from "../carrosseis/facim/01-antes-que-voce-pergunte.json";
 import { CorteCurto, CorteProps, measureCorte } from "./cortes/Corte";
 import corteA from "../cortes/corte-A.json";
 import { DestaqueCapa } from "./story/DestaqueCapa";
+import { CapaDicionario, CapaDicionarioProps, measureCapaDicionario } from "./dicionario/CapaDicionario";
+import dic01 from "../episodios/dicionario/01-uai.json";
+import dic02 from "../episodios/dicionario/02-pertim.json";
+import dic03 from "../episodios/dicionario/03-trem.json";
+import dic04 from "../episodios/dicionario/04-facim.json";
+import dic05 from "../episodios/dicionario/05-so.json";
+import dic06 from "../episodios/dicionario/06-nossinhora.json";
+import dic07 from "../episodios/dicionario/07-quitanda.json";
+
+// Capas novas do Dicionário Mineiro (só PNG): a palavra é medida com as fontes carregadas.
+const capaDicionarioMetadata = async ({ props }: { props: CapaDicionarioProps }) => {
+  await fontsReady;
+  return { props: { ...props, layout: measureCapaDicionario(props) } };
+};
+const CAPAS_DICIONARIO = [dic01, dic02, dic03, dic04, dic05, dic06, dic07] as unknown as CapaDicionarioProps[];
 import { DESTAQUES, DESTAQUE_IDS, DestaqueCard, DestaqueNome } from "./story/destaques/Destaques";
 
 // Cortes curtos: duração = trecho do original + fecho; textos medidos com as fontes carregadas.
@@ -162,6 +177,20 @@ export const RemotionRoot: React.FC = () => (
         />
       )),
     )}
+    {/* Capas novas do Dicionário Mineiro: CapaDicionario-01 … -07 (npm run capas:dicionario) */}
+    {CAPAS_DICIONARIO.map((ep) => (
+      <Composition
+        key={ep.numero}
+        id={`CapaDicionario-${String(ep.numero).padStart(2, "0")}`}
+        component={CapaDicionario}
+        durationInFrames={1}
+        fps={30}
+        width={1080}
+        height={1920}
+        defaultProps={ep}
+        calculateMetadata={capaDicionarioMetadata}
+      />
+    ))}
     <Still id="Destaque-Capa" component={DestaqueCapa} width={1080} height={1920} defaultProps={{ icone: "conheca" as const }} />
   </>
 );
