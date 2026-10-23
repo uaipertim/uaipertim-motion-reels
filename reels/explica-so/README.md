@@ -38,6 +38,7 @@ A história do UaiPertim, no mesmo motor e com a mesma identidade. O que muda em
 **Estado:** pronto e aprovado (`output/historia-uaipertim/revisao/relatorio-tecnico.txt` termina em `RESULTADO: aprovado`), com 63,77 s.
 
 - **Capítulos:** 00 2,80 s · 01 9,20 s · 02 9,77 s · 03 8,48 s · 04 12,09 s · 05 8,53 s · 06 7,50 s, com trocas de 0,9 s.
+- **Versão 4:** o nome saiu da fala do fecho, que agora é "E essa é a nossa história. Chegando em breve no Glória. Segue a gente!" (seed 42, uma geração inteira). A logo oficial entra em "história"; o resto da tela do fecho não mudou.
 - **Versão 3:**
   - capítulo 06 gerado de novo (seed 1042) até o "Pertim" ficar com a força no TIM;
   - na cena do 05, a logo oficial do Varanda Burguer House (`public/img/parceiros/varanda-burguer-house.png`) num círculo branco, entrando com pop em "Varanda" e parada até a troca, com o selo verde "PRIMEIRO PARCEIRO" no canto.
@@ -53,7 +54,7 @@ A história do UaiPertim, no mesmo motor e com a mesma identidade. O que muda em
   - A voz dos capítulos 02, 03, 05 e 06 não mudou.
 - **Voz:**
   - capítulo 00 com a seed 5042, a 5ª de 7 gerações inteiras: o F0 dos últimos 0,6 s sobe de 98 para 230 Hz e termina em 204 Hz (+8,5 st), e o "Pérr-tim" tem o TIM tônico e o é aberto (F1 até 523 Hz);
-  - capítulos 01, 04 e 06 com a seed 1042;
+  - capítulos 01 e 04 com a seed 1042;
   - os outros com a seed 42.
 - **Pronúncia** (conferida pelo alinhamento):
   - "Uátsap" com o á aberto (F1 734 Hz) e o p final soltando, um estouro em −38 dB depois da oclusão;

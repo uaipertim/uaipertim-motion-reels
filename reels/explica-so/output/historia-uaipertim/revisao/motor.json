@@ -143,16 +143,16 @@
    "n": 6,
    "t0": 56.267,
    "t1": 63.767,
-   "primeira": 57.156,
-   "ultima": 60.056999999999995
+   "primeira": 57.434,
+   "ultima": 59.744
   }
  ],
  "fecho": {
-  "ultima_mudanca_de_texto": 60.60699999999999,
+  "ultima_mudanca_de_texto": 60.294,
   "duracao": 63.767,
   "logo": {
-   "entra": 57.156,
-   "parada": 58.056
+   "entra": 57.434,
+   "parada": 58.333999999999996
   },
   "t0": 56.267,
   "t1": 63.767

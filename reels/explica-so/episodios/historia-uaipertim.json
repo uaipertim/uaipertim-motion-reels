@@ -276,14 +276,14 @@
       "min": 7.5,
       "fala": [
         {
-          "texto": "Isso é o UaiPertim. Chegando em breve no Glória. Segue a gente!",
+          "texto": "E essa é a nossa história. Chegando em breve no Glória. Segue a gente!",
           "apoio": null
         }
       ],
       "diagrama": {
         "tipo": "fecho",
         "logo": {
-          "em": "UaiPertim"
+          "em": "história"
         },
         "chip": {
           "t": "Segue @uaipertim",
