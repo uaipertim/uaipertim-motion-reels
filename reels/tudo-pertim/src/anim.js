@@ -107,6 +107,7 @@
   const plain = (s) => (s || '').replace(/[*~]/g, '');
   // trechos que nunca se separam numa quebra de linha
   const JUNTOS = [['pertim', 'de', 'voce'], ['do', 'gloria'], ['no', 'gloria']];
+  const CURTAS = new Set(['o', 'a', 'os', 'as', 'um', 'uma', 'e', 'de', 'da', 'do', 'das', 'dos', 'no', 'na', 'nos', 'nas', 'em', 'ao', 'pra', 'pro', 'que', 'se']);
   const isEmoji = (s) => /\p{Extended_Pictographic}/u.test(s) && !/[\p{L}\p{N}]/u.test(s);
   // palavras (com estilo) -> unidades inquebráveis: as duas últimas palavras de cada frase, "pertim de você",
   // "do/no Glória" e o emoji grudado na palavra anterior
@@ -115,6 +116,8 @@
     const ns = words.map((w) => norm(w.s));
     for (const fr of JUNTOS) for (let i = 0; i + fr.length <= n; i++) if (fr.every((x, k) => ns[i + k] === x)) for (let k = 0; k < fr.length - 1; k++) cola[i + k] = true;
     for (let i = 1; i < n; i++) if (isEmoji(words[i].s)) cola[i - 1] = true;
+    // artigo ou palavra curta (o, a, e, de, do, no, pra…) fica junto da palavra seguinte: nunca sozinha no fim da linha
+    for (let i = 0; i + 1 < n; i++) if (CURTAS.has(ns[i]) && !/[.?!…,;:]["”’)]*$/.test(words[i].s)) cola[i] = true;
     // as duas últimas palavras de cada frase (ignorando um emoji no fim)
     let ini = 0;
     for (let i = 0; i < n; i++) {
@@ -158,7 +161,7 @@
         const a = us.slice(0, i), b = us.slice(i), wa = wd(a), wb = wd(b);
         if (wa > maxW || wb > maxW) continue;
         const fim = a[a.length - 1].words, ult = fim[fim.length - 1].s;
-        const score = Math.abs(wa - wb) - (/[,;:]$/.test(ult) ? 0.35 * maxW : 0);
+        const score = Math.abs(wa - wb) - (/[,;:]$/.test(ult) ? 0.35 * maxW : 0) - (/[.?!…]["”’)]*$/.test(ult) ? 0.45 * maxW : 0);   // depois de ? ! . … é a melhor quebra
         if (!best || score < best.score) best = { score, rows: [a, b] };
       }
       if (best) rows = best.rows;
@@ -977,11 +980,18 @@
     }
     const d = 58, nameW = tw('UaiPertim', 28, 900), handleW = tw(LN.marca, 20, 500, 0.3);
     const gw = d + 14 + Math.max(nameW, handleW), x0 = 540 - gw / 2, cy = 334;
+    if (CEU) {
+      // com o céu do dia: uma pílula creme translúcida atrás da marca, em todos os céus (mais opaca no pôr do sol e à noite),
+      // e a marca nas cores de sempre — "Uai" tinta e "Pertim" coral nunca somem sobre o laranja nem sobre o escuro
+      ctx.save(); rr(ctx, x0 - 16, cy - d / 2 - 9, gw + 36, d + 18, (d + 18) / 2);
+      ctx.shadowColor = 'rgba(60,30,15,0.18)'; ctx.shadowBlur = 12; ctx.shadowOffsetY = 3;
+      ctx.fillStyle = css(C.papel, 0.6 + 0.32 * clara); ctx.fill(); ctx.restore();
+    }
     logo(ctx, x0 + d / 2, cy, d);
     const tx = x0 + d + 14;
-    const w1 = txt(ctx, 'Uai', tx, cy - 2, { size: 28, weight: 900, color: clara ? mixHex(C.tinta, C.papel, clara) : C.tinta });
-    txt(ctx, 'Pertim', tx + w1, cy - 2, { size: 28, weight: 900, color: clara ? mixHex(C.coral, C.amarelo, clara) : C.coral });
-    txt(ctx, LN.marca, tx, cy + 23, { size: 20, weight: 500, color: clara ? mixHex(C.cinza, C.papel, clara) : C.cinza, ls: 0.3 });
+    const w1 = txt(ctx, 'Uai', tx, cy - 2, { size: 28, weight: 900, color: C.tinta });
+    txt(ctx, 'Pertim', tx + w1, cy - 2, { size: 28, weight: 900, color: C.coral });
+    txt(ctx, LN.marca, tx, cy + 23, { size: 20, weight: 500, color: C.cinza, ls: 0.3 });
     BOX('marca', x0, cy - d / 2, x0 + gw, cy + d / 2);
     // a barra de progresso (estilo stories): um segmento por capítulo, sem a capa, preenchendo em coral.
     // Aparece na 1ª troca; o segmento do fecho termina de encher 3 s antes do fim (o fecho fica parado)
@@ -1826,27 +1836,28 @@
     },
     draw(ctx, cap, t) {
       const d = cap.diagrama, ev = cap.ev, T = cap.cenaTop;
-      const W_ = 620, Hh = 104, X = 510;
+      const Hh = 104, X = 510;
       d.opcoes.forEach((o, i) => {
         const e = p(t, ev.opcoes[i], ev.opcoes[i] + 0.4);
-        const y = T + 70 + i * 128, x0 = X - W_ / 2;
+        const W_ = 44 + 72 + tw(o.t, 46, 900) + 64;             // cada balão do tamanho da resposta
+        const dx = [-90, 70, -40, 95][i % 4], y = T + 70 + i * 128, x0 = X + dx - W_ / 2;   // desalinhados, para ficar vivo
         sticker(ctx, i % 2 ? 'estrela' : 'coracao', i % 2 ? 150 : 870, y + (i % 2 ? -10 : 10), 54, p(t, ev.opcoes[i] + 0.15, ev.opcoes[i] + 0.45), t);
         if (e <= 0) return;
-        const rot = (i % 2 ? 1.5 : -1.5) * DEG;
-        pop(ctx, e, X, y, () => {
-          ctx.save(); ctx.translate(X, y); ctx.rotate(rot); ctx.translate(-X, -y);
+        const rot = [-3, 2.5, -1.5, 3.2][i % 4] * DEG + 0.012 * Math.sin((t - ev.opcoes[i]) * 2.2 + i) * clamp(e * 2 - 1);
+        pop(ctx, e, X + dx, y, () => {
+          ctx.save(); ctx.translate(X + dx, y); ctx.rotate(rot); ctx.translate(-(X + dx), -y);
           ctx.shadowColor = 'rgba(120,60,30,0.18)'; ctx.shadowBlur = 16; ctx.shadowOffsetY = 6;
           rr(ctx, x0, y - Hh / 2, W_, Hh, Hh / 2); ctx.fillStyle = C.papel; ctx.fill(); ctx.shadowColor = 'transparent';
           ctx.lineWidth = 5; ctx.strokeStyle = C.coral; ctx.stroke();
           txt(ctx, o.emoji || '', x0 + 44, y + 18, { size: 50, weight: 500 });
           txt(ctx, o.t, x0 + 44 + 72, y + 16, { size: 46, weight: 900, color: C.tinta });
-          // a bolinha de marcar
-          const bx = x0 + W_ - 58, mk = p(t, ev.opcoes[i] + 0.3, ev.opcoes[i] + 0.5);
-          ctx.beginPath(); ctx.arc(bx, y, 24, 0, TAU); ctx.lineWidth = 5; ctx.strokeStyle = C.coral; ctx.stroke();
-          if (mk > 0) { ctx.beginPath(); ctx.arc(bx, y, 14 * E.outBack(mk, 2.4), 0, TAU); ctx.fillStyle = C.coral; ctx.fill(); }
+          // o biquinho de balão de fala, alternando de lado
+          const bq = i % 2 ? x0 + W_ - 110 : x0 + 110, sd = i % 2 ? 1 : -1;
+          ctx.beginPath(); ctx.moveTo(bq - 16, y + Hh / 2 - 3); ctx.lineTo(bq + sd * 22, y + Hh / 2 + 24); ctx.lineTo(bq + 16, y + Hh / 2 - 3); ctx.closePath();
+          ctx.fillStyle = C.papel; ctx.fill(); ctx.beginPath(); ctx.moveTo(bq - 16, y + Hh / 2 - 1); ctx.lineTo(bq + sd * 22, y + Hh / 2 + 24); ctx.lineTo(bq + 16, y + Hh / 2 - 1); ctx.lineWidth = 5; ctx.strokeStyle = C.coral; ctx.stroke();
           ctx.restore();
         }, 2.4);
-        if (e >= 1) BOX(`opção ${o.t}`, x0 - 4, y - Hh / 2 - 10, x0 + W_ + 4, y + Hh / 2 + 10);
+        if (e >= 1) BOX(`opção ${o.t}`, x0 - 4, y - Hh / 2 - 18, x0 + W_ + 4, y + Hh / 2 + 26);
       });
     },
   };

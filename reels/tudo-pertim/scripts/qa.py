@@ -150,6 +150,7 @@ sobre = [(a1, a2) for a1, a2 in zip(MOT['apoios'], MOT['apoios'][1:]) if a1['cap
 ok(not sobre, 'a linha de apoio anterior sai antes de a próxima entrar (nunca duas ao mesmo tempo)')
 # quebra de linha
 JUNTOS = [['pertim', 'de', 'voce'], ['do', 'gloria'], ['no', 'gloria']]
+CURTAS = {'o', 'a', 'os', 'as', 'um', 'uma', 'e', 'de', 'da', 'do', 'das', 'dos', 'no', 'na', 'nos', 'nas', 'em', 'ao', 'pra', 'pro', 'que', 'se'}
 emoji = re.compile(r'[\U0001F300-\U0001FAFF\u2600-\u27BF]')
 ruins = []
 for ap in MOT['apoios']:
@@ -160,9 +161,10 @@ for ap in MOT['apoios']:
         idx = sum(len(r) for r in rows[:rows.index(r2)])
         frase_fim = bool(re.search(r'[.?!…]["”’)]*$', allw[idx])) or idx == len(allw) - 1
         par = any(norm(a_) == j[k] and norm(b_) == j[k + 1] for j in JUNTOS for k in range(len(j) - 1))
-        if frase_fim or par or (emoji.search(b_) and not re.search(r'\w', b_)):
+        curta = norm(a_) in CURTAS and not re.search(r'[.?!…,;:]["”’)]*$', a_)   # artigo/palavra curta sozinha no fim da linha
+        if frase_fim or par or curta or (emoji.search(b_) and not re.search(r'\w', b_)):
             ruins.append(f'"{a_} / {b_}" em "{ap["texto"]}"')
-ok(not ruins, 'quebras de linha: nunca separam as duas últimas palavras, "pertim de você", "do/no Glória" nem o emoji' + ('' if not ruins else ': ' + '; '.join(ruins)))
+ok(not ruins, 'quebras de linha: nunca separam as duas últimas palavras, "pertim de você", "do/no Glória" nem o emoji, e nunca deixam artigo/palavra curta no fim da linha' + ('' if not ruins else ': ' + '; '.join(ruins)))
 
 # ---------------------------------------------------------------- caixas: áreas seguras, apoio sobre peça, quadro vazio
 report += ['', 'ÁREAS SEGURAS E COMPOSIÇÃO']
