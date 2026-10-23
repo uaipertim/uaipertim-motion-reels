@@ -671,43 +671,56 @@
 
   // ---------------------------------------------------------------- peças do ep03 ("Visita sem avisar")
   // a galinha caipira (de lado, virada para a direita; origem no chão, entre os pés). s = largura do corpo
+  // o.contorno (px na escala da peça): contorno escuro na cor tinta, como o das lojinhas (usado na transição). As formas são
+  // desenhadas duas vezes: primeiro a silhueta engrossada em tinta, depois as cores por cima
+  function duasPassadas(ctx, c, desenha) {
+    if (c > 0) {
+      const F = (cor) => { ctx.fillStyle = C.tinta; ctx.fill(); ctx.lineWidth = 2 * c; ctx.strokeStyle = C.tinta; ctx.stroke(); };
+      const S = (cor, lw) => { ctx.strokeStyle = C.tinta; ctx.lineWidth = lw + 2 * c; ctx.stroke(); };
+      desenha(F, S, true);
+    }
+    desenha((cor) => { ctx.fillStyle = cor; ctx.fill(); }, (cor, lw) => { ctx.strokeStyle = cor; ctx.lineWidth = lw; ctx.stroke(); }, false);
+  }
   function galinha(ctx, x, base, s, o = {}) {
     const k = s / 100, dir = o.dir || 1, asa = o.asa || 0, passo = o.passo || 0;
     ctx.save(); ctx.translate(x, base); ctx.rotate(o.tilt || 0); ctx.scale(dir * k, k);
     ctx.globalAlpha *= o.alpha ?? 1;
     shadow(ctx, 0, 1, 44, 6, 0.16);
     ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-    // as pernas correndo
-    ctx.strokeStyle = C.amareloDark; ctx.lineWidth = 5;
-    [0, Math.PI].forEach((ph) => {
-      const a = Math.sin(passo + ph) * 0.7, hx = Math.sin(a) * 18, hy = -Math.cos(a) * 26;
-      ctx.beginPath(); ctx.moveTo(-4, -34); ctx.lineTo(-4 + hx * 0.5, -34 - hy * 0.5 - 14); ctx.lineTo(-4 + hx, -4 - Math.max(0, Math.sin(passo + ph)) * 10); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(-4 + hx, -4 - Math.max(0, Math.sin(passo + ph)) * 10); ctx.lineTo(-4 + hx + 9, -2 - Math.max(0, Math.sin(passo + ph)) * 10); ctx.stroke();
+    duasPassadas(ctx, o.contorno || 0, (F, S, silhueta) => {
+      // as pernas correndo
+      [0, Math.PI].forEach((ph) => {
+        const a = Math.sin(passo + ph) * 0.7, hx = Math.sin(a) * 18, hy = -Math.cos(a) * 26;
+        ctx.beginPath(); ctx.moveTo(-4, -34); ctx.lineTo(-4 + hx * 0.5, -34 - hy * 0.5 - 14); ctx.lineTo(-4 + hx, -4 - Math.max(0, Math.sin(passo + ph)) * 10); S(C.amareloDark, 5);
+        ctx.beginPath(); ctx.moveTo(-4 + hx, -4 - Math.max(0, Math.sin(passo + ph)) * 10); ctx.lineTo(-4 + hx + 9, -2 - Math.max(0, Math.sin(passo + ph)) * 10); S(C.amareloDark, 5);
+      });
+      // o rabo
+      ctx.beginPath(); ctx.moveTo(-36, -62); ctx.quadraticCurveTo(-70, -110, -54, -120); ctx.quadraticCurveTo(-44, -90, -24, -70); ctx.closePath(); F('#7A3A18');
+      ctx.beginPath(); ctx.moveTo(-34, -58); ctx.quadraticCurveTo(-78, -86, -70, -100); ctx.quadraticCurveTo(-52, -78, -22, -64); ctx.closePath(); F(C.madeiraDark);
+      // o corpo (caipira: marrom com pintinhas), o pescoço e a cabeça
+      ctx.beginPath(); ctx.ellipse(0, -60, 42, 30, -0.12, 0, TAU); F(C.madeira);
+      ctx.beginPath(); ctx.moveTo(18, -78); ctx.quadraticCurveTo(28, -112, 38, -118); ctx.lineTo(52, -104); ctx.quadraticCurveTo(44, -80, 36, -62); ctx.closePath(); F(C.madeira);
+      ctx.beginPath(); ctx.arc(46, -116, 15, 0, TAU); F(C.madeira);
+      // a crista, a barbela e o bico
+      ctx.beginPath(); ctx.arc(40, -132, 6, 0, TAU); ctx.arc(48, -134, 6.5, 0, TAU); ctx.arc(56, -130, 6, 0, TAU); F(C.coral);
+      ctx.beginPath(); ctx.ellipse(58, -102, 4.5, 7, 0, 0, TAU); F(C.coral);
+      ctx.beginPath(); ctx.moveTo(58, -120); ctx.lineTo(72, -114); ctx.lineTo(58, -109); ctx.closePath(); F(C.amarelo);
+      if (silhueta) return;
+      ctx.fillStyle = C.madeiraDark; for (const [px, py] of [[-14, -66], [2, -52], [-24, -50], [12, -70], [-6, -78]]) { ctx.beginPath(); ctx.ellipse(px, py, 4, 3, 0.4, 0, TAU); ctx.fill(); }
+      if (o.olhar) {                                         // os dois olhos de frente: olhando para a câmera
+        for (const ex of [42, 54]) { ctx.fillStyle = C.branco; ctx.beginPath(); ctx.arc(ex, -118, 5, 0, TAU); ctx.fill(); ctx.fillStyle = C.tinta; ctx.beginPath(); ctx.arc(ex, -117, 2.8, 0, TAU); ctx.fill(); }
+      } else {
+        ctx.fillStyle = C.branco; ctx.beginPath(); ctx.arc(50, -119, 5, 0, TAU); ctx.fill();
+        ctx.fillStyle = C.tinta; ctx.beginPath(); ctx.arc(51.5, -119, 2.8, 0, TAU); ctx.fill();
+      }
     });
-    // o rabo
-    ctx.fillStyle = '#7A3A18';
-    ctx.beginPath(); ctx.moveTo(-36, -62); ctx.quadraticCurveTo(-70, -110, -54, -120); ctx.quadraticCurveTo(-44, -90, -24, -70); ctx.closePath(); ctx.fill();
-    ctx.fillStyle = C.madeiraDark;
-    ctx.beginPath(); ctx.moveTo(-34, -58); ctx.quadraticCurveTo(-78, -86, -70, -100); ctx.quadraticCurveTo(-52, -78, -22, -64); ctx.closePath(); ctx.fill();
-    // o corpo (caipira: marrom com pintinhas) e o pescoço
-    ctx.fillStyle = C.madeira; ctx.beginPath(); ctx.ellipse(0, -60, 42, 30, -0.12, 0, TAU); ctx.fill();
-    ctx.beginPath(); ctx.moveTo(18, -78); ctx.quadraticCurveTo(28, -112, 38, -118); ctx.lineTo(52, -104); ctx.quadraticCurveTo(44, -80, 36, -62); ctx.closePath(); ctx.fill();
-    ctx.fillStyle = C.madeiraDark; for (const [px, py] of [[-14, -66], [2, -52], [-24, -50], [12, -70], [-6, -78]]) { ctx.beginPath(); ctx.ellipse(px, py, 4, 3, 0.4, 0, TAU); ctx.fill(); }
-    // a cabeça: crista, barbela, bico e olho (olhando para a câmera quando o.olhar)
-    ctx.fillStyle = C.madeira; ctx.beginPath(); ctx.arc(46, -116, 15, 0, TAU); ctx.fill();
-    ctx.fillStyle = C.coral; ctx.beginPath(); ctx.arc(40, -132, 6, 0, TAU); ctx.arc(48, -134, 6.5, 0, TAU); ctx.arc(56, -130, 6, 0, TAU); ctx.fill();
-    ctx.beginPath(); ctx.ellipse(58, -102, 4.5, 7, 0, 0, TAU); ctx.fill();
-    ctx.fillStyle = C.amarelo; ctx.beginPath(); ctx.moveTo(58, -120); ctx.lineTo(72, -114); ctx.lineTo(58, -109); ctx.closePath(); ctx.fill();
-    if (o.olhar) {                                         // os dois olhos de frente: olhando para a câmera
-      for (const ex of [42, 54]) { ctx.fillStyle = C.branco; ctx.beginPath(); ctx.arc(ex, -118, 5, 0, TAU); ctx.fill(); ctx.fillStyle = C.tinta; ctx.beginPath(); ctx.arc(ex, -117, 2.8, 0, TAU); ctx.fill(); }
-    } else {
-      ctx.fillStyle = C.branco; ctx.beginPath(); ctx.arc(50, -119, 5, 0, TAU); ctx.fill();
-      ctx.fillStyle = C.tinta; ctx.beginPath(); ctx.arc(51.5, -119, 2.8, 0, TAU); ctx.fill();
-    }
-    // a asa batendo
+    // a asa batendo (com o seu próprio contorno, por cima do corpo)
     ctx.save(); ctx.translate(-2, -66); ctx.rotate(-0.25 - 0.9 * asa);
-    ctx.fillStyle = C.madeiraDark; ctx.beginPath(); ctx.ellipse(-10, 0, 30, 15, 0.2, 0, TAU); ctx.fill();
-    ctx.strokeStyle = '#7A3A18'; ctx.lineWidth = 2.5; for (const d of [-14, -4, 6]) { ctx.beginPath(); ctx.moveTo(d, -6); ctx.lineTo(d - 14, 8); ctx.stroke(); }
+    duasPassadas(ctx, o.contorno || 0, (F, S, silhueta) => {
+      ctx.beginPath(); ctx.ellipse(-10, 0, 30, 15, 0.2, 0, TAU); F(C.madeiraDark);
+      if (silhueta) return;
+      for (const d of [-14, -4, 6]) { ctx.beginPath(); ctx.moveTo(d, -6); ctx.lineTo(d - 14, 8); S('#7A3A18', 2.5); }
+    });
     ctx.restore();
     ctx.restore();
   }
@@ -715,12 +728,16 @@
     const k = s / 100, dir = o.dir || 1, passo = o.passo || 0;
     ctx.save(); ctx.translate(x, base); ctx.scale(dir * k, k);
     shadow(ctx, 0, 1, 34, 5, 0.14);
-    ctx.strokeStyle = C.amareloDark; ctx.lineWidth = 5; ctx.lineCap = 'round';
-    [0, Math.PI].forEach((ph) => { const hx = Math.sin(passo + ph) * 10; ctx.beginPath(); ctx.moveTo(0, -24); ctx.lineTo(hx, -2); ctx.stroke(); });
-    ctx.fillStyle = C.amarelo; ctx.beginPath(); ctx.ellipse(0, -46, 30, 26, 0, 0, TAU); ctx.fill(); ctx.beginPath(); ctx.arc(22, -74, 18, 0, TAU); ctx.fill();
-    ctx.fillStyle = C.amareloDark; ctx.beginPath(); ctx.ellipse(-8, -46, 14, 9, 0.3 + 0.5 * Math.sin(passo * 2), 0, TAU); ctx.fill();
-    ctx.fillStyle = C.coral; ctx.beginPath(); ctx.moveTo(38, -76); ctx.lineTo(48, -72); ctx.lineTo(38, -68); ctx.closePath(); ctx.fill();
-    ctx.fillStyle = C.tinta; ctx.beginPath(); ctx.arc(28, -78, 3.5, 0, TAU); ctx.fill();
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    duasPassadas(ctx, o.contorno || 0, (F, S, silhueta) => {
+      [0, Math.PI].forEach((ph) => { const hx = Math.sin(passo + ph) * 10; ctx.beginPath(); ctx.moveTo(0, -24); ctx.lineTo(hx, -2); S(C.amareloDark, 5); });
+      ctx.beginPath(); ctx.ellipse(0, -46, 30, 26, 0, 0, TAU); F(C.amarelo);
+      ctx.beginPath(); ctx.arc(22, -74, 18, 0, TAU); F(C.amarelo);
+      ctx.beginPath(); ctx.moveTo(38, -76); ctx.lineTo(48, -72); ctx.lineTo(38, -68); ctx.closePath(); F(C.coral);
+      if (silhueta) return;
+      ctx.fillStyle = C.amareloDark; ctx.beginPath(); ctx.ellipse(-8, -46, 14, 9, 0.3 + 0.5 * Math.sin(passo * 2), 0, TAU); ctx.fill();
+      ctx.fillStyle = C.tinta; ctx.beginPath(); ctx.arc(28, -78, 3.5, 0, TAU); ctx.fill();
+    });
     ctx.restore();
   }
   function pena(ctx, x, y, s, rot, cor) {                   // uma pena voando (folhinha com a haste)
@@ -1036,10 +1053,10 @@
   //      A base fica sempre acima de y 1060 (nunca na coluna de botões).
   let TRANS = 'moto';
   const VARIA_G = [{ base: 1000 }, { base: 900 }, { base: 1020 }, { base: 880 }, { base: 960 }, { base: 1010 }, { base: 920 }];
-  const GALINHA_S = 170;
+  const GALINHA_S = 255;                                 // 50% maior que no 1º corte (era 170), com contorno tinta
   function travessiaGalinha(k, u) {
     const v = VARIA_G[k % VARIA_G.length], jeito = k % 4, dir = k % 2 === 0 ? -1 : 1;
-    const xa = dir > 0 ? -240 : W + 240, xb = dir > 0 ? W + 240 : -240;
+    const xa = dir > 0 ? -330 : W + 330, xb = dir > 0 ? W + 330 : -330;   // entra e sai inteira fora da tela (com o pintinho)
     let e = 0.8 * u + 0.2 * E.inOutSine(u), olhar = false, tilt = 0, base = v.base, freio = 0;
     if (jeito === 2) {                                       // freia no meio, olha para a câmera e dispara de novo
       if (u < 0.36) e = 0.5 * E.outCubic(u / 0.36);
@@ -1067,10 +1084,10 @@
       pena(ctx, x + 10 * Math.sin(u * 9 + i), y, 10 + 8 * hash(i, k + 17), u * 6 * (hash(i, k + 19) - 0.5) + i, cores[i % 4]);
     }
     // a poeirinha nos pés
-    for (let i = 0; i < 5; i++) { ctx.fillStyle = css(C.cremeDeep, 0.55 - 0.08 * i); ctx.beginPath(); ctx.arc(T.x - T.dir * (90 + i * 46), T.base - 14 - i * 4, 18 + 7 * i, 0, TAU); ctx.fill(); }
+    for (let i = 0; i < 5; i++) { ctx.fillStyle = css(C.cremeDeep, 0.55 - 0.08 * i); ctx.beginPath(); ctx.arc(T.x - T.dir * (135 + i * 60), T.base - 14 - i * 4, 18 + 7 * i, 0, TAU); ctx.fill(); }
     const asa = T.freio ? 0.2 : 0.5 + 0.5 * Math.sin(t * 42);
-    if (T.pinto) pintinho(ctx, T.x - T.dir * 190, T.base, 70, { dir: T.dir, passo: T.x / 9 });
-    galinha(ctx, T.x, T.base, GALINHA_S, { dir: T.dir, asa, passo: T.freio ? 0 : T.x / 14, tilt: T.tilt, olhar: T.olhar });
+    if (T.pinto) pintinho(ctx, T.x - T.dir * 285, T.base, 105, { dir: T.dir, passo: T.x / 9, contorno: 2.6 });
+    galinha(ctx, T.x, T.base, GALINHA_S, { dir: T.dir, asa, passo: T.freio ? 0 : T.x / 14, tilt: T.tilt, olhar: T.olhar, contorno: 2.2 });
   }
 
   function drawWipe(ctx, t, k, u) {

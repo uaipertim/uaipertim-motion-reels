@@ -963,7 +963,7 @@
    "frases": [
     {
      "texto": "Agora fala aí: qual quitanda não pode faltar quando chega visita?",
-     "apoio": "Qual *quitanda* não pode faltar?",
+     "apoio": "Quando chega visita, *qual é a sua*?",
      "t0": 37.75,
      "t1": 41.651
     }
@@ -971,7 +971,7 @@
    "apoios": [
     {
      "t": 37.8,
-     "texto": "Qual *quitanda* não pode faltar?",
+     "texto": "Quando chega visita, *qual é a sua*?",
      "ate": 43.25
     }
    ],
