@@ -8,6 +8,8 @@ Revisão técnica de um episódio da série TUDO PERTIM (roda depois do render e
 Confere:
   • formato: 1080x1920, 60 fps, H.264 yuv420p, AAC 48 kHz estéreo; duração de 45–60 s (vídeo e áudio iguais); capítulos do meio de 5–7 s;
   • som: −14 LUFS integrados (±0,5), pico real ≤ −1 dBTP, a voz sozinha na escala da mixagem;
+  • a voz sem chiado depois da fala (scripts/chiado.py: nada acima de −45 dB com mais de 50% da energia em 4–10 kHz
+    depois da última letra, salvo palavra final em s/z/x);
   • a voz: cada capítulo é UMA geração inteira, colocada sem cortes — o trecho do vídeo é idêntico ao arquivo da
     geração (fora os fades de 8 ms / 60 ms nas pontas), e o arquivo é o mesmo registrado na geração (sha1);
   • o mapa de tempos de linha.py (total, apoios, fecho, logo) e as palavras da fala que não dispararam peça;
@@ -32,6 +34,9 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 from scipy.io import wavfile
 from scipy.signal import resample_poly
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import chiado  # noqa: E402  (o chiado depois da fala)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REPO = os.path.dirname(os.path.dirname(ROOT))
@@ -126,6 +131,9 @@ for c in LN['colocacao']:
     dif = float(np.abs(got - ref).max()) if len(got) == len(ref) else 9.0
     ok(sha_ok and dif < 2e-4, f'capítulo {key}: {c["ate_s"] - c["de_s"]:.2f} s contínuos da geração com seed {FALAS[key]["seed"]} '
        f'(arquivo íntegro: {"sim" if sha_ok else "NÃO"}; diferença máxima vídeo × geração {dif:.6f}; {FALAS[key]["geracoes"]} geração(ões) inteiras feitas)')
+    okc, motc, numc = chiado.confere(y, srx, FALAS[key]['alinhamento'], FALAS[key].get('texto_api', FALAS[key]['texto']))
+    ok(okc, f'capítulo {key}: sem chiado depois da fala (pior janela depois da última letra: {numc["pior_fracao_4_10khz"]:.0%} em 4–10 kHz a {numc["pior_db"]} dB)'
+       + ('' if okc else f' · {motc}'))
     ok(not re.search(r'\bde\s+Glória\b', FALAS[key]['texto'], re.I), f'capítulo {key}: "do/no Glória" (nunca "de Glória"); enviado à API: "{FALAS[key].get("texto_api", "")}"')
 
 # ---------------------------------------------------------------- mapa de tempos e gatilhos

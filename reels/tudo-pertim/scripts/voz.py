@@ -5,15 +5,21 @@ Narração de um episódio da série TUDO PERTIM (UaiPertim) — ElevenLabs, end
     python3 scripts/voz.py tudo-pertim-01               -> gera os capítulos que ainda não têm narração
     python3 scripts/voz.py tudo-pertim-01 --refaz 3,5   -> gera de novo os capítulos 3 e 5, INTEIROS (nova seed)
     python3 scripts/voz.py tudo-pertim-01 --medir       -> só mostra a conferência (sem chamar a API)
+    python3 scripts/voz.py tudo-pertim-02 --refaz 0 --seed 2042   -> gera o capítulo 0 INTEIRO com exatamente essa seed
+                                                                    (uma tentativa só; se não passar na conferência, para)
 
 REGRA DA SÉRIE: cada capítulo é UMA geração inteira (todas as frases do capítulo numa chamada só). Se uma frase sair
 ruim, o capítulo inteiro é gerado de novo com outra seed; nunca se emendam palavras ou trechos de gerações diferentes.
 Cada capítulo fica em audio/<id>/voz/cap-NN.wav (o áudio que a API devolveu, sem cortes) e o histórico em falas.json.
 
-Conferência automática de cada geração (se falhar, o capítulo inteiro é gerado de novo com outra seed, até 4 vezes):
+Conferência automática de cada geração (se falhar, o capítulo inteiro é gerado de novo com outra seed, até 3 vezes;
+se as 3 falharem, o script PARA, guarda o histórico e não troca o áudio que já existia — nunca se muda o texto sozinho):
   • ritmo entre 8 e 19 caracteres falados por segundo;
   • nenhuma pausa interna maior que 0,9 s entre palavras;
-  • a fala termina antes do fim do áudio (nada cortado no fim).
+  • a fala termina antes do fim do áudio (nada cortado no fim);
+  • nenhum chiado depois da fala (scripts/chiado.py): depois do fim da última letra do alinhamento, nenhum trecho acima
+    de −45 dB com mais de 50% da energia em 4–10 kHz, a não ser que a última palavra termine em s/z/x (ex.: um
+    "Glória" que sai "Glórias").
 
 VOZ: a voz oficial da UaiPertim, lida de audio/voz_oficial.json na raiz do repositório (Victor Pinho,
 LuQ9eaWO9yCQrR73VQFa, eleven_multilingual_v2, estabilidade 0,40 · semelhança 0,80 · estilo 0,35 · speaker boost;
@@ -42,6 +48,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REPO = os.path.dirname(os.path.dirname(ROOT))
 sys.path.insert(0, os.path.join(REPO, 'audio'))
 from elevenlabs import pronounce  # noqa: E402  (a regra fixa de pronúncia da UaiPertim)
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import chiado  # noqa: E402  (a conferência do chiado depois da fala)
 
 EP = sys.argv[1] if len(sys.argv) > 1 and not sys.argv[1].startswith('--') else 'tudo-pertim-01'
 OUT = os.path.join(ROOT, 'audio', EP, 'voz')
@@ -50,7 +58,7 @@ VOZ = json.load(open(os.path.join(REPO, 'audio', 'voz_oficial.json'), encoding='
 VOICE, MODEL, SETTINGS, SEED0 = VOZ['voiceId'], VOZ['model'], VOZ['voiceSettings'], VOZ.get('seed', 42)
 SR = 44100
 SCRIPT = json.load(open(os.path.join(ROOT, 'episodios', EP + '.json'), encoding='utf-8'))
-TENTATIVAS = 4
+TENTATIVAS = 3
 PARA = ('voice_not_found', 'invalid_api_key', 'unauthorized', 'missing_permissions', 'needs_authorization', 'voice_access_denied',
         'quota_exceeded', 'detected_unusual_activity')
 
@@ -133,10 +141,14 @@ def confere(x, al, texto):
         return False, f'pausa interna de {maior:.2f} s', n
     if sobra < 0.05:
         return False, 'fala cortada no fim', n
+    ok_ch, motivo_ch, num_ch = chiado.confere(x, SR, al, texto)
+    n.update({'chiado_pior_fracao': num_ch['pior_fracao_4_10khz'], 'chiado_pior_db': num_ch['pior_db']})
+    if not ok_ch:
+        return False, motivo_ch, n
     return True, 'ok', n
 
 
-def gerar(refaz):
+def gerar(refaz, seed_fixa=None):
     os.makedirs(OUT, exist_ok=True)
     caps = SCRIPT['capitulos']
     path = os.path.join(OUT, 'falas.json')
@@ -153,7 +165,10 @@ def gerar(refaz):
         nxt = pronounce(texto_cap(caps[n + 1])) if n + 1 < len(caps) else None
         hist = atual['historico'] if atual and atual['texto'] == texto else []
         seed = c.get('seed', SEED0) + 1000 * len(hist)
-        for k in range(TENTATIVAS):
+        tentativas = TENTATIVAS
+        if seed_fixa is not None and n in refaz:
+            seed, tentativas = seed_fixa, 1                 # a seed escolhida: uma geração inteira, sem trocar de seed
+        for k in range(tentativas):
             x, al, fmt = tts(api, prev, nxt, seed)
             ok, motivo, num = confere(x, al, api)
             hist.append({'seed': seed, 'formato': fmt, 'resultado': motivo, **num, 'quando': time.strftime('%Y-%m-%d %H:%M')})
@@ -161,6 +176,13 @@ def gerar(refaz):
             if ok:
                 break
             seed += 1000
+        if not ok:
+            # as 3 seeds falharam: guarda o histórico, mantém o áudio que já existia e para (o texto nunca muda sozinho)
+            if atual:
+                atual['historico'] = hist; atual['geracoes'] = len(hist)
+                json.dump(D, open(path, 'w'), ensure_ascii=False, indent=1)
+            raise SystemExit(f'PARADO: o capítulo {key} falhou na conferência em {tentativas} seed(s) seguida(s) ({motivo}). '
+                             'Nada foi trocado; decida antes de mudar o texto.')
         pcm = np.round(np.clip(x, -1, 1) * 32767).astype(np.int16)
         wavfile.write(os.path.join(OUT, f'cap-{key}.wav'), SR, pcm)
         ws = palavras(al)
@@ -189,5 +211,5 @@ if __name__ == '__main__':
     if '--refaz' in sys.argv:
         refaz = {int(v) for v in sys.argv[sys.argv.index('--refaz') + 1].split(',')}
     if '--medir' not in sys.argv:
-        gerar(refaz)
+        gerar(refaz, int(sys.argv[sys.argv.index('--seed') + 1]) if '--seed' in sys.argv else None)
     medir()
