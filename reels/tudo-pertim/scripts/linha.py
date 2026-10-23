@@ -211,7 +211,8 @@ def main():
         caps.append({'n': n, 'rotulo': c.get('rotulo'), 'tom': c.get('tom', ['creme', 'pessego', 'amarelo', 'verde'][n % 4]),
                      'titulo': c['titulo'], 'risca_titulo': c.get('risca_titulo'), 'diagrama': c['diagrama'],
                      't0': round(t0, 4), 't1': round(t1, 4), 'voz_t0': round(v0, 4), 'voz_t1': round(v1, 4),
-                     'palavras': ws, 'frases': frases, 'apoios': apoios, 'seed': F.get('seed')})
+                     'palavras': ws, 'frases': frases, 'apoios': apoios, 'seed': F.get('seed'),
+                     **{k: c[k] for k in ('ceu', 'relogio') if k in c}})   # o céu e o relógio do capítulo (opcionais, ep02 em diante)
         pistas.append((n, ini, fim, desloc))
         t = t1 + TR if n + 1 < len(SCRIPT['capitulos']) else t1
     dur = t

@@ -1,0 +1,192 @@
+{
+ "duracao": 51.5,
+ "apoios": [
+  {
+   "cap": 1,
+   "i": 1,
+   "texto": "A padaria manda quentim.",
+   "entra": 8.183,
+   "inteira_de": 8.523,
+   "ate": 11,
+   "linhas": [
+    "A padaria manda quentim."
+   ]
+  },
+  {
+   "cap": 2,
+   "i": 1,
+   "texto": "Prato feito caprichado, rapidim.",
+   "entra": 11.3,
+   "inteira_de": 11.64,
+   "ate": 17.5,
+   "linhas": [
+    "Prato feito caprichado, rapidim."
+   ]
+  },
+  {
+   "cap": 3,
+   "i": 1,
+   "texto": "Sorvete e picolé geladim.",
+   "entra": 17.8,
+   "inteira_de": 18.14,
+   "ate": 23.75,
+   "linhas": [
+    "Sorvete e picolé geladim."
+   ]
+  },
+  {
+   "cap": 4,
+   "i": 1,
+   "texto": "Faltou o tomate? O mercadim resolve.",
+   "entra": 24.05,
+   "inteira_de": 24.39,
+   "ate": 30,
+   "linhas": [
+    "Faltou o tomate? O",
+    "mercadim resolve."
+   ]
+  },
+  {
+   "cap": 5,
+   "i": 1,
+   "texto": "Pizza, lanche ou espetim: só espera.",
+   "entra": 30.3,
+   "inteira_de": 30.64,
+   "ate": 37,
+   "linhas": [
+    "Pizza, lanche ou espetim: só espera."
+   ]
+  },
+  {
+   "cap": 6,
+   "i": 1,
+   "texto": "Que horas cê mais ia pedir?",
+   "entra": 37.3,
+   "inteira_de": 37.64,
+   "ate": 44,
+   "linhas": [
+    "Que horas cê mais ia pedir?"
+   ]
+  }
+ ],
+ "trocas": [
+  {
+   "de": 0,
+   "para": 1,
+   "t0": 3.75,
+   "t1": 4.5
+  },
+  {
+   "de": 1,
+   "para": 2,
+   "t0": 10.25,
+   "t1": 11
+  },
+  {
+   "de": 2,
+   "para": 3,
+   "t0": 16.75,
+   "t1": 17.5
+  },
+  {
+   "de": 3,
+   "para": 4,
+   "t0": 23,
+   "t1": 23.75
+  },
+  {
+   "de": 4,
+   "para": 5,
+   "t0": 29.25,
+   "t1": 30
+  },
+  {
+   "de": 5,
+   "para": 6,
+   "t0": 36.25,
+   "t1": 37
+  },
+  {
+   "de": 6,
+   "para": 7,
+   "t0": 43.25,
+   "t1": 44
+  }
+ ],
+ "montagens": [
+  {
+   "n": 0,
+   "t0": 0,
+   "t1": 3.75,
+   "primeira": 0.6,
+   "ultima": 3.25
+  },
+  {
+   "n": 1,
+   "t0": 4.5,
+   "t1": 10.25,
+   "primeira": 5.667,
+   "ultima": 9.22
+  },
+  {
+   "n": 2,
+   "t0": 11,
+   "t1": 16.75,
+   "primeira": 12.26,
+   "ultima": 15.325
+  },
+  {
+   "n": 3,
+   "t0": 17.5,
+   "t1": 23,
+   "primeira": 18.621,
+   "ultima": 21.663
+  },
+  {
+   "n": 4,
+   "t0": 23.75,
+   "t1": 29.25,
+   "primeira": 24.05,
+   "ultima": 27.529
+  },
+  {
+   "n": 5,
+   "t0": 30,
+   "t1": 36.25,
+   "primeira": 31.504,
+   "ultima": 34.849
+  },
+  {
+   "n": 6,
+   "t0": 37,
+   "t1": 43.25,
+   "primeira": 39.909,
+   "ultima": 41.894
+  },
+  {
+   "n": 7,
+   "t0": 44,
+   "t1": 51.5,
+   "primeira": 44.25,
+   "ultima": 47.9
+  }
+ ],
+ "fecho": {
+  "ultima_mudanca_de_texto": 48.449999999999996,
+  "duracao": 51.5,
+  "logo": {
+   "entra": 44.25,
+   "parada": 45.15
+  },
+  "t0": 44,
+  "t1": 51.5
+ },
+ "capa": {
+  "tamanho": 166,
+  "linhas": [
+   607.3936352539063,
+   803.4376416015625
+  ]
+ },
+ "palavras_sem_peca": []
+}

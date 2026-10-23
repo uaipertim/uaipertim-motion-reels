@@ -1,0 +1,287 @@
+{
+  "id": "tudo-pertim-02",
+  "titulo": "Um dia no Glória",
+  "marca": "@uaipertim",
+  "bpm": 120,
+  "capitulos": [
+    {
+      "rotulo": "TUDO PERTIM · EP. 02",
+      "tom": "pessego",
+      "ceu": "amanhecer",
+      "titulo": [
+        "Do café",
+        "à janta ⏰"
+      ],
+      "fala": [
+        {
+          "texto": "Do café até a janta: olha o que dá pra pedir no Glória!",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "capa",
+        "marcador": "janta",
+        "confete": {
+          "em": "Glória"
+        },
+        "buzina": {
+          "em": "pedir"
+        }
+      }
+    },
+    {
+      "rotulo": "7H DA MANHÃ",
+      "tom": "pessego",
+      "ceu": "amanhecer",
+      "relogio": {
+        "h": 7,
+        "m": 0
+      },
+      "titulo": [
+        "7h: cadê o",
+        "pão de queijo?"
+      ],
+      "fala": [
+        {
+          "texto": "Sete da manhã, café passado… e o pão de queijo acabou?",
+          "apoio": null
+        },
+        {
+          "texto": "A padaria manda quentim.",
+          "apoio": "A padaria manda *quentim*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "manha",
+        "xicara": {
+          "em": "café"
+        },
+        "acabou": {
+          "em": "acabou"
+        },
+        "padaria": {
+          "em": "padaria"
+        },
+        "paes": {
+          "em": "quentim"
+        }
+      },
+      "segura": 0.5
+    },
+    {
+      "rotulo": "MEIO-DIA",
+      "tom": "amarelo",
+      "ceu": "meiodia",
+      "relogio": {
+        "h": 12,
+        "m": 0
+      },
+      "titulo": [
+        "Meio-dia:",
+        "barriga roncando."
+      ],
+      "fala": [
+        {
+          "texto": "Meio-dia, barriga roncando? Aquele prato feito caprichado chega rapidim.",
+          "apoio": "Prato feito caprichado, *rapidim*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "almoco",
+        "ronc": {
+          "em": "roncando"
+        },
+        "prato": {
+          "em": "prato"
+        },
+        "talheres": {
+          "em": "caprichado"
+        },
+        "rapidim": {
+          "em": "rapidim"
+        }
+      },
+      "segura": 0.6,
+      "min": 5.5
+    },
+    {
+      "rotulo": "3H DA TARDE",
+      "tom": "amarelo",
+      "ceu": "tarde",
+      "relogio": {
+        "h": 15,
+        "m": 0
+      },
+      "titulo": [
+        "3h da tarde:",
+        "calor de rachar!"
+      ],
+      "fala": [
+        {
+          "texto": "Três da tarde, calor de rachar? Sorvete e picolé chegando geladim.",
+          "apoio": "Sorvete e picolé *geladim*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "calor",
+        "termometro": {
+          "em": "calor"
+        },
+        "sorveteria": {
+          "em": "Sorvete"
+        },
+        "picoles": {
+          "em": "picolé"
+        },
+        "geladim": {
+          "em": "geladim"
+        }
+      },
+      "segura": 0.6,
+      "min": 5.5
+    },
+    {
+      "rotulo": "6H DA TARDE",
+      "tom": "pessego",
+      "ceu": "porDoSol",
+      "relogio": {
+        "h": 18,
+        "m": 0
+      },
+      "titulo": [
+        "6h: faltou",
+        "o trem da janta."
+      ],
+      "fala": [
+        {
+          "texto": "Seis da tarde e faltou o tomate da janta? O mercadim resolve.",
+          "apoio": "Faltou o tomate? *O mercadim resolve.*"
+        }
+      ],
+      "diagrama": {
+        "tipo": "janta",
+        "mercadim": {
+          "em": "+0.3"
+        },
+        "tomate": {
+          "em": "tomate"
+        },
+        "resolve": {
+          "em": "resolve"
+        }
+      },
+      "segura": 0.6,
+      "min": 5.5
+    },
+    {
+      "rotulo": "SEXTA À NOITE",
+      "tom": "creme",
+      "ceu": "noite",
+      "relogio": {
+        "h": 20,
+        "m": 0
+      },
+      "titulo": [
+        "Sexta à noite:",
+        "pizza ou lanche?"
+      ],
+      "fala": [
+        {
+          "texto": "E sexta à noite? Pizza, lanche ou espetim… escolhe e só espera.",
+          "apoio": "Pizza, lanche ou espetim: *só espera*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "noite",
+        "pizza": {
+          "em": "Pizza"
+        },
+        "lanche": {
+          "em": "lanche"
+        },
+        "espeto": {
+          "em": "espetim"
+        },
+        "moto": {
+          "em": "escolhe"
+        }
+      },
+      "segura": 0.6,
+      "min": 5.5
+    },
+    {
+      "rotulo": "SUA VEZ",
+      "tom": "amarelo",
+      "ceu": "creme",
+      "titulo": [
+        "E ocê,",
+        "pede quando?"
+      ],
+      "fala": [
+        {
+          "texto": "Comenta aí: que horas cê mais ia pedir? Manhã, almoço, tarde ou noite?",
+          "apoio": "*Que horas* cê mais ia pedir?"
+        }
+      ],
+      "diagrama": {
+        "tipo": "enquete",
+        "opcoes": [
+          {
+            "t": "manhã",
+            "emoji": "☀️",
+            "em": "Manhã"
+          },
+          {
+            "t": "almoço",
+            "emoji": "🍽️",
+            "em": "almoço"
+          },
+          {
+            "t": "tarde",
+            "emoji": "🍦",
+            "em": "tarde"
+          },
+          {
+            "t": "noite",
+            "emoji": "🌙",
+            "em": "noite"
+          }
+        ]
+      },
+      "segura": 0.7
+    },
+    {
+      "rotulo": "PRA NÃO PERDER",
+      "tom": "amarelo",
+      "ceu": "creme",
+      "titulo": [
+        "Em breve",
+        "no Glória."
+      ],
+      "min": 7.5,
+      "fala": [
+        {
+          "texto": "UaiPertim. Do café à janta, tudo pertim de você. Segue a gente!",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "fecho",
+        "logo": {
+          "em": "UaiPertim"
+        },
+        "assinatura": {
+          "t": "Tudo pertim de você.",
+          "em": "tudo"
+        },
+        "chip": {
+          "t": "Segue @uaipertim",
+          "em": "Segue"
+        },
+        "confete": {
+          "em": "+1.2"
+        }
+      }
+    }
+  ]
+}

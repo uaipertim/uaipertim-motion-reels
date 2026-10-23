@@ -1,0 +1,74 @@
+TUDO PERTIM · tudo-pertim-02 — revisão técnica
+output/tudo-pertim-02/uaipertim-tudo-pertim-02.mp4
+
+FORMATO
+OK     vídeo h264 High yuv420p
+OK     resolução 1080x1920 (9:16)
+OK     60 fps, 3090 quadros
+OK     duração 51.50 s (alvo 45–60 s)
+OK     áudio aac 48000 Hz, 2 canais, 274 kb/s
+OK     vídeo e áudio com a mesma duração (Δ 0 ms)
+       arquivo 16.7 MB, 2.6 Mb/s
+       capítulos: 00 3.75 s · 01 5.75 s · 02 5.75 s · 03 5.50 s · 04 5.50 s · 05 6.25 s · 06 6.25 s · 07 7.50 s · trocas de 0.8 s
+
+SOM
+OK     loudness integrado -14.1 LUFS (alvo −14)
+OK     pico real -1.5 dBTP (limite −1)
+       a voz sozinha, na escala da mixagem: -13.8 LUFS
+       a trilha sozinha, na escala da mixagem: -26.9 LUFS
+       os efeitos sozinhos, na escala da mixagem: -23.4 LUFS
+
+VOZ (voz oficial, uma geração inteira por capítulo, nada emendado)
+       Victor Pinho (LuQ9eaWO9yCQrR73VQFa) · eleven_multilingual_v2 · ajustes {"stability": 0.4, "similarity_boost": 0.8, "style": 0.35, "use_speaker_boost": true}
+OK     capítulo 00: 3.20 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000028; 1 geração(ões) inteiras feitas)
+OK     capítulo 00: "do/no Glória" (nunca "de Glória"); enviado à API: "Do café até a janta: olha o que dá pra pedir no Glória!"
+OK     capítulo 01: 5.20 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000034; 1 geração(ões) inteiras feitas)
+OK     capítulo 01: "do/no Glória" (nunca "de Glória"); enviado à API: "Sete da manhã, café passado… e o pão de queijo acabou? A padaria manda quentim."
+OK     capítulo 02: 4.92 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000031; 1 geração(ões) inteiras feitas)
+OK     capítulo 02: "do/no Glória" (nunca "de Glória"); enviado à API: "Meio-dia, barriga roncando? Aquele prato feito caprichado chega rapidim."
+OK     capítulo 03: 4.83 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000028; 1 geração(ões) inteiras feitas)
+OK     capítulo 03: "do/no Glória" (nunca "de Glória"); enviado à API: "Três da tarde, calor de rachar? Sorvete e picolé chegando geladim."
+OK     capítulo 04: 4.41 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000028; 1 geração(ões) inteiras feitas)
+OK     capítulo 04: "do/no Glória" (nunca "de Glória"); enviado à API: "Seis da tarde e faltou o tomate da janta? O mercadim resolve."
+OK     capítulo 05: 5.53 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000027; 1 geração(ões) inteiras feitas)
+OK     capítulo 05: "do/no Glória" (nunca "de Glória"); enviado à API: "E sexta à noite? Pizza, lanche ou espetim… escolhe e só espera."
+OK     capítulo 06: 5.34 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000024; 1 geração(ões) inteiras feitas)
+OK     capítulo 06: "do/no Glória" (nunca "de Glória"); enviado à API: "Comenta aí: que horas cê mais ia pedir? Manhã, almoço, tarde ou noite?"
+OK     capítulo 07: 4.74 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000029; 1 geração(ões) inteiras feitas)
+OK     capítulo 07: "do/no Glória" (nunca "de Glória"); enviado à API: "Uai Pérr-tim. Do café à janta, tudo pérr-tim de você. Segue a gente!"
+
+MAPA DE TEMPOS E GATILHOS
+OK     mapa de tempos de linha.py (total 45–60 s, capítulos 5–7 s, apoios ≥ 1,5 s, fecho 6–8 s, logo nos 3 últimos s)
+OK     toda palavra "em" da cena está na fala
+
+LEITURA (linhas de apoio)
+       cap 01 · apoio 1: 2.48 s inteira · A padaria manda quentim.
+       cap 02 · apoio 1: 5.86 s inteira · Prato feito caprichado, rapidim.
+       cap 03 · apoio 1: 5.61 s inteira · Sorvete e picolé geladim.
+       cap 04 · apoio 1: 5.61 s inteira · Faltou o tomate? O / mercadim resolve.
+       cap 05 · apoio 1: 6.36 s inteira · Pizza, lanche ou espetim: só espera.
+       cap 06 · apoio 1: 6.36 s inteira · Que horas cê mais ia pedir?
+OK     6 linhas de apoio, a mais curta fica 2.48 s inteira na tela (mínimo 1,5 s)
+OK     a linha de apoio anterior sai antes de a próxima entrar (nunca duas ao mesmo tempo)
+OK     quebras de linha: nunca separam as duas últimas palavras, "pertim de você", "do/no Glória" nem o emoji
+
+ÁREAS SEGURAS E COMPOSIÇÃO
+OK     conteúdo entre x 80–940 e y 265–1456: 1268 caixas em 150 quadros fora das trocas
+OK     nenhuma caixa na coluna de botões (x ≥ 940, y 1060–1560)
+OK     a linha de apoio nunca fica por cima de card, balão ou peça de cena
+       faixa usada pelo conteúdo: y 305–1442
+OK     sem quadro vazio nas 7 trocas de capítulo (sempre há conteúdo na tela)
+OK     coluna de botões: 0 pixel de conteúdo em 206 quadros amostrados (só o fundo creme passa por ali)
+OK     sem trechos pretos
+OK     sem imagem congelada por 1,5 s ou mais
+
+CAPA E FECHO
+OK     a capa é o quadro 0 do vídeo (PSNR 41.0 dB entre capa.png e o 1º quadro)
+OK     regra das capas (revisao/capa.txt): dentro da regra das capas
+OK     fecho com 7.50 s (alvo 6–8 s)
+OK     fecho: a última mudança de texto é em 48.45 s; o texto fica parado 3.05 s até o fim (mínimo 3 s)
+OK     a logo oficial está na tela em todos os 12 quadros amostrados dos 3 últimos segundos (parada desde 45.15 s)
+OK     fecho: 8 elementos (logo oficial, título, chip, seta, marca) iguais entre 48.50 s e o fim (maior diferença média 0.93 de 255)
+       elementos: rótulo 0.30, título, linha 1 0.55, título, linha 2 0.34, logo oficial 0.22, assinatura 0.77, chip Segue 0.29, seta 0.88, marca 0.93
+
+RESULTADO: aprovado

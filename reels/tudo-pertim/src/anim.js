@@ -319,6 +319,7 @@
     loja: { wall: '#F4A98A', wallDark: '#D9876A', a: C.amarelo, b: C.coral, door: '#7A3A18' },
     lanchonete: { wall: '#F7C873', wallDark: '#DDA54A', a: C.coral, b: '#FFFFFF', door: '#8A3A1C' },
     misterio: { wall: '#F4A98A', wallDark: '#D9876A', a: C.coral, b: C.amarelo, door: '#7A3A18' },
+    sorveteria: { wall: '#FBD9CB', wallDark: '#E9A890', a: C.coral, b: '#FFFFFF', door: C.coralDark },
   };
   function face(ctx, blink, look, smile = 0) {        // os olhinhos do celular-personagem (Phone.tsx → PhoneFace, humor "happy"), viewBox 300×150
     ctx.fillStyle = css(C.coral, 0.28);
@@ -356,6 +357,10 @@
       ctx.fillStyle = C.verde; rr(ctx, -27, -6, 54, 6, 3); ctx.fill();
       ctx.fillStyle = '#7A3A18'; rr(ctx, -25, 0, 50, 9, 4); ctx.fill();
       ctx.fillStyle = '#E8A64A'; rr(ctx, -24, 9, 48, 8, 4); ctx.fill();
+    } else if (kind === 'sorveteria') {                // a casquinha
+      ctx.fillStyle = C.madeira; ctx.beginPath(); ctx.moveTo(-13, -2); ctx.lineTo(13, -2); ctx.lineTo(0, 24); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = C.coralLight; ctx.beginPath(); ctx.arc(0, -8, 15, 0, TAU); ctx.fill();
+      ctx.fillStyle = C.papel; ctx.beginPath(); ctx.arc(-5, -13, 4, 0, TAU); ctx.fill();
     } else if (kind === 'misterio') {                   // a loja que ainda não se sabe qual é
       txt(ctx, '?', 0, 16, { size: 46, weight: 900, align: 'center', color: C.coral });
     } else {
@@ -376,11 +381,14 @@
     ctx.fillStyle = C.amarelo; ctx.beginPath(); ctx.arc(113, 226, 3.5, 0, TAU); ctx.fill();
     ctx.save(); ctx.translate(25, 106); ctx.scale(0.5, 0.5); face(ctx, o.blink || 0, o.look || [0, 0], o.smile || 0); ctx.restore();
     const st = 6, sw = 184 / st;                            // o toldo listrado
+    const enrola = o.toldo !== undefined && o.toldo < 1;   // o toldo abrindo (o.toldo 0..1): desce a partir da barra
+    if (enrola) { ctx.save(); ctx.translate(0, 76); ctx.scale(1, Math.max(0.001, o.toldo)); ctx.translate(0, -76); }
     for (let i = 0; i < st; i++) {
       const x = 8 + i * sw;
       ctx.beginPath(); ctx.moveTo(x, 76); ctx.lineTo(x + sw, 76); ctx.lineTo(x + sw, 100); ctx.ellipse(x + sw / 2, 100, sw / 2, sw / 2.4, 0, 0, Math.PI); ctx.closePath();
       ctx.fillStyle = i % 2 === 0 ? s.a : s.b; ctx.fill();
     }
+    if (enrola) ctx.restore();
     ctx.fillStyle = s.wallDark; rr(ctx, 4, 66, 192, 14, 7); ctx.fill();
     ctx.save(); ctx.translate(100, 66); ctx.rotate((o.swing || 0) * DEG); ctx.translate(-100, -66);   // a placa
     ctx.fillStyle = s.wallDark; rr(ctx, 66, 44, 8, 24, 3); ctx.fill(); rr(ctx, 126, 44, 8, 24, 3); ctx.fill();
@@ -580,7 +588,83 @@
     ctx.fillStyle = '#E8A64A'; rr(ctx, -42, 20, 84, 14, 7); ctx.fill();
     ctx.restore();
   }
-  const ITENS = { queijo: itemQueijo, pao: itemPao, doce: itemDoce, cesta: itemCesta, remedio: itemRemedio, lanche: itemLanche };
+  function itemPaoQueijo(ctx, x, y, s) {                    // o pão de queijo: bolinha dourada, com a casquinha rachada
+    const k = s / 100;
+    ctx.save(); ctx.translate(x, y); ctx.scale(k, k);
+    ctx.fillStyle = '#E8B04F'; ctx.beginPath(); ctx.ellipse(0, 4, 40, 34, 0, 0, TAU); ctx.fill();
+    ctx.fillStyle = '#F6CF73'; ctx.beginPath(); ctx.ellipse(-4, -2, 32, 26, 0, 0, TAU); ctx.fill();
+    ctx.strokeStyle = '#D18F35'; ctx.lineWidth = 4; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(-16, -8); ctx.quadraticCurveTo(-2, -16, 12, -6); ctx.stroke();
+    ctx.fillStyle = css(C.papel, 0.7); ctx.beginPath(); ctx.ellipse(-14, -12, 7, 4, -0.4, 0, TAU); ctx.fill();
+    ctx.restore();
+  }
+  function itemTomate(ctx, x, y, s) {
+    const k = s / 100;
+    ctx.save(); ctx.translate(x, y); ctx.scale(k, k);
+    ctx.fillStyle = C.coral; ctx.beginPath(); ctx.ellipse(0, 4, 42, 36, 0, 0, TAU); ctx.fill();
+    ctx.fillStyle = C.coralDark; ctx.beginPath(); ctx.ellipse(10, 10, 26, 22, 0, 0, TAU); ctx.globalAlpha *= 0.35; ctx.fill(); ctx.globalAlpha /= 0.35;
+    ctx.fillStyle = C.papel; ctx.beginPath(); ctx.ellipse(-16, -8, 9, 6, -0.5, 0, TAU); ctx.globalAlpha *= 0.7; ctx.fill(); ctx.globalAlpha /= 0.7;
+    ctx.fillStyle = C.verde; starPath(ctx, 0, -30, 18, 5, 0.4); ctx.fill(); rr(ctx, -3, -44, 6, 14, 3); ctx.fill();
+    ctx.restore();
+  }
+  function itemPicole(ctx, x, y, s, cor = C.coral) {         // o picolé com a mordidinha
+    const k = s / 100;
+    ctx.save(); ctx.translate(x, y); ctx.scale(k, k);
+    ctx.fillStyle = C.madeira; rr(ctx, -6, 20, 12, 36, 5); ctx.fill();
+    ctx.save(); ctx.beginPath(); ctx.rect(-60, -80, 120, 160); ctx.moveTo(35, -42); ctx.arc(24, -42, 11, 0, TAU); ctx.clip('evenodd');   // a mordidinha
+    ctx.fillStyle = cor; rr(ctx, -26, -46, 52, 72, 22); ctx.fill();
+    ctx.fillStyle = css(C.papel, 0.55); rr(ctx, -16, -36, 9, 44, 4); ctx.fill();
+    ctx.restore();
+    ctx.restore();
+  }
+  function itemCasquinha(ctx, x, y, s) {
+    const k = s / 100;
+    ctx.save(); ctx.translate(x, y); ctx.scale(k, k);
+    ctx.fillStyle = C.madeira; ctx.beginPath(); ctx.moveTo(-26, -6); ctx.lineTo(26, -6); ctx.lineTo(0, 52); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle = C.madeiraDark; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(-16, 4); ctx.lineTo(8, 34); ctx.moveTo(14, 2); ctx.lineTo(-8, 30); ctx.stroke();
+    ctx.fillStyle = C.coralLight; ctx.beginPath(); ctx.arc(-12, -16, 20, 0, TAU); ctx.arc(12, -16, 20, 0, TAU); ctx.arc(0, -32, 22, 0, TAU); ctx.fill();
+    ctx.fillStyle = C.coral; ctx.beginPath(); ctx.arc(0, -52, 7, 0, TAU); ctx.fill();
+    ctx.restore();
+  }
+  function itemEspeto(ctx, x, y, s) {                       // o espetinho: palito com carne, pimentão e cebola
+    const k = s / 100;
+    ctx.save(); ctx.translate(x, y); ctx.scale(k, k); ctx.rotate(-0.5);
+    ctx.fillStyle = C.madeira; rr(ctx, -4, -64, 8, 132, 4); ctx.fill();
+    [['#8A4A1C', -44], [C.verde, -22], ['#8A4A1C', 0], [C.coral, 22], ['#8A4A1C', 44]].forEach(([cor, yy]) => { ctx.fillStyle = cor; rr(ctx, -17, yy - 10, 34, 20, 7); ctx.fill(); });
+    ctx.restore();
+  }
+  const ITENS = { queijo: itemQueijo, pao: itemPao, doce: itemDoce, cesta: itemCesta, remedio: itemRemedio, lanche: itemLanche,
+    paoQueijo: itemPaoQueijo, tomate: itemTomate, picole: itemPicole, casquinha: itemCasquinha, espeto: itemEspeto };
+
+  // o relógio despertador (ícone, sem texto): (x, y) = o centro do mostrador, r = o raio; hora em horas (7.5 = 7h30)
+  function relogio(ctx, x, y, r, hora, o = {}) {
+    ctx.save(); ctx.translate(x, y); ctx.rotate(o.rot || 0);
+    ctx.lineCap = 'round';
+    // os sininhos, o martelinho e as perninhas
+    ctx.fillStyle = C.amarelo; ctx.strokeStyle = C.amareloDark; ctx.lineWidth = r * 0.05;
+    for (const sx of [-1, 1]) { ctx.save(); ctx.rotate(sx * 0.62); ctx.beginPath(); ctx.arc(0, -r * 1.02, r * 0.3, Math.PI, TAU); ctx.closePath(); ctx.fill(); ctx.stroke(); ctx.restore(); }
+    ctx.strokeStyle = C.tinta; ctx.lineWidth = r * 0.08;
+    ctx.beginPath(); ctx.moveTo(0, -r * 1.0); ctx.lineTo(0, -r * 1.16); ctx.stroke();
+    for (const sx of [-1, 1]) { ctx.beginPath(); ctx.moveTo(sx * r * 0.55, r * 0.78); ctx.lineTo(sx * r * 0.78, r * 1.08); ctx.stroke(); }
+    // o corpo e o mostrador
+    ctx.shadowColor = 'rgba(120,60,30,0.25)'; ctx.shadowBlur = r * 0.25; ctx.shadowOffsetY = r * 0.08;
+    ctx.beginPath(); ctx.arc(0, 0, r, 0, TAU); ctx.fillStyle = C.coral; ctx.fill(); ctx.shadowColor = 'transparent';
+    ctx.beginPath(); ctx.arc(0, 0, r * 0.82, 0, TAU); ctx.fillStyle = C.papel; ctx.fill();
+    ctx.strokeStyle = C.tinta;
+    for (let i = 0; i < 12; i++) {
+      const a = i / 12 * TAU, l = i % 3 === 0 ? 0.16 : 0.08;
+      ctx.lineWidth = r * (i % 3 === 0 ? 0.06 : 0.035);
+      ctx.beginPath(); ctx.moveTo(Math.sin(a) * r * 0.72, -Math.cos(a) * r * 0.72); ctx.lineTo(Math.sin(a) * r * (0.72 - l), -Math.cos(a) * r * (0.72 - l)); ctx.stroke();
+    }
+    // os ponteiros: hora (curto) e minuto (longo)
+    const ah = ((hora % 12) / 12) * TAU, am = ((hora % 1) * 60 / 60) * TAU;
+    ctx.lineWidth = r * 0.11; ctx.strokeStyle = C.tinta;
+    ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(Math.sin(ah) * r * 0.42, -Math.cos(ah) * r * 0.42); ctx.stroke();
+    ctx.lineWidth = r * 0.07;
+    ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(Math.sin(am) * r * 0.62, -Math.cos(am) * r * 0.62); ctx.stroke();
+    ctx.fillStyle = C.coral; ctx.beginPath(); ctx.arc(0, 0, r * 0.1, 0, TAU); ctx.fill();
+    ctx.restore();
+  }
 
   // ---------------------------------------------------------------- o que é vivo: batida, figurinhas, confete, olhinhos
   let BT = 0.5;                                          // um tempo da batida (60 / bpm)
@@ -652,6 +736,8 @@
   }
   const OLHOS = '👀';
   const OLHOS_W = (s) => s * 0.22 * 4.2;
+  const RELOGIO = '⏰';                                  // no título da capa, vira o relógio desenhado girando
+  const RELOGIO_W = (s) => s * 0.9;
 
   // ---- a casinha (entrega): (cx, base) = o chão; aberta 0..1
   function casinha(ctx, cx, base, w, aberta, t) {
@@ -801,18 +887,101 @@
     g.addColorStop(0, 'rgba(200,140,90,0)'); g.addColorStop(1, 'rgba(200,140,90,0.16)');
     ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
   }
+  // ---------------------------------------------------------------- o céu do dia (opcional: "ceu" em cada capítulo do JSON, ep02 em diante)
+  // Cada estado tem um degradê vertical (posição 0–1 da tela → cor, sempre da paleta ou de misturas dela), a posição do sol
+  // e da lua no arco (s 0..1 da esquerda para a direita; [s, opacidade]) e se o topo pede a marca clara. A faixa da coluna
+  // de botões (y 1060–1560 ≈ 0,55–0,81) fica quase lisa em todos os degradês.
+  let CEU = false;
+  const CEUS = {
+    amanhecer: { a: 0.85, cores: [[0, '#FFB98F'], [0.32, '#FFD9B8'], [0.6, '#FBEBDD'], [1, '#F6EEE2']], sol: [0.06, 1], lua: [-0.25, 0], corSol: '#FFD27A', clara: 0 },
+    meiodia: { a: 0.8, cores: [[0, '#FFE08A'], [0.35, '#FFF2C8'], [0.7, '#FFF8EE'], [1, '#F6EEE2']], sol: [0.5, 1], lua: [-0.25, 0], corSol: '#F9B233', clara: 0 },
+    tarde: { a: 0.9, cores: [[0, '#F9B233'], [0.3, '#FFD27A'], [0.62, '#FFE9C2'], [1, '#FCE3CB']], sol: [0.8, 1], lua: [-0.25, 0], corSol: '#F9B233', clara: 0 },
+    porDoSol: { a: 0.95, cores: [[0, '#E7431C'], [0.12, '#F2502B'], [0.24, '#FFD27A'], [0.4, '#FFE6C9'], [0.82, '#FFD9B8'], [1, '#FF8A63']], sol: [0.9, 1], lua: [-0.25, 0], corSol: '#FF8A63', clara: 1 },
+    noite: { a: 1, cores: [[0, '#221C19'], [0.55, '#2E2420'], [0.82, '#3A2B24'], [1, '#4A3226']], sol: [1.18, 0], lua: [0.24, 1], corSol: '#FF8A63', clara: 1, escuro: 1 },
+    creme: { a: 0, cores: [], sol: [1.3, 0], lua: [0.45, 0], corSol: '#F9B233', clara: 0 },
+  };
+  const ceuDe = (cap) => CEUS[cap.ceu] || CEUS.creme;
+  const noturno = (cap) => !!ceuDe(cap).escuro;            // título e apoio em creme/amarelo sobre o fundo escuro
+  function ceuFundo(ctx, t, cap) {
+    const c = ceuDe(cap);
+    if (c.a <= 0) return;
+    const g = ctx.createLinearGradient(0, 0, 0, H);
+    c.cores.forEach(([pos, cor]) => g.addColorStop(pos, cor));
+    ctx.save(); ctx.globalAlpha *= c.a; ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); ctx.restore();
+    if (!c.escuro) {                                        // as nuvens passando devagar (o céu nunca fica parado)
+      for (let i = 0; i < 5; i++) {
+        const sz = 0.7 + 0.6 * hash(i, 41), y = [470, 620, 760, 900, 1000][i];
+        const x = ((hash(i, 42) * 1500 + t * (14 + 12 * hash(i, 43))) % 1500) - 210;
+        ctx.fillStyle = css(C.papel, 0.5 * c.a);
+        ctx.beginPath(); ctx.arc(x, y, 34 * sz, 0, TAU); ctx.arc(x + 46 * sz, y - 16 * sz, 44 * sz, 0, TAU); ctx.arc(x + 96 * sz, y, 32 * sz, 0, TAU); ctx.fill();
+        rr(ctx, x - 30 * sz, y - 4 * sz, 156 * sz, 38 * sz, 19 * sz); ctx.fill();
+      }
+    }
+    if (c.escuro) {                                         // as estrelas (nunca na faixa da coluna de botões)
+      for (let i = 0; i < 70; i++) {
+        const x = 20 + hash(i, 31) * 1040, y = 20 + hash(i, 32) * 1500;
+        if (x > 900 && y > 1020) continue;
+        const tw_ = 0.45 + 0.55 * Math.abs(Math.sin(t * (1.2 + hash(i, 33) * 2) + i)), r = 1.6 + 2.6 * hash(i, 34);
+        ctx.fillStyle = css(i % 7 === 0 ? C.amareloLight : C.papel, 0.8 * tw_);
+        if (i % 9 === 0) { starPath(ctx, x, y, r * 2.4, 4, 0.35); ctx.fill(); } else { ctx.beginPath(); ctx.arc(x, y, r, 0, TAU); ctx.fill(); }
+      }
+    }
+  }
+  // o estado do céu agora (o sol e a lua andam no arco junto com a troca; na capa o sol vai nascendo)
+  function ceuAgora(t) {
+    const w = where(t), A = ceuDe(CAPS[w.k]), B = w.trans ? ceuDe(CAPS[w.k + 1]) : A, e = w.trans ? E.inOutSine(w.u) : 0;
+    const mix2 = (a, b) => [lerp(a[0], b[0], e), lerp(a[1], b[1], e)];
+    const est = { sol: mix2(A.sol, B.sol), lua: mix2(A.lua, B.lua), corSol: mixHex(A.corSol, B.corSol, e), clara: lerp(A.clara, B.clara, e) };
+    if (w.k === 0 && !w.trans) est.sol[0] = lerp(0.0, A.sol[0], E.outCubic(p(t, 0, CAPS[0].t1)));
+    return est;
+  }
+  function arco(s) {
+    const sc = clamp(s, 0, 1);
+    // o arco: nasce à esquerda (perto do título, mas fora dele), passa alto atrás da marca ao meio-dia e se põe à direita,
+    // aberto para fora da tela no fim (o sol do poente nunca fica atrás do título)
+    return { x: 120 + 840 * s + (s > 0.8 ? 300 * (s - 0.8) : 0), y: 640 - 470 * Math.sin(Math.PI * sc) + (s > 1 ? 1100 * (s - 1) : 0) + (s < 0 ? -1100 * s : 0) };
+  }
+  function astros(ctx, t) {
+    const est = ceuAgora(t);
+    if (est.sol[1] > 0.01) {
+      const { x, y } = arco(est.sol[0]), r = 78, a = est.sol[1];
+      let g = ctx.createRadialGradient(x, y, r * 0.6, x, y, r * 3);
+      g.addColorStop(0, css(est.corSol, 0.45 * a)); g.addColorStop(1, css(est.corSol, 0));
+      ctx.fillStyle = g; ctx.fillRect(x - r * 3, y - r * 3, r * 6, r * 6);
+      ctx.save(); ctx.translate(x, y); ctx.rotate(t * 0.3); ctx.globalAlpha *= a;
+      ctx.strokeStyle = est.corSol; ctx.lineWidth = 9; ctx.lineCap = 'round';
+      for (let i = 0; i < 12; i++) { const an = i / 12 * TAU, l = r + 22 + 10 * Math.sin(t * 3 + i); ctx.beginPath(); ctx.moveTo(Math.cos(an) * (r + 12), Math.sin(an) * (r + 12)); ctx.lineTo(Math.cos(an) * l, Math.sin(an) * l); ctx.stroke(); }
+      ctx.beginPath(); ctx.arc(0, 0, r, 0, TAU); ctx.fillStyle = est.corSol; ctx.fill();
+      ctx.fillStyle = css(C.papel, 0.35); ctx.beginPath(); ctx.arc(-r * 0.3, -r * 0.3, r * 0.35, 0, TAU); ctx.fill();
+      ctx.restore();
+    }
+    if (est.lua[1] > 0.01) {
+      const { x, y } = arco(est.lua[0]), r = 62, a = est.lua[1];
+      const g = ctx.createRadialGradient(x, y, r * 0.8, x, y, r * 2.6);
+      g.addColorStop(0, css(C.papel, 0.3 * a)); g.addColorStop(1, css(C.papel, 0));
+      ctx.fillStyle = g; ctx.fillRect(x - r * 3, y - r * 3, r * 6, r * 6);
+      ctx.save(); ctx.globalAlpha *= a;
+      ctx.beginPath(); ctx.arc(x, y, r, 0, TAU); ctx.fillStyle = C.papel; ctx.fill();
+      ctx.fillStyle = C.cremeDark; [[-0.3, -0.2, 0.2], [0.25, 0.15, 0.14], [-0.05, 0.4, 0.1], [0.35, -0.35, 0.09]].forEach(([dx, dy, rr2]) => { ctx.beginPath(); ctx.arc(x + dx * r, y + dy * r, rr2 * r, 0, TAU); ctx.fill(); });
+      ctx.restore();
+    }
+  }
+
   function brand(ctx, t) {
-    // véu creme no topo, atrás da marca e da barra de progresso
-    const g = ctx.createLinearGradient(0, 230, 0, 412);
-    g.addColorStop(0, css('#FBF3E8', 0.96)); g.addColorStop(1, css('#FBF3E8', 0));
-    ctx.fillStyle = g; ctx.fillRect(0, 0, W, 412); ctx.fillStyle = css('#FBF3E8', 0.96); ctx.fillRect(0, 0, W, 230);
+    // véu creme no topo, atrás da marca e da barra de progresso (com o céu do dia, o céu fica à mostra)
+    const clara = CEU ? ceuAgora(t).clara : 0;            // topo escuro/coral: a marca fica clara
+    if (!CEU) {
+      const g = ctx.createLinearGradient(0, 230, 0, 412);
+      g.addColorStop(0, css('#FBF3E8', 0.96)); g.addColorStop(1, css('#FBF3E8', 0));
+      ctx.fillStyle = g; ctx.fillRect(0, 0, W, 412); ctx.fillStyle = css('#FBF3E8', 0.96); ctx.fillRect(0, 0, W, 230);
+    }
     const d = 58, nameW = tw('UaiPertim', 28, 900), handleW = tw(LN.marca, 20, 500, 0.3);
     const gw = d + 14 + Math.max(nameW, handleW), x0 = 540 - gw / 2, cy = 334;
     logo(ctx, x0 + d / 2, cy, d);
     const tx = x0 + d + 14;
-    const w1 = txt(ctx, 'Uai', tx, cy - 2, { size: 28, weight: 900, color: C.tinta });
-    txt(ctx, 'Pertim', tx + w1, cy - 2, { size: 28, weight: 900, color: C.coral });
-    txt(ctx, LN.marca, tx, cy + 23, { size: 20, weight: 500, color: C.cinza, ls: 0.3 });
+    const w1 = txt(ctx, 'Uai', tx, cy - 2, { size: 28, weight: 900, color: clara ? mixHex(C.tinta, C.papel, clara) : C.tinta });
+    txt(ctx, 'Pertim', tx + w1, cy - 2, { size: 28, weight: 900, color: clara ? mixHex(C.coral, C.amarelo, clara) : C.coral });
+    txt(ctx, LN.marca, tx, cy + 23, { size: 20, weight: 500, color: clara ? mixHex(C.cinza, C.papel, clara) : C.cinza, ls: 0.3 });
     BOX('marca', x0, cy - d / 2, x0 + gw, cy + d / 2);
     // a barra de progresso (estilo stories): um segmento por capítulo, sem a capa, preenchendo em coral.
     // Aparece na 1ª troca; o segmento do fecho termina de encher 3 s antes do fim (o fecho fica parado)
@@ -823,8 +992,8 @@
       for (let i = 0; i < n; i++) {
         const c = CAPS[i + 1], fim = i === n - 1 ? DUR - 3 : c.t1;
         const f = clamp((t - c.t0) / Math.max(0.1, fim - c.t0)), x = bx + i * (sw + gap);
-        rr(ctx, x, y - h / 2, sw, h, h / 2); ctx.fillStyle = css(C.coral, 0.16); ctx.fill();
-        if (f > 0) { rr(ctx, x, y - h / 2, Math.max(h, sw * f), h, h / 2); ctx.fillStyle = C.coral; ctx.fill(); }
+        rr(ctx, x, y - h / 2, sw, h, h / 2); ctx.fillStyle = clara ? css(C.papel, 0.16 + 0.2 * clara) : css(C.coral, 0.16); ctx.fill();
+        if (f > 0) { rr(ctx, x, y - h / 2, Math.max(h, sw * f), h, h / 2); ctx.fillStyle = clara ? mixHex(C.coral, C.papel, clara) : C.coral; ctx.fill(); }
       }
       ctx.restore();
       if (a >= 1) BOX('progresso', bx, y - h / 2, bx + w0, y + h / 2);
@@ -875,7 +1044,8 @@
       const k = u >= 1 ? 1 : lerp(1.45, 1, E.outBack(u, 2.8));
       const w = tw(ln, s, 900, -0.02 * s), x0 = L.tx - w / 2, cy = cap.tb[i] - 0.3 * s;
       ctx.save(); ctx.globalAlpha = clamp(u * 5); ctx.translate(L.tx, cy); ctx.scale(k, k); ctx.translate(-L.tx, -cy);
-      txt(ctx, ln, x0, cap.tb[i], { size: s, weight: 900, color: i === 1 ? C.coral : C.tinta, ls: -0.02 * s, box: u > 0.5 ? `título, linha ${i + 1}` : null });
+      const cores = noturno(cap) ? [C.papel, C.amarelo] : [C.tinta, C.coral];   // à noite: creme e amarelo sobre o fundo escuro
+      txt(ctx, ln, x0, cap.tb[i], { size: s, weight: 900, color: cores[i === 1 ? 1 : 0], ls: -0.02 * s, box: u > 0.5 ? `título, linha ${i + 1}` : null });
       ctx.restore();
     });
   }
@@ -898,7 +1068,8 @@
         ctx.save(); ctx.globalAlpha *= al;
         // o marcador amarelo atrás de cada trecho marcado (contínuo entre palavras marcadas vizinhas)
         let mx = null, mw = 0;
-        const fecha = () => { if (mx !== null) marker(ctx, mx, y, mw, AP.size, mk, css(C.amarelo, 0.9)); mx = null; mw = 0; };
+        const noite = noturno(cap);                     // à noite: texto creme, marcador coral (o creme não some sobre o amarelo)
+        const fecha = () => { if (mx !== null) marker(ctx, mx, y, mw, AP.size, mk, noite ? css(C.coral, 0.95) : css(C.amarelo, 0.9)); mx = null; mw = 0; };
         r.words.forEach((wd, k) => {
           wd.segs.forEach((sg) => { if (sg.m === '*') { if (mx === null) mx = x; mw = x + sg.w - mx; } else fecha(); x += sg.w; });
           if (!(wd.segs[wd.segs.length - 1].m === '*' && r.words[k + 1] && r.words[k + 1].segs[0].m === '*')) fecha();
@@ -907,7 +1078,7 @@
         fecha();
         x = x0;
         r.words.forEach((wd) => {
-          wd.segs.forEach((sg) => { txt(ctx, sg.s, x, y, { size: AP.size, weight: sg.m ? AP.wH : AP.w, color: sg.m === '~' ? C.coral : C.tinta }); x += sg.w; });
+          wd.segs.forEach((sg) => { txt(ctx, sg.s, x, y, { size: AP.size, weight: sg.m ? AP.wH : AP.w, color: sg.m === '~' ? (noite ? C.amarelo : C.coral) : (noite ? C.papel : C.tinta) }); x += sg.w; });
           x += r.sp;
         });
         ctx.restore();
@@ -929,7 +1100,7 @@
     const pulo = o.pula === false ? 0 : (o.altura ?? 11) * hop(t, o.fase || 0) * clamp(e * 2 - 1);
     const look = o.alvo ? [clamp((o.alvo[0] - x) / 420, -1, 1), clamp((o.alvo[1] - (base - w * 0.75)) / 420, -1, 1)] : (o.look || [0, 0.2]);
     ctx.save(); ctx.translate(x, base); ctx.scale(lerp(0.6, 1, k), k); ctx.translate(-x, -base - pulo);
-    shop(ctx, kind, x, base, w, { blink: o.blink ?? blinkAt(t, o.seed || 0), look, smile: o.smile || 0, lit: o.lit ?? 1, swing: o.swing || 0 });
+    shop(ctx, kind, x, base, w, { blink: o.blink ?? blinkAt(t, o.seed || 0), look, smile: o.smile || 0, lit: o.lit ?? 1, swing: o.swing || 0, toldo: o.toldo });
     ctx.restore();
     if (o.box) BOX(o.box, x - w * 0.5, base - w * ALTURA_LOJA, x + w * 0.5, base);
   }
@@ -943,7 +1114,10 @@
       const d = cap.diagrama;
       const ls = (S) => -0.03 * S;
       // a largura de uma linha do título (o 👀 vira os olhinhos desenhados)
-      cap.linhaW = (ln, S) => { const temOlhos = ln.includes(OLHOS); const tx = ln.replace(OLHOS, '').trimEnd(); return tw(tx, S, 900, ls(S)) + (temOlhos ? tw(' ', S, 900) + OLHOS_W(S) : 0); };
+      cap.linhaW = (ln, S) => {
+        const temOlhos = ln.includes(OLHOS), temRel = ln.includes(RELOGIO), tx = ln.replace(OLHOS, '').replace(RELOGIO, '').trimEnd();
+        return tw(tx, S, 900, ls(S)) + (temOlhos ? tw(' ', S, 900) + OLHOS_W(S) : 0) + (temRel ? tw(' ', S, 900) + RELOGIO_W(S) : 0);
+      };
       let S = 176;
       while (S > 40 && cap.titulo.some((l) => cap.linhaW(l, S) > 760)) S -= 1;   // nenhuma linha passa de 72% da largura (778 px)
       const MS = 320;                                       // a motinha da capa
@@ -974,7 +1148,7 @@
       cap.titulo.forEach((ln, i) => {
         const y = i ? Ly.b2 : Ly.b1, col = i ? C.coral : C.tinta, ls = -0.03 * S;
         const w = cap.linhaW(ln, S), x0 = 540 - w / 2;
-        const temOlhos = ln.includes(OLHOS), tx = ln.replace(OLHOS, '').trimEnd();
+        const temOlhos = ln.includes(OLHOS), temRel = ln.includes(RELOGIO), tx = ln.replace(OLHOS, '').replace(RELOGIO, '').trimEnd();
         const mi = d.marcador ? tx.toLowerCase().indexOf(d.marcador.toLowerCase()) : -1;
         if (mi >= 0) {
           const pre = tx.slice(0, mi), mw = tw(tx.slice(mi, mi + d.marcador.length), S, 900, ls), mx = x0 + (pre ? tw(pre, S, 900, ls) + ls : 0);
@@ -988,6 +1162,11 @@
           const fase = t - ev.olhos, look = fase < 0 ? [0.5, 0.7] : [0.9 * Math.sin(fase * 2.4), 0.3 * Math.cos(fase * 1.7)];
           const pisca = fase < 0 ? 0 : Math.max(blinkAt(t, 3), fase < 0.18 ? Math.sin(Math.PI * fase / 0.18) : 0);
           olhos(ctx, x0 + wt + tw(' ', S, 900), y, S, pisca, look);
+        }
+        if (temRel) {
+          // o relógio girando rápido (no quadro 0, parado em 10h10), tremendo como despertador
+          const rr_ = RELOGIO_W(S) * 0.42, cx = x0 + wt + tw(' ', S, 900) + RELOGIO_W(S) / 2, cy = y - S * 0.36;
+          relogio(ctx, cx, cy, rr_, 10.17 + 2.5 * t * clamp(t / 0.4), { rot: 0.08 * Math.sin(t * 38) * clamp(t / 0.3) });
         }
         ctx.restore();
         BOX(`título, linha ${i + 1}`, x0, y - S * 0.76, x0 + w, y + S * 0.22);
@@ -1338,6 +1517,340 @@
     },
   };
 
+  // ===================== cenas do ep02 ("Um dia no Glória"): o canto de cima à direita da cena fica para o relógio
+  // (x ≥ 770 e y até cenaTop + 160)
+
+  // ---- manha: a xícara fumegando na mesinha, o "?" do pão de queijo que acabou, a padaria abrindo o toldo e os
+  //      pães de queijo pulando para fora
+  CENAS.manha = {
+    setup(cap) {
+      const d = cap.diagrama, ev = cap.ev;
+      ev.xicara = at(cap, d.xicara.em, cap.t0 + 0.3);
+      ev.acabou = Math.max(at(cap, d.acabou.em, ev.xicara + 1), ev.xicara + 0.3);
+      ev.padaria = Math.max(at(cap, d.padaria.em, ev.acabou + 0.8), ev.acabou + 0.4);
+      ev.paes = Math.max(at(cap, d.paes.em, ev.padaria + 0.6), ev.padaria + 0.45);
+      cue(cap.t0 + 0.15, 'pop', { f: 420 }); cue(ev.xicara, 'clink'); cue(ev.acabou, 'question');
+      cue(ev.padaria, 'slide'); cue(ev.padaria + 0.2, 'light', { i: 1 });
+      [0, 1, 2, 3, 4].forEach((i) => cue(ev.paes + i * 0.11, 'pop', { f: 700 + 60 * i }));
+      cue(ev.paes + 0.7, 'confete');
+    },
+    draw(ctx, cap, t) {
+      const ev = cap.ev, T = cap.cenaTop;
+      const TB = PE - 170;                                   // o tampo da mesinha
+      enter(ctx, ent(t, cap.t0 + 0.1, 0.45), 250, TB, () => {
+        ctx.fillStyle = C.madeiraDark; rr(ctx, 140, TB + 18, 18, PE - TB - 26, 6); ctx.fill(); rr(ctx, 342, TB + 18, 18, PE - TB - 26, 6); ctx.fill();
+        ctx.fillStyle = C.madeira; rr(ctx, 110, TB, 280, 24, 10); ctx.fill();
+        BOX('mesinha', 110, TB, 390, PE - 8);
+      });
+      pop(ctx, ent(t, ev.xicara, 0.4), 250, TB, () => { xicara(ctx, 250, TB + 2, 190, t); BOX('xícara', 145, TB - 250, 355, TB); }, 2);
+      // o "?" (acabou o pão de queijo), que some quando a padaria abre
+      const eq = ent(t, ev.acabou, 0.35) * (1 - p(t, ev.padaria, ev.padaria + 0.3));
+      if (eq > 0.01) { interrog(ctx, 430, T + 110, 52, eq, t, ev.acabou); if (eq > 0.99) BOX('?', 378, T + 58, 482, T + 162); }
+      // a padaria: dormindo com o toldo enrolado; na palavra, o toldo desce, a luz acende e ela sorri
+      const ab = p(t, ev.padaria, ev.padaria + 0.45), PX = 640, PW = 300;
+      if (ab > 0) {
+        const g = ctx.createRadialGradient(PX, PE - 200, 20, PX, PE - 200, 300);
+        g.addColorStop(0, css(C.amareloLight, 0.5 * ab)); g.addColorStop(1, css(C.amareloLight, 0));
+        ctx.fillStyle = g; ctx.fillRect(PX - 300, PE - 500, 600, 520);
+      }
+      lojinha(ctx, 'padaria', PX, PE - 10, PW, t, { e: p(t, cap.t0 + 0.1, cap.t0 + 0.6), lit: 0.15 + 0.85 * ab, toldo: 0.06 + 0.94 * E.outBack(ab, 1.4), blink: Math.max(0.95 * (1 - ab), blinkAt(t, 21)), pula: ab >= 1,
+        smile: ab, alvo: [430, PE - 60], swing: 8 * Math.sin((t - ev.padaria) * 7) * Math.exp(-Math.max(0, t - ev.padaria) * 2.4) * (t > ev.padaria ? 1 : 0), box: t > cap.t0 + 0.6 ? 'padaria' : null });
+      // enquanto dorme: o "z z z" saindo da padaria
+      if (t < ev.padaria + 0.2) {
+        const zz = t - cap.t0, fz = 1 - p(t, ev.padaria, ev.padaria + 0.2);
+        for (let i = 0; i < 3; i++) {
+          const ph = (zz * 0.55 + i / 3) % 1;
+          txt(ctx, 'z', PX + 120 + 26 * i + 10 * Math.sin(ph * 6), PE - 400 - 80 * ph, { size: 34 + 10 * i, weight: 900, color: C.coral, alpha: Math.sin(Math.PI * ph) * clamp(zz * 2) * fz });
+        }
+      }
+      // os pães de queijo pulando da porta para a frente da mesinha, em pirâmide
+      const alvos = [[395, PE - 30], [440, PE - 30], [485, PE - 30], [417, PE - 72], [462, PE - 72]];
+      alvos.forEach(([ax, ay], i) => {
+        const t0 = ev.paes + i * 0.11; if (t < t0) return;
+        const u = p(t, t0, t0 + 0.45), x = lerp(PX, ax, u), y = lerp(PE - 70, ay, u) - 170 * Math.sin(Math.PI * u) - 8 * hop(t, i * 0.2) * clamp((t - t0 - 0.45) * 3);
+        ctx.save(); ctx.translate(x, y); ctx.rotate((1 - u) * 3 * (i % 2 ? 1 : -1)); itemPaoQueijo(ctx, 0, 0, 62); ctx.restore();
+        if (u >= 1) BOX(`pão de queijo ${i + 1}`, ax - 26, ay - 24, ax + 26, ay + 24);
+      });
+      sticker(ctx, 'estrela', 820, PE - 420, 64, p(t, ev.padaria + 0.2, ev.padaria + 0.5), t);
+      sticker(ctx, 'brilho', 520, PE - 200, 50, p(t, ev.paes + 0.5, ev.paes + 0.8), t);
+      confete(ctx, t, ev.paes + 0.7, 440, PE - 90, 41, { n: 30, v: 800 });
+    },
+  };
+
+  // ---- almoco: o "RONC!" em letreiro, o prato feito com vapor e o garfo e a faca dançando na batida
+  CENAS.almoco = {
+    setup(cap) {
+      const d = cap.diagrama, ev = cap.ev;
+      ev.ronc = at(cap, d.ronc.em, cap.t0 + 0.6);
+      ev.prato = Math.max(at(cap, d.prato.em, ev.ronc + 1), ev.ronc + 0.4);
+      ev.talheres = Math.max(at(cap, d.talheres.em, ev.prato + 0.6), ev.prato + 0.3);
+      ev.rapidim = Math.max(at(cap, d.rapidim.em, cap.t1 - 1), ev.talheres + 0.3);
+      cue(ev.ronc, 'ronc'); cue(ev.prato, 'pop', { f: 460 }); cue(ev.prato + 0.1, 'clink');
+      cue(ev.talheres, 'jump'); cue(ev.talheres + 0.1, 'clink'); cue(ev.rapidim, 'shine'); cue(ev.rapidim + 0.05, 'confete');
+    },
+    draw(ctx, cap, t) {
+      const ev = cap.ev, T = cap.cenaTop;
+      // o letreiro "RONC!": estouro amarelo com borda branca, tremendo
+      const er = p(t, ev.ronc, ev.ronc + 0.35);
+      if (er > 0) {
+        const cx = 300, cy = T + 115, tre = Math.exp(-Math.max(0, t - ev.ronc - 0.3) * 3);
+        const dx = 5 * Math.sin(t * 61) * tre, dy = 4 * Math.cos(t * 47) * tre, rot = -0.08 + 0.04 * Math.sin(t * 9);
+        pop(ctx, er, cx, cy, () => {
+          ctx.save(); ctx.translate(cx + dx, cy + dy); ctx.rotate(rot);
+          ctx.beginPath();
+          for (let i = 0; i <= 32; i++) { const a = i / 32 * TAU, rr2 = i % 2 ? 108 : 150; ctx.lineTo(Math.cos(a) * rr2 * 1.15, Math.sin(a) * rr2 * 0.72); }
+          ctx.closePath(); ctx.lineJoin = 'round';
+          ctx.shadowColor = 'rgba(120,60,30,0.22)'; ctx.shadowBlur = 14; ctx.shadowOffsetY = 6;
+          ctx.lineWidth = 12; ctx.strokeStyle = C.branco; ctx.stroke(); ctx.shadowColor = 'transparent';
+          ctx.fillStyle = C.amarelo; ctx.fill();
+          txt(ctx, 'RONC!', 3, 34, { size: 86, weight: 900, align: 'center', color: C.coralDark });
+          txt(ctx, 'RONC!', 0, 30, { size: 86, weight: 900, align: 'center', color: C.coral });
+          ctx.restore();
+        }, 2.6);
+        if (er >= 1) BOX('RONC!', cx - 182, cy - 116, cx + 182, cy + 116);
+      }
+      // o prato feito: arroz, feijão, bife e salada, com vapor
+      const ep = p(t, ev.prato, ev.prato + 0.45), PX = 510, PB = PE - 110;
+      if (ep > 0) {
+        pop(ctx, ep, PX, PB, () => {
+          prato(ctx, PX, PB, 300);
+          ctx.save(); ctx.translate(PX, PB - 46);
+          ctx.fillStyle = C.papel; ctx.beginPath(); ctx.ellipse(-70, 0, 78, 38, 0, Math.PI, TAU); ctx.ellipse(-70, 0, 78, 12, 0, 0, Math.PI); ctx.fill();   // o arroz
+          ctx.strokeStyle = C.cremeDark; ctx.lineWidth = 3; for (const [x, y] of [[-100, -14], [-70, -24], [-44, -10]]) { ctx.beginPath(); ctx.ellipse(x, y, 6, 3, 0.3, 0, TAU); ctx.stroke(); }
+          ctx.fillStyle = '#7A3A18'; ctx.beginPath(); ctx.ellipse(56, 2, 62, 28, 0, 0, TAU); ctx.fill();                                                     // o feijão
+          ctx.fillStyle = '#5E2C12'; for (const [x, y] of [[36, -4], [62, 6], [80, -6], [48, 10]]) { ctx.beginPath(); ctx.ellipse(x, y, 7, 4, 0.4, 0, TAU); ctx.fill(); }
+          ctx.fillStyle = C.madeiraDark; rr(ctx, -40, -46, 110, 48, 20); ctx.fill(); ctx.strokeStyle = '#7A3A18'; ctx.lineWidth = 4;   // o bife
+          ctx.beginPath(); ctx.moveTo(-26, -30); ctx.lineTo(52, -30); ctx.moveTo(-20, -16); ctx.lineTo(46, -16); ctx.stroke();
+          ctx.fillStyle = C.verde; for (const [x, y] of [[112, -22], [128, -8], [104, -4]]) { ctx.beginPath(); ctx.ellipse(x, y, 20, 12, 0.6, 0, TAU); ctx.fill(); }   // a salada
+          ctx.fillStyle = C.coral; ctx.beginPath(); ctx.arc(126, -26, 12, 0, TAU); ctx.fill();
+          ctx.restore();
+          // o vapor
+          ctx.strokeStyle = css(C.cinza, 0.5); ctx.lineWidth = 7; ctx.lineCap = 'round';
+          for (let i = 0; i < 4; i++) {
+            const ph = ((t * 0.7 + i / 4) % 1), a = Math.sin(Math.PI * ph);
+            ctx.save(); ctx.globalAlpha *= a; const sx = PX - 90 + i * 60, y0 = PB - 110 - ph * 90;
+            ctx.beginPath(); ctx.moveTo(sx, y0); ctx.bezierCurveTo(sx - 22, y0 - 26, sx + 22, y0 - 46, sx, y0 - 72); ctx.stroke(); ctx.restore();
+          }
+        }, 1.8);
+        if (ep >= 1) BOX('prato feito', PX - 190, PB - 160, PX + 190, PB);
+      }
+      // o garfo e a faca dançando (giram de um lado para o outro e pulam na batida)
+      const et = p(t, ev.talheres, ev.talheres + 0.4);
+      [['garfo', 205, 1], ['faca', 815, -1]].forEach(([k, x, sx], i) => {
+        if (et <= 0) return;
+        const base = PE - 30, dança = (t > ev.talheres + 0.4 ? 1 : 0) * Math.sin(Math.PI * (t / BT) + i * Math.PI) * 0.28;
+        pop(ctx, et, x, base, () => {
+          ctx.save(); ctx.translate(x, base - 14 * hop(t, i * 0.5)); ctx.rotate(dança * sx);
+          ctx.fillStyle = C.cinza; ctx.strokeStyle = '#6E5F55'; ctx.lineWidth = 3;
+          rr(ctx, -11, -150, 22, 150, 10); ctx.fill();                               // o cabo
+          if (k === 'garfo') {
+            rr(ctx, -30, -240, 60, 96, 18); ctx.fill();
+            for (const dx of [-20, -7, 7, 20]) { rr(ctx, dx - 4, -300, 8, 70, 4); ctx.fill(); }
+          } else {
+            ctx.beginPath(); ctx.moveTo(-14, -150); ctx.lineTo(-14, -300); ctx.quadraticCurveTo(30, -260, 16, -150); ctx.closePath(); ctx.fill();
+          }
+          ctx.fillStyle = C.coral; rr(ctx, -13, -100, 26, 40, 8); ctx.fill();          // a faixinha coral do cabo
+          ctx.restore();
+        }, 2.2);
+        if (et >= 1) BOX(k, x - 40, PE - 340, x + 40, PE - 30);
+      });
+      sticker(ctx, 'estrela', 680, T + 70, 62, p(t, ev.rapidim, ev.rapidim + 0.35), t);
+      sticker(ctx, 'brilho', 330, PE - 330, 52, p(t, ev.rapidim + 0.1, ev.rapidim + 0.45), t);
+      confete(ctx, t, ev.rapidim + 0.05, PX, PB - 120, 43, { n: 36, v: 900 });
+    },
+  };
+
+  // ---- calor: o sol forte com ondas de calor, o termômetro subindo e a sorveteria soltando picolés e casquinha
+  CENAS.calor = {
+    setup(cap) {
+      const d = cap.diagrama, ev = cap.ev;
+      ev.termo = at(cap, d.termometro.em, cap.t0 + 0.6);
+      ev.sorv = Math.max(at(cap, d.sorveteria.em, ev.termo + 1), ev.termo + 0.4);
+      ev.picoles = Math.max(at(cap, d.picoles.em, ev.sorv + 0.5), ev.sorv + 0.35);
+      ev.gelado = Math.max(at(cap, d.geladim.em, cap.t1 - 1), ev.picoles + 0.6);
+      cue(cap.t0 + 0.15, 'pop', { f: 420 }); cue(ev.termo, 'rise'); cue(ev.sorv, 'sprout', { i: 2 });
+      [0, 1, 2, 3].forEach((i) => cue(ev.picoles + i * 0.15, 'pop', { f: 640 + 80 * i }));
+      cue(ev.gelado, 'shine');
+    },
+    draw(ctx, cap, t) {
+      const ev = cap.ev, T = cap.cenaTop;
+      // o sol forte (com raios girando e ondas de calor)
+      const es = ent(t, cap.t0 + 0.1, 0.45), SX = 215, SY = T + 105;
+      pop(ctx, es, SX, SY, () => {
+        ctx.save(); ctx.translate(SX, SY); ctx.rotate(t * 0.8);
+        ctx.strokeStyle = C.amareloDark; ctx.lineWidth = 10; ctx.lineCap = 'round';
+        for (let i = 0; i < 12; i++) { const a = i / 12 * TAU, l = 92 + 12 * Math.sin(t * 6 + i); ctx.beginPath(); ctx.moveTo(Math.cos(a) * 74, Math.sin(a) * 74); ctx.lineTo(Math.cos(a) * l, Math.sin(a) * l); ctx.stroke(); }
+        ctx.restore();
+        ctx.beginPath(); ctx.arc(SX, SY, 62 * (1 + 0.04 * Math.pow(hop(t), 6)), 0, TAU); ctx.fillStyle = C.amarelo; ctx.fill();
+        ctx.fillStyle = css(C.papel, 0.4); ctx.beginPath(); ctx.arc(SX - 20, SY - 20, 18, 0, TAU); ctx.fill();
+      }, 2);
+      if (es >= 1) BOX('sol', SX - 100, SY - 100, SX + 100, SY + 100);
+      // o termômetro: o mercúrio coral sobe na palavra e treme no alto
+      const TX = 215, TT = T + 250, TBb = PE - 70, et = ent(t, cap.t0 + 0.25, 0.45);
+      enter(ctx, et, TX, TBb, () => {
+        ctx.fillStyle = C.papel; ctx.strokeStyle = C.coral; ctx.lineWidth = 6;
+        rr(ctx, TX - 24, TT, 48, TBb - TT, 24); ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.arc(TX, TBb, 46, 0, TAU); ctx.fill(); ctx.stroke();
+        const nivel = lerp(0.22, 0.95, E.outBack(p(t, ev.termo, ev.termo + 1.0), 1.6)) + 0.012 * Math.sin(t * 20) * (t > ev.termo + 1 ? 1 : 0);
+        const topo = TBb - (TBb - TT - 20) * clamp(nivel, 0, 1.02);
+        ctx.fillStyle = C.coral; rr(ctx, TX - 13, topo, 26, TBb - topo, 13); ctx.fill(); ctx.beginPath(); ctx.arc(TX, TBb, 34, 0, TAU); ctx.fill();
+        ctx.strokeStyle = C.coralDark; ctx.lineWidth = 4; for (let i = 1; i < 8; i++) { const y = TBb - 40 - i * (TBb - TT - 60) / 8; ctx.beginPath(); ctx.moveTo(TX + 30, y); ctx.lineTo(TX + (i % 2 ? 44 : 52), y); ctx.stroke(); }
+        BOX('termômetro', TX - 46, TT, TX + 52, TBb + 46);
+      });
+      // a sorveteria, que solta os picolés e a casquinha pela porta
+      const PX = 650, PW = 290;
+      lojinha(ctx, 'sorveteria', PX, PE - 10, PW, t, { e: p(t, ev.sorv, ev.sorv + 0.55), smile: clamp((t - ev.picoles) * 2), alvo: [520, T + 200], seed: 22, box: t > ev.sorv + 0.55 ? 'sorveteria' : null });
+      const alvos = [[430, T + 210, 'picole', C.coral], [565, T + 120, 'casquinha'], [700, T + 210, 'picole', C.amarelo], [420, T + 360, 'picole', C.verde]];
+      alvos.forEach(([ax, ay, k, cor], i) => {
+        const t0 = ev.picoles + i * 0.15; if (t < t0) return;
+        const u = p(t, t0, t0 + 0.5), x = lerp(PX, ax, E.outCubic(u)), y = lerp(PE - 80, ay, E.outCubic(u)) - 120 * Math.sin(Math.PI * u) + 6 * Math.sin((t - t0) * 3 + i);
+        ctx.save(); ctx.translate(x, y); ctx.rotate(0.25 * Math.sin((t - t0) * 2 + i) + (1 - u) * 4);
+        if (k === 'picole') itemPicole(ctx, 0, 0, 110, cor); else itemCasquinha(ctx, 0, 0, 115);
+        ctx.restore();
+        if (u >= 1) BOX(`${k} ${i + 1}`, ax - 36, ay - 66, ax + 36, ay + 66);
+      });
+      sticker(ctx, 'brilho', 495, T + 90, 50, p(t, ev.gelado, ev.gelado + 0.35), t);
+      sticker(ctx, 'brilho', 760, T + 330, 44, p(t, ev.gelado + 0.12, ev.gelado + 0.45), t);
+    },
+  };
+
+  // ---- janta: o pôr do sol, o mercadim e o tomate que sai quicando até cair na sacola da marca (check: resolvido)
+  CENAS.janta = {
+    QUIQUES: [[245, PE - 70], [395, PE - 28], [540, PE - 28], [760, PE - 210]],
+    setup(cap) {
+      const d = cap.diagrama, ev = cap.ev;
+      ev.merc = at(cap, d.mercadim.em, cap.t0 + 0.3);
+      ev.tomate = Math.max(at(cap, d.tomate.em, ev.merc + 1), ev.merc + 0.5);
+      ev.quiques = [0, 1, 2].map((i) => ev.tomate + i * 0.36);
+      ev.caiu = ev.tomate + 3 * 0.36;
+      ev.check = Math.max(at(cap, d.resolve.em, ev.caiu + 0.2), ev.caiu + 0.1);
+      cue(ev.merc, 'sprout', { i: 0 }); cue(ev.merc + 0.4, 'pop', { f: 460 });
+      ev.quiques.forEach((x) => cue(x, 'jump')); cue(ev.caiu, 'plop'); cue(ev.check, 'check'); cue(ev.check + 0.05, 'confete');
+    },
+    draw(ctx, cap, t) {
+      const ev = cap.ev, T = cap.cenaTop, Q = CENAS.janta.QUIQUES;
+      const S = { x: 760, bot: PE - 20, w: 230, h: 200 };
+      // o mercadim, olhando para o tomate
+      const tq = t >= ev.tomate && t < ev.caiu;
+      let tomXY = null;
+      if (tq) {
+        const i = Math.min(2, Math.floor((t - ev.tomate) / 0.36)), u = p(t, ev.quiques[i], ev.quiques[i] + 0.36);
+        const [x0, y0] = Q[i], [x1, y1] = Q[i + 1], hgt = [230, 180, 200][i];
+        tomXY = [lerp(x0, x1, u), lerp(y0, y1, u) - hgt * Math.sin(Math.PI * u), u, i];
+      }
+      lojinha(ctx, 'mercado', 245, PE - 10, 290, t, { e: p(t, ev.merc, ev.merc + 0.55), smile: clamp((t - ev.check) * 3), alvo: tomXY ? [tomXY[0], tomXY[1]] : [760, PE - 200], seed: 31, box: t > ev.merc + 0.55 ? 'mercadim' : null });
+      // as figurinhas e o confete ficam atrás da sacola com a logo
+      sticker(ctx, 'coracao', 560, T + 150, 70, p(t, ev.check, ev.check + 0.35), t);
+      sticker(ctx, 'estrela', 640, PE - 380, 52, p(t, ev.check + 0.12, ev.check + 0.45), t);
+      confete(ctx, t, ev.check + 0.05, S.x, S.bot - 220, 47, { n: 34, v: 900 });
+      // a sacola da marca: as alças e o fundo, o tomate caindo dentro, e a frente com a logo oficial
+      const es = ent(t, ev.merc + 0.4, 0.45);
+      enter(ctx, es, S.x, S.bot, () => {
+        const tp = S.bot - S.h;
+        ctx.strokeStyle = C.coralDark; ctx.lineWidth = 13; ctx.lineCap = 'round';
+        for (const dx of [-52, 52]) { ctx.beginPath(); ctx.moveTo(S.x + dx - 28, tp + 4); ctx.bezierCurveTo(S.x + dx - 28, tp - 72, S.x + dx + 28, tp - 72, S.x + dx + 28, tp + 4); ctx.stroke(); }
+        if (t >= ev.caiu) { const v = p(t, ev.caiu, ev.caiu + 0.2); itemTomate(ctx, S.x, lerp(tp - 10, tp + 24, v), 90); }
+        ctx.fillStyle = C.papel; ctx.beginPath(); ctx.moveTo(S.x - S.w / 2, tp); ctx.lineTo(S.x + S.w / 2, tp); ctx.lineTo(S.x + S.w / 2 + 12, S.bot); ctx.lineTo(S.x - S.w / 2 - 12, S.bot); ctx.closePath();
+        ctx.shadowColor = 'rgba(120,60,30,0.2)'; ctx.shadowBlur = 18; ctx.fill(); ctx.shadowColor = 'transparent';
+        ctx.lineWidth = 3; ctx.strokeStyle = C.cremeDeep; ctx.stroke();
+        ctx.fillStyle = C.coral; ctx.fillRect(S.x - S.w / 2, tp, S.w, 28);
+        logo(ctx, S.x, tp + 28 + (S.h - 28) / 2, Math.min(130, S.h - 44));
+        if (es >= 1) BOX('sacola', S.x - S.w / 2 - 12, tp - 72, S.x + S.w / 2 + 12, S.bot);
+      });
+      // o tomate quicando (na frente de tudo, até cair na boca da sacola)
+      if (tomXY) { ctx.save(); ctx.translate(tomXY[0], tomXY[1]); ctx.rotate((t - ev.tomate) * 7); const sq = tomXY[2] < 0.08 && tomXY[3] > 0 ? 0.8 : 1; ctx.scale(1 / sq, sq); itemTomate(ctx, 0, 0, 90); ctx.restore(); }
+      check(ctx, S.x + S.w / 2 - 4, S.bot - S.h + 6, 42, p(t, ev.check, ev.check + 0.4), { box: t >= ev.check + 0.4 ? 'check' : null });
+    },
+  };
+
+  // ---- noite: lua e estrelas (o céu), a pizza girando, o lanche e o espetinho pipocando e a motinha chegando
+  CENAS.noite = {
+    setup(cap) {
+      const d = cap.diagrama, ev = cap.ev;
+      ev.pizza = at(cap, d.pizza.em, cap.t0 + 0.6);
+      ev.lanche = Math.max(at(cap, d.lanche.em, ev.pizza + 0.5), ev.pizza + 0.3);
+      ev.espeto = Math.max(at(cap, d.espeto.em, ev.lanche + 0.5), ev.lanche + 0.3);
+      ev.moto = Math.max(at(cap, d.moto.em, ev.espeto + 0.6), ev.espeto + 0.3);
+      ev.chega = ev.moto + 1.0;
+      cue(ev.pizza, 'pop', { f: 480 }); cue(ev.pizza + 0.05, 'whoosh'); cue(ev.lanche, 'jump'); cue(ev.espeto, 'jump');
+      cue(ev.moto, 'moto', { d: 1.0 }); cue(ev.chega, 'horn');
+    },
+    draw(ctx, cap, t) {
+      const ev = cap.ev, T = cap.cenaTop;
+      // as figurinhas (atrás da motinha com a sacola)
+      sticker(ctx, 'estrela', 360, T + 70, 56, p(t, ev.pizza + 0.2, ev.pizza + 0.5), t);
+      sticker(ctx, 'estrela', 660, T + 470, 46, p(t, ev.espeto + 0.15, ev.espeto + 0.45), t);
+      sticker(ctx, 'brilho', 120, T + 470, 46, p(t, ev.lanche + 0.15, ev.lanche + 0.45), t);
+      // a pizza girando
+      const ep = p(t, ev.pizza, ev.pizza + 0.5), PX = 510, PY = T + 270, R = 140;
+      if (ep > 0) {
+        pop(ctx, ep, PX, PY, () => {
+          ctx.save(); ctx.translate(PX, PY); ctx.rotate(t * 0.9);
+          ctx.shadowColor = 'rgba(0,0,0,0.35)'; ctx.shadowBlur = 24; ctx.shadowOffsetY = 10;
+          ctx.beginPath(); ctx.arc(0, 0, R, 0, TAU); ctx.fillStyle = C.madeira; ctx.fill(); ctx.shadowColor = 'transparent';
+          ctx.beginPath(); ctx.arc(0, 0, R * 0.86, 0, TAU); ctx.fillStyle = C.coral; ctx.fill();
+          ctx.beginPath(); ctx.arc(0, 0, R * 0.8, 0, TAU); ctx.fillStyle = C.amarelo; ctx.fill();
+          ctx.fillStyle = C.coralDark; for (let i = 0; i < 9; i++) { const a = i / 9 * TAU + 0.3, rr2 = R * (i % 3 === 0 ? 0.25 : 0.55); ctx.beginPath(); ctx.arc(Math.cos(a) * rr2, Math.sin(a) * rr2, R * 0.1, 0, TAU); ctx.fill(); }
+          ctx.fillStyle = C.verde; for (let i = 0; i < 6; i++) { const a = i / 6 * TAU, rr2 = R * 0.4; ctx.beginPath(); ctx.ellipse(Math.cos(a) * rr2, Math.sin(a) * rr2, 9, 5, a, 0, TAU); ctx.fill(); }
+          ctx.strokeStyle = css(C.madeiraDark, 0.7); ctx.lineWidth = 4; for (let i = 0; i < 4; i++) { const a = i / 4 * Math.PI; ctx.beginPath(); ctx.moveTo(Math.cos(a) * R * 0.86, Math.sin(a) * R * 0.86); ctx.lineTo(-Math.cos(a) * R * 0.86, -Math.sin(a) * R * 0.86); ctx.stroke(); }
+          ctx.restore();
+        }, 2);
+        if (ep >= 1) BOX('pizza', PX - R, PY - R, PX + R, PY + R);
+      }
+      // o lanche e o espetinho pipocando e pulando na batida
+      const el = p(t, ev.lanche, ev.lanche + 0.4), ee = p(t, ev.espeto, ev.espeto + 0.4);
+      const LY = T + 280 - 12 * hop(t) * clamp((t - ev.lanche - 0.4) * 3), EY = T + 330 - 12 * hop(t, 0.5) * clamp((t - ev.espeto - 0.4) * 3);
+      pop(ctx, el, 205, LY + 40, () => itemLanche(ctx, 205, LY, 175), 2.4);
+      if (el >= 1) BOX('lanche', 205 - 82, LY - 62, 205 + 82, LY + 62);
+      pop(ctx, ee, 810, EY + 60, () => itemEspeto(ctx, 810, EY, 190), 2.4);
+      if (ee >= 1) BOX('espetinho', 810 - 82, EY - 120, 810 + 82, EY + 120);
+      // a motinha chega com a sacola e para (escolhe e só espera)
+      if (t >= ev.moto - 0.05) {
+        const um = p(t, ev.moto, ev.chega), x = lerp(60, 700, E.inOutCubic(um)), sp = Math.sin(Math.PI * um), MS = 175;
+        ctx.save(); ctx.globalAlpha *= clamp((t - ev.moto + 0.05) / 0.2);
+        moto(ctx, x, PE - 10 - (um >= 1 ? 3 * hop(t) : 0), MS, { dir: 1, roll: x / 16, speed: sp, tilt: -0.04 * sp });
+        ctx.restore();
+        if (um >= 1) BOX('motinha', 700 - MS * 0.55, PE - 10 - MS * 0.98, 700 + MS * 0.55, PE - 10);
+      }
+    },
+  };
+
+  // ---- enquete: 4 balões estilo enquete (emoji + texto + bolinha de marcar) entram um a um com "pop"; corações e
+  //      estrelas pipocam dos lados
+  CENAS.enquete = {
+    setup(cap) {
+      const d = cap.diagrama, ev = cap.ev;
+      let prev = cap.t0;
+      ev.opcoes = d.opcoes.map((o) => (prev = Math.max(at(cap, o.em, prev + 0.6), prev + 0.3)));
+      ev.opcoes.forEach((x, i) => { cue(x, 'pop', { f: 620 + 90 * i }); cue(x + 0.18, 'tick'); });
+    },
+    draw(ctx, cap, t) {
+      const d = cap.diagrama, ev = cap.ev, T = cap.cenaTop;
+      const W_ = 620, Hh = 104, X = 510;
+      d.opcoes.forEach((o, i) => {
+        const e = p(t, ev.opcoes[i], ev.opcoes[i] + 0.4);
+        const y = T + 70 + i * 128, x0 = X - W_ / 2;
+        sticker(ctx, i % 2 ? 'estrela' : 'coracao', i % 2 ? 150 : 870, y + (i % 2 ? -10 : 10), 54, p(t, ev.opcoes[i] + 0.15, ev.opcoes[i] + 0.45), t);
+        if (e <= 0) return;
+        const rot = (i % 2 ? 1.5 : -1.5) * DEG;
+        pop(ctx, e, X, y, () => {
+          ctx.save(); ctx.translate(X, y); ctx.rotate(rot); ctx.translate(-X, -y);
+          ctx.shadowColor = 'rgba(120,60,30,0.18)'; ctx.shadowBlur = 16; ctx.shadowOffsetY = 6;
+          rr(ctx, x0, y - Hh / 2, W_, Hh, Hh / 2); ctx.fillStyle = C.papel; ctx.fill(); ctx.shadowColor = 'transparent';
+          ctx.lineWidth = 5; ctx.strokeStyle = C.coral; ctx.stroke();
+          txt(ctx, o.emoji || '', x0 + 44, y + 18, { size: 50, weight: 500 });
+          txt(ctx, o.t, x0 + 44 + 72, y + 16, { size: 46, weight: 900, color: C.tinta });
+          // a bolinha de marcar
+          const bx = x0 + W_ - 58, mk = p(t, ev.opcoes[i] + 0.3, ev.opcoes[i] + 0.5);
+          ctx.beginPath(); ctx.arc(bx, y, 24, 0, TAU); ctx.lineWidth = 5; ctx.strokeStyle = C.coral; ctx.stroke();
+          if (mk > 0) { ctx.beginPath(); ctx.arc(bx, y, 14 * E.outBack(mk, 2.4), 0, TAU); ctx.fillStyle = C.coral; ctx.fill(); }
+          ctx.restore();
+        }, 2.4);
+        if (e >= 1) BOX(`opção ${o.t}`, x0 - 4, y - Hh / 2 - 10, x0 + W_ + 4, y + Hh / 2 + 10);
+      });
+    },
+  };
+
   // ---- fecho: título "Em breve / no Glória.", a LOGO OFICIAL grande e fixa, a assinatura "Tudo pertim de você.",
   //      o chip "Segue @uaipertim" com seta e o confete final (que termina antes dos 3 últimos segundos)
   CENAS.fecho = {
@@ -1402,16 +1915,49 @@
   // =====================================================================
   // O QUADRO
   // =====================================================================
+  // o relógio grande do capítulo (opcional: "relogio": {h, m} no JSON): no canto de cima à direita da cena, entra com "plop"
+  // depois do título e os ponteiros correm da hora do capítulo anterior até a deste
+  const relogioT = (cap) => tituloT(cap)[1] + BT;
+  const RELOGIO_POS = (cap) => ({ x: 842, y: cap.cenaTop + 84, r: 66 });
+  function relogioDoCap(ctx, cap, t) {
+    const tr = relogioT(cap), e = p(t, tr, tr + 0.35);
+    if (e <= 0) return;
+    const R = RELOGIO_POS(cap), hora = cap.relogio.h + (cap.relogio.m || 0) / 60;
+    const ant = CAPS.slice(0, cap.n).reverse().find((c) => c.relogio), h0 = ant ? ant.relogio.h + (ant.relogio.m || 0) / 60 : hora - 3;
+    const hAgora = lerp(h0, hora, E.outCubic(p(t, tr + 0.1, tr + 0.8)));
+    pop(ctx, e, R.x, R.y + R.r, () => relogio(ctx, R.x, R.y, R.r, hAgora, { rot: 0.1 * Math.sin((t - tr) * 30) * Math.exp(-Math.max(0, t - tr - 0.8) * 6) * (t > tr + 0.8 ? 1 : 0) }), 2.6);
+    if (e >= 1) BOX('relógio', R.x - R.r * 1.05, R.y - R.r * 1.35, R.x + R.r * 1.05, R.y + R.r * 1.1);
+  }
   function drawChap(ctx, cap, t) {
     const tipo = cap.diagrama.tipo;
     if (tipo !== 'capa') header(ctx, cap, t);
+    if (cap.relogio) relogioDoCap(ctx, cap, t);
     CENAS[tipo].draw(ctx, cap, t);
     drawApoio(ctx, cap, t);
   }
   function frame(ctx, t) {
     ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over'; ctx.shadowColor = 'transparent';
     const w = where(t);
-    background(ctx, t, { y: (w.k + (w.trans ? E.inOutSine(w.u) : 0)) * STEP });
+    if (!CEU) background(ctx, t, { y: (w.k + (w.trans ? E.inOutSine(w.u) : 0)) * STEP });
+    else {
+      // com o céu do dia: o céu de cada capítulo é varrido junto com a motinha; o sol e a lua andam no arco por cima
+      const lados = w.trans ? (() => { const T = travessia(w.k, w.u); return T.dir > 0 ? [[T.borda, W], [0, T.borda]] : [[0, T.borda], [T.borda, W]]; })() : [[0, W]];
+      lados.forEach(([a, b], i) => {
+        if (b - a <= 0.5) return;
+        const k = w.k + i;
+        ctx.save(); ctx.beginPath(); ctx.rect(a, 0, b - a, H); ctx.clip();
+        background(ctx, t, { y: k * STEP }); ceuFundo(ctx, t, CAPS[k]);
+        ctx.restore();
+      });
+      if (w.trans) {
+        // na faixa da coluna de botões o céu não tem borda: os dois céus se fundem (nada passa por ali, nem a borda)
+        ctx.save(); ctx.beginPath(); ctx.rect(BTN.x, BTN.y0, W - BTN.x, BTN.y1 - BTN.y0); ctx.clip();
+        background(ctx, t, { y: w.k * STEP }); ceuFundo(ctx, t, CAPS[w.k]);
+        ctx.globalAlpha = E.inOutSine(w.u); background(ctx, t, { y: (w.k + 1) * STEP }); ceuFundo(ctx, t, CAPS[w.k + 1]);
+        ctx.restore();
+      }
+      astros(ctx, t);
+    }
     ctx.save();
     // nada passa pela coluna de botões
     ctx.beginPath(); ctx.rect(0, 0, W, H); ctx.rect(BTN.x, BTN.y0, W - BTN.x, BTN.y1 - BTN.y0); ctx.clip('evenodd');
@@ -1462,6 +2008,7 @@
     M = document.createElement('canvas').getContext('2d');
     CAPS = linha.capitulos.map((c) => ({ ...c, ev: {} }));
     NC = CAPS.length;
+    CEU = CAPS.some((c) => c.ceu);
     CAPS.forEach((cap, k) => {
       if (!CENAS[cap.diagrama.tipo]) throw new Error('tipo de cena desconhecido: ' + cap.diagrama.tipo);
       if (cap.diagrama.tipo !== 'capa') layoutTitulo(cap);
@@ -1470,6 +2017,7 @@
         cue(CAPS[k - 1].t1, 'trans', { d: TR, k, dir: travessia(k - 1, 0).dir });   // a motinha atravessando (o som anda junto)
         cue(rotuloT(cap), 'pop', { f: 820 });                                        // o "plop" do adesivo do rótulo
         tituloT(cap).forEach((x, i) => cue(x, 'punch', { i }));
+        if (cap.relogio) { cue(relogioT(cap), 'pop', { f: 980 }); cue(relogioT(cap) + 0.12, 'alarme'); }
       }
       cap.apoios.forEach((a, i) => { if (k > 0 || i > 0) cue(a.t, 'apoio'); });
     });

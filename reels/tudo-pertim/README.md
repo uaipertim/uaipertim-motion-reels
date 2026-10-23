@@ -35,7 +35,8 @@ A cara é **mais jovem, animada e viva**, com a marca em destaque. A pasta `reel
 
 | Episódio | Tema | Capítulos | Estado |
 |---|---|---|---|
-| **tudo-pertim-01** | "Prazer, UaiPertim!" | 00 capa · 01 quem sou eu · 02 o que tem · 03 como funciona · 04 sem aperto · 05 feito em Minas · 06 sua vez · 07 fecho | prévia sem voz (tempos estimados) em [`exports/tiktok/tudo-pertim/ep01/previa/`](../../exports/tiktok/tudo-pertim/ep01/previa) |
+| **tudo-pertim-01** | "Prazer, UaiPertim!" | 00 capa · 01 quem sou eu · 02 o que tem · 03 como funciona · 04 sem aperto · 05 feito em Minas · 06 sua vez · 07 fecho | final com voz, 52,25 s, revisão aprovada: [`exports/tiktok/tudo-pertim/ep01/`](../../exports/tiktok/tudo-pertim/ep01) |
+| **tudo-pertim-02** | "Um dia no Glória" | 00 capa · 01 7h da manhã · 02 meio-dia · 03 3h da tarde · 04 6h da tarde · 05 sexta à noite · 06 sua vez · 07 fecho | final com voz, 51,5 s, revisão aprovada: [`exports/tiktok/tudo-pertim/ep02/`](../../exports/tiktok/tudo-pertim/ep02) |
 
 Em cada episódio, `output/<id>/` traz:
 
@@ -95,6 +96,22 @@ A prévia (`--previa`) vai para `output/<id>/previa/`, fora do git. A cópia par
     - Essa área já fica dentro da interface do TikTok (≈ 130 px no topo, 380 px embaixo e 140 px à direita). A `zonas-seguras.jpg` desenha também esse contorno, em azul.
     - **Capa** = quadro 0: cada linha do título com ≤ 72% da largura (778 px), conteúdo entre y 285–1635, bloco (adesivo + título + motinha) centrado no recorte 3:4.
 
+## Céu do dia e relógio (opcionais, desde o ep02)
+
+Os dois só aparecem quando o JSON pede. Um episódio sem eles (como o ep01) é desenhado exatamente como antes.
+
+- **`"ceu"` no capítulo:** `amanhecer`, `meiodia`, `tarde`, `porDoSol`, `noite` ou `creme`.
+  - O céu de cada capítulo é um degradê com as cores da paleta, e é varrido junto com a motinha na troca.
+  - Dentro da faixa da coluna de botões, os dois céus se fundem, sem borda.
+  - O sol faz um arco: nasce à esquerda (na capa ele vai subindo), passa alto atrás da marca ao meio-dia e se põe à direita, fora da área do título.
+  - À noite o sol some e a lua sobe, com estrelas (nunca na coluna de botões). Nos céus de dia, nuvens passam devagar, para a imagem nunca ficar parada.
+  - Com o céu, a marca do topo fica sem o véu creme. No pôr do sol e à noite ela fica clara (creme/amarelo), e a barra de progresso também.
+  - **À noite**, título e apoio usam creme (1ª linha) e amarelo (2ª linha e `~coral~`). O `*marcador*` vira coral, para o texto creme não sumir sobre o amarelo.
+- **`"relogio": {"h": 7, "m": 0}` no capítulo:** um despertador grande (ícone, sem texto) no canto de cima à direita da cena (x ≈ 842, `cenaTop` + 84).
+  - Entra com "plop" e um tilintar um tempo depois do título.
+  - Os ponteiros correm da hora do capítulo anterior até a deste. Na capa, `⏰` no fim de uma linha do título vira um relógio desenhado girando rápido.
+  - As cenas do ep02 deixam esse canto livre (x ≥ 770 até `cenaTop` + 160).
+
 ## Fazer o próximo episódio (só pelo JSON)
 
 1. Copie `episodios/tudo-pertim-01.json` para `episodios/tudo-pertim-02.json` e troque `id`, `titulo` e os `capitulos` (formato abaixo). Não mexa em código.
@@ -153,7 +170,8 @@ A chave do ElevenLabs fica **só em Segredos de rede**: a rede da nuvem põe o c
 - **`bpm`:** o andamento da trilha e da entrada dos títulos (118–124).
 - **`fala`:** as frases do capítulo, na ordem. O texto falado é a junção delas e vai **inteiro numa geração só**.
 - **`apoio`:** a linha de apoio que entra com a frase (`null` = nenhuma). Aceita `*marcador amarelo*` e `~coral~`.
-- **`titulo`:** sempre 2 linhas (a 2ª em coral). Na capa, `👀` no fim de uma linha vira os olhinhos desenhados (piscam e olham em volta), e `marcador` é a palavra no marcador amarelo.
+- **`titulo`:** sempre 2 linhas (a 2ª em coral). Na capa, `👀` no fim de uma linha vira os olhinhos desenhados (piscam e olham em volta), `⏰` vira o relógio girando, e `marcador` é a palavra no marcador amarelo.
+- **`ceu`** e **`relogio`** (opcionais): veja "Céu do dia e relógio".
 - **`tom`:** `creme`, `pessego`, `amarelo` ou `verde`.
 - **Tempo do capítulo:** `inicio` é a pausa antes da voz (padrão 0,25 s; capa 0,10 s); `segura` é o tempo depois da voz antes da troca (padrão 0,45 s); `min` é a duração mínima; `seed` é a seed da 1ª geração.
 - **`em` (dentro da cena):** a palavra da fala que dispara a peça (`"queijo"`, `"queijo#2"` para a 2ª vez, `"+1.2"` para 1,2 s depois do começo do capítulo, ou `"fim"`). Vale a palavra como aparece na tela (`"UaiPertim"`).
@@ -169,6 +187,12 @@ A chave do ElevenLabs fica **só em Segredos de rede**: a rede da nuvem põe o c
 | `aperto` | 3 chips com ícone (fila, sol, pijama…) pulam com "boing", tremem e são riscados um a um; embaixo, a casinha abre, a motinha chega e a lojinha comemora | `chips: [{t, icone: fila\|sol\|pijama\|chuva\|chinelo, em}]` (3) |
 | `minas` | Os morros de Minas sobem; 3 lojinhas brotam juntas, pulam na mesma batida e sorriem; o selo "do Glória" é carimbado; o coração bate na batida, com confete | `montanhas: {em}`, `lojas: {em}`, `selo: {t: [linha pequena, linha grande], em}`, `coracao: {em}` |
 | `comenta` | A lojinha-mistério (placa com "?"), grande e no centro, olha para os balões de comentário que brotam em volta, em ondas de 2 (emoji + texto + "pop"), com figurinhas de coração, estrela e brilho pipocando entre eles | `loja: {em}`, `baloes: [{t, emoji, em}]` (até 6; dois com o mesmo `em` brotam juntos, um logo depois do outro) |
+| `manha` | A mesinha com a xícara fumegando; o "?" do que acabou; a padaria dormindo ("z z z", toldo enrolado) que abre o toldo, acende e sorri; os pães de queijo pulando da porta em pirâmide | `xicara: {em}`, `acabou: {em}`, `padaria: {em}`, `paes: {em}` |
+| `almoco` | O letreiro "RONC!" tremendo; o prato feito (arroz, feijão, bife e salada) com vapor; o garfo e a faca dançando na batida | `ronc: {em}`, `prato: {em}`, `talheres: {em}`, `rapidim: {em}` |
+| `calor` | O sol forte com raios girando; o termômetro com o mercúrio subindo; a sorveteria soltando picolés e casquinha | `termometro: {em}`, `sorveteria: {em}`, `picoles: {em}`, `geladim: {em}` |
+| `janta` | O mercadim; o tomate que sai quicando três vezes até cair na sacola da marca; o check | `mercadim: {em}`, `tomate: {em}`, `resolve: {em}` |
+| `noite` | A pizza girando; o lanche e o espetinho pipocando e pulando na batida; a motinha chegando com a sacola | `pizza: {em}`, `lanche: {em}`, `espeto: {em}`, `moto: {em}` |
+| `enquete` | Até 4 balões estilo enquete (emoji + texto + bolinha de marcar), um a um com "pop", com corações e estrelas dos lados | `opcoes: [{t, emoji, em}]` |
 | `fecho` | Título do capítulo, a logo oficial grande e fixa, a assinatura "Tudo pertim de você.", chip "Segue @uaipertim" com seta e confete final | `logo: {em}`, `assinatura: {t, em}`, `chip: {t, em}`, `confete: {em}` |
 
 **Cena nova:** é um bloco `CENAS.<nome> = { setup(cap), draw(ctx, cap, t) }` em `src/anim.js`.

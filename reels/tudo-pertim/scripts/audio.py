@@ -536,6 +536,18 @@ for c in CUES['cues']:
         place(sfx, popper(), t, 0.42); place(sfx, sparkle(), t + 0.04, 0.28); place(send, sparkle(), t, 0.16)
         for k in range(5):
             place(sfx, pop(900 + 260 * k), t + 0.08 + 0.05 * k, 0.12, rng.uniform(-0.6, 0.6))
+    elif ty == 'ronc':
+        # a barriga roncando: um grave que treme e desce, com um "glub" no fim
+        dd = 0.8
+        tq = tt(dd)
+        f = 95 - 35 * tq / dd + 12 * np.sin(2 * np.pi * 9 * tq)
+        rr_ = np.sin(2 * np.pi * np.cumsum(f) / SR) * (0.6 + 0.4 * np.sign(np.sin(2 * np.pi * 23 * tq)))
+        rr_ = filt(rr_, 900, 'low') * np.minimum(1, tq / 0.04) * np.clip((dd - tq) / 0.25, 0, 1)
+        place(sfx, np.tanh(2.2 * rr_) * 0.9, t, 0.5); place(sfx, boing(180, 0.3), t + 0.7, 0.25)
+    elif ty == 'alarme':
+        # o despertador: o martelinho batendo rápido nos dois sininhos
+        for k in range(10):
+            place(sfx, ping(midi(96 + (k % 2) * 3), 0.18), t + k * 0.035, 0.07, -0.3 + 0.6 * (k % 2))
     elif ty == 'heart':
         place(sfx, pop(900), t, 0.4); place(sfx, sparkle(), t + 0.05, 0.22); place(send, sparkle(), t, 0.12)
     else:
