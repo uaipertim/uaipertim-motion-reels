@@ -2,7 +2,7 @@
  "episodio": "historia-uaipertim",
  "titulo": "Por que UaiPertim? (a nossa história)",
  "marca": "@uaipertim",
- "duracao": 63.367,
+ "duracao": 63.767,
  "tr": 0.9,
  "ap_entra": 0.34,
  "ap_leitura": 1.5,
@@ -1067,8 +1067,15 @@
     "minas": {
      "em": "Minas"
     },
-    "loja": {
-     "em": "primeiro"
+    "parceiro": {
+     "img": "public/img/parceiros/varanda-burguer-house.png",
+     "em": "Varanda",
+     "forma": "circulo",
+     "disco": {
+      "cx": 440.6,
+      "cy": 434.6,
+      "r": 424.5
+     }
     },
     "selo": {
      "em": "topar",
@@ -1076,14 +1083,10 @@
       "PRIMEIRO",
       "PARCEIRO"
      ]
-    },
-    "nome": {
-     "em": "Varanda",
-     "t": "Varanda Burguer House"
     }
    },
    "t0": 46.839,
-   "t1": 54.967,
+   "t1": 55.367,
    "voz_t0": 47.089,
    "voz_t1": 53.567,
    "palavras": [
@@ -1253,7 +1256,7 @@
     {
      "t": 50.046,
      "texto": "O primeiro parceiro: *Varanda Burguer House*.",
-     "ate": 55.867
+     "ate": 56.267
     }
    ],
    "seed": 42
@@ -1277,106 +1280,106 @@
      "em": "Segue"
     }
    },
-   "t0": 55.867,
-   "t1": 63.367,
-   "voz_t0": 56.117,
-   "voz_t1": 60.494,
+   "t0": 56.267,
+   "t1": 63.767,
+   "voz_t0": 56.517,
+   "voz_t1": 60.639,
    "palavras": [
     {
      "w": "Isso",
      "n": "isso",
      "i0": 0,
-     "t0": 56.117,
-     "t1": 56.477
+     "t0": 56.517,
+     "t1": 56.842
     },
     {
      "w": "é",
      "n": "e",
      "i0": 5,
-     "t0": 56.535,
-     "t1": 56.593
+     "t0": 56.9,
+     "t1": 56.97
     },
     {
      "w": "o",
      "n": "o",
      "i0": 7,
-     "t0": 56.663,
-     "t1": 56.721
+     "t0": 57.016,
+     "t1": 57.063
     },
     {
      "w": "UaiPertim.",
      "n": "uaipertim",
      "i0": 9,
-     "t0": 56.744,
-     "t1": 57.766
+     "t0": 57.156,
+     "t1": 58.142
     },
     {
      "w": "Chegando",
      "n": "chegando",
      "i0": 23,
-     "t0": 57.986,
-     "t1": 58.404
+     "t0": 58.317,
+     "t1": 58.758
     },
     {
      "w": "em",
      "n": "em",
      "i0": 32,
-     "t0": 58.427,
-     "t1": 58.485
+     "t0": 58.793,
+     "t1": 58.839
     },
     {
      "w": "breve",
      "n": "breve",
      "i0": 35,
-     "t0": 58.543,
-     "t1": 58.869
+     "t0": 58.897,
+     "t1": 59.234
     },
     {
      "w": "no",
      "n": "no",
      "i0": 41,
-     "t0": 58.915,
-     "t1": 58.996
+     "t0": 59.269,
+     "t1": 59.35
     },
     {
      "w": "Glória.",
      "n": "gloria",
      "i0": 44,
-     "t0": 59.043,
-     "t1": 59.461
+     "t0": 59.385,
+     "t1": 59.756
     },
     {
      "w": "Segue",
      "n": "segue",
      "i0": 52,
-     "t0": 59.623,
-     "t1": 59.995
+     "t0": 59.907,
+     "t1": 60.197
     },
     {
      "w": "a",
      "n": "a",
      "i0": 58,
-     "t0": 60.03,
-     "t1": 60.053
+     "t0": 60.221,
+     "t1": 60.244
     },
     {
      "w": "gente!",
      "n": "gente",
      "i0": 60,
-     "t0": 60.122,
-     "t1": 60.494
+     "t0": 60.279,
+     "t1": 60.639
     }
    ],
    "frases": [
     {
      "texto": "Isso é o UaiPertim. Chegando em breve no Glória. Segue a gente!",
      "apoio": null,
-     "t0": 56.117,
-     "t1": 60.494
+     "t0": 56.517,
+     "t1": 60.639
     }
    ],
    "apoios": [],
-   "seed": 42
+   "seed": 1042
   }
  ],
  "colocacao": [
@@ -1456,9 +1459,9 @@
    "cap": 6,
    "arquivo": "voz/cap-06.wav",
    "de_s": 0.0,
-   "ate_s": 4.5511,
-   "no_video_s": 56.117,
-   "amostras": 218454,
+   "ate_s": 4.3654,
+   "no_video_s": 56.517,
+   "amostras": 209537,
    "fade_ms": [
     8,
     60

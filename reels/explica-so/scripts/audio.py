@@ -607,11 +607,29 @@ def lufs(x):
     return float(re.search(r'I:\s+(-?[\d.]+) LUFS', s).group(1))
 
 
-x = mix.T / max(1e-9, np.abs(mix).max()) * 0.5
-for _ in range(5):
-    x = true_peak_limit(x * 10 ** ((TARGET_LUFS - lufs(x)) / 20), -1.8)
+def tp_aac(x):
+    """o pico real DEPOIS do AAC 256k do vídeo (o codificador pode passar alguns décimos do pico do wav nos transientes)"""
+    raw, enc = os.path.join(AUD, '.medida.wav'), os.path.join(AUD, '.medida.m4a')
+    wavfile.write(raw, SR, np.round(np.clip(x, -1, 1) * 32767).astype(np.int16))
+    subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', raw, '-c:a', 'aac', '-b:a', '256k', '-ar', '48000', enc], check=True)
+    e = subprocess.run(['ffmpeg', '-hide_banner', '-nostats', '-i', enc, '-af', 'ebur128=peak=true', '-f', 'null', '-'], capture_output=True, text=True).stderr
+    os.remove(raw); os.remove(enc)
+    return float(re.search(r'Peak:\s+(-?[\d.]+) dBFS', e[e.rindex('True peak:'):]).group(1))
+
+
+base = mix.T / max(1e-9, np.abs(mix).max()) * 0.5
+teto = -1.8                                             # o teto do limitador; desce se o AAC passar de −1,3 dBTP
+for _ in range(4):
+    x = base
+    for _ in range(5):
+        x = true_peak_limit(x * 10 ** ((TARGET_LUFS - lufs(x)) / 20), teto)
+    tp = tp_aac(x)
+    if tp <= -1.3:
+        break
+    print(f'  o AAC chega a {tp:.1f} dBTP com o teto em {teto:.1f}: teto {teto - (tp + 1.3) - 0.2:.1f}')
+    teto -= (tp + 1.3) + 0.2
 I = lufs(x)
 wavfile.write(os.path.join(DEST, 'mix.wav'), SR, np.round(np.clip(x, -1, 1) * 32767).astype(np.int16))
 for nome, sig in (('voz-tratada', np.stack([voz, voz])), ('musica', msc), ('sfx', sfx)):
     wavfile.write(os.path.join(DEST, nome + '.wav'), SR, np.round(np.clip(sig.T * (x.std() / max(1e-9, mix.T.std())), -1, 1) * 32767).astype(np.int16))
-print(f'ok -> {os.path.relpath(os.path.join(DEST, "mix.wav"), ROOT)} | {I:.1f} LUFS | {len(CUES["cues"])} cues | voz sozinha {lufs(np.stack([voz, voz]).T * (x.std() / max(1e-9, mix.T.std()))):.1f} LUFS')
+print(f'ok -> {os.path.relpath(os.path.join(DEST, "mix.wav"), ROOT)} | {I:.1f} LUFS | teto {teto:.1f} dBTP (no AAC {tp:.1f}) | {len(CUES["cues"])} cues | voz sozinha {lufs(np.stack([voz, voz]).T * (x.std() / max(1e-9, mix.T.std()))):.1f} LUFS')

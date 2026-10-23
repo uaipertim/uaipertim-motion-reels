@@ -46,8 +46,14 @@
     const [img, ep] = await Promise.all([loadImg('../../../public/img/uaipertim_logo.png'),   // a logo oficial (o arquivo, nunca redesenhada)
       fetch(LINHA).then((r) => r.json()), ...fonts]);
     await img.decode();
+    // as logos de parceiros pedidas pelas cenas ("parceiro": {"img": "public/img/parceiros/…png"}): o arquivo, como está
+    const extras = {};
+    for (const c of ep.capitulos) {
+      const src = c.diagrama && c.diagrama.parceiro && c.diagrama.parceiro.img;
+      if (src && !extras[src]) { extras[src] = await loadImg('../../../' + src); await extras[src].decode(); }
+    }
     await document.fonts.ready;
-    EXPLICA.init(img, ep); // layout tipográfico + linha do tempo + cues (precisa das fontes carregadas)
+    EXPLICA.init(img, ep, extras); // layout tipográfico + linha do tempo + cues (precisa das fontes carregadas)
     document.title = `UaiPertim — Explica, Sô! ${EPID}`;
   })();
 

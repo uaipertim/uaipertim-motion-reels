@@ -5,7 +5,7 @@ Vídeos curtos que explicam uma coisa do dia a dia em capítulos, com a cara da 
 | Episódio | Tema | Capítulos | Saída |
 |---|---|---|---|
 | **explica-so-01** | "Faltou um trem?" | 00 capa · 01 o causo · 02 o Glória tem · 03 a sacola · 04 chegou · 05 fecho | [`output/explica-so-01/`](output/explica-so-01) · 38,6 s |
-| **historia-uaipertim** (especial) | "Por que UaiPertim?" (a nossa história) | 00 capa · 01 o Glória hoje · 02 do outro lado do balcão · 03 a ideia · 04 o nome · 05 feito aqui · 06 fecho | [`output/historia-uaipertim/`](output/historia-uaipertim) · 63,4 s |
+| **historia-uaipertim** (especial) | "Por que UaiPertim?" (a nossa história) | 00 capa · 01 o Glória hoje · 02 do outro lado do balcão · 03 a ideia · 04 o nome · 05 feito aqui · 06 fecho | [`output/historia-uaipertim/`](output/historia-uaipertim) · 63,8 s |
 
 Em cada episódio, `output/<id>/` traz:
 
@@ -35,9 +35,16 @@ A história do UaiPertim, no mesmo motor e com a mesma identidade. O que muda em
 - **Saída extra:** `capa-3x4.png`, o recorte 3:4 da capa, para conferir e para o "Editar capa". O `capa.png` é a capa inteira, 9:16.
 - **Pronúncia** (só na API, em `audio/voz_oficial.json`): "UaiFood" → "Uai fúdi", "WhatsApp" → "Uátsap", "Burguer" → "Búrguer". Grafias de um capítulo só vão no campo `"pronuncia"` do capítulo, no JSON (`pron()` em `voz.py`/`linha.py`); este episódio não precisou delas.
 
-**Estado:** pronto e aprovado (`output/historia-uaipertim/revisao/relatorio-tecnico.txt` termina em `RESULTADO: aprovado`), com 63,37 s.
+**Estado:** pronto e aprovado (`output/historia-uaipertim/revisao/relatorio-tecnico.txt` termina em `RESULTADO: aprovado`), com 63,77 s.
 
-- **Capítulos:** 00 2,80 s · 01 9,20 s · 02 9,77 s · 03 8,48 s · 04 12,09 s · 05 8,13 s · 06 7,50 s, com trocas de 0,9 s.
+- **Capítulos:** 00 2,80 s · 01 9,20 s · 02 9,77 s · 03 8,48 s · 04 12,09 s · 05 8,53 s · 06 7,50 s, com trocas de 0,9 s.
+- **Versão 3:**
+  - capítulo 06 gerado de novo (seed 1042) até o "Pertim" ficar com a força no TIM;
+  - na cena do 05, a logo oficial do Varanda Burguer House (`public/img/parceiros/varanda-burguer-house.png`) num círculo branco, entrando com pop em "Varanda" e parada até a troca, com o selo verde "PRIMEIRO PARCEIRO" no canto.
+  - A voz dos capítulos 00 a 05 não mudou.
+  - O "Pérr-tim" do 06 ficou com o TIM tônico: a vogal do i tem 0,151 s e 147 Hz, contra 0,116 s e 136 Hz do é, e o é continua aberto (F1 até 554 Hz).
+  - A logo fica inteira e parada por 2,74 s antes da troca. O arquivo é o print enviado, com o perfil Display P3 original; o motor só tira o fundo do print, fora da borda do disco laranja (`disco` no JSON).
+  - O master de `audio.py` agora confere o pico real depois do AAC (`tp_aac`) e desce o teto do limitador até o vídeo ficar ≤ −1,3 dBTP. Neste episódio o teto ficou em −4,2 dBTP, e o vídeo em −1,8 dBTP.
 - **Versão 2 (correções):**
   - 00 gerado de novo até a pergunta subir no fim;
   - 01 com "Uátsap";
@@ -46,7 +53,7 @@ A história do UaiPertim, no mesmo motor e com a mesma identidade. O que muda em
   - A voz dos capítulos 02, 03, 05 e 06 não mudou.
 - **Voz:**
   - capítulo 00 com a seed 5042, a 5ª de 7 gerações inteiras: o F0 dos últimos 0,6 s sobe de 98 para 230 Hz e termina em 204 Hz (+8,5 st), e o "Pérr-tim" tem o TIM tônico e o é aberto (F1 até 523 Hz);
-  - capítulos 01 e 04 com a seed 1042;
+  - capítulos 01, 04 e 06 com a seed 1042;
   - os outros com a seed 42.
 - **Pronúncia** (conferida pelo alinhamento):
   - "Uátsap" com o á aberto (F1 734 Hz) e o p final soltando, um estouro em −38 dB depois da oclusão;
@@ -187,7 +194,7 @@ A narração gerada (`audio/<id>/voz/cap-NN.wav` + `falas.json`) fica no reposit
 | `balcao` | Lojinha atrás do balcão, suando cada vez mais; UM balão grande e, ao lado, o contador que sobe (×1 → ×2 → ×5 → ×12 → ×30); o sol vira lua embaixo do contador | `loja: {em, tipo}`, `suor: {em}`, `balao: {t: [linha 1, linha 2], em}`, `contador: {n: [números], em: [palavras]}`, `sol: {em}` |
 | `ideia` | Balões espalhados que estouram e a lâmpada que acende; lojinhas que descem e se arrumam lado a lado numa rua; check | `some: {em}`, `lojas: {em, tipos: [4 tipos]}`, `rua: {em}`, `check: {em}` |
 | `nome` | Placa "UaiFood" com o carimbo, que vira "UaiPertim"; o mapinha de Minas em cima do "Uai"; lojinha e casinha que se aproximam até ficarem coladinhas | `placa`, `carimbo: {em, t}`, `vira`, `minas`, `casas: {em, loja}`, `perto` (todos com `em`) |
-| `feito` | Calendário com as folhas virando até "3 MESES"; mapinha de Minas com o pin; lojinha do hambúrguer com o nome escrito (sem logo) e o selo verde | `calendario: {em, folhas: [[número, rótulo]…]}`, `vira`, `minas`, `loja`, `selo: {em, t: [2 linhas]}`, `nome: {em, t}` |
+| `feito` | Calendário com as folhas virando até "3 MESES"; mapinha de Minas com o pin; selo verde. Com `parceiro`, a **logo do parceiro** (o arquivo, como está) num card branco ou num círculo, com ~43% da largura, entrando com pop e parada até a troca, e o calendário e o mapinha menores à esquerda. Sem `parceiro`, a lojinha do hambúrguer com o nome escrito | `calendario: {em, folhas: [[número, rótulo]…]}`, `vira`, `minas`, `selo: {em, t: [2 linhas]}` e `parceiro: {img, em, forma: card\|circulo, disco?: {cx, cy, r}}` (ou `loja` + `nome: {em, t}`) |
 
 **Cena nova:** é um bloco `CENAS.<nome> = { setup(cap), draw(ctx, cap, t) }` em `src/anim.js`.
 

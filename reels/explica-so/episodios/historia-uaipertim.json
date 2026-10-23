@@ -246,8 +246,15 @@
         "minas": {
           "em": "Minas"
         },
-        "loja": {
-          "em": "primeiro"
+        "parceiro": {
+          "img": "public/img/parceiros/varanda-burguer-house.png",
+          "em": "Varanda",
+          "forma": "circulo",
+          "disco": {
+            "cx": 440.6,
+            "cy": 434.6,
+            "r": 424.5
+          }
         },
         "selo": {
           "em": "topar",
@@ -255,13 +262,9 @@
             "PRIMEIRO",
             "PARCEIRO"
           ]
-        },
-        "nome": {
-          "em": "Varanda",
-          "t": "Varanda Burguer House"
         }
       },
-      "segura": 1.4
+      "segura": 1.8
     },
     {
       "rotulo": "PRA NÃO PERDER",

@@ -165,7 +165,7 @@
   }
 
   // ---------------------------------------------------------------- ícones e peças desenhadas (estilo das lojinhas)
-  let LOGO = null;
+  let LOGO = null, IMGS = {};                            // a logo oficial + as logos de parceiros (os arquivos, nunca redesenhados)
   function logo(ctx, x, y, d) { if (LOGO) ctx.drawImage(LOGO, x - d / 2, y - d / 2, d, d); }   // o arquivo oficial, nunca redesenhado
   function shadow(ctx, x, y, rx, ry, a = 0.12) { ctx.save(); ctx.fillStyle = `rgba(80,40,20,${a})`; ctx.beginPath(); ctx.ellipse(x, y, rx, ry, 0, 0, TAU); ctx.fill(); ctx.restore(); }
 
@@ -635,7 +635,8 @@
   // ---------------------------------------------------------------- estado
   let LN = null, DUR = 0, TR = 0.9, CAPS = [], CUES = [], RAIL = null, NC = 0;
   let BOXES = null, OFF = { dx: 0, dy: 0, n: 0 };
-  function BOX(name, x0, y0, x1, y1) { if (BOXES) BOXES.push({ cap: OFF.n, nome: name, x0: x0 + OFF.dx, y0: y0 + OFF.dy, x1: x1 + OFF.dx, y1: y1 + OFF.dy }); }
+  let BOXT = null;                                      // uma transformação (x, y) -> (x, y) das peças desenhadas em escala
+  function BOX(name, x0, y0, x1, y1) { if (BOXT) { [x0, y0] = BOXT(x0, y0); [x1, y1] = BOXT(x1, y1); } if (BOXES) BOXES.push({ cap: OFF.n, nome: name, x0: x0 + OFF.dx, y0: y0 + OFF.dy, x1: x1 + OFF.dx, y1: y1 + OFF.dy }); }
   const FECHO = { ultima: 0, logo: null };              // a última mudança de texto do fecho (regra dos 3 s) e a logo
   const AVISOS = [];                                    // palavras que não dispararam peça
 
@@ -1612,6 +1613,85 @@
     },
   };
 
+  // o calendário com as folhas virando e o mapinha de Minas com o pin (cena "feito"), em (150, top + 20)
+  function calendarioEMinas(ctx, cap, t, top) {
+    const d = cap.diagrama, ev = cap.ev;
+    // o calendário
+    const CX = 150, CY = top + 20, CW = 280, CH = 290, folhas = d.calendario.folhas;
+    const ec = ent(t, ev.cal, 0.5);
+    enter(ctx, ec, CX + CW / 2, CY + CH, () => {
+      shadow(ctx, CX + CW / 2, CY + CH + 6, CW / 2, 10);
+      const folha = (f) => {
+        txt(ctx, f[0], CX + CW / 2, CY + 196, { size: 130, weight: 900, align: 'center', color: C.tinta });
+        txt(ctx, f[1], CX + CW / 2, CY + 252, { size: 34, weight: 800, align: 'center', color: C.coral, ls: 3 });
+      };
+      ctx.fillStyle = C.papel; rr(ctx, CX, CY, CW, CH, 22); ctx.fill(); ctx.lineWidth = 4; ctx.strokeStyle = C.cremeDeep; ctx.stroke();
+      let n = 0; folhas.slice(1).forEach((_, i) => { if (t >= ev.vira + i * 0.34 + 0.3) n = i + 1; });
+      const vir = folhas.slice(1).map((_, i) => p(t, ev.vira + i * 0.34, ev.vira + i * 0.34 + 0.3)).find((u) => u > 0 && u < 1);
+      folha(folhas[Math.min(folhas.length - 1, vir !== undefined ? n + 1 : n)]);
+      if (vir !== undefined) {                            // a folha de cima subindo e virando
+        ctx.save(); ctx.beginPath(); rr(ctx, CX, CY + 64, CW, CH - 64, 22); ctx.clip();
+        ctx.translate(0, CY + 64); ctx.scale(1, Math.max(0.01, 1 - vir)); ctx.translate(0, -(CY + 64));
+        ctx.fillStyle = C.papel; ctx.fillRect(CX, CY + 64, CW, CH - 64);
+        ctx.fillStyle = css(C.cremeDark, 0.5 * vir); ctx.fillRect(CX, CY + 64, CW, CH - 64);
+        folha(folhas[n]);
+        ctx.restore();
+      }
+      ctx.fillStyle = C.coral; rr(ctx, CX, CY, CW, 64, 22); ctx.fill(); ctx.fillRect(CX, CY + 40, CW, 24);
+      for (const rx of [CX + 70, CX + CW - 70]) { ctx.fillStyle = C.tinta2; rr(ctx, rx - 8, CY - 18, 16, 46, 8); ctx.fill(); }
+      BOX('calendário', CX, CY - 18, CX + CW, CY + CH);
+    });
+    // o mapinha de Minas com o pin (feito aqui)
+    const em = p(t, ev.minas, ev.minas + 0.5);
+    if (em > 0) {
+      const mx = CX + CW / 2, my = CY + CH + 130, mw = 250;
+      pop(ctx, em, mx, my + 80, () => minas(ctx, mx, my, mw, { pin: true }), 2);
+      if (em >= 1) BOX('mapa de Minas', mx - mw / 2, my - 95, mx + mw / 2, my + 85);
+    }
+  }
+  // a cena "feito" com a logo do parceiro: o calendário e o mapinha menores à esquerda; a logo (o arquivo, como está) num
+  // card branco (ou círculo) com ~43% da largura, entrando com pop na palavra e parada até a troca; o selo verde no canto
+  function feitoParceiro(ctx, cap, t, top) {
+    const d = cap.diagrama, ev = cap.ev, P = d.parceiro, IM = IMGS[P.img];
+    const k = 0.72, ax = 140, ay = top + 25;                // o calendário e o mapinha em escala, ancorados em (ax, ay)
+    ctx.save(); ctx.translate(ax, ay); ctx.scale(k, k); ctx.translate(-150, -(top + 20));
+    BOXT = (x, y) => [ax + (x - 150) * k, ay + (y - (top + 20)) * k];
+    calendarioEMinas(ctx, cap, t, top);
+    BOXT = null; ctx.restore();
+    const S = Math.round(0.435 * 1080), cx = 650, cy = top + 40 + S / 2, circ = P.forma === 'circulo';
+    const el = p(t, ev.logo, ev.logo + 0.45);
+    if (el > 0) {
+      const kk = el >= 1 ? 1 : E.outBack(el, 1.9);
+      ctx.save(); ctx.globalAlpha *= clamp(el * 3); ctx.translate(cx, cy); ctx.scale(kk, kk);
+      ctx.shadowColor = 'rgba(120,60,30,0.18)'; ctx.shadowBlur = 34; ctx.shadowOffsetY = 12; ctx.fillStyle = C.branco;
+      if (circ) { ctx.beginPath(); ctx.arc(0, 0, S / 2, 0, TAU); ctx.fill(); } else { rr(ctx, -S / 2, -S / 2, S, S, 44); ctx.fill(); }
+      ctx.shadowColor = 'transparent';
+      const pad = circ ? (P.pad ?? 14) : (P.pad ?? 40), box = S - 2 * pad;
+      if (circ && P.disco) {
+        // logo redonda vinda de um print: o disco da logo (centro e raio no arquivo, em P.disco) ocupa o círculo; só o
+        // fundo do print, fora da borda do disco, fica de fora. O desenho e as cores não mudam
+        const r = box / 2 / P.disco.r;
+        ctx.save(); ctx.beginPath(); ctx.arc(0, 0, box / 2 - 0.5, 0, TAU); ctx.clip();
+        ctx.drawImage(IM, -P.disco.cx * r, -P.disco.cy * r, IM.width * r, IM.height * r);
+        ctx.restore();
+      } else {
+        const r = Math.min(box / IM.width, box / IM.height), w = IM.width * r, h = IM.height * r;
+        ctx.drawImage(IM, -w / 2, -h / 2, w, h);          // o arquivo inteiro, sem recorte e sem mexer nas cores
+      }
+      ctx.restore();
+      if (el >= 1) BOX('logo do parceiro', cx - S / 2, cy - S / 2, cx + S / 2, cy + S / 2);
+    }
+    const es = p(t, ev.selo, ev.selo + 0.4);
+    if (es > 0) {
+      const sx = cx + S / 2 - 92, sy = cy - S / 2 + 28, r = 74;
+      const kk = lerp(1.7, 1, E.outCubic(es)), rot = -10 * DEG + 18 * DEG * (1 - E.outCubic(es));
+      ctx.save(); ctx.globalAlpha *= clamp(es * 2.5); ctx.translate(sx, sy); ctx.rotate(rot); ctx.scale(kk, kk);
+      selo(ctx, 0, 0, r, d.selo.t, C.verde);
+      ctx.restore();
+      if (es >= 1) BOX('selo', sx - r - 6, sy - r - 6, sx + r + 6, sy + r + 6);
+    }
+  }
+
   // ---- feito (FEITO AQUI): as folhas do calendário viram até "3 MESES"; o mapinha de Minas com o pin; a lojinha do
   //      hambúrguer com o nome escrito (sem logo) e o selo verde "PRIMEIRO PARCEIRO" carimbado
   CENAS.feito = {
@@ -1620,47 +1700,26 @@
       ev.cal = at(cap, d.calendario.em, cap.t0 + 0.2);
       ev.vira = Math.max(at(cap, d.vira.em, ev.cal + 0.6), ev.cal + 0.4);
       ev.minas = Math.max(at(cap, d.minas.em, ev.vira + 1.2), ev.vira + 0.9);
+      cue(ev.cal, 'pop', { f: 460 }); d.calendario.folhas.slice(1).forEach((_, i) => cue(ev.vira + i * 0.34, 'page'));
+      cue(ev.minas, 'pop', { f: 620 });
+      if (d.parceiro) {                                   // a logo do parceiro (o arquivo) num card, e o selo no canto
+        if (!IMGS[d.parceiro.img]) throw new Error('logo do parceiro não carregada: ' + d.parceiro.img);
+        ev.selo = Math.max(at(cap, d.selo.em, ev.minas + 0.8), ev.minas + 0.5);
+        ev.logo = Math.max(at(cap, d.parceiro.em, ev.selo + 0.5), ev.selo + 0.4);
+        ev.logoParada = ev.logo + 0.5;
+        cue(ev.selo, 'stamp'); cue(ev.logo, 'pop', { f: 560 }); cue(ev.logo + 0.05, 'shine');
+        return;
+      }
       ev.loja = Math.max(at(cap, d.loja.em, ev.minas + 0.8), ev.minas + 0.5);
       ev.selo = Math.max(at(cap, d.selo.em, ev.loja + 0.6), ev.loja + 0.45);
       ev.nome = Math.max(at(cap, d.nome.em, ev.selo + 0.6), ev.selo + 0.4);
-      cue(ev.cal, 'pop', { f: 460 }); d.calendario.folhas.slice(1).forEach((_, i) => cue(ev.vira + i * 0.34, 'page'));
-      cue(ev.minas, 'pop', { f: 620 }); cue(ev.loja, 'sprout', { i: 2 }); cue(ev.selo, 'stamp'); cue(ev.nome, 'chip');
+      cue(ev.loja, 'sprout', { i: 2 }); cue(ev.selo, 'stamp'); cue(ev.nome, 'chip');
     },
     draw(ctx, cap, t) {
       const d = cap.diagrama, ev = cap.ev;
       const top = Math.max(diaTop(cap), 860);
-      // o calendário
-      const CX = 150, CY = top + 20, CW = 280, CH = 290, folhas = d.calendario.folhas;
-      const ec = ent(t, ev.cal, 0.5);
-      enter(ctx, ec, CX + CW / 2, CY + CH, () => {
-        shadow(ctx, CX + CW / 2, CY + CH + 6, CW / 2, 10);
-        const folha = (f) => {
-          txt(ctx, f[0], CX + CW / 2, CY + 196, { size: 130, weight: 900, align: 'center', color: C.tinta });
-          txt(ctx, f[1], CX + CW / 2, CY + 252, { size: 34, weight: 800, align: 'center', color: C.coral, ls: 3 });
-        };
-        ctx.fillStyle = C.papel; rr(ctx, CX, CY, CW, CH, 22); ctx.fill(); ctx.lineWidth = 4; ctx.strokeStyle = C.cremeDeep; ctx.stroke();
-        let n = 0; folhas.slice(1).forEach((_, i) => { if (t >= ev.vira + i * 0.34 + 0.3) n = i + 1; });
-        const vir = folhas.slice(1).map((_, i) => p(t, ev.vira + i * 0.34, ev.vira + i * 0.34 + 0.3)).find((u) => u > 0 && u < 1);
-        folha(folhas[Math.min(folhas.length - 1, vir !== undefined ? n + 1 : n)]);
-        if (vir !== undefined) {                            // a folha de cima subindo e virando
-          ctx.save(); ctx.beginPath(); rr(ctx, CX, CY + 64, CW, CH - 64, 22); ctx.clip();
-          ctx.translate(0, CY + 64); ctx.scale(1, Math.max(0.01, 1 - vir)); ctx.translate(0, -(CY + 64));
-          ctx.fillStyle = C.papel; ctx.fillRect(CX, CY + 64, CW, CH - 64);
-          ctx.fillStyle = css(C.cremeDark, 0.5 * vir); ctx.fillRect(CX, CY + 64, CW, CH - 64);
-          folha(folhas[n]);
-          ctx.restore();
-        }
-        ctx.fillStyle = C.coral; rr(ctx, CX, CY, CW, 64, 22); ctx.fill(); ctx.fillRect(CX, CY + 40, CW, 24);
-        for (const rx of [CX + 70, CX + CW - 70]) { ctx.fillStyle = C.tinta2; rr(ctx, rx - 8, CY - 18, 16, 46, 8); ctx.fill(); }
-        BOX('calendário', CX, CY - 18, CX + CW, CY + CH);
-      });
-      // o mapinha de Minas com o pin (feito aqui)
-      const em = p(t, ev.minas, ev.minas + 0.5);
-      if (em > 0) {
-        const mx = CX + CW / 2, my = CY + CH + 130, mw = 250;
-        pop(ctx, em, mx, my + 80, () => minas(ctx, mx, my, mw, { pin: true }), 2);
-        if (em >= 1) BOX('mapa de Minas', mx - mw / 2, my - 95, mx + mw / 2, my + 85);
-      }
+      if (d.parceiro) return feitoParceiro(ctx, cap, t, top);
+      calendarioEMinas(ctx, cap, t, top);
       // a lojinha do hambúrguer, o selo e o nome
       const SX = 690, SB = 1318, SW = 236, el = p(t, ev.loja, ev.loja + 0.55);
       if (el > 0) {
@@ -1789,8 +1848,8 @@
   // =====================================================================
   // INÍCIO
   // =====================================================================
-  function init(img, linha) {
-    LOGO = img; LN = linha; DUR = linha.duracao; TR = linha.tr; CUES = []; AVISOS.length = 0;
+  function init(img, linha, extras = {}) {
+    LOGO = img; IMGS = extras; LN = linha; DUR = linha.duracao; TR = linha.tr; CUES = []; AVISOS.length = 0;
     M = document.createElement('canvas').getContext('2d');
     CAPS = linha.capitulos.map((c) => ({ ...c, ev: {} }));
     NC = CAPS.length;

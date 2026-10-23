@@ -1,5 +1,5 @@
 {
- "duracao": 63.367,
+ "duracao": 63.767,
  "apoios": [
   {
    "cap": 1,
@@ -51,7 +51,7 @@
    "texto": "O primeiro parceiro: Varanda Burguer House.",
    "entra": 50.046,
    "inteira_de": 50.386,
-   "ate": 55.867,
+   "ate": 56.267,
    "linhas": [
     "O primeiro parceiro:",
     "Varanda Burguer House."
@@ -92,8 +92,8 @@
   {
    "de": 5,
    "para": 6,
-   "t0": 54.967,
-   "t1": 55.867
+   "t0": 55.367,
+   "t1": 56.267
   }
  ],
  "montagens": [
@@ -135,27 +135,27 @@
   {
    "n": 5,
    "t0": 46.839,
-   "t1": 54.967,
+   "t1": 55.367,
    "primeira": 47.039,
-   "ultima": 52.128
+   "ultima": 52.628
   },
   {
    "n": 6,
-   "t0": 55.867,
-   "t1": 63.367,
-   "primeira": 56.744,
-   "ultima": 59.766999999999996
+   "t0": 56.267,
+   "t1": 63.767,
+   "primeira": 57.156,
+   "ultima": 60.056999999999995
   }
  ],
  "fecho": {
-  "ultima_mudanca_de_texto": 60.31699999999999,
-  "duracao": 63.367,
+  "ultima_mudanca_de_texto": 60.60699999999999,
+  "duracao": 63.767,
   "logo": {
-   "entra": 56.744,
-   "parada": 57.644
+   "entra": 57.156,
+   "parada": 58.056
   },
-  "t0": 55.867,
-  "t1": 63.367
+  "t0": 56.267,
+  "t1": 63.767
  },
  "capa": {
   "tamanho": 136,
