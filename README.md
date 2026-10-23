@@ -269,6 +269,35 @@ Saída:
 
 Com `capaNova` no JSON, o `npm run carrossel` também gera o slide-1 no modelo novo.
 
+## Capas novas dos Reels publicados (só PNG)
+
+Estas capas são para "Editar capa → Adicionar da galeria". Os vídeos não mudam. O padrão é o mesmo das capas do Dicionário e dos carrosséis (composição `CapaReel-<id>`, em `src/covers/CapaReel.tsx`), em 1080×1920, com tudo dentro do recorte 3:4 da grade (y 300–1620, x 110–970):
+
+- selo no topo, com o número grande quando houver;
+- ilustração própria na metade de cima;
+- o título da capa atual, com a palavra de destaque em coral no marcador amarelo, sem emoji, sem logo e sem tela.
+
+Os dados ficam em `src/covers/capasReels.ts`:
+
+| Reel | Selo | Ilustração | Fundo · cor |
+|---|---|---|---|
+| Explica, Sô! 01 | EXPLICA, SÔ! · #01 | a mesa do motor: café fumegando e o lugar vazio do queijo com "?" | creme · coral |
+| Não é app | CONHEÇA | o botão "baixar" riscado + o pin com o elo de link ao lado | pêssego · amarelo |
+| Vai funcionar assim | CONHEÇA | a motinha saindo da lojinha com a sacola, pela rua tracejada até a casinha | creme · verde |
+| Qual comércio precisa | CONTA PRA GENTE | fileira de lojinhas com a vaga vazia e a placa "?" | pêssego · coral |
+
+**Gerar:**
+
+```bash
+npm run capas:reels      # ou: npm run capas:reels -- explica-so-01
+```
+
+Saída:
+
+- `out/capas/reels/capa-<id>.png`;
+- `out/capas/reels/previa-3x4.png`, com as capas no recorte da grade;
+- a capa do Explica, Sô! 01 também em `reels/explica-so/output/explica-so-01/capa-grade.png`.
+
 ## Stories de destaque (Dúvidas, Lojista, Explica, Sô!) + capas dos destaques
 
 Os destaques seguem o padrão do Story "Conheça".

@@ -37,6 +37,8 @@ const capaDicionarioMetadata = async ({ props }: { props: CapaDicionarioProps })
 const CAPAS_DICIONARIO = [dic01, dic02, dic03, dic04, dic05, dic06, dic07] as unknown as CapaDicionarioProps[];
 import { DESTAQUES, DESTAQUE_IDS, DestaqueCard, DestaqueNome } from "./story/destaques/Destaques";
 import { CAPA_FACIM, CapaFacim, CapaFacimProps, measureCapaFacim } from "./carrossel/CapaFacim";
+import { CapaReel, CapaReelProps, measureCapaReel } from "./covers/CapaReel";
+import { CAPAS_REELS } from "./covers/capasReels";
 import facim02 from "../carrosseis/facim/02-como-vai-funcionar.json";
 import facim03 from "../carrosseis/facim/03-o-que-vai-ter.json";
 import facim05 from "../carrosseis/facim/05-tem-comercio.json";
@@ -49,6 +51,11 @@ import facim09 from "../carrosseis/facim/09-domingo-a-noite.json";
 const capaFacimMetadata = async ({ props }: { props: CapaFacimProps }) => {
   await fontsReady;
   return { props: { ...props, layout: measureCapaFacim(props) } };
+};
+// Capas novas dos Reels já publicados (só PNG): o título é medido com as fontes carregadas.
+const capaReelMetadata = async ({ props }: { props: CapaReelProps }) => {
+  await fontsReady;
+  return { props: { ...props, layout: measureCapaReel(props) } };
 };
 const CAPAS_FACIM = [facim01, facim02, facim03, facim05, facim07, facim08, facim09] as unknown as CapaFacimProps[];
 
@@ -219,6 +226,10 @@ export const RemotionRoot: React.FC = () => (
         defaultProps={c}
         calculateMetadata={capaFacimMetadata}
       />
+    ))}
+    {/* Capas novas dos Reels já publicados: CapaReel-<id> (npm run capas:reels) */}
+    {CAPAS_REELS.map((c) => (
+      <Composition key={c.id} id={`CapaReel-${c.id}`} component={CapaReel} durationInFrames={1} fps={30} width={1080} height={1920} defaultProps={c} calculateMetadata={capaReelMetadata} />
     ))}
     <Still id="Destaque-Capa" component={DestaqueCapa} width={1080} height={1920} defaultProps={{ icone: "conheca" as const }} />
   </>
