@@ -11,6 +11,7 @@ Lê <reel>/output/capa.png (1080x1920) e, se existir, <reel>/output/revisao/capa
 (caixas de cada elemento, exportadas pela página da capa). Gera:
 
     <reel>/output/capa.jpg                      qualidade 95, cor 4:4:4
+    <reel>/output/capa-3x4.png                  o recorte 3:4 da grade (1080x1440, y 240–1680)
     <reel>/output/revisao/capa-no-feed.jpg      capa com o recorte 3:4, a folga de 60 px e o canto do
                                                 ícone de play marcados + o recorte 3:4 + a capa na grade
     <reel>/output/revisao/capa.txt              o resultado de cada regra
@@ -61,6 +62,7 @@ font = ImageFont.truetype(FONT, 24) if FONT else ImageFont.load_default()
 cover = Image.open(os.path.join(OUT, 'capa.png')).convert('RGB')
 assert cover.size == (1080, 1920), cover.size
 cover.save(os.path.join(OUT, 'capa.jpg'), quality=95, subsampling=0, optimize=True)
+cover.crop(BAND).save(os.path.join(OUT, 'capa-3x4.png'))      # o recorte 3:4 da grade (y 240–1680), para conferir/subir
 
 lines, ok_all = [], True
 rgb = np.asarray(cover).astype(float)

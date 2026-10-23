@@ -290,6 +290,8 @@
     mercado: { wall: '#E9944A', wallDark: '#C9752E', a: C.verde, b: '#FFFFFF', door: C.verdeDark },
     farmacia: { wall: '#FBF6EE', wallDark: '#E2D6C2', a: C.verde, b: '#FFFFFF', door: C.verdeDark },
     loja: { wall: '#F4A98A', wallDark: '#D9876A', a: C.amarelo, b: C.coral, door: '#7A3A18' },
+    lanchonete: { wall: '#FFD27A', wallDark: '#E3A93E', a: C.coral, b: '#FFFFFF', door: '#8A4A1C' },
+    restaurante: { wall: '#F6B98A', wallDark: '#D9946A', a: C.verde, b: '#FFFFFF', door: '#7A3A18' },
   };
   function face(ctx, blink, look) {        // os olhinhos do celular-personagem (Phone.tsx → PhoneFace, humor "happy"), viewBox 300×150
     ctx.fillStyle = css(C.coral, 0.28);
@@ -319,6 +321,17 @@
       ctx.fillStyle = C.tinta; ctx.beginPath(); ctx.arc(-9, 17, 4, 0, TAU); ctx.arc(16, 17, 4, 0, TAU); ctx.fill();
     } else if (kind === 'farmacia') {
       ctx.fillStyle = C.verde; rr(ctx, -7, -20, 14, 40, 3); ctx.fill(); rr(ctx, -20, -7, 40, 14, 3); ctx.fill();
+    } else if (kind === 'lanchonete') {                    // o hambúrguer
+      ctx.fillStyle = '#E8A64A'; ctx.beginPath(); ctx.moveTo(-30, -3); ctx.quadraticCurveTo(-30, -22, 0, -22); ctx.quadraticCurveTo(30, -22, 30, -3); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = C.verde; rr(ctx, -32, -4, 64, 7, 3.5); ctx.fill();
+      ctx.fillStyle = '#7A3A18'; rr(ctx, -30, 3, 60, 10, 5); ctx.fill();
+      ctx.fillStyle = '#E8A64A'; rr(ctx, -29, 14, 58, 9, 4.5); ctx.fill();
+      ctx.fillStyle = '#FFF4D2'; for (const dx of [-12, 0, 11]) { ctx.beginPath(); ctx.ellipse(dx, -14, 2.4, 1.4, 0.3, 0, TAU); ctx.fill(); }
+    } else if (kind === 'restaurante') {                   // a panela com fumacinha
+      ctx.fillStyle = C.tinta2; rr(ctx, -26, -6, 52, 28, 8); ctx.fill(); rr(ctx, -30, -10, 60, 7, 3.5); ctx.fill();
+      rr(ctx, -38, -2, 10, 6, 3); ctx.fill(); rr(ctx, 28, -2, 10, 6, 3); ctx.fill();
+      ctx.strokeStyle = C.cinza; ctx.lineWidth = 3.5;
+      for (const dx of [-9, 7]) { ctx.beginPath(); ctx.moveTo(dx, -14); ctx.bezierCurveTo(dx - 6, -19, dx + 6, -23, dx, -28); ctx.stroke(); }
     } else {
       ctx.fillStyle = C.coral; ctx.beginPath(); ctx.arc(0, 0, 14, 0, TAU); ctx.fill();
     }
@@ -468,11 +481,11 @@
     ctx.fillStyle = C.amarelo; ctx.beginPath(); ctx.moveTo(0, top - 128); ctx.quadraticCurveTo(18, top - 124 + fl, 34, top - 120); ctx.lineTo(0, top - 108); ctx.closePath(); ctx.fill();
     ctx.restore();
   }
-  function selo(ctx, x, y, r, linhas) {                     // o selo coral "do Glória", com borda de carimbo
+  function selo(ctx, x, y, r, linhas, cor = C.coral) {      // o selo coral "do Glória", com borda de carimbo
     ctx.save(); ctx.translate(x, y);
     ctx.beginPath();
     for (let i = 0; i <= 240; i++) { const a = i / 240 * TAU, rr_ = r + 6 * Math.cos(a * 22); i ? ctx.lineTo(Math.cos(a) * rr_, Math.sin(a) * rr_) : ctx.moveTo(rr_, 0); }
-    ctx.closePath(); ctx.fillStyle = C.coral; ctx.shadowColor = 'rgba(200,60,20,0.3)'; ctx.shadowBlur = 18; ctx.fill(); ctx.shadowColor = 'transparent';
+    ctx.closePath(); ctx.fillStyle = cor; ctx.shadowColor = 'rgba(120,60,20,0.3)'; ctx.shadowBlur = 18; ctx.fill(); ctx.shadowColor = 'transparent';
     ctx.setLineDash([7, 7]); ctx.lineWidth = 3; ctx.strokeStyle = css(C.papel, 0.8); ctx.beginPath(); ctx.arc(0, 0, r - 15, 0, TAU); ctx.stroke(); ctx.setLineDash([]);
     txt(ctx, linhas[0], 0, -r * 0.2, { size: r * 0.3, weight: 800, align: 'center', color: C.papel });
     const s2 = fitSize([linhas[1]], 900, r * 1.5, r * 0.5);
@@ -541,6 +554,81 @@
     ctx.fillStyle = C.amarelo; ctx.beginPath(); ctx.arc(dx + fw - 10 * (1 - aberta) - 4, -50, 4, 0, TAU); ctx.fill();
     ctx.fillStyle = C.verde; ctx.beginPath(); ctx.arc(86, -14, 12, 0, TAU); ctx.arc(76, -22, 10, 0, TAU); ctx.fill();   // o vasinho
     ctx.fillStyle = C.coralDark; rr(ctx, 72, -12, 26, 12, 3); ctx.fill();
+    ctx.restore();
+  }
+
+  // ---- peças da história (balões de mensagem, relógio, Minas, placa, calendário, coração, gotinha)
+  // balão de mensagem genérico (sem marca de aplicativo): creme com borda, ou verde da marca; o biquinho embaixo, do lado
+  function balao(ctx, x, y, w, h, o = {}) {
+    const lado = o.lado || 'esq', r = Math.min(30, h / 2);
+    ctx.save(); ctx.globalAlpha *= o.alpha ?? 1;
+    ctx.beginPath(); rr(ctx, x, y, w, h, r);
+    const bx = lado === 'esq' ? x + 26 : x + w - 26, sx = lado === 'esq' ? -1 : 1;
+    ctx.moveTo(bx - 14 * sx, y + h - 2); ctx.quadraticCurveTo(bx + 6 * sx, y + h + 22, bx + 22 * sx, y + h + 26); ctx.quadraticCurveTo(bx + 8 * sx, y + h + 8, bx + 14 * sx, y + h - 2); ctx.closePath();
+    ctx.shadowColor = 'rgba(120,60,30,0.16)'; ctx.shadowBlur = 14; ctx.shadowOffsetY = 5;
+    ctx.fillStyle = o.bg || C.papel; ctx.fill(); ctx.shadowColor = 'transparent';
+    if (o.border !== 'none') { ctx.lineWidth = 3; ctx.strokeStyle = o.border || C.cremeDeep; ctx.stroke(); }
+    ctx.restore();
+  }
+  function relogio(ctx, x, y, r, ang) {                   // relógio de parede; ang = o giro do ponteiro grande (rad)
+    shadow(ctx, x + 4, y + 8, r * 0.95, r * 0.95, 0.08);
+    ctx.save(); ctx.translate(x, y);
+    ctx.beginPath(); ctx.arc(0, 0, r, 0, TAU); ctx.fillStyle = C.coral; ctx.fill();
+    ctx.beginPath(); ctx.arc(0, 0, r - 10, 0, TAU); ctx.fillStyle = C.papel; ctx.fill();
+    ctx.fillStyle = C.tinta2; for (let i = 0; i < 12; i++) { const a = i / 12 * TAU, q = i % 3 === 0 ? 7 : 4; ctx.beginPath(); ctx.arc(Math.cos(a) * (r - 22), Math.sin(a) * (r - 22), q / 2 + 1, 0, TAU); ctx.fill(); }
+    ctx.lineCap = 'round'; ctx.strokeStyle = C.tinta;
+    ctx.lineWidth = 7; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(Math.cos(ang / 12 - Math.PI / 2 + 2.1) * r * 0.42, Math.sin(ang / 12 - Math.PI / 2 + 2.1) * r * 0.42); ctx.stroke();
+    ctx.strokeStyle = C.coral; ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(Math.cos(ang - Math.PI / 2) * r * 0.66, Math.sin(ang - Math.PI / 2) * r * 0.66); ctx.stroke();
+    ctx.fillStyle = C.tinta; ctx.beginPath(); ctx.arc(0, 0, 6, 0, TAU); ctx.fill();
+    ctx.restore();
+  }
+  // o mapinha simplificado de Minas (a mesma forma do destaque "Onde vai funcionar?"); (x, y) = o centro, w = a largura
+  const MINAS = 'M40 262 L120 196 L206 212 L262 150 L360 120 L420 60 L520 84 L604 58 L676 118 L742 214 L722 312 L652 394 L566 462 L478 500 L402 458 L330 482 L262 424 L196 388 L130 334 Z';
+  let MINAS_P = null;
+  function minas(ctx, x, y, w, o = {}) {
+    if (!MINAS_P) MINAS_P = new Path2D(MINAS);
+    const k = w / 780;
+    ctx.save(); ctx.translate(x - 390 * k, y - 280 * k); ctx.scale(k, k);
+    ctx.fillStyle = '#D9EBC4'; ctx.fill(MINAS_P); ctx.lineWidth = 9 / Math.max(0.35, k) * 0.45; ctx.lineJoin = 'round'; ctx.strokeStyle = C.verde; ctx.stroke(MINAS_P);
+    ctx.lineCap = 'round'; ctx.strokeStyle = '#9FD0E8'; ctx.lineWidth = 22;
+    ctx.beginPath(); ctx.moveTo(170, 330); ctx.bezierCurveTo(240, 300, 280, 360, 360, 330); ctx.bezierCurveTo(440, 300, 520, 300, 640, 330); ctx.stroke();
+    if (o.pin) {                                          // o Glória: o pin coral no sudoeste
+      ctx.translate(300, 360);
+      ctx.fillStyle = 'rgba(80,40,20,0.15)'; ctx.beginPath(); ctx.ellipse(0, 6, 34, 10, 0, 0, TAU); ctx.fill();
+      ctx.fillStyle = C.coral; ctx.beginPath(); ctx.moveTo(0, 0); ctx.bezierCurveTo(-30, -50, -56, -76, -56, -110); ctx.arc(0, -110, 56, Math.PI, 0); ctx.bezierCurveTo(56, -76, 30, -50, 0, 0); ctx.fill();
+      ctx.fillStyle = C.papel; ctx.beginPath(); ctx.arc(0, -110, 24, 0, TAU); ctx.fill();
+    }
+    ctx.restore();
+  }
+  function coracao(ctx, x, y, s, col = C.coral) {         // coraçãozinho (s = largura)
+    const k = s / 100;
+    ctx.save(); ctx.translate(x, y); ctx.scale(k, k);
+    ctx.beginPath(); ctx.moveTo(0, 34); ctx.bezierCurveTo(-60, -6, -44, -52, -2, -30); ctx.lineTo(0, -28); ctx.lineTo(2, -30); ctx.bezierCurveTo(44, -52, 60, -6, 0, 34); ctx.closePath();
+    ctx.fillStyle = col; ctx.fill(); ctx.fillStyle = 'rgba(255,255,255,0.45)'; ctx.beginPath(); ctx.ellipse(-22, -20, 9, 6, -0.6, 0, TAU); ctx.fill();
+    ctx.restore();
+  }
+  function gota(ctx, x, y, s, a = 1) {                    // a gotinha de suor
+    if (a <= 0.01) return;
+    const k = s / 40;
+    ctx.save(); ctx.globalAlpha *= a; ctx.translate(x, y); ctx.scale(k, k);
+    ctx.beginPath(); ctx.moveTo(0, -24); ctx.bezierCurveTo(10, -8, 16, 2, 16, 8); ctx.arc(0, 8, 16, 0, Math.PI); ctx.bezierCurveTo(-16, 2, -10, -8, 0, -24); ctx.closePath();
+    ctx.fillStyle = '#8CCBEA'; ctx.fill(); ctx.lineWidth = 2.5; ctx.strokeStyle = '#4E9CC4'; ctx.stroke();
+    ctx.fillStyle = 'rgba(255,255,255,0.8)'; ctx.beginPath(); ctx.ellipse(-6, 6, 4, 6, 0.3, 0, TAU); ctx.fill();
+    ctx.restore();
+  }
+  function lampada(ctx, x, y, s, brilho) {                 // a lâmpada da ideia (s = altura), com raios quando acende
+    const k = s / 120;
+    ctx.save(); ctx.translate(x, y); ctx.scale(k, k);
+    if (brilho > 0) {
+      const g = ctx.createRadialGradient(0, -20, 10, 0, -20, 120); g.addColorStop(0, css(C.amareloLight, 0.7 * brilho)); g.addColorStop(1, css(C.amareloLight, 0));
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, -20, 120, 0, TAU); ctx.fill();
+      ctx.strokeStyle = css(C.amarelo, brilho); ctx.lineWidth = 8; ctx.lineCap = 'round';
+      for (let i = 0; i < 7; i++) { const a = -Math.PI + (i + 0.5) / 7 * Math.PI; ctx.beginPath(); ctx.moveTo(Math.cos(a) * 66, -20 + Math.sin(a) * 66); ctx.lineTo(Math.cos(a) * (86 + 6 * brilho), -20 + Math.sin(a) * (86 + 6 * brilho)); ctx.stroke(); }
+    }
+    ctx.beginPath(); ctx.arc(0, -20, 44, Math.PI * 0.8, Math.PI * 0.2); ctx.lineTo(18, 34); ctx.lineTo(-18, 34); ctx.closePath();
+    ctx.fillStyle = mixHex(C.papel, C.amarelo, brilho); ctx.fill(); ctx.lineWidth = 5; ctx.strokeStyle = C.amareloDark; ctx.stroke();
+    ctx.fillStyle = C.cinza; rr(ctx, -20, 34, 40, 12, 4); ctx.fill(); rr(ctx, -16, 48, 32, 10, 4); ctx.fill();
+    ctx.strokeStyle = C.amareloDark; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(-10, 30); ctx.lineTo(-10, 0); ctx.lineTo(0, -10); ctx.lineTo(10, 0); ctx.lineTo(10, 30); ctx.stroke();
     ctx.restore();
   }
 
@@ -741,7 +829,14 @@
     g.addColorStop(0, 'rgba(200,140,90,0)'); g.addColorStop(1, 'rgba(200,140,90,0.16)');
     ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
   }
-  function brand(ctx) {
+  function brand(ctx, t) {
+    const a = CAPS[0].diagrama.marca === false ? clamp((t - (CAPS[0].t1 - 0.2)) / 0.5) : 1;   // capa no padrão das capas novas: sem a marca no quadro 0
+    if (a <= 0.002) return;
+    ctx.save(); ctx.globalAlpha = a;
+    brandDraw(ctx);
+    ctx.restore();
+  }
+  function brandDraw(ctx) {
     // véu creme no topo (cobre o conteúdo que passa por baixo na troca de capítulo)
     const g = ctx.createLinearGradient(0, 230, 0, 410);
     g.addColorStop(0, css('#FBF3E8', 0.96)); g.addColorStop(1, css('#FBF3E8', 0));
@@ -827,6 +922,36 @@
   const CENAS = {};
   const diaTop = (cap) => cap.apY + 70;                  // onde a cena pode começar (abaixo do apoio)
 
+  // o título grande da capa: a palavra-chave no marcador amarelo e a pontuação final que pula
+  function tituloCapa(ctx, cap, t) {
+    const d = cap.diagrama, Ly = cap.Ly, S = cap.capaS;
+    cap.titulo.forEach((ln, i) => {
+      const y = i ? Ly.b2 : Ly.b1, col = i ? C.coral : C.tinta, ls = -0.03 * S;
+      const w = tw(ln, S, 900, ls), x0 = 540 - w / 2;
+      // o marcador amarelo atrás da palavra-chave
+      const mi = d.marcador ? ln.toLowerCase().indexOf(d.marcador.toLowerCase()) : -1;
+      if (mi >= 0) {
+        const pre = ln.slice(0, mi), mw = tw(ln.slice(mi, mi + d.marcador.length), S, 900, ls);
+        marker(ctx, x0 + (pre ? tw(pre, S, 900, ls) + ls : 0), y, mw, S, 1, C.amarelo);
+        BOX('palavra-chave', x0 + (pre ? tw(pre, S, 900, ls) + ls : 0), y - S * 0.76, x0 + (pre ? tw(pre, S, 900, ls) + ls : 0) + mw, y + S * 0.22);
+      }
+      // a pontuação final (o "?") pula na palavra
+      const last = ln.slice(-1), pula = i === 1 && /[?!]/.test(last);
+      const corpo = pula ? ln.slice(0, -1) : ln;
+      const wc = txt(ctx, corpo, x0, y, { size: S, weight: 900, color: col, ls });
+      if (pula) {
+        const u = p(t, cap.ev.pulo, cap.ev.pulo + 0.55);
+        const jy = -S * 0.42 * Math.sin(Math.PI * u), rot = 14 * DEG * Math.sin(TAU * u) * (1 - u);
+        const sq = u > 0.8 ? 1 - 0.12 * Math.sin(Math.PI * p(u, 0.8, 1)) : 1;
+        const qx = x0 + wc + ls, qw = tw(last, S, 900);
+        ctx.save(); ctx.translate(qx + qw / 2, y); ctx.rotate(rot); ctx.scale(1 / sq, sq); ctx.translate(-(qx + qw / 2), -y + jy);
+        txt(ctx, last, qx, y, { size: S, weight: 900, color: col });
+        ctx.restore();
+      }
+      BOX(`título, linha ${i + 1}`, x0, y - S * 0.76, x0 + w, y + S * 0.22);
+    });
+  }
+
   // ---- a capa (capítulo 00): chip, título grande com a palavra no marcador amarelo, o "?" que pula e a mesa sem o queijo
   CENAS.capa = {
     setup(cap) {
@@ -849,33 +974,9 @@
       cue(cap.t1 - 1.0, 'railstart');
     },
     draw(ctx, cap, t) {
-      const d = cap.diagrama, Ly = cap.Ly, S = cap.capaS;
+      const Ly = cap.Ly;
       chip(ctx, cap.rotulo, 540, Ly.chipY, { size: 24, align: 'center', ls: 3, h: Ly.chipH || 64, color: C.coral, box: 'chip' });
-      cap.titulo.forEach((ln, i) => {
-        const y = i ? Ly.b2 : Ly.b1, col = i ? C.coral : C.tinta, ls = -0.03 * S;
-        const w = tw(ln, S, 900, ls), x0 = 540 - w / 2;
-        // o marcador amarelo atrás da palavra-chave
-        const mi = d.marcador ? ln.toLowerCase().indexOf(d.marcador.toLowerCase()) : -1;
-        if (mi >= 0) {
-          const pre = ln.slice(0, mi), mw = tw(ln.slice(mi, mi + d.marcador.length), S, 900, ls);
-          marker(ctx, x0 + (pre ? tw(pre, S, 900, ls) + ls : 0), y, mw, S, 1, C.amarelo);
-          BOX('palavra-chave', x0 + (pre ? tw(pre, S, 900, ls) + ls : 0), y - S * 0.76, x0 + (pre ? tw(pre, S, 900, ls) + ls : 0) + mw, y + S * 0.22);
-        }
-        // a pontuação final (o "?") pula na palavra
-        const last = ln.slice(-1), pula = i === 1 && /[?!]/.test(last);
-        const corpo = pula ? ln.slice(0, -1) : ln;
-        const wc = txt(ctx, corpo, x0, y, { size: S, weight: 900, color: col, ls });
-        if (pula) {
-          const u = p(t, cap.ev.pulo, cap.ev.pulo + 0.55);
-          const jy = -S * 0.42 * Math.sin(Math.PI * u), rot = 14 * DEG * Math.sin(TAU * u) * (1 - u);
-          const sq = u > 0.8 ? 1 - 0.12 * Math.sin(Math.PI * p(u, 0.8, 1)) : 1;
-          const qx = x0 + wc + ls, qw = tw(last, S, 900);
-          ctx.save(); ctx.translate(qx + qw / 2, y); ctx.rotate(rot); ctx.scale(1 / sq, sq); ctx.translate(-(qx + qw / 2), -y + jy);
-          txt(ctx, last, qx, y, { size: S, weight: 900, color: col });
-          ctx.restore();
-        }
-        BOX(`título, linha ${i + 1}`, x0, y - S * 0.76, x0 + w, y + S * 0.22);
-      });
+      tituloCapa(ctx, cap, t);
       // a mesa sem o queijo: a xícara e o lugar vazio
       const b = Ly.ilBase - 40;
       ctx.fillStyle = C.madeira; rr(ctx, 300, b, 480, 18, 9); ctx.fill();
@@ -1151,6 +1252,411 @@
     },
   };
 
+  // =====================================================================
+  // CENAS DA HISTÓRIA (episódio especial "Por que UaiPertim?")
+  // =====================================================================
+  // ---- capa no padrão das capas novas do Dicionário: selo no topo, a lojinha curiosa grande olhando para o título
+  //      embaixo ("Por que / UaiPertim?", a palavra no marcador amarelo); sem a marca no quadro 0 ("marca": false)
+  CENAS.capaHistoria = {
+    setup(cap) {
+      const d = cap.diagrama;
+      const S = fitSize(cap.titulo, 900, 760, 170, -0.03);  // nenhuma linha passa de 72% da largura (778 px)
+      const chipH = 72, ilH = 430, g1 = 50, g2 = 40;
+      const total = chipH + g1 + ilH + g2 + 2.0 * S;
+      const top = 960 - total / 2;                          // o bloco centrado no recorte 3:4
+      const Ly = { chipH, top, bottom: top + total };
+      Ly.chipY = top + chipH / 2;
+      Ly.ilTop = top + chipH + g1; Ly.ilBase = Ly.ilTop + ilH;
+      Ly.b1 = Ly.ilBase + g2 + 0.78 * S; Ly.b2 = Ly.b1 + S;
+      Object.assign(cap, { capaS: S, Ly });
+      cap.apY = Ly.bottom + 80; cap.apX = 540; cap.apAlign = 'center';
+      cap.railStart = { x: 540, y: Math.max(1330, Ly.bottom + 70) };
+      cap.ev.pulo = at(cap, d.pulo && d.pulo.em, cap.t0 + 0.5);
+      cue(cap.ev.pulo, 'jump');
+      cue(cap.t1 - 1.0, 'railstart');
+    },
+    draw(ctx, cap, t) {
+      const d = cap.diagrama, Ly = cap.Ly;
+      chip(ctx, cap.rotulo, 540, Ly.chipY, { size: 30, align: 'center', ls: 3, h: Ly.chipH, pad: 34, bg: C.coral, color: C.branco, border: 'none', box: 'selo' });
+      // o brilho atrás da lojinha, a calçada e duas arvorezinhas
+      const cx = 540, base = Ly.ilBase - 6, w = 330;
+      const g = ctx.createRadialGradient(cx, base - 200, 0, cx, base - 200, 330);
+      g.addColorStop(0, css(C.amareloLight, 0.55)); g.addColorStop(1, css(C.amareloLight, 0));
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx, base - 200, 330, 0, TAU); ctx.fill();
+      ctx.fillStyle = C.cremeDeep; rr(ctx, cx - 300, base - 6, 600, 18, 9); ctx.fill();
+      arvore(ctx, cx - 250, base - 4, 104, t); arvore(ctx, cx + 250, base - 4, 104, t);
+      // a lojinha curiosa: os olhos no título (embaixo), espiando de um lado para o outro
+      const look = [0.32 * Math.sin(t * 1.1), 0.85 - 0.12 * Math.max(0, Math.sin(t * 0.7))];
+      shop(ctx, d.loja || 'padaria', cx, base, w, { blink: t < 0.6 ? 0 : blinkAt(t, 5), look, swing: 2 * Math.sin(t * 1.6) });
+      interrog(ctx, cx + 200, Ly.ilTop + 74, 36, 1, t, 0);
+      BOX('ilustração', cx - 300, Ly.ilTop, cx + 300, Ly.ilBase + 12);
+      tituloCapa(ctx, cap, t);
+    },
+  };
+
+  // ---- mensagens (O GLÓRIA HOJE): a casinha com o relógio; balões de mensagem genéricos chegando um atrás do outro;
+  //      o "digitando…" piscando enquanto a gente espera (e o relógio corre)
+  CENAS.mensagens = {
+    setup(cap) {
+      const d = cap.diagrama, ev = cap.ev;
+      ev.casa = at(cap, d.casa && d.casa.em, cap.t0 + 0.15);
+      let prev = ev.casa;
+      ev.msgs = d.msgs.map((m) => (prev = Math.max(at(cap, m.em, prev + 0.6), prev + 0.4)));
+      cue(ev.casa, 'pop', { f: 420 });
+      d.msgs.forEach((m, i) => { cue(ev.msgs[i], 'msg', { i }); if (m.tipo === 'digitando') cue(ev.msgs[i] + 0.3, 'type', { d: 1.0 }); });
+    },
+    draw(ctx, cap, t) {
+      const d = cap.diagrama, ev = cap.ev;
+      const top = Math.max(diaTop(cap), 860);
+      const iEsp = d.msgs.findIndex((m) => m.tipo === 'digitando'), tEsp = iEsp >= 0 ? ev.msgs[iEsp] : Infinity;
+      enter(ctx, ent(t, ev.casa, 0.5), 250, 1410, () => {
+        casinha(ctx, 250, 1410, 230, 0, t);
+        BOX('casinha', 250 - 126, 1410 - 258, 250 + 126, 1410);
+        const ang = (t - ev.casa) * 0.5 + Math.max(0, t - tEsp) * 3.4;   // esperando: o ponteiro corre
+        relogio(ctx, 250, top + 160, 66, ang);
+        BOX('relógio', 250 - 66, top + 94, 250 + 66, top + 226);
+      });
+      const X0 = 410, X1 = 915, GAP = 30;
+      let y = top + 14;
+      d.msgs.forEach((m, i) => {
+        const h = m.tipo === 'cardapio' ? 158 : 84;
+        const w = m.tipo === 'cardapio' ? 330 : m.tipo === 'digitando' ? 300 : tw(m.t, 32, 800) + 64;
+        const x = m.lado === 'dir' ? X1 - w : X0, y0 = y;
+        const t0 = ev.msgs[i], e = p(t, t0, t0 + 0.4);
+        y += h + GAP;
+        if (e <= 0) return;
+        const verde = m.lado === 'dir';
+        pop(ctx, e, verde ? x + w : x, y0 + h, () => {
+          balao(ctx, x, y0, w, h, { lado: m.lado, bg: verde ? C.verde : C.papel, border: verde ? 'none' : C.cremeDeep });
+          if (m.tipo === 'cardapio') {
+            txt(ctx, 'CARDÁPIO', x + 30, y0 + 44, { size: 22, weight: 800, color: C.coral, ls: 3 });
+            [[C.coral, 170], [C.amarelo, 210], [C.verde, 140]].forEach(([c, bw], k) => {
+              const yy = y0 + 72 + k * 28;
+              ctx.fillStyle = c; ctx.beginPath(); ctx.arc(x + 38, yy, 7, 0, TAU); ctx.fill();
+              ctx.fillStyle = C.cremeDark; rr(ctx, x + 56, yy - 6, bw, 12, 6); ctx.fill();
+              rr(ctx, x + w - 72, yy - 6, 42, 12, 6); ctx.fill();
+            });
+          } else if (m.tipo === 'digitando') {
+            const pisca = 0.35 + 0.65 * (0.5 + 0.5 * Math.cos((t - t0) * 7));
+            for (let k = 0; k < 3; k++) {
+              const b = Math.max(0, Math.sin((t - t0) * 9 - k * 0.9)) * 7;
+              ctx.fillStyle = C.cinza; ctx.beginPath(); ctx.arc(x + 40 + k * 22, y0 + h / 2 - b, 7, 0, TAU); ctx.fill();
+            }
+            txt(ctx, 'digitando…', x + 112, y0 + h / 2 + 10, { size: 28, weight: 500, color: C.tinta2, alpha: pisca });
+          } else {
+            txt(ctx, m.t, x + 32, y0 + h / 2 + 11, { size: 32, weight: 800, color: verde ? C.branco : C.tinta });
+          }
+        }, 1.7);
+        if (e >= 1) BOX(`balão ${i + 1}`, x, y0, x + w, y0 + h + 26);
+      });
+    },
+  };
+
+  // ---- balcão (DO OUTRO LADO DO BALCÃO): a lojinha atrás do balcão, com a gotinha de suor; o mesmo balão
+  //      "Hoje tem…" se repetindo e empilhando; o sol vira lua por cima (o dia inteiro)
+  CENAS.balcao = {
+    setup(cap) {
+      const d = cap.diagrama, ev = cap.ev;
+      ev.loja = at(cap, d.loja.em, cap.t0 + 0.2);
+      ev.suor = Math.max(at(cap, d.suor.em, ev.loja + 0.8), ev.loja + 0.4);
+      let prev = ev.loja + 0.2;
+      ev.baloes = d.baloes.em.map((w) => (prev = Math.max(at(cap, w, prev + 0.5), prev + 0.38)));
+      ev.sol = at(cap, d.sol.em, ev.baloes[1]);
+      cue(ev.loja, 'sprout', { i: 0 }); cue(ev.suor, 'pop', { f: 980 });
+      ev.baloes.forEach((x, i) => cue(x, 'msg', { i }));
+      cue(ev.sol, 'rise');
+    },
+    draw(ctx, cap, t) {
+      const d = cap.diagrama, ev = cap.ev;
+      const top = Math.max(diaTop(cap), 860);
+      const SX = 236, SB = 1405, SW = 236, K = SW / 200;
+      // o sol que atravessa o céu e vira lua (o dia inteiro)
+      const es = ent(t, ev.loja + 0.2, 0.5);
+      if (es > 0) {
+        const u = E.inOutSine(p(t, ev.sol, ev.sol + 1.8)), cxs = SX, cys = SB - 250 * K - 30, R = 105;
+        ctx.save(); ctx.globalAlpha *= es;
+        ctx.setLineDash([4, 14]); ctx.lineCap = 'round'; ctx.lineWidth = 6; ctx.strokeStyle = css(C.amareloDark, 0.4);
+        ctx.beginPath(); ctx.arc(cxs, cys, R, Math.PI, 0); ctx.stroke(); ctx.setLineDash([]);
+        const a = Math.PI + u * Math.PI, sx = cxs + Math.cos(a) * R, sy = cys + Math.sin(a) * R, lua = p(u, 0.55, 0.85);
+        if (lua < 1) {
+          ctx.globalAlpha = es * (1 - lua);
+          ctx.strokeStyle = C.amarelo; ctx.lineWidth = 6;
+          for (let i = 0; i < 8; i++) { const b = i / 8 * TAU + t * 0.6; ctx.beginPath(); ctx.moveTo(sx + Math.cos(b) * 34, sy + Math.sin(b) * 34); ctx.lineTo(sx + Math.cos(b) * 46, sy + Math.sin(b) * 46); ctx.stroke(); }
+          ctx.fillStyle = C.amarelo; ctx.beginPath(); ctx.arc(sx, sy, 26, 0, TAU); ctx.fill();
+        }
+        if (lua > 0) {
+          ctx.globalAlpha = es * lua;
+          ctx.fillStyle = '#F3D98E'; ctx.beginPath(); ctx.arc(sx, sy, 28, 0.6, TAU - 0.6 + 0.0001); ctx.arc(sx + 16, sy - 8, 24, TAU - 0.9, 0.9, true); ctx.closePath(); ctx.fill();
+        }
+        ctx.restore();
+        BOX('sol e lua', cxs - R - 46, cys - R - 46, cxs + R + 46, cys);
+      }
+      // a lojinha atrás do balcão
+      const e = p(t, ev.loja, ev.loja + 0.55);
+      if (e > 0) {
+        const k = E.outBack(e, 2.2);
+        ctx.save(); ctx.translate(SX, SB); ctx.scale(lerp(0.6, 1, k), k); ctx.translate(-SX, -SB);
+        const cansada = clamp((t - ev.suor) / 0.4);
+        shop(ctx, d.loja.tipo || 'restaurante', SX, SB, SW, { blink: blinkAt(t, 2), look: [0.85, 0.15 + 0.2 * cansada], swing: 5 * Math.sin((t - ev.loja) * 6) * Math.exp(-(t - ev.loja) * 2.5) });
+        ctx.fillStyle = C.madeira; rr(ctx, SX - 130, SB - 92, 260, 22, 8); ctx.fill();
+        ctx.fillStyle = C.madeiraDark; rr(ctx, SX - 120, SB - 72, 240, 72, 6); ctx.fill();
+        ctx.fillStyle = css(C.papel, 0.25); for (let i = 0; i < 4; i++) { rr(ctx, SX - 104 + i * 54, SB - 60, 42, 50, 6); ctx.fill(); }
+        ctx.restore();
+        BOX('lojinha', SX - 130, SB - 255 * K, SX + 130, SB);
+        // a gotinha de suor escorrendo (em loop)
+        if (t >= ev.suor) {
+          const ph = ((t - ev.suor) % 1.6) / 1.6;
+          gota(ctx, SX + 118 * K - 100 * K + 12, SB - 250 * K + 108 * K + ph * 34, 34, clamp((t - ev.suor) / 0.2) * (1 - p(ph, 0.75, 1)));
+        }
+      }
+      // o mesmo balão, de novo e de novo
+      const L1 = d.baloes.t[0], L2 = d.baloes.t[1], FS = 31;
+      const bw = Math.max(tw(L1, FS, 800), tw(L2, FS, 800)) + 56, bh = 108;
+      ev.baloes.forEach((t0, i) => {
+        const eb = p(t, t0, t0 + 0.38);
+        if (eb <= 0) return;
+        const x = 915 - bw - 12 + i * 4, y0 = top + 22 + i * 118;
+        const velho = ev.baloes.filter((x_) => x_ <= t).length - 1 - i;
+        pop(ctx, eb, x, y0 + bh, () => {
+          ctx.save(); ctx.translate(x + bw / 2, y0 + bh / 2); ctx.rotate((i % 2 ? 1.2 : -1.2) * DEG); ctx.translate(-(x + bw / 2), -(y0 + bh / 2));
+          balao(ctx, x, y0, bw, bh, { lado: 'esq', alpha: 1 - 0.1 * Math.max(0, velho) });
+          txt(ctx, L1, x + 28, y0 + 46, { size: FS, weight: 800, color: C.tinta });
+          txt(ctx, L2, x + 28, y0 + 85, { size: FS, weight: 800, color: C.coral });
+          ctx.restore();
+        }, 1.7);
+        if (eb >= 1) BOX(`balão ${i + 1}`, x - 4, y0 - 6, x + bw + 4, y0 + bh + 26);
+      });
+    },
+  };
+
+  // ---- ideia (A IDEIA): os balões espalhados somem e a lâmpada acende; as lojinhas descem do céu e se arrumam lado a
+  //      lado numa rua organizada (num lugar só); check em "rapidim"
+  const IDEIA_BALOES = [[250, 950, 150], [700, 925, 170], [470, 1060, 140], [800, 1150, 130], [260, 1240, 160], [620, 1300, 150]];
+  CENAS.ideia = {
+    setup(cap) {
+      const d = cap.diagrama, ev = cap.ev;
+      ev.some = at(cap, d.some.em, cap.t0 + 0.6);
+      ev.lojas = Math.max(at(cap, d.lojas.em, ev.some + 0.8), ev.some + 0.5);
+      ev.rua = Math.max(at(cap, d.rua.em, ev.lojas + 1.2), ev.lojas + 1.0);
+      ev.check = Math.max(at(cap, d.check.em, cap.t1 - 0.8), ev.rua + 0.9);
+      IDEIA_BALOES.forEach((_, i) => cue(ev.some + i * 0.05, 'pop', { f: 820 + 50 * i }));
+      cue(ev.some + 0.12, 'shine');
+      d.lojas.tipos.forEach((_, i) => { cue(ev.lojas + i * 0.14, 'drop'); cue(ev.lojas + i * 0.14 + 0.42, 'plop'); });
+      cue(ev.rua, 'slide'); cue(ev.check, 'check');
+    },
+    draw(ctx, cap, t) {
+      const d = cap.diagrama, ev = cap.ev;
+      // os balões espalhados (a bagunça de mensagens) que estouram na "ideia"
+      IDEIA_BALOES.forEach(([x, y, w], i) => {
+        const ein = ent(t, cap.t0 - 0.3 + i * 0.08, 0.35), uo = p(t, ev.some + i * 0.05, ev.some + i * 0.05 + 0.22);
+        if (ein <= 0 || uo >= 1) return;
+        const k = 1 + 0.35 * uo, h = 70;
+        ctx.save(); ctx.globalAlpha *= ein * (1 - uo); ctx.translate(x, y); ctx.scale(k, k); ctx.translate(-x, -y);
+        balao(ctx, x - w / 2, y - h / 2, w, h, { lado: i % 2 ? 'dir' : 'esq', bg: i % 3 === 1 ? C.verde : C.papel, border: i % 3 === 1 ? 'none' : C.cremeDeep });
+        ctx.fillStyle = i % 3 === 1 ? css(C.branco, 0.7) : C.cremeDark;
+        rr(ctx, x - w / 2 + 22, y - 14, w - 44, 10, 5); ctx.fill(); rr(ctx, x - w / 2 + 22, y + 4, (w - 44) * 0.6, 10, 5); ctx.fill();
+        ctx.restore();
+        if (uo <= 0 && ein >= 1) BOX(`balão ${i + 1}`, x - w / 2, y - h / 2, x + w / 2, y + h / 2 + 26);
+      });
+      // a lâmpada da ideia
+      const LX = 420, LY = 975, el = p(t, ev.some, ev.some + 0.45);
+      if (el > 0) {
+        pop(ctx, el, LX, LY + 70, () => lampada(ctx, LX, LY, 150, clamp((t - ev.some) / 0.3) * (0.85 + 0.15 * Math.sin((t - ev.some) * 4))), 2);
+        if (el >= 1) BOX('lâmpada', LX - 60, LY - 84, LX + 60, LY + 72);
+      }
+      // a rua organizada
+      const RB = 1330, er = ent(t, ev.rua, 0.5);
+      if (er > 0) {
+        ctx.save(); ctx.globalAlpha *= er;
+        ctx.fillStyle = C.cremeDeep; rr(ctx, L.x0, RB - 10, L.x1 - L.x0, 18, 7); ctx.fill();
+        ctx.fillStyle = css('#D9C2A6', 0.85); rr(ctx, L.x0, RB + 8, L.x1 - L.x0, 64, 12); ctx.fill();
+        ctx.setLineDash([32, 24]); ctx.lineWidth = 7; ctx.strokeStyle = C.coral; ctx.beginPath(); ctx.moveTo(L.x0 + 24, RB + 40); ctx.lineTo(L.x0 + 24 + (L.x1 - L.x0 - 48) * er, RB + 40); ctx.stroke();
+        ctx.restore();
+        if (er >= 1) BOX('rua', L.x0, RB - 10, L.x1, RB + 72);
+      }
+      // as lojinhas: descem do céu, caem espalhadas e depois se arrumam lado a lado
+      const SPOT = [[235, 1265, -8], [790, 1235, 7], [440, 1425, -4], [640, 1335, 6]];
+      const ROW = [212, 404, 596, 788], SW = 166;
+      const ua = E.inOutCubic(p(t, ev.rua, ev.rua + 0.75));
+      d.lojas.tipos.forEach((tipo, i) => {
+        const t0 = ev.lojas + i * 0.14, uf = p(t, t0, t0 + 0.42);
+        if (uf <= 0) return;
+        const [sx, sb, sr] = SPOT[i % SPOT.length];
+        const x = lerp(sx, ROW[i], ua), b = lerp(sb, RB, ua) - 460 * (1 - uf) * (1 - uf), rot = lerp(sr, 0, ua) * DEG;
+        const sq = uf >= 1 ? 1 - 0.1 * Math.sin(Math.PI * p(t, t0 + 0.42, t0 + 0.62)) : 1;
+        ctx.save(); ctx.globalAlpha *= clamp(uf * 4); ctx.translate(x, b); ctx.rotate(rot); ctx.scale(lerp(0.88, 1, ua) / Math.sqrt(sq), lerp(0.88, 1, ua) * sq); ctx.translate(-x, -b);
+        shop(ctx, tipo, x, b, SW, { blink: blinkAt(t, i + 3), look: [(525 - x) / 500, 0.2] });
+        ctx.restore();
+        if (uf >= 1 && (ua <= 0 || ua >= 1)) BOX(`lojinha ${i + 1}`, x - SW / 2 - 8, b - 1.27 * SW, x + SW / 2 + 8, b);
+      });
+      check(ctx, 640, 975, 50, p(t, ev.check, ev.check + 0.4), { box: 'check' });
+    },
+  };
+
+  // ---- nome (O NOME): a placa "UaiFood" leva o carimbo "JÁ TEM DONO" e vira "UaiPertim"; o "Uai" ganha o mapinha de
+  //      Minas; a lojinha e a casinha se aproximam até ficarem coladinhas (pertim)
+  CENAS.nome = {
+    setup(cap) {
+      const d = cap.diagrama, ev = cap.ev;
+      ev.placa = at(cap, d.placa.em, cap.t0 + 0.3);
+      ev.carimbo = Math.max(at(cap, d.carimbo.em, ev.placa + 1.2), ev.placa + 0.5);
+      ev.vira = Math.max(at(cap, d.vira.em, ev.carimbo + 1), ev.carimbo + 0.6);
+      ev.minas = Math.max(at(cap, d.minas.em, ev.vira + 1), ev.vira + 0.6);
+      ev.casas = Math.max(at(cap, d.casas.em, ev.minas + 0.6), ev.minas + 0.4);
+      ev.perto = Math.max(at(cap, d.perto.em, ev.casas + 1), ev.casas + 0.6);
+      cue(ev.placa, 'pop', { f: 480 }); cue(ev.carimbo, 'stamp'); cue(ev.vira, 'whoosh'); cue(ev.vira + 0.25, 'pop', { f: 760 });
+      cue(ev.minas, 'shine'); cue(ev.casas, 'sprout', { i: 0 }); cue(ev.casas + 0.14, 'sprout', { i: 1 });
+      cue(ev.perto, 'slide'); cue(ev.perto + 0.8, 'heart');
+    },
+    draw(ctx, cap, t) {
+      const d = cap.diagrama, ev = cap.ev;
+      const P = { x: L.cx, y: 1010, w: 580, h: 160 };
+      const vu = p(t, ev.vira, ev.vira + 0.5), novo = vu >= 0.5;
+      const FS = fitSize(['UaiPertim', 'UaiFood'], 900, P.w - 100, 112, -0.02), ls = -0.02 * FS;
+      const nome = novo ? ['Uai', 'Pertim'] : ['Uai', 'Food'];
+      const wU = tw('Uai', FS, 900, ls), wT = tw(nome.join(''), FS, 900, ls), tx = P.x - wT / 2, ty = P.y + FS * 0.36;
+      // a placa (em pé, com dois postes), que vira
+      const ep = p(t, ev.placa, ev.placa + 0.55);
+      if (ep > 0) {
+        pop(ctx, ep, P.x, P.y + P.h / 2 + 60, () => {
+          ctx.fillStyle = C.madeiraDark; rr(ctx, P.x - 200, P.y + P.h / 2 - 10, 18, 72, 6); ctx.fill(); rr(ctx, P.x + 182, P.y + P.h / 2 - 10, 18, 72, 6); ctx.fill();
+          ctx.save(); ctx.translate(P.x, P.y); ctx.scale(1, Math.max(0.02, Math.abs(Math.cos(Math.PI * vu)))); ctx.translate(-P.x, -P.y);
+          rr(ctx, P.x - P.w / 2, P.y - P.h / 2, P.w, P.h, 30);
+          ctx.shadowColor = 'rgba(120,60,30,0.2)'; ctx.shadowBlur = 20; ctx.shadowOffsetY = 8;
+          ctx.fillStyle = C.papel; ctx.fill(); ctx.shadowColor = 'transparent';
+          ctx.lineWidth = 8; ctx.strokeStyle = novo ? C.coral : C.cinza; ctx.stroke();
+          if (novo) {
+            marker(ctx, tx, ty, wU, FS, E.outCubic(p(t, ev.minas, ev.minas + 0.4)), css(C.amarelo, 0.9));
+            marker(ctx, tx + wU + ls, ty, wT - wU - ls, FS, E.outCubic(p(t, ev.casas, ev.casas + 0.4)), css(C.amarelo, 0.9));
+          }
+          const w1 = txt(ctx, nome[0], tx, ty, { size: FS, weight: 900, ls, color: novo ? C.tinta : C.tinta2 });
+          txt(ctx, nome[1], tx + w1 + ls, ty, { size: FS, weight: 900, ls, color: novo ? C.coral : C.cinza });
+          ctx.restore();
+        }, 1.6);
+        if (ep >= 1) BOX('placa', P.x - P.w / 2, P.y - P.h / 2, P.x + P.w / 2, P.y + P.h / 2 + 62);
+      }
+      // o carimbo "JÁ TEM DONO" (sai quando a placa vira)
+      const ec = p(t, ev.carimbo, ev.carimbo + 0.35);
+      if (ec > 0 && vu < 0.5) {
+        const k = lerp(1.8, 1, E.outCubic(ec)), s = d.carimbo.t, cs = 46, cw = tw(s, cs, 900, 2) + 56, ch = 86;
+        ctx.save(); ctx.globalAlpha *= clamp(ec * 3) * (1 - 2 * vu); ctx.translate(P.x + 90, P.y + 58); ctx.rotate(-9 * DEG); ctx.scale(k, k);
+        ctx.fillStyle = C.papel; rr(ctx, -cw / 2, -ch / 2, cw, ch, 12); ctx.fill();
+        ctx.lineWidth = 7; ctx.strokeStyle = C.coral; rr(ctx, -cw / 2, -ch / 2, cw, ch, 12); ctx.stroke();
+        ctx.lineWidth = 3; rr(ctx, -cw / 2 + 9, -ch / 2 + 9, cw - 18, ch - 18, 8); ctx.stroke();
+                txt(ctx, s, 0, cs * 0.36, { size: cs, weight: 900, align: 'center', color: C.coral, ls: 2 });
+        ctx.restore();
+        if (ec >= 1) BOX('carimbo', P.x + 90 - cw / 2 - 10, P.y + 58 - ch / 2 - 40, P.x + 90 + cw / 2 + 10, P.y + 58 + ch / 2 + 40);
+      }
+      // o mapinha de Minas em cima do "Uai"
+      const em = p(t, ev.minas, ev.minas + 0.5);
+      if (em > 0 && novo) {
+        const mx = tx + wU / 2, my = Math.max(P.y - P.h / 2 - 80, cap.apY + 130), mw = 220, fl = 3 * Math.sin((t - ev.minas) * 2.4);
+        pop(ctx, em, mx, my + 60, () => {
+          ctx.fillStyle = C.papel; ctx.beginPath(); ctx.moveTo(mx - 16, my + 52); ctx.lineTo(mx, my + 78); ctx.lineTo(mx + 16, my + 52); ctx.fill();
+          minas(ctx, mx, my + fl, mw);
+        }, 2);
+        if (em >= 1) BOX('mapa de Minas', mx - mw / 2, my - 80, mx + mw / 2, my + 86);
+      }
+      // a lojinha e a casinha que se aproximam
+      const GB = 1420, ua = E.inOutCubic(p(t, ev.perto, ev.perto + 0.8));
+      const es = p(t, ev.casas, ev.casas + 0.5), eh = p(t, ev.casas + 0.14, ev.casas + 0.64);
+      const xs = lerp(222, 428, ua), xh = lerp(812, 632, ua);
+      if (es > 0 || eh > 0) { ctx.fillStyle = css(C.cremeDeep, Math.max(es, eh)); rr(ctx, L.x0 + 10, GB - 8, L.x1 - L.x0 - 20, 16, 8); ctx.fill(); }
+      if (es > 0) {
+        const k = E.outBack(es, 2.2);
+        ctx.save(); ctx.translate(xs, GB); ctx.scale(lerp(0.6, 1, k), k); ctx.translate(-xs, -GB);
+        shop(ctx, d.casas.loja || 'mercado', xs, GB, 180, { blink: blinkAt(t, 4), look: [0.9, 0.25] });
+        ctx.restore();
+        if (es >= 1) BOX('lojinha', xs - 92, GB - 230, xs + 92, GB);
+      }
+      if (eh > 0) {
+        const k = E.outBack(eh, 2.2);
+        ctx.save(); ctx.translate(xh, GB); ctx.scale(lerp(0.6, 1, k), k); ctx.translate(-xh, -GB);
+        casinha(ctx, xh, GB, 186, 0.35 * ua, t);
+        ctx.restore();
+        if (eh >= 1) BOX('casinha', xh - 102, GB - 210, xh + 102, GB);
+      }
+      const ecor = p(t, ev.perto + 0.8, ev.perto + 1.2);
+      if (ecor > 0) {
+        const hy = GB - 262 + 6 * Math.sin((t - ev.perto) * 3);
+        pop(ctx, ecor, 530, hy + 30, () => coracao(ctx, 530, hy, 74), 2.4);
+        if (ecor >= 1) BOX('coração', 490, hy - 30, 570, hy + 36);
+      }
+    },
+  };
+
+  // ---- feito (FEITO AQUI): as folhas do calendário viram até "3 MESES"; o mapinha de Minas com o pin; a lojinha do
+  //      hambúrguer com o nome escrito (sem logo) e o selo verde "PRIMEIRO PARCEIRO" carimbado
+  CENAS.feito = {
+    setup(cap) {
+      const d = cap.diagrama, ev = cap.ev;
+      ev.cal = at(cap, d.calendario.em, cap.t0 + 0.2);
+      ev.vira = Math.max(at(cap, d.vira.em, ev.cal + 0.6), ev.cal + 0.4);
+      ev.minas = Math.max(at(cap, d.minas.em, ev.vira + 1.2), ev.vira + 0.9);
+      ev.loja = Math.max(at(cap, d.loja.em, ev.minas + 0.8), ev.minas + 0.5);
+      ev.selo = Math.max(at(cap, d.selo.em, ev.loja + 0.6), ev.loja + 0.45);
+      ev.nome = Math.max(at(cap, d.nome.em, ev.selo + 0.6), ev.selo + 0.4);
+      cue(ev.cal, 'pop', { f: 460 }); d.calendario.folhas.slice(1).forEach((_, i) => cue(ev.vira + i * 0.34, 'page'));
+      cue(ev.minas, 'pop', { f: 620 }); cue(ev.loja, 'sprout', { i: 2 }); cue(ev.selo, 'stamp'); cue(ev.nome, 'chip');
+    },
+    draw(ctx, cap, t) {
+      const d = cap.diagrama, ev = cap.ev;
+      const top = Math.max(diaTop(cap), 860);
+      // o calendário
+      const CX = 150, CY = top + 20, CW = 280, CH = 290, folhas = d.calendario.folhas;
+      const ec = ent(t, ev.cal, 0.5);
+      enter(ctx, ec, CX + CW / 2, CY + CH, () => {
+        shadow(ctx, CX + CW / 2, CY + CH + 6, CW / 2, 10);
+        const folha = (f) => {
+          txt(ctx, f[0], CX + CW / 2, CY + 196, { size: 130, weight: 900, align: 'center', color: C.tinta });
+          txt(ctx, f[1], CX + CW / 2, CY + 252, { size: 34, weight: 800, align: 'center', color: C.coral, ls: 3 });
+        };
+        ctx.fillStyle = C.papel; rr(ctx, CX, CY, CW, CH, 22); ctx.fill(); ctx.lineWidth = 4; ctx.strokeStyle = C.cremeDeep; ctx.stroke();
+        let n = 0; folhas.slice(1).forEach((_, i) => { if (t >= ev.vira + i * 0.34 + 0.3) n = i + 1; });
+        const vir = folhas.slice(1).map((_, i) => p(t, ev.vira + i * 0.34, ev.vira + i * 0.34 + 0.3)).find((u) => u > 0 && u < 1);
+        folha(folhas[Math.min(folhas.length - 1, vir !== undefined ? n + 1 : n)]);
+        if (vir !== undefined) {                            // a folha de cima subindo e virando
+          ctx.save(); ctx.beginPath(); rr(ctx, CX, CY + 64, CW, CH - 64, 22); ctx.clip();
+          ctx.translate(0, CY + 64); ctx.scale(1, Math.max(0.01, 1 - vir)); ctx.translate(0, -(CY + 64));
+          ctx.fillStyle = C.papel; ctx.fillRect(CX, CY + 64, CW, CH - 64);
+          ctx.fillStyle = css(C.cremeDark, 0.5 * vir); ctx.fillRect(CX, CY + 64, CW, CH - 64);
+          folha(folhas[n]);
+          ctx.restore();
+        }
+        ctx.fillStyle = C.coral; rr(ctx, CX, CY, CW, 64, 22); ctx.fill(); ctx.fillRect(CX, CY + 40, CW, 24);
+        for (const rx of [CX + 70, CX + CW - 70]) { ctx.fillStyle = C.tinta2; rr(ctx, rx - 8, CY - 18, 16, 46, 8); ctx.fill(); }
+        BOX('calendário', CX, CY - 18, CX + CW, CY + CH);
+      });
+      // o mapinha de Minas com o pin (feito aqui)
+      const em = p(t, ev.minas, ev.minas + 0.5);
+      if (em > 0) {
+        const mx = CX + CW / 2, my = CY + CH + 130, mw = 250;
+        pop(ctx, em, mx, my + 80, () => minas(ctx, mx, my, mw, { pin: true }), 2);
+        if (em >= 1) BOX('mapa de Minas', mx - mw / 2, my - 95, mx + mw / 2, my + 85);
+      }
+      // a lojinha do hambúrguer, o selo e o nome
+      const SX = 690, SB = 1318, SW = 236, el = p(t, ev.loja, ev.loja + 0.55);
+      if (el > 0) {
+        const k = E.outBack(el, 2.2);
+        ctx.save(); ctx.translate(SX, SB); ctx.scale(lerp(0.6, 1, k), k); ctx.translate(-SX, -SB);
+        shop(ctx, 'lanchonete', SX, SB, SW, { blink: blinkAt(t, 6), look: [-0.4, 0.3], swing: 5 * Math.sin((t - ev.loja) * 6) * Math.exp(-(t - ev.loja) * 2.5) });
+        ctx.restore();
+        if (el >= 1) BOX('lojinha', SX - 120, SB - 1.27 * SW, SX + 120, SB);
+      }
+      const en = p(t, ev.nome, ev.nome + 0.4);
+      if (en > 0) pop(ctx, en, SX, SB + 46, () => chip(ctx, d.nome.t, SX, SB + 50, { size: 28, weight: 800, ls: 0, h: 66, pad: 26, align: 'center', color: C.tinta, box: en >= 1 ? 'nome' : null }), 1.8);
+      const es = p(t, ev.selo, ev.selo + 0.4);
+      if (es > 0) {
+        const sx = 832, sy = top + 104, r = 76;
+        const k = lerp(1.7, 1, E.outCubic(es)), rot = -10 * DEG + 18 * DEG * (1 - E.outCubic(es));
+        ctx.save(); ctx.globalAlpha *= clamp(es * 2.5); ctx.translate(sx, sy); ctx.rotate(rot); ctx.scale(k, k);
+        selo(ctx, 0, 0, r, d.selo.t, C.verde);
+        ctx.restore();
+        if (es >= 1) BOX('selo', sx - r - 6, sy - r - 6, sx + r + 6, sy + r + 6);
+      }
+    },
+  };
+
   // ---- fecho: título "Em breve / no Glória.", a LOGO OFICIAL grande e fixa e o chip "Segue @uaipertim" com seta
   CENAS.fecho = {
     setup(cap) {
@@ -1203,9 +1709,10 @@
   // =====================================================================
   // O QUADRO
   // =====================================================================
+  const ehCapa = (cap) => /^capa/.test(cap.diagrama.tipo);
   function drawChap(ctx, cap, t) {
     const tipo = cap.diagrama.tipo;
-    if (tipo !== 'capa') header(ctx, cap, t);
+    if (!ehCapa(cap)) header(ctx, cap, t);
     CENAS[tipo].draw(ctx, cap, t);
     drawApoio(ctx, cap, t);
   }
@@ -1233,7 +1740,7 @@
     drawRail(ctx, t, cam, 'moto');                    // a motinha passa na frente das cenas
     ctx.restore();
     ctx.restore();
-    brand(ctx);
+    brand(ctx, t);
   }
   let bufS = null, bufA = null;
   function renderAt(ctx, t, o = {}) {
@@ -1262,7 +1769,7 @@
     NC = CAPS.length;
     CAPS.forEach((cap, k) => {
       if (!CENAS[cap.diagrama.tipo]) throw new Error('tipo de cena desconhecido: ' + cap.diagrama.tipo);
-      if (cap.diagrama.tipo !== 'capa') layoutTitulo(cap);
+      if (!ehCapa(cap)) layoutTitulo(cap);
       CENAS[cap.diagrama.tipo].setup(cap, k);
       if (k > 0) { cue(CAPS[k - 1].t1, 'trans', { d: TR, k }); cue(cap.t0 - 0.1, 'node', { k }); cue(cap.t0 + 0.02 - ANTES, 'title'); }
       cap.apoios.forEach((a, i) => { if (k > 0 || i > 0) cue(a.t, 'apoio'); });

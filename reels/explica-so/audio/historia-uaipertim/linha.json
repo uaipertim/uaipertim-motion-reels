@@ -1,0 +1,1461 @@
+{
+ "episodio": "historia-uaipertim",
+ "titulo": "Por que UaiPertim? (a nossa história)",
+ "marca": "@uaipertim",
+ "duracao": 63.762,
+ "tr": 0.9,
+ "ap_entra": 0.34,
+ "ap_leitura": 1.5,
+ "previa": false,
+ "capitulos": [
+  {
+   "n": 0,
+   "rotulo": "A NOSSA HISTÓRIA",
+   "tom": "creme",
+   "titulo": [
+    "Por que",
+    "UaiPertim?"
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "capaHistoria",
+    "marcador": "UaiPertim",
+    "pulo": {
+     "em": "existe"
+    },
+    "loja": "padaria",
+    "marca": false
+   },
+   "t0": 0.0,
+   "t1": 2.883,
+   "voz_t0": 0.1,
+   "voz_t1": 2.283,
+   "palavras": [
+    {
+     "w": "Cê",
+     "n": "ce",
+     "i0": 0,
+     "t0": 0.1,
+     "t1": 0.274
+    },
+    {
+     "w": "sabe",
+     "n": "sabe",
+     "i0": 3,
+     "t0": 0.332,
+     "t1": 0.599
+    },
+    {
+     "w": "por",
+     "n": "por",
+     "i0": 8,
+     "t0": 0.634,
+     "t1": 0.762
+    },
+    {
+     "w": "que",
+     "n": "que",
+     "i0": 12,
+     "t0": 0.936,
+     "t1": 1.017
+    },
+    {
+     "w": "o",
+     "n": "o",
+     "i0": 16,
+     "t0": 1.064,
+     "t1": 1.087
+    },
+    {
+     "w": "UaiPertim",
+     "n": "uaipertim",
+     "i0": 18,
+     "t0": 1.122,
+     "t1": 1.772
+    },
+    {
+     "w": "existe?",
+     "n": "existe",
+     "i0": 31,
+     "t0": 1.83,
+     "t1": 2.283
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Cê sabe por que o UaiPertim existe?",
+     "apoio": null,
+     "t0": 0.1,
+     "t1": 2.283
+    }
+   ],
+   "apoios": [],
+   "seed": 2042
+  },
+  {
+   "n": 1,
+   "rotulo": "O GLÓRIA HOJE",
+   "tom": "pessego",
+   "titulo": [
+    "Manda mensagem",
+    "e espera…"
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "mensagens",
+    "casa": {
+     "em": "+0.15"
+    },
+    "msgs": [
+     {
+      "lado": "dir",
+      "t": "Oi! Boa tarde!",
+      "em": "WhatsApp"
+     },
+     {
+      "lado": "esq",
+      "tipo": "cardapio",
+      "em": "cardápio"
+     },
+     {
+      "lado": "dir",
+      "t": "O que tem hoje?",
+      "em": "pergunta"
+     },
+     {
+      "lado": "esq",
+      "tipo": "digitando",
+      "em": "esperando"
+     }
+    ]
+   },
+   "t0": 3.783,
+   "t1": 13.211,
+   "voz_t0": 4.033,
+   "voz_t1": 12.311,
+   "palavras": [
+    {
+     "w": "Aqui",
+     "n": "aqui",
+     "i0": 0,
+     "t0": 4.033,
+     "t1": 4.323
+    },
+    {
+     "w": "no",
+     "n": "no",
+     "i0": 5,
+     "t0": 4.416,
+     "t1": 4.497
+    },
+    {
+     "w": "Glória,",
+     "n": "gloria",
+     "i0": 8,
+     "t0": 4.555,
+     "t1": 4.927
+    },
+    {
+     "w": "quase",
+     "n": "quase",
+     "i0": 16,
+     "t0": 4.973,
+     "t1": 5.333
+    },
+    {
+     "w": "tudo",
+     "n": "tudo",
+     "i0": 22,
+     "t0": 5.415,
+     "t1": 5.682
+    },
+    {
+     "w": "é",
+     "n": "e",
+     "i0": 27,
+     "t0": 5.716,
+     "t1": 5.74
+    },
+    {
+     "w": "pelo",
+     "n": "pelo",
+     "i0": 29,
+     "t0": 5.786,
+     "t1": 6.018
+    },
+    {
+     "w": "WhatsApp.",
+     "n": "whatsapp",
+     "i0": 34,
+     "t0": 6.053,
+     "t1": 6.727
+    },
+    {
+     "w": "O",
+     "n": "o",
+     "i0": 42,
+     "t0": 6.947,
+     "t1": 7.028
+    },
+    {
+     "w": "cardápio",
+     "n": "cardapio",
+     "i0": 44,
+     "t0": 7.121,
+     "t1": 7.632
+    },
+    {
+     "w": "chega",
+     "n": "chega",
+     "i0": 53,
+     "t0": 7.667,
+     "t1": 7.899
+    },
+    {
+     "w": "por",
+     "n": "por",
+     "i0": 59,
+     "t0": 7.946,
+     "t1": 8.073
+    },
+    {
+     "w": "mensagem,",
+     "n": "mensagem",
+     "i0": 63,
+     "t0": 8.12,
+     "t1": 8.723
+    },
+    {
+     "w": "a",
+     "n": "a",
+     "i0": 73,
+     "t0": 8.793,
+     "t1": 8.84
+    },
+    {
+     "w": "gente",
+     "n": "gente",
+     "i0": 75,
+     "t0": 8.909,
+     "t1": 9.176
+    },
+    {
+     "w": "pergunta",
+     "n": "pergunta",
+     "i0": 81,
+     "t0": 9.234,
+     "t1": 9.745
+    },
+    {
+     "w": "o",
+     "n": "o",
+     "i0": 90,
+     "t0": 9.826,
+     "t1": 9.896
+    },
+    {
+     "w": "que",
+     "n": "que",
+     "i0": 92,
+     "t0": 9.966,
+     "t1": 10.07
+    },
+    {
+     "w": "tem…",
+     "n": "tem",
+     "i0": 96,
+     "t0": 10.186,
+     "t1": 10.43
+    },
+    {
+     "w": "e",
+     "n": "e",
+     "i0": 101,
+     "t0": 10.651,
+     "t1": 10.767
+    },
+    {
+     "w": "fica",
+     "n": "fica",
+     "i0": 103,
+     "t0": 10.836,
+     "t1": 11.08
+    },
+    {
+     "w": "esperando",
+     "n": "esperando",
+     "i0": 108,
+     "t0": 11.103,
+     "t1": 11.533
+    },
+    {
+     "w": "a",
+     "n": "a",
+     "i0": 118,
+     "t0": 11.556,
+     "t1": 11.579
+    },
+    {
+     "w": "resposta.",
+     "n": "resposta",
+     "i0": 120,
+     "t0": 11.614,
+     "t1": 12.311
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Aqui no Glória, quase tudo é pelo WhatsApp.",
+     "apoio": "Quase tudo é *por mensagem*.",
+     "t0": 4.033,
+     "t1": 6.727
+    },
+    {
+     "texto": "O cardápio chega por mensagem, a gente pergunta o que tem… e fica esperando a resposta.",
+     "apoio": "Quase tudo é *por mensagem*.",
+     "t0": 6.947,
+     "t1": 12.311
+    }
+   ],
+   "apoios": [
+    {
+     "t": 4.083,
+     "texto": "Quase tudo é *por mensagem*.",
+     "ate": 14.111
+    }
+   ],
+   "seed": 42
+  },
+  {
+   "n": 2,
+   "rotulo": "DO OUTRO LADO DO BALCÃO",
+   "tom": "amarelo",
+   "titulo": [
+    "E o comerciante?",
+    "Responde, responde…"
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "balcao",
+    "loja": {
+     "em": "balcão",
+     "tipo": "restaurante"
+    },
+    "suor": {
+     "em": "comerciante"
+    },
+    "baloes": {
+     "t": [
+      "Hoje tem carne de panela,",
+      "frango e peixe."
+     ],
+     "em": [
+      "responde",
+      "mesma",
+      "dia",
+      "carne"
+     ]
+    },
+    "sol": {
+     "em": "dia"
+    }
+   },
+   "t0": 14.111,
+   "t1": 23.876,
+   "voz_t0": 14.361,
+   "voz_t1": 22.976,
+   "palavras": [
+    {
+     "w": "E",
+     "n": "e",
+     "i0": 0,
+     "t0": 14.361,
+     "t1": 14.465
+    },
+    {
+     "w": "do",
+     "n": "do",
+     "i0": 2,
+     "t0": 14.582,
+     "t1": 14.663
+    },
+    {
+     "w": "outro",
+     "n": "outro",
+     "i0": 5,
+     "t0": 14.756,
+     "t1": 15.023
+    },
+    {
+     "w": "lado",
+     "n": "lado",
+     "i0": 11,
+     "t0": 15.092,
+     "t1": 15.348
+    },
+    {
+     "w": "do",
+     "n": "do",
+     "i0": 16,
+     "t0": 15.406,
+     "t1": 15.476
+    },
+    {
+     "w": "balcão,",
+     "n": "balcao",
+     "i0": 19,
+     "t0": 15.534,
+     "t1": 16.068
+    },
+    {
+     "w": "o",
+     "n": "o",
+     "i0": 27,
+     "t0": 16.23,
+     "t1": 16.3
+    },
+    {
+     "w": "comerciante",
+     "n": "comerciante",
+     "i0": 29,
+     "t0": 16.358,
+     "t1": 17.02
+    },
+    {
+     "w": "responde",
+     "n": "responde",
+     "i0": 41,
+     "t0": 17.078,
+     "t1": 17.554
+    },
+    {
+     "w": "a",
+     "n": "a",
+     "i0": 50,
+     "t0": 17.647,
+     "t1": 17.716
+    },
+    {
+     "w": "mesma",
+     "n": "mesma",
+     "i0": 52,
+     "t0": 17.832,
+     "t1": 18.239
+    },
+    {
+     "w": "coisa",
+     "n": "coisa",
+     "i0": 58,
+     "t0": 18.297,
+     "t1": 18.657
+    },
+    {
+     "w": "o",
+     "n": "o",
+     "i0": 64,
+     "t0": 18.773,
+     "t1": 18.889
+    },
+    {
+     "w": "dia",
+     "n": "dia",
+     "i0": 66,
+     "t0": 18.959,
+     "t1": 19.109
+    },
+    {
+     "w": "inteiro:",
+     "n": "inteiro",
+     "i0": 70,
+     "t0": 19.144,
+     "t1": 19.748
+    },
+    {
+     "w": "hoje",
+     "n": "hoje",
+     "i0": 79,
+     "t0": 19.945,
+     "t1": 20.305
+    },
+    {
+     "w": "tem",
+     "n": "tem",
+     "i0": 84,
+     "t0": 20.363,
+     "t1": 20.503
+    },
+    {
+     "w": "carne",
+     "n": "carne",
+     "i0": 88,
+     "t0": 20.561,
+     "t1": 20.851
+    },
+    {
+     "w": "de",
+     "n": "de",
+     "i0": 94,
+     "t0": 20.909,
+     "t1": 20.979
+    },
+    {
+     "w": "panela,",
+     "n": "panela",
+     "i0": 97,
+     "t0": 21.048,
+     "t1": 21.629
+    },
+    {
+     "w": "frango",
+     "n": "frango",
+     "i0": 105,
+     "t0": 21.722,
+     "t1": 22.163
+    },
+    {
+     "w": "e",
+     "n": "e",
+     "i0": 112,
+     "t0": 22.233,
+     "t1": 22.349
+    },
+    {
+     "w": "peixe.",
+     "n": "peixe",
+     "i0": 114,
+     "t0": 22.465,
+     "t1": 22.976
+    }
+   ],
+   "frases": [
+    {
+     "texto": "E do outro lado do balcão, o comerciante responde a mesma coisa o dia inteiro: hoje tem carne de panela, frango e peixe.",
+     "apoio": "A *mesma resposta*, o dia inteiro.",
+     "t0": 14.361,
+     "t1": 22.976
+    }
+   ],
+   "apoios": [
+    {
+     "t": 14.411,
+     "texto": "A *mesma resposta*, o dia inteiro.",
+     "ate": 24.776
+    }
+   ],
+   "seed": 42
+  },
+  {
+   "n": 3,
+   "rotulo": "A IDEIA",
+   "tom": "verde",
+   "titulo": [
+    "Foi daí que",
+    "nasceu a ideia."
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "ideia",
+    "some": {
+     "em": "ideia"
+    },
+    "lojas": {
+     "em": "comércio",
+     "tipos": [
+      "padaria",
+      "mercado",
+      "lanchonete",
+      "farmacia"
+     ]
+    },
+    "rua": {
+     "em": "lugar"
+    },
+    "check": {
+     "em": "rapidim"
+    }
+   },
+   "t0": 24.776,
+   "t1": 33.259,
+   "voz_t0": 25.026,
+   "voz_t1": 32.259,
+   "palavras": [
+    {
+     "w": "Foi",
+     "n": "foi",
+     "i0": 0,
+     "t0": 25.026,
+     "t1": 25.27
+    },
+    {
+     "w": "daí",
+     "n": "dai",
+     "i0": 4,
+     "t0": 25.305,
+     "t1": 25.572
+    },
+    {
+     "w": "que",
+     "n": "que",
+     "i0": 8,
+     "t0": 25.63,
+     "t1": 25.699
+    },
+    {
+     "w": "nasceu",
+     "n": "nasceu",
+     "i0": 12,
+     "t0": 25.734,
+     "t1": 26.048
+    },
+    {
+     "w": "a",
+     "n": "a",
+     "i0": 19,
+     "t0": 26.071,
+     "t1": 26.094
+    },
+    {
+     "w": "ideia:",
+     "n": "ideia",
+     "i0": 21,
+     "t0": 26.129,
+     "t1": 26.559
+    },
+    {
+     "w": "juntar",
+     "n": "juntar",
+     "i0": 28,
+     "t0": 26.779,
+     "t1": 27.093
+    },
+    {
+     "w": "o",
+     "n": "o",
+     "i0": 35,
+     "t0": 27.116,
+     "t1": 27.151
+    },
+    {
+     "w": "comércio",
+     "n": "comercio",
+     "i0": 37,
+     "t0": 27.185,
+     "t1": 27.603
+    },
+    {
+     "w": "da",
+     "n": "da",
+     "i0": 46,
+     "t0": 27.661,
+     "t1": 27.754
+    },
+    {
+     "w": "cidade",
+     "n": "cidade",
+     "i0": 49,
+     "t0": 27.789,
+     "t1": 28.277
+    },
+    {
+     "w": "num",
+     "n": "num",
+     "i0": 56,
+     "t0": 28.335,
+     "t1": 28.439
+    },
+    {
+     "w": "lugar",
+     "n": "lugar",
+     "i0": 60,
+     "t0": 28.474,
+     "t1": 28.811
+    },
+    {
+     "w": "só,",
+     "n": "so",
+     "i0": 66,
+     "t0": 28.904,
+     "t1": 29.171
+    },
+    {
+     "w": "organizado,",
+     "n": "organizado",
+     "i0": 70,
+     "t0": 29.357,
+     "t1": 30.274
+    },
+    {
+     "w": "pra",
+     "n": "pra",
+     "i0": 82,
+     "t0": 30.413,
+     "t1": 30.576
+    },
+    {
+     "w": "ocê",
+     "n": "oce",
+     "i0": 86,
+     "t0": 30.61,
+     "t1": 30.773
+    },
+    {
+     "w": "achar",
+     "n": "achar",
+     "i0": 90,
+     "t0": 30.854,
+     "t1": 31.098
+    },
+    {
+     "w": "o",
+     "n": "o",
+     "i0": 96,
+     "t0": 31.156,
+     "t1": 31.179
+    },
+    {
+     "w": "que",
+     "n": "que",
+     "i0": 98,
+     "t0": 31.249,
+     "t1": 31.365
+    },
+    {
+     "w": "quer",
+     "n": "quer",
+     "i0": 102,
+     "t0": 31.458,
+     "t1": 31.632
+    },
+    {
+     "w": "rapidim.",
+     "n": "rapidim",
+     "i0": 107,
+     "t0": 31.667,
+     "t1": 32.259
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Foi daí que nasceu a ideia: juntar o comércio da cidade num lugar só, organizado, pra ocê achar o que quer rapidim.",
+     "apoio": "O comércio da cidade *num lugar só*.",
+     "t0": 25.026,
+     "t1": 32.259
+    }
+   ],
+   "apoios": [
+    {
+     "t": 25.076,
+     "texto": "O comércio da cidade *num lugar só*.",
+     "ate": 34.159
+    }
+   ],
+   "seed": 42
+  },
+  {
+   "n": 4,
+   "rotulo": "O NOME",
+   "tom": "pessego",
+   "titulo": [
+    "E o nome,",
+    "de onde veio?"
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "nome",
+    "placa": {
+     "em": "nome"
+    },
+    "carimbo": {
+     "em": "dono",
+     "t": "JÁ TEM DONO"
+    },
+    "vira": {
+     "em": "UaiPertim"
+    },
+    "minas": {
+     "em": "Minas"
+    },
+    "casas": {
+     "em": "Pertim",
+     "loja": "mercado"
+    },
+    "perto": {
+     "em": "perto"
+    }
+   },
+   "t0": 34.159,
+   "t1": 46.334,
+   "voz_t0": 34.409,
+   "voz_t1": 45.334,
+   "palavras": [
+    {
+     "w": "O",
+     "n": "o",
+     "i0": 0,
+     "t0": 34.409,
+     "t1": 34.502
+    },
+    {
+     "w": "nome",
+     "n": "nome",
+     "i0": 2,
+     "t0": 34.595,
+     "t1": 34.873
+    },
+    {
+     "w": "ia",
+     "n": "ia",
+     "i0": 7,
+     "t0": 34.908,
+     "t1": 35.013
+    },
+    {
+     "w": "ser",
+     "n": "ser",
+     "i0": 10,
+     "t0": 35.082,
+     "t1": 35.349
+    },
+    {
+     "w": "UaiFood…",
+     "n": "uaifood",
+     "i0": 14,
+     "t0": 35.5,
+     "t1": 36.243
+    },
+    {
+     "w": "mas",
+     "n": "mas",
+     "i0": 23,
+     "t0": 36.534,
+     "t1": 36.743
+    },
+    {
+     "w": "já",
+     "n": "ja",
+     "i0": 27,
+     "t0": 36.777,
+     "t1": 36.859
+    },
+    {
+     "w": "tinha",
+     "n": "tinha",
+     "i0": 30,
+     "t0": 36.928,
+     "t1": 37.137
+    },
+    {
+     "w": "dono.",
+     "n": "dono",
+     "i0": 36,
+     "t0": 37.195,
+     "t1": 37.613
+    },
+    {
+     "w": "Aí",
+     "n": "ai",
+     "i0": 42,
+     "t0": 37.857,
+     "t1": 38.066
+    },
+    {
+     "w": "nasceu",
+     "n": "nasceu",
+     "i0": 45,
+     "t0": 38.113,
+     "t1": 38.565
+    },
+    {
+     "w": "o",
+     "n": "o",
+     "i0": 52,
+     "t0": 38.716,
+     "t1": 38.832
+    },
+    {
+     "w": "UaiPertim:",
+     "n": "uaipertim",
+     "i0": 54,
+     "t0": 38.949,
+     "t1": 40.075
+    },
+    {
+     "w": "o",
+     "n": "o",
+     "i0": 68,
+     "t0": 40.411,
+     "t1": 40.527
+    },
+    {
+     "w": "Uai",
+     "n": "uai",
+     "i0": 70,
+     "t0": 40.678,
+     "t1": 40.945
+    },
+    {
+     "w": "é",
+     "n": "e",
+     "i0": 74,
+     "t0": 41.003,
+     "t1": 41.038
+    },
+    {
+     "w": "de",
+     "n": "de",
+     "i0": 76,
+     "t0": 41.108,
+     "t1": 41.212
+    },
+    {
+     "w": "Minas,",
+     "n": "minas",
+     "i0": 79,
+     "t0": 41.282,
+     "t1": 41.77
+    },
+    {
+     "w": "e",
+     "n": "e",
+     "i0": 86,
+     "t0": 41.979,
+     "t1": 42.095
+    },
+    {
+     "w": "o",
+     "n": "o",
+     "i0": 88,
+     "t0": 42.164,
+     "t1": 42.223
+    },
+    {
+     "w": "Pertim",
+     "n": "pertim",
+     "i0": 90,
+     "t0": 42.292,
+     "t1": 42.919
+    },
+    {
+     "w": "é",
+     "n": "e",
+     "i0": 99,
+     "t0": 43.012,
+     "t1": 43.082
+    },
+    {
+     "w": "pra",
+     "n": "pra",
+     "i0": 101,
+     "t0": 43.128,
+     "t1": 43.267
+    },
+    {
+     "w": "deixar",
+     "n": "deixar",
+     "i0": 105,
+     "t0": 43.314,
+     "t1": 43.604
+    },
+    {
+     "w": "o",
+     "n": "o",
+     "i0": 112,
+     "t0": 43.639,
+     "t1": 43.674
+    },
+    {
+     "w": "comércio",
+     "n": "comercio",
+     "i0": 114,
+     "t0": 43.72,
+     "t1": 44.15
+    },
+    {
+     "w": "mais",
+     "n": "mais",
+     "i0": 123,
+     "t0": 44.231,
+     "t1": 44.475
+    },
+    {
+     "w": "perto",
+     "n": "perto",
+     "i0": 128,
+     "t0": 44.545,
+     "t1": 44.835
+    },
+    {
+     "w": "de",
+     "n": "de",
+     "i0": 134,
+     "t0": 44.881,
+     "t1": 44.928
+    },
+    {
+     "w": "você.",
+     "n": "voce",
+     "i0": 137,
+     "t0": 44.974,
+     "t1": 45.334
+    }
+   ],
+   "frases": [
+    {
+     "texto": "O nome ia ser UaiFood… mas já tinha dono.",
+     "apoio": null,
+     "t0": 34.409,
+     "t1": 37.613
+    },
+    {
+     "texto": "Aí nasceu o UaiPertim: o Uai é de Minas, e o Pertim é pra deixar o comércio mais perto de você.",
+     "apoio": "*Uai* de Minas. *Pertim* de você.",
+     "t0": 37.857,
+     "t1": 45.334
+    }
+   ],
+   "apoios": [
+    {
+     "t": 37.737,
+     "texto": "*Uai* de Minas. *Pertim* de você.",
+     "ate": 47.234
+    }
+   ],
+   "seed": 42
+  },
+  {
+   "n": 5,
+   "rotulo": "FEITO AQUI",
+   "tom": "amarelo",
+   "titulo": [
+    "Três meses,",
+    "feito em Minas."
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "feito",
+    "calendario": {
+     "em": "+0.2",
+     "folhas": [
+      [
+       "1",
+       "MÊS"
+      ],
+      [
+       "2",
+       "MESES"
+      ],
+      [
+       "3",
+       "MESES"
+      ]
+     ]
+    },
+    "vira": {
+     "em": "três"
+    },
+    "minas": {
+     "em": "Minas"
+    },
+    "loja": {
+     "em": "primeiro"
+    },
+    "selo": {
+     "em": "topar",
+     "t": [
+      "PRIMEIRO",
+      "PARCEIRO"
+     ]
+    },
+    "nome": {
+     "em": "Varanda",
+     "t": "Varanda Burguer House"
+    }
+   },
+   "t0": 47.234,
+   "t1": 55.362,
+   "voz_t0": 47.484,
+   "voz_t1": 53.962,
+   "palavras": [
+    {
+     "w": "Foram",
+     "n": "foram",
+     "i0": 0,
+     "t0": 47.484,
+     "t1": 47.786
+    },
+    {
+     "w": "três",
+     "n": "tres",
+     "i0": 6,
+     "t0": 47.832,
+     "t1": 48.076
+    },
+    {
+     "w": "meses",
+     "n": "meses",
+     "i0": 11,
+     "t0": 48.134,
+     "t1": 48.471
+    },
+    {
+     "w": "de",
+     "n": "de",
+     "i0": 17,
+     "t0": 48.506,
+     "t1": 48.575
+    },
+    {
+     "w": "trabalho,",
+     "n": "trabalho",
+     "i0": 20,
+     "t0": 48.622,
+     "t1": 49.121
+    },
+    {
+     "w": "feito",
+     "n": "feito",
+     "i0": 30,
+     "t0": 49.191,
+     "t1": 49.458
+    },
+    {
+     "w": "aqui",
+     "n": "aqui",
+     "i0": 36,
+     "t0": 49.481,
+     "t1": 49.667
+    },
+    {
+     "w": "em",
+     "n": "em",
+     "i0": 41,
+     "t0": 49.69,
+     "t1": 49.748
+    },
+    {
+     "w": "Minas.",
+     "n": "minas",
+     "i0": 44,
+     "t0": 49.818,
+     "t1": 50.294
+    },
+    {
+     "w": "E",
+     "n": "e",
+     "i0": 51,
+     "t0": 50.561,
+     "t1": 50.642
+    },
+    {
+     "w": "o",
+     "n": "o",
+     "i0": 53,
+     "t0": 50.712,
+     "t1": 50.735
+    },
+    {
+     "w": "primeiro",
+     "n": "primeiro",
+     "i0": 55,
+     "t0": 50.793,
+     "t1": 51.199
+    },
+    {
+     "w": "a",
+     "n": "a",
+     "i0": 64,
+     "t0": 51.222,
+     "t1": 51.246
+    },
+    {
+     "w": "topar",
+     "n": "topar",
+     "i0": 66,
+     "t0": 51.292,
+     "t1": 51.652
+    },
+    {
+     "w": "a",
+     "n": "a",
+     "i0": 72,
+     "t0": 51.687,
+     "t1": 51.722
+    },
+    {
+     "w": "ideia",
+     "n": "ideia",
+     "i0": 74,
+     "t0": 51.78,
+     "t1": 52.116
+    },
+    {
+     "w": "foi",
+     "n": "foi",
+     "i0": 80,
+     "t0": 52.198,
+     "t1": 52.383
+    },
+    {
+     "w": "o",
+     "n": "o",
+     "i0": 84,
+     "t0": 52.43,
+     "t1": 52.453
+    },
+    {
+     "w": "Varanda",
+     "n": "varanda",
+     "i0": 86,
+     "t0": 52.523,
+     "t1": 53.022
+    },
+    {
+     "w": "Burguer",
+     "n": "burguer",
+     "i0": 94,
+     "t0": 53.092,
+     "t1": 53.486
+    },
+    {
+     "w": "House.",
+     "n": "house",
+     "i0": 102,
+     "t0": 53.556,
+     "t1": 53.962
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Foram três meses de trabalho, feito aqui em Minas.",
+     "apoio": null,
+     "t0": 47.484,
+     "t1": 50.294
+    },
+    {
+     "texto": "E o primeiro a topar a ideia foi o Varanda Burguer House.",
+     "apoio": "O primeiro parceiro: *Varanda Burguer House*.",
+     "t0": 50.561,
+     "t1": 53.962
+    }
+   ],
+   "apoios": [
+    {
+     "t": 50.441,
+     "texto": "O primeiro parceiro: *Varanda Burguer House*.",
+     "ate": 56.262
+    }
+   ],
+   "seed": 42
+  },
+  {
+   "n": 6,
+   "rotulo": "PRA NÃO PERDER",
+   "tom": "creme",
+   "titulo": [
+    "Em breve",
+    "no Glória."
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "fecho",
+    "logo": {
+     "em": "UaiPertim"
+    },
+    "chip": {
+     "t": "Segue @uaipertim",
+     "em": "Segue"
+    }
+   },
+   "t0": 56.262,
+   "t1": 63.762,
+   "voz_t0": 56.512,
+   "voz_t1": 60.889,
+   "palavras": [
+    {
+     "w": "Isso",
+     "n": "isso",
+     "i0": 0,
+     "t0": 56.512,
+     "t1": 56.872
+    },
+    {
+     "w": "é",
+     "n": "e",
+     "i0": 5,
+     "t0": 56.93,
+     "t1": 56.988
+    },
+    {
+     "w": "o",
+     "n": "o",
+     "i0": 7,
+     "t0": 57.058,
+     "t1": 57.116
+    },
+    {
+     "w": "UaiPertim.",
+     "n": "uaipertim",
+     "i0": 9,
+     "t0": 57.139,
+     "t1": 58.161
+    },
+    {
+     "w": "Chegando",
+     "n": "chegando",
+     "i0": 23,
+     "t0": 58.381,
+     "t1": 58.799
+    },
+    {
+     "w": "em",
+     "n": "em",
+     "i0": 32,
+     "t0": 58.822,
+     "t1": 58.88
+    },
+    {
+     "w": "breve",
+     "n": "breve",
+     "i0": 35,
+     "t0": 58.938,
+     "t1": 59.264
+    },
+    {
+     "w": "no",
+     "n": "no",
+     "i0": 41,
+     "t0": 59.31,
+     "t1": 59.391
+    },
+    {
+     "w": "Glória.",
+     "n": "gloria",
+     "i0": 44,
+     "t0": 59.438,
+     "t1": 59.856
+    },
+    {
+     "w": "Segue",
+     "n": "segue",
+     "i0": 52,
+     "t0": 60.018,
+     "t1": 60.39
+    },
+    {
+     "w": "a",
+     "n": "a",
+     "i0": 58,
+     "t0": 60.425,
+     "t1": 60.448
+    },
+    {
+     "w": "gente!",
+     "n": "gente",
+     "i0": 60,
+     "t0": 60.517,
+     "t1": 60.889
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Isso é o UaiPertim. Chegando em breve no Glória. Segue a gente!",
+     "apoio": null,
+     "t0": 56.512,
+     "t1": 60.889
+    }
+   ],
+   "apoios": [],
+   "seed": 42
+  }
+ ],
+ "colocacao": [
+  {
+   "cap": 0,
+   "arquivo": "voz/cap-00.wav",
+   "de_s": 0.0,
+   "ate_s": 2.3684,
+   "no_video_s": 0.1,
+   "amostras": 113685,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 1,
+   "arquivo": "voz/cap-01.wav",
+   "de_s": 0.0,
+   "ate_s": 8.4056,
+   "no_video_s": 4.033,
+   "amostras": 403470,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 2,
+   "arquivo": "voz/cap-02.wav",
+   "de_s": 0.0,
+   "ate_s": 8.7771,
+   "no_video_s": 14.361,
+   "amostras": 421303,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 3,
+   "arquivo": "voz/cap-03.wav",
+   "de_s": 0.0,
+   "ate_s": 7.4304,
+   "no_video_s": 25.026,
+   "amostras": 356659,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 4,
+   "arquivo": "voz/cap-04.wav",
+   "de_s": 0.0,
+   "ate_s": 11.192,
+   "no_video_s": 34.409,
+   "amostras": 537217,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 5,
+   "arquivo": "voz/cap-05.wav",
+   "de_s": 0.0,
+   "ate_s": 6.7338,
+   "no_video_s": 47.484,
+   "amostras": 323222,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 6,
+   "arquivo": "voz/cap-06.wav",
+   "de_s": 0.0,
+   "ate_s": 4.5511,
+   "no_video_s": 56.512,
+   "amostras": 218454,
+   "fade_ms": [
+    8,
+    60
+   ]
+  }
+ ],
+ "mapa": {
+  "ok": true,
+  "falhas": []
+ }
+}

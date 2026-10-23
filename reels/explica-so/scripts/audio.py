@@ -42,6 +42,11 @@ SR = 48000
 N = int(round(SR * DUR))
 TARGET_LUFS = -14.0
 rng = np.random.default_rng(2024)
+# Perfil da trilha por episódio. A série usa o padrão (alegre, 100 BPM). O especial "Por que UaiPertim?" é uma
+# história: a mesma família de instrumentos, mais devagar (80 BPM), arpejo mais espaçado, sem o shaker, o pulso grave
+# mais leve, os efeitos 2 dB mais baixos e sem os cômicos (o "boing" vira um ping suave).
+PERFIS = {'historia-uaipertim': {'bpm': 80.0, 'arpejo': 2.0, 'arpejo_g': 0.075, 'shaker': 0.0, 'pulso': 0.18, 'sfx_db': -15.0, 'comicos': False}}
+PERFIL = PERFIS.get(LN.get('episodio', EP), {})
 
 
 # ------------------------------------------------------------------ básicos
@@ -372,6 +377,19 @@ def clink():
     return add(coin_clink(2400) * 0.8, wood(1300, 0.08, 0.012) * 0.3)
 
 
+def bubble(i=0):
+    """o balão de mensagem chegando: um "plim" redondo e baixinho"""
+    return add(pop(520 + 70 * (i % 4)) * 0.8, np.concatenate([np.zeros(int(0.05 * SR)), ping(midi(84 + 2 * (i % 4)), 0.35) * 0.35]))
+
+
+def page():
+    """a folha do calendário virando: o papel estalando e um sopro curto"""
+    d = 0.32
+    t = tt(d)
+    flick = filt(noise(d), [1800, 7000], 'band') * np.exp(-t / 0.035)
+    return add(flick * 0.7, whoosh(0.28, 900, 3200, 0.3, 1.1) * 0.5, click(0.02, 3200, 0.003) * 0.4)
+
+
 def sprout(i=0):
     """a lojinha brotando do chão: sopro que sobe + um pop de mola"""
     return add(riser(0.3, 300, 1800) * 0.6, np.concatenate([np.zeros(int(0.22 * SR)), pop(520 + 90 * i) * 1.0]))
@@ -394,12 +412,13 @@ voz = voz * uniform_filter1d(gain, int(0.01 * SR))
 
 # --- os efeitos
 sfx, send = stereo(), stereo()
-SFX_G = 10 ** (-13 / 20)
+SFX_G = 10 ** (PERFIL.get('sfx_db', -13.0) / 20)
+COMICOS = PERFIL.get('comicos', True)
 PENTA = [76, 79, 81, 84, 86, 88, 91, 93, 96, 98]
 for c in CUES['cues']:
     t, ty, d = c['t'], c['type'], c.get('d', 0.3)
     if ty == 'trans':
-        place_pan(sfx, moto_engine(d + 0.2), t - 0.05, 0.42, -0.6, 0.6); place_pan(sfx, whoosh(d, 260, 2600, 0.55, 1.1), t, 0.2, -0.6, 0.6)
+        place_pan(sfx, moto_engine(d + 0.2), t - 0.05, 0.42 if COMICOS else 0.3, -0.6, 0.6); place_pan(sfx, whoosh(d, 260, 2600, 0.55, 1.1), t, 0.2, -0.6, 0.6)
     elif ty == 'moto':
         place_pan(sfx, moto_engine(d + 0.15), t - 0.05, 0.5, -0.7, 0.3)
     elif ty == 'horn':
@@ -407,7 +426,14 @@ for c in CUES['cues']:
     elif ty == 'door':
         place(sfx, door(), t, 0.45, 0.3)
     elif ty == 'jump':
-        place(sfx, boing(), t, 0.4); place(send, boing(), t, 0.08)
+        if COMICOS:
+            place(sfx, boing(), t, 0.4); place(send, boing(), t, 0.08)
+        else:
+            place(sfx, ping(midi(84), 0.5), t, 0.22); place(send, ping(midi(84), 0.5), t, 0.08)
+    elif ty == 'msg':
+        place(sfx, bubble(c.get('i', 0)), t, 0.4, [0.3, -0.3][c.get('i', 0) % 2]); place(send, bubble(c.get('i', 0)), t, 0.08)
+    elif ty == 'page':
+        place(sfx, page(), t, 0.5, -0.3)
     elif ty == 'clink':
         place(sfx, clink(), t, 0.45)
     elif ty == 'flop':
@@ -499,7 +525,7 @@ for c in CUES['cues']:
 sfx *= SFX_G
 
 # --- a trilha contínua
-BPM = 100.0
+BPM = PERFIL.get('bpm', 100.0)
 BT = 60.0 / BPM
 CHORDS = [[60, 64, 67, 71, 74], [57, 60, 64, 67, 71], [53, 57, 60, 64, 67], [55, 59, 62, 64, 69]]      # Cmaj9, Am9, Fmaj9, G6/9
 music = np.zeros(N)
@@ -533,21 +559,22 @@ for k in range(nb + 1):
     for q in range(8):                                                                                 # pulso grave nos tempos 1 e 3
         tb = t0 + q * BT
         if q % 2 == 0 and tb < FIM:
-            s = thump(0.35, 52, 0.12, 0.5) * 0.28; ii = int(tb * SR); jj = min(N, ii + len(s)); music[ii:jj] += s[: jj - ii]
+            s = thump(0.35, 52, 0.12, 0.5) * PERFIL.get('pulso', 0.28); ii = int(tb * SR); jj = min(N, ii + len(s)); music[ii:jj] += s[: jj - ii]
     for q in range(int(bars / (BT / 2))):                                                              # shaker em colcheias, bem baixo
         tb = t0 + q * BT / 2
         if tb >= FIM:
             break
-        s = filt(noise(0.06), [6000, 12000], 'band') * np.exp(-tt(0.06) / 0.015) * (0.05 if q % 2 else 0.03)
+        s = filt(noise(0.06), [6000, 12000], 'band') * np.exp(-tt(0.06) / 0.015) * (0.05 if q % 2 else 0.03) * PERFIL.get('shaker', 1.0)
         ii = int(tb * SR); jj = min(N, ii + len(s)); music[ii:jj] += s[: jj - ii]
-    for q in range(int(bars / (BT * 1.5))):                                                            # o arpejo
-        tn = t0 + q * BT * 1.5
+    ARP = PERFIL.get('arpejo', 1.5)
+    for q in range(int(bars / (BT * ARP))):                                                            # o arpejo
+        tn = t0 + q * BT * ARP
         if tn >= FIM:
             break
         n = ch[(q * 2 + 1) % len(ch)] + 12
         nt = tt(0.9)
         note = (np.sin(2 * np.pi * midi(n) * nt) + 0.3 * np.sin(2 * np.pi * 2 * midi(n) * nt) * np.exp(-nt / 0.1)) * np.exp(-nt / 0.28) * np.minimum(1, nt / 0.004)
-        ii = int(tn * SR); jj = min(N, ii + len(note)); music[ii:jj] += note[: jj - ii] * 0.09
+        ii = int(tn * SR); jj = min(N, ii + len(note)); music[ii:jj] += note[: jj - ii] * PERFIL.get('arpejo_g', 0.09)
 music = filt(music, 50, 'high')
 music *= np.clip(t / 0.6, 0, 1) * np.clip((DUR - t) / 1.2, 0, 1)
 # ducking suave

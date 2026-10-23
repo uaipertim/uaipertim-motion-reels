@@ -1,0 +1,71 @@
+EXPLICA, SÔ! · historia-uaipertim — revisão técnica
+output/historia-uaipertim/uaipertim-historia-uaipertim.mp4
+
+FORMATO
+OK     vídeo h264 High yuv420p
+OK     resolução 1080x1920 (9:16)
+OK     60 fps, 3826 quadros
+OK     duração 63.77 s (alvo 60–80 s)
+OK     áudio aac 48000 Hz, 2 canais, 265 kb/s
+OK     vídeo e áudio com a mesma duração (Δ 5 ms)
+       arquivo 23.7 MB, 3.0 Mb/s
+       capítulos: 00 2.88 s · 01 9.43 s · 02 9.77 s · 03 8.48 s · 04 12.18 s · 05 8.13 s · 06 7.50 s · trocas de 0.9 s
+
+SOM
+OK     loudness integrado -14.0 LUFS (alvo −14)
+OK     pico real -1.6 dBTP (limite −1)
+       a voz sozinha, na escala da mixagem: -14.3 LUFS
+       a trilha sozinha, na escala da mixagem: -28.0 LUFS
+       os efeitos sozinhos, na escala da mixagem: -28.0 LUFS
+
+VOZ (voz oficial, uma geração inteira por capítulo, nada emendado)
+       Victor Pinho (LuQ9eaWO9yCQrR73VQFa) · eleven_multilingual_v2 · ajustes {"stability": 0.4, "similarity_boost": 0.8, "style": 0.35, "use_speaker_boost": true}
+OK     capítulo 00: 2.37 s contínuos da geração com seed 2042 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000029; 3 geração(ões) inteiras feitas)
+OK     capítulo 00: "do/no Glória" (nunca "de Glória"); enviado à API: "Cê sabe por que o Uai Pérr-tim existe?"
+OK     capítulo 01: 8.41 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000031; 1 geração(ões) inteiras feitas)
+OK     capítulo 01: "do/no Glória" (nunca "de Glória"); enviado à API: "Aqui no Glória, quase tudo é pelo Uótsap. O cardápio chega por mensagem, a gente pergunta o que tem… e fica esperando a resposta."
+OK     capítulo 02: 8.78 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000029; 1 geração(ões) inteiras feitas)
+OK     capítulo 02: "do/no Glória" (nunca "de Glória"); enviado à API: "E do outro lado do balcão, o comerciante responde a mesma coisa o dia inteiro: hoje tem carne de panela, frango e peixe."
+OK     capítulo 03: 7.43 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000027; 1 geração(ões) inteiras feitas)
+OK     capítulo 03: "do/no Glória" (nunca "de Glória"); enviado à API: "Foi daí que nasceu a ideia: juntar o comércio da cidade num lugar só, organizado, pra ocê achar o que quer rapidim."
+OK     capítulo 04: 11.19 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000027; 1 geração(ões) inteiras feitas)
+OK     capítulo 04: "do/no Glória" (nunca "de Glória"); enviado à API: "O nome ia ser Uai Fúd… mas já tinha dono. Aí nasceu o Uai Pérr-tim: o Uai é de Minas, e o Pérr-tim é pra deixar o comércio mais perto de você."
+OK     capítulo 05: 6.73 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000026; 1 geração(ões) inteiras feitas)
+OK     capítulo 05: "do/no Glória" (nunca "de Glória"); enviado à API: "Foram três meses de trabalho, feito aqui em Minas. E o primeiro a topar a ideia foi o Varanda Búrguer House."
+OK     capítulo 06: 4.55 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000027; 1 geração(ões) inteiras feitas)
+OK     capítulo 06: "do/no Glória" (nunca "de Glória"); enviado à API: "Isso é o Uai Pérr-tim. Chegando em breve no Glória. Segue a gente!"
+
+MAPA DE TEMPOS E GATILHOS
+OK     mapa de tempos de linha.py (total 60–80 s, apoios ≥ 1,5 s, fecho 6–8 s, logo nos 3 últimos s)
+OK     toda palavra "em" da cena está na fala
+
+LEITURA (linhas de apoio)
+       cap 01 · apoio 1: 9.69 s inteira · Quase tudo é por mensagem.
+       cap 02 · apoio 1: 10.03 s inteira · A mesma resposta, o dia inteiro.
+       cap 03 · apoio 1: 8.74 s inteira · O comércio da cidade num lugar só.
+       cap 04 · apoio 1: 9.16 s inteira · Uai de Minas. Pertim de você.
+       cap 05 · apoio 1: 5.48 s inteira · O primeiro parceiro: / Varanda Burguer House.
+OK     5 linhas de apoio, a mais curta fica 5.48 s inteira na tela (mínimo 1,5 s)
+OK     a linha de apoio anterior sai antes de a próxima entrar (nunca duas ao mesmo tempo)
+OK     quebras de linha: nunca separam as duas últimas palavras, "pertim de você", "do/no Glória" nem o emoji
+
+ÁREAS SEGURAS E COMPOSIÇÃO
+OK     conteúdo entre x 80–940 e y 265–1456: 1595 caixas em 205 quadros fora das trocas
+OK     nenhuma caixa na coluna de botões (x ≥ 940, y 1060–1560)
+OK     a linha de apoio nunca fica por cima de card, balão ou peça de cena
+       faixa usada pelo conteúdo: y 305–1425
+OK     sem quadro vazio nas 6 trocas de capítulo (sempre há conteúdo na tela)
+OK     coluna de botões: 0 pixel de conteúdo em 255 quadros amostrados (só o fundo creme passa por ali)
+OK     sem trechos pretos
+OK     sem imagem congelada por 1,5 s ou mais
+
+CAPA E FECHO
+OK     a capa é o quadro 0 do vídeo (PSNR 38.9 dB entre capa.png e o 1º quadro)
+OK     regra das capas (revisao/capa.txt): dentro da regra das capas
+OK     fecho com 7.50 s (alvo 6–8 s)
+OK     fecho: a última mudança de texto é em 60.71 s; o texto fica parado 3.05 s até o fim (mínimo 3 s)
+OK     a logo oficial está na tela em todos os 12 quadros amostrados dos 3 últimos segundos (parada desde 58.04 s)
+OK     fecho: 7 elementos (logo oficial, título, chip, seta, marca) iguais entre 60.76 s e o fim (maior diferença média 1.19 de 255)
+       elementos: rótulo 1.19, título, linha 1 0.53, título, linha 2 0.41, logo oficial 0.42, chip Segue 0.33, seta 0.92, marca 0.84
+
+RESULTADO: aprovado

@@ -51,6 +51,9 @@ FONT = os.path.join(REPO, 'public', 'fonts', 'poppins-latin-800-normal.woff2')
 DUR = LN['duracao']
 SAFE = {'x0': 80, 'x1': 940, 'y0': 265, 'y1': 1456}
 BTN = {'x': 940, 'y0': 1060, 'y1': 1560}
+# duração total: 30–45 s na série; os episódios especiais têm o seu limite (o mesmo de scripts/linha.py)
+LIMITES = {'historia-uaipertim': (60.0, 80.0)}
+DMIN, DMAX = LIMITES.get(EP, (30.0, 45.0))
 report, fails = [], []
 
 
@@ -83,7 +86,7 @@ vd, ad = float(v['duration']), float(a['duration'])
 ok(v['codec_name'] == 'h264' and v['pix_fmt'] == 'yuv420p', f"vídeo {v['codec_name']} {v.get('profile', '')} {v['pix_fmt']}")
 ok((int(v['width']), int(v['height'])) == (1080, 1920), f"resolução {v['width']}x{v['height']} (9:16)")
 ok(abs(fps - 60) < 0.01, f'{fps:.0f} fps, {v.get("nb_frames", "?")} quadros')
-ok(30 <= vd <= 45, f'duração {vd:.2f} s (alvo 30–45 s)')
+ok(DMIN <= vd <= DMAX, f'duração {vd:.2f} s (alvo {DMIN:.0f}–{DMAX:.0f} s)')
 if PREVIA:
     ok(False, 'PRÉVIA: sem a voz oficial (tempos estimados) — não vale como vídeo final')
 ok(a['codec_name'] == 'aac' and int(a['sample_rate']) == 48000 and int(a['channels']) == 2, f"áudio {a['codec_name']} {a['sample_rate']} Hz, {a['channels']} canais, {int(a.get('bit_rate', 0)) // 1000} kb/s")
@@ -130,7 +133,7 @@ for c in LN['colocacao']:
 # ---------------------------------------------------------------- mapa de tempos e gatilhos
 report += ['', 'MAPA DE TEMPOS E GATILHOS']
 mp = LN.get('mapa', {})
-ok(mp.get('ok', False), 'mapa de tempos de linha.py (total 30–45 s, apoios ≥ 1,5 s, fecho 6–8 s, logo nos 3 últimos s)' + ('' if mp.get('ok') else ': ' + '; '.join(mp.get('falhas', []))))
+ok(mp.get('ok', False), f'mapa de tempos de linha.py (total {DMIN:.0f}–{DMAX:.0f} s, apoios ≥ 1,5 s, fecho 6–8 s, logo nos 3 últimos s)' + ('' if mp.get('ok') else ': ' + '; '.join(mp.get('falhas', []))))
 sem = MOT.get('palavras_sem_peca', [])
 ok(not sem, 'toda palavra "em" da cena está na fala' + ('' if not sem else ': ' + ', '.join(f'cap {x["cap"]:02d} "{x["palavra"]}"' for x in sem)))
 

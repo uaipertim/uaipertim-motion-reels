@@ -1,0 +1,281 @@
+{
+  "id": "historia-uaipertim",
+  "titulo": "Por que UaiPertim? (a nossa história)",
+  "marca": "@uaipertim",
+  "especial": true,
+  "capitulos": [
+    {
+      "rotulo": "A NOSSA HISTÓRIA",
+      "tom": "creme",
+      "titulo": [
+        "Por que",
+        "UaiPertim?"
+      ],
+      "fala": [
+        {
+          "texto": "Cê sabe por que o UaiPertim existe?",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "capaHistoria",
+        "marcador": "UaiPertim",
+        "pulo": {
+          "em": "existe"
+        },
+        "loja": "padaria",
+        "marca": false
+      },
+      "segura": 0.6
+    },
+    {
+      "rotulo": "O GLÓRIA HOJE",
+      "tom": "pessego",
+      "titulo": [
+        "Manda mensagem",
+        "e espera…"
+      ],
+      "fala": [
+        {
+          "texto": "Aqui no Glória, quase tudo é pelo WhatsApp.",
+          "apoio": "Quase tudo é *por mensagem*."
+        },
+        {
+          "texto": "O cardápio chega por mensagem, a gente pergunta o que tem… e fica esperando a resposta.",
+          "apoio": "Quase tudo é *por mensagem*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "mensagens",
+        "casa": {
+          "em": "+0.15"
+        },
+        "msgs": [
+          {
+            "lado": "dir",
+            "t": "Oi! Boa tarde!",
+            "em": "WhatsApp"
+          },
+          {
+            "lado": "esq",
+            "tipo": "cardapio",
+            "em": "cardápio"
+          },
+          {
+            "lado": "dir",
+            "t": "O que tem hoje?",
+            "em": "pergunta"
+          },
+          {
+            "lado": "esq",
+            "tipo": "digitando",
+            "em": "esperando"
+          }
+        ]
+      },
+      "segura": 0.9
+    },
+    {
+      "rotulo": "DO OUTRO LADO DO BALCÃO",
+      "tom": "amarelo",
+      "titulo": [
+        "E o comerciante?",
+        "Responde, responde…"
+      ],
+      "fala": [
+        {
+          "texto": "E do outro lado do balcão, o comerciante responde a mesma coisa o dia inteiro: hoje tem carne de panela, frango e peixe.",
+          "apoio": "A *mesma resposta*, o dia inteiro."
+        }
+      ],
+      "diagrama": {
+        "tipo": "balcao",
+        "loja": {
+          "em": "balcão",
+          "tipo": "restaurante"
+        },
+        "suor": {
+          "em": "comerciante"
+        },
+        "baloes": {
+          "t": [
+            "Hoje tem carne de panela,",
+            "frango e peixe."
+          ],
+          "em": [
+            "responde",
+            "mesma",
+            "dia",
+            "carne"
+          ]
+        },
+        "sol": {
+          "em": "dia"
+        }
+      },
+      "segura": 0.9
+    },
+    {
+      "rotulo": "A IDEIA",
+      "tom": "verde",
+      "titulo": [
+        "Foi daí que",
+        "nasceu a ideia."
+      ],
+      "fala": [
+        {
+          "texto": "Foi daí que nasceu a ideia: juntar o comércio da cidade num lugar só, organizado, pra ocê achar o que quer rapidim.",
+          "apoio": "O comércio da cidade *num lugar só*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "ideia",
+        "some": {
+          "em": "ideia"
+        },
+        "lojas": {
+          "em": "comércio",
+          "tipos": [
+            "padaria",
+            "mercado",
+            "lanchonete",
+            "farmacia"
+          ]
+        },
+        "rua": {
+          "em": "lugar"
+        },
+        "check": {
+          "em": "rapidim"
+        }
+      },
+      "segura": 1.0
+    },
+    {
+      "rotulo": "O NOME",
+      "tom": "pessego",
+      "titulo": [
+        "E o nome,",
+        "de onde veio?"
+      ],
+      "fala": [
+        {
+          "texto": "O nome ia ser UaiFood… mas já tinha dono.",
+          "apoio": null
+        },
+        {
+          "texto": "Aí nasceu o UaiPertim: o Uai é de Minas, e o Pertim é pra deixar o comércio mais perto de você.",
+          "apoio": "*Uai* de Minas. *Pertim* de você."
+        }
+      ],
+      "diagrama": {
+        "tipo": "nome",
+        "placa": {
+          "em": "nome"
+        },
+        "carimbo": {
+          "em": "dono",
+          "t": "JÁ TEM DONO"
+        },
+        "vira": {
+          "em": "UaiPertim"
+        },
+        "minas": {
+          "em": "Minas"
+        },
+        "casas": {
+          "em": "Pertim",
+          "loja": "mercado"
+        },
+        "perto": {
+          "em": "perto"
+        }
+      },
+      "segura": 1.0
+    },
+    {
+      "rotulo": "FEITO AQUI",
+      "tom": "amarelo",
+      "titulo": [
+        "Três meses,",
+        "feito em Minas."
+      ],
+      "fala": [
+        {
+          "texto": "Foram três meses de trabalho, feito aqui em Minas.",
+          "apoio": null
+        },
+        {
+          "texto": "E o primeiro a topar a ideia foi o Varanda Burguer House.",
+          "apoio": "O primeiro parceiro: *Varanda Burguer House*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "feito",
+        "calendario": {
+          "em": "+0.2",
+          "folhas": [
+            [
+              "1",
+              "MÊS"
+            ],
+            [
+              "2",
+              "MESES"
+            ],
+            [
+              "3",
+              "MESES"
+            ]
+          ]
+        },
+        "vira": {
+          "em": "três"
+        },
+        "minas": {
+          "em": "Minas"
+        },
+        "loja": {
+          "em": "primeiro"
+        },
+        "selo": {
+          "em": "topar",
+          "t": [
+            "PRIMEIRO",
+            "PARCEIRO"
+          ]
+        },
+        "nome": {
+          "em": "Varanda",
+          "t": "Varanda Burguer House"
+        }
+      },
+      "segura": 1.4
+    },
+    {
+      "rotulo": "PRA NÃO PERDER",
+      "tom": "creme",
+      "titulo": [
+        "Em breve",
+        "no Glória."
+      ],
+      "min": 7.5,
+      "fala": [
+        {
+          "texto": "Isso é o UaiPertim. Chegando em breve no Glória. Segue a gente!",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "fecho",
+        "logo": {
+          "em": "UaiPertim"
+        },
+        "chip": {
+          "t": "Segue @uaipertim",
+          "em": "Segue"
+        }
+      }
+    }
+  ]
+}

@@ -17,6 +17,10 @@
   "_doc_pronuncia": "REGRA FIXA DE PRONÚNCIA (vale para TODO texto enviado à ElevenLabs; audio/elevenlabs.py → pronounce()). Só a grafia enviada à API muda; na tela continua 'UaiPertim' e 'Pertim'. A troca é por palavra inteira, ignora maiúsculas, preserva a inicial e aplica as chaves mais longas primeiro. 'Pertim' tem o E ABERTO e a força no final (per-TIM): vai como 'Pérr-tim' (nunca 'PÊRtim'; 'Pértim' ainda saía com o E fechado no 02); a marca 'UaiPertim' vai como 'Uai Pérr-tim' (escolhida entre 4 amostras em 2026-10-16: 'Uai Pértim' ainda saía com o E fechado).",
   "pronuncia": {
     "UaiPertim": "Uai Pérr-tim",
-    "Pertim": "Pérr-tim"
-  }
+    "Pertim": "Pérr-tim",
+    "UaiFood": "Uai Fúd",
+    "WhatsApp": "Uótsap",
+    "Burguer": "Búrguer"
+  },
+  "_doc_pronuncia_2": "Acrescentadas em 2026-10-23 (Reel especial 'Por que UaiPertim?'), também só para a API: 'UaiFood' vai como 'Uai Fúd' (soa 'uai fúd', nunca 'uai fô-od'), 'WhatsApp' como 'Uótsap' e 'Burguer' como 'Búrguer' (o 'búrguer' natural). Na tela continua a grafia normal."
 }
