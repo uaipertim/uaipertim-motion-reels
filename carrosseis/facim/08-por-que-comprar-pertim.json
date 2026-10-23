@@ -1,6 +1,7 @@
 {
   "numero": 8,
   "chip": "FACIM FACIM",
+  "capaNova": { "ilustracao": "moeda-coracao", "fundo": "pessego", "cor": "verde" },
   "capa": "creme",
   "slides": [
     { "tipo": "capa", "titulo": "Por que comprar *pertim*? 💛", "texto": "" },

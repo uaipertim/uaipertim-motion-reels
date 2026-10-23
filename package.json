@@ -23,7 +23,8 @@
     "still": "remotion still Video1-NaoPrecisaBaixar --frame=400 out/still.png",
     "typecheck": "tsc --noEmit",
     "destaque": "node scripts/destaque.mjs",
-    "capas:dicionario": "node scripts/capas-dicionario.mjs"
+    "capas:dicionario": "node scripts/capas-dicionario.mjs",
+    "capas:facim": "node scripts/capas-facim.mjs"
   },
   "dependencies": {
     "@remotion/cli": "4.0.534",

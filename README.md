@@ -236,6 +236,39 @@ Saída em `out/carrosseis/facim/NN-tema/`: `slide-1.png` … `slide-N.png` e `ca
 
 **Publicados no modelo coral:** C5, C6, **C7** "Quer saber *primeiro*? 🔔" (como ativar o sininho), **C8** "Por que comprar *pertim*? 💛" e **C9** "Domingo à noite e a geladeira *vazia*? 🌙". A quebra de linha do carrossel também segura "pertim de você", "do Glória" e "no Glória" juntos, e o slide final pinta de coral a 1ª palavra "Manda" ou "Marca".
 
+### Capas novas (modelo das capas do Dicionário)
+
+Só o slide-1 muda; os slides 2–6 continuam os mesmos. A composição é `CapaFacim-NN` (`src/carrossel/CapaFacim.tsx`), em 1080×1350, com tudo dentro do recorte 3:4 da grade (x 130–950, y 90–1260):
+
+- selo "FACIM FACIM · #NN", com o número 2,3× o texto do selo;
+- ilustração grande na metade de cima, com ~67% da largura;
+- o título atual, com a mesma palavra em coral no marcador amarelo e as mesmas quebras, mas sem o emoji (a ilustração faz o papel dele), em Poppins Black;
+- "arrasta pra ver →".
+
+Os dados ficam no campo `capaNova` do JSON do carrossel:
+
+```json
+"capaNova": { "ilustracao": "sino", "fundo": "creme", "cor": "amarelo" }
+```
+
+- `ilustracao`: `mao-vez`, `passos`, `sacola`, `loja-aberto`, `sino`, `moeda-coracao` ou `geladeira`.
+- `fundo`: `creme` ou `pessego`.
+- `cor`: `coral`, `verde` ou `amarelo`. Pinta os raios e o halo atrás da ilustração.
+
+**Gerar:**
+
+```bash
+npm run capas:facim        # todas as capas com capaNova; ou: npm run capas:facim -- 07 09
+```
+
+Saída:
+
+- `out/carrosseis/facim/NN-tema/slide-1.png` e `capa_3x4.png`;
+- `out/carrosseis/facim/capas-novas-previa.png`, com as capas no recorte 3:4;
+- `out/capas/grade-previa-final.png`, a grade do perfil no padrão novo.
+
+Com `capaNova` no JSON, o `npm run carrossel` também gera o slide-1 no modelo novo.
+
 ## Stories de destaque (Dúvidas, Lojista, Explica, Sô!) + capas dos destaques
 
 Os destaques seguem o padrão do Story "Conheça".

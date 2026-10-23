@@ -1,6 +1,7 @@
 {
   "numero": 3,
   "chip": "FACIM FACIM",
+  "capaNova": { "ilustracao": "sacola", "fundo": "creme", "cor": "amarelo" },
   "slides": [
     { "tipo": "capa", "titulo": "O que vai ter no *UaiPertim*? 🛍️", "texto": "" },
     { "tipo": "conteudo", "titulo": "Restaurantes e lanches", "texto": "Almoço, janta e aquele lanche da noite.", "icone": "loja" },

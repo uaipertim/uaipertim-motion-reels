@@ -1,6 +1,7 @@
 {
   "numero": 7,
   "chip": "FACIM FACIM",
+  "capaNova": { "ilustracao": "sino", "fundo": "creme", "cor": "amarelo" },
   "capa": "creme",
   "slides": [
     { "tipo": "capa", "titulo": "Quer saber *primeiro*? 🔔", "texto": "" },

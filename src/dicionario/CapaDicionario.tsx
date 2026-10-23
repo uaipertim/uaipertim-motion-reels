@@ -53,7 +53,7 @@ const Selo: React.FC<{ numero: number }> = ({ numero }) => {
 };
 
 // ---------------------------------------------------------------- as ilustrações (coordenadas de 756 × 620)
-const Mao: React.FC<{ x: number; y: number; s: number; rot?: number; flip?: boolean }> = ({ x, y, s, rot = 0, flip }) => (
+export const Mao: React.FC<{ x: number; y: number; s: number; rot?: number; flip?: boolean }> = ({ x, y, s, rot = 0, flip }) => (
   // a mãozinha da marca (WaveHandIcon), em escala s (viewBox 100)
   <g transform={`translate(${x} ${y}) ${flip ? `translate(${100 * s} 0) scale(-1 1)` : ""} scale(${s}) rotate(${rot} 56 60)`}>
     <rect x="34" y="20" width="13" height="40" rx="6.5" fill={C.amarelo} />

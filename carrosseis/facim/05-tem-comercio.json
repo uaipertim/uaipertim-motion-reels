@@ -1,6 +1,7 @@
 {
   "numero": 5,
   "chip": "FACIM FACIM",
+  "capaNova": { "ilustracao": "loja-aberto", "fundo": "pessego", "cor": "coral" },
   "capa": "coral",
   "slides": [
     { "tipo": "capa", "titulo": "Tem comércio no *Glória*? 👀", "texto": "" },

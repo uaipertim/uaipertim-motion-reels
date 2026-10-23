@@ -1,6 +1,7 @@
 {
   "numero": 9,
   "chip": "FACIM FACIM",
+  "capaNova": { "ilustracao": "geladeira", "fundo": "creme", "cor": "coral" },
   "capa": "creme",
   "slides": [
     { "tipo": "capa", "titulo": "Domingo à noite e a geladeira *vazia*? 🌙", "texto": "", "quebra": ["Domingo à noite", "e a geladeira", "vazia? 🌙"] },

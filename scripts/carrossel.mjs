@@ -27,7 +27,9 @@ const serveUrl = await bundle({ entryPoint: path.resolve("src/index.ts") });
 const browser = await openBrowser("chrome", { browserExecutable });
 for (let i = 0; i < data.slides.length; i++) {
   const inputProps = { ...data, slide: i };
-  const composition = await selectComposition({ serveUrl, id: "CarrosselFacim", inputProps, puppeteerInstance: browser, browserExecutable });
+  // com "capaNova" no JSON, a capa (slide-1) sai no modelo novo (CapaFacim-NN, o mesmo de npm run capas:facim)
+  const id = i === 0 && data.capaNova ? `CapaFacim-${String(data.numero).padStart(2, "0")}` : "CarrosselFacim";
+  const composition = await selectComposition({ serveUrl, id, inputProps, puppeteerInstance: browser, browserExecutable });
   const output = path.join(out, `slide-${i + 1}.png`);
   await renderStill({ composition, serveUrl, frame: 0, output, inputProps, puppeteerInstance: browser, browserExecutable });
   console.log("ok", path.relative(process.cwd(), output));

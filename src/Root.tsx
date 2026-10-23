@@ -36,6 +36,21 @@ const capaDicionarioMetadata = async ({ props }: { props: CapaDicionarioProps })
 };
 const CAPAS_DICIONARIO = [dic01, dic02, dic03, dic04, dic05, dic06, dic07] as unknown as CapaDicionarioProps[];
 import { DESTAQUES, DESTAQUE_IDS, DestaqueCard, DestaqueNome } from "./story/destaques/Destaques";
+import { CAPA_FACIM, CapaFacim, CapaFacimProps, measureCapaFacim } from "./carrossel/CapaFacim";
+import facim02 from "../carrosseis/facim/02-como-vai-funcionar.json";
+import facim03 from "../carrosseis/facim/03-o-que-vai-ter.json";
+import facim05 from "../carrosseis/facim/05-tem-comercio.json";
+import facim07 from "../carrosseis/facim/07-saber-primeiro.json";
+import facim08 from "../carrosseis/facim/08-por-que-comprar-pertim.json";
+import facim09 from "../carrosseis/facim/09-domingo-a-noite.json";
+
+// Capas novas dos carrosséis "Facim Facim" (só o slide-1, no modelo das capas do Dicionário): o título é medido com
+// as fontes carregadas. Um carrossel entra aqui quando o JSON dele tem o campo "capaNova".
+const capaFacimMetadata = async ({ props }: { props: CapaFacimProps }) => {
+  await fontsReady;
+  return { props: { ...props, layout: measureCapaFacim(props) } };
+};
+const CAPAS_FACIM = [facim01, facim02, facim03, facim05, facim07, facim08, facim09] as unknown as CapaFacimProps[];
 
 // Cortes curtos: duração = trecho do original + fecho; textos medidos com as fontes carregadas.
 const corteMetadata = async ({ props }: { props: CorteProps }) => {
@@ -149,7 +164,7 @@ export const RemotionRoot: React.FC = () => (
       fps={30}
       width={SLIDE.width}
       height={SLIDE.height}
-      defaultProps={{ ...(facim01 as CarrosselProps), slide: 0 }}
+      defaultProps={{ ...(facim01 as unknown as CarrosselProps), slide: 0 }}
       calculateMetadata={carrosselMetadata}
     />
     <Composition
@@ -189,6 +204,20 @@ export const RemotionRoot: React.FC = () => (
         height={1920}
         defaultProps={ep}
         calculateMetadata={capaDicionarioMetadata}
+      />
+    ))}
+    {/* Capas novas dos carrosséis Facim Facim: CapaFacim-01 … -09 (npm run capas:facim) */}
+    {CAPAS_FACIM.filter((c) => c.capaNova).map((c) => (
+      <Composition
+        key={c.numero}
+        id={`CapaFacim-${String(c.numero).padStart(2, "0")}`}
+        component={CapaFacim}
+        durationInFrames={1}
+        fps={30}
+        width={CAPA_FACIM.width}
+        height={CAPA_FACIM.height}
+        defaultProps={c}
+        calculateMetadata={capaFacimMetadata}
       />
     ))}
     <Still id="Destaque-Capa" component={DestaqueCapa} width={1080} height={1920} defaultProps={{ icone: "conheca" as const }} />

@@ -1,6 +1,7 @@
 {
   "numero": 1,
   "chip": "FACIM FACIM",
+  "capaNova": { "ilustracao": "mao-vez", "fundo": "creme", "cor": "coral" },
   "slides": [
     {
       "tipo": "capa",
