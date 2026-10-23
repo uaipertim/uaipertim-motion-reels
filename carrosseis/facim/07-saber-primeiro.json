@@ -1,7 +1,7 @@
 {
   "numero": 7,
   "chip": "FACIM FACIM",
-  "capa": "coral",
+  "capa": "creme",
   "slides": [
     { "tipo": "capa", "titulo": "Quer saber *primeiro*? 🔔", "texto": "" },
     { "tipo": "conteudo", "titulo": "1. Segue o perfil", "texto": "Toca em Seguir aqui no nosso perfil.", "icone": "seguir" },

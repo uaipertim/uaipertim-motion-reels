@@ -1,7 +1,7 @@
 {
   "numero": 8,
   "chip": "FACIM FACIM",
-  "capa": "coral",
+  "capa": "creme",
   "slides": [
     { "tipo": "capa", "titulo": "Por que comprar *pertim*? 💛", "texto": "" },
     { "tipo": "conteudo", "titulo": "O dinheiro fica no Glória", "texto": "Cada compra ajuda o comércio da cidade a crescer.", "icone": "dinheiro" },
