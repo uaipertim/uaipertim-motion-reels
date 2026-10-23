@@ -1,0 +1,296 @@
+{
+  "id": "tudo-pertim-03",
+  "titulo": "Visita sem avisar",
+  "marca": "@uaipertim",
+  "bpm": 120,
+  "transicao": "galinha",
+  "capitulos": [
+    {
+      "rotulo": "TUDO PERTIM · EP. 03",
+      "tom": "pessego",
+      "titulo": [
+        "Visita chegando",
+        "sem avisar 😱"
+      ],
+      "fala": [
+        {
+          "texto": "Visita chegando sem avisar… e a lata de biscoito vazia?",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "capa",
+        "cena": "porta",
+        "marcador": "avisar",
+        "lata": {
+          "em": "lata"
+        }
+      }
+    },
+    {
+      "rotulo": "O DESESPERO",
+      "tom": "pessego",
+      "titulo": [
+        "Toc, toc!",
+        "Ô de casa!"
+      ],
+      "fala": [
+        {
+          "texto": "Toc, toc! Ô de casa!",
+          "apoio": null
+        },
+        {
+          "texto": "É a tia, a prima e mais três que cê nem conhece.",
+          "apoio": "A tia, a prima e *mais três*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "visita",
+        "toc": {
+          "em": "Toc"
+        },
+        "abre": {
+          "em": "casa"
+        },
+        "pessoas": [
+          {
+            "em": "tia"
+          },
+          {
+            "em": "prima"
+          },
+          {
+            "em": "mais"
+          },
+          {
+            "em": "três"
+          },
+          {
+            "em": "conhece"
+          }
+        ]
+      },
+      "segura": 0.5
+    },
+    {
+      "rotulo": "A COZINHA",
+      "tom": "amarelo",
+      "titulo": [
+        "Café tem.",
+        "Quitanda, não."
+      ],
+      "fala": [
+        {
+          "texto": "Café até tem… mas cadê a quitanda?",
+          "apoio": null
+        },
+        {
+          "texto": "Nem um biscoito de polvilho!",
+          "apoio": "Nem um *biscoito de polvilho*!"
+        }
+      ],
+      "diagrama": {
+        "tipo": "cozinha",
+        "bule": {
+          "em": "Café"
+        },
+        "armario": {
+          "em": "quitanda"
+        },
+        "lata": {
+          "em": "biscoito"
+        }
+      },
+      "segura": 0.6
+    },
+    {
+      "rotulo": "SOCORRO",
+      "tom": "verde",
+      "titulo": [
+        "Calma, sô.",
+        "Tem UaiPertim."
+      ],
+      "fala": [
+        {
+          "texto": "Calma, sô!",
+          "apoio": null
+        },
+        {
+          "texto": "Pede da padaria do Glória: pão de queijo, rosca e bolo de fubá.",
+          "apoio": "Pão de queijo, rosca e *bolo de fubá*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "socorro",
+        "padaria": {
+          "em": "padaria"
+        },
+        "itens": [
+          {
+            "tipo": "paoQueijo",
+            "em": "pão"
+          },
+          {
+            "tipo": "rosca",
+            "em": "rosca"
+          },
+          {
+            "tipo": "bolo",
+            "em": "bolo"
+          }
+        ]
+      },
+      "segura": 0.5
+    },
+    {
+      "rotulo": "O CAPRICHO",
+      "tom": "pessego",
+      "titulo": [
+        "E pra fazer",
+        "bonito…"
+      ],
+      "fala": [
+        {
+          "texto": "E pra caprichar: queijo, doce de leite e requeijão do mercadim.",
+          "apoio": "Queijo, doce de leite e *requeijão*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "capricho",
+        "toalha": {
+          "em": "caprichar"
+        },
+        "itens": [
+          {
+            "tipo": "queijo",
+            "em": "queijo"
+          },
+          {
+            "tipo": "doce",
+            "em": "doce"
+          },
+          {
+            "tipo": "requeijao",
+            "em": "requeijão"
+          }
+        ]
+      },
+      "segura": 0.6,
+      "min": 5.5
+    },
+    {
+      "rotulo": "CHEGOU",
+      "tom": "amarelo",
+      "titulo": [
+        "Chegou antes",
+        "do café esfriar."
+      ],
+      "fala": [
+        {
+          "texto": "Chegou antes do café esfriar.",
+          "apoio": null
+        },
+        {
+          "texto": "A visita nem desconfiou.",
+          "apoio": "A visita *nem desconfiou*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "chegou",
+        "moto": {
+          "em": "Chegou"
+        },
+        "mesa": {
+          "em": "café"
+        },
+        "visita": {
+          "em": "visita"
+        },
+        "piscadinha": {
+          "em": "desconfiou"
+        }
+      },
+      "segura": 0.6,
+      "min": 5.5
+    },
+    {
+      "rotulo": "SUA VEZ",
+      "tom": "amarelo",
+      "titulo": [
+        "Qual quitanda",
+        "não pode faltar?"
+      ],
+      "fala": [
+        {
+          "texto": "Agora fala aí: qual quitanda não pode faltar quando chega visita?",
+          "apoio": "Qual *quitanda* não pode faltar?"
+        }
+      ],
+      "diagrama": {
+        "tipo": "enquete",
+        "opcoes": [
+          {
+            "t": "pão de queijo",
+            "em": "Agora"
+          },
+          {
+            "t": "biscoito de polvilho",
+            "em": "fala"
+          },
+          {
+            "t": "rosca",
+            "em": "quitanda"
+          },
+          {
+            "t": "bolo de fubá",
+            "em": "pode"
+          },
+          {
+            "t": "broa",
+            "em": "quando"
+          },
+          {
+            "t": "pão de sal",
+            "em": "visita"
+          }
+        ]
+      },
+      "segura": 0.7
+    },
+    {
+      "rotulo": "PRA NÃO PERDER",
+      "tom": "amarelo",
+      "titulo": [
+        "Em breve",
+        "no Glória."
+      ],
+      "min": 7.5,
+      "fala": [
+        {
+          "texto": "UaiPertim. Chegou visita? Tudo pertim de você. Segue a gente!",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "fecho",
+        "logo": {
+          "em": "UaiPertim"
+        },
+        "assinatura": {
+          "t": "Tudo pertim de você.",
+          "em": "Tudo"
+        },
+        "chip": {
+          "t": "Segue @uaipertim",
+          "em": "Segue"
+        },
+        "confete": {
+          "em": "+1.2"
+        },
+        "galinha": {
+          "em": "+1.6"
+        }
+      }
+    }
+  ]
+}

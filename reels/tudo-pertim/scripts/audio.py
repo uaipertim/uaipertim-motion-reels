@@ -548,6 +548,30 @@ for c in CUES['cues']:
         # o despertador: o martelinho batendo rápido nos dois sininhos
         for k in range(10):
             place(sfx, ping(midi(96 + (k % 2) * 3), 0.18), t + k * 0.035, 0.07, -0.3 + 0.6 * (k % 2))
+    elif ty == 'galinha':
+        # a galinha em disparada: "có-có-có-CÓÓ" (pulsos com o tom subindo e descendo) + o bater de asas, andando de um lado ao outro
+        sd = c.get('dir', 1)
+        for j, (t0, f0, dd, g) in enumerate([(0.0, 520, 0.07, 0.8), (0.11, 560, 0.07, 0.8), (0.22, 600, 0.08, 0.9), (0.36, 700, 0.22, 1.0)]):
+            tq = tt(dd)
+            f = f0 * (1 + 0.35 * np.sin(np.pi * tq / dd)) * (1 + 0.03 * np.sin(2 * np.pi * 30 * tq))
+            ph = np.cumsum(f) / SR
+            v = (2 * (ph % 1) - 1) * 0.6 + np.sin(2 * np.pi * ph * 2) * 0.4
+            v = filt(v, [450, 3200], 'band') * np.minimum(1, tq / 0.006) * np.clip((dd - tq) / 0.03, 0, 1)
+            place(sfx, np.tanh(2.0 * v) * g, t + t0, 0.34, sd * (-0.6 + 0.4 * j))
+        for j in range(int(max(0.3, d) / 0.075)):
+            asa = filt(noise(0.05), [600, 3000], 'band') * np.exp(-tt(0.05) / 0.012)
+            place(sfx, asa, t + j * 0.075, 0.2, sd * (-0.8 + 1.6 * j * 0.075 / max(0.3, d)))
+    elif ty == 'toc':
+        # a batida na porta: madeira oca e grave
+        place(sfx, add(wood(320, 0.18, 0.04) * 0.9, thump(0.25, 90, 0.05, 0.7) * 0.6, click(0.02, 2200, 0.003) * 0.4), t, 0.55, -0.3)
+    elif ty == 'mosca':
+        # a mosquinha zumbindo baixinho (some e volta)
+        dd = c.get('d', 3.0)
+        tq = tt(dd)
+        f = 220 + 25 * np.sin(2 * np.pi * 3.1 * tq)
+        z = np.sign(np.sin(2 * np.pi * np.cumsum(f) / SR)) * 0.5
+        z = filt(z, [180, 2500], 'band') * (0.55 + 0.45 * np.sin(2 * np.pi * 0.7 * tq) ** 2) * np.minimum(1, tq / 0.3) * np.clip((dd - tq) / 0.4, 0, 1)
+        place_pan(sfx, z, t, 0.05, -0.4, 0.4)
     elif ty == 'heart':
         place(sfx, pop(900), t, 0.4); place(sfx, sparkle(), t + 0.05, 0.22); place(send, sparkle(), t, 0.12)
     else:

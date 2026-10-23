@@ -1,0 +1,82 @@
+TUDO PERTIM · tudo-pertim-03 — revisão técnica
+output/tudo-pertim-03/uaipertim-tudo-pertim-03.mp4
+
+FORMATO
+OK     vídeo h264 High yuv420p
+OK     resolução 1080x1920 (9:16)
+OK     60 fps, 3045 quadros
+OK     duração 50.75 s (alvo 45–60 s)
+OK     áudio aac 48000 Hz, 2 canais, 272 kb/s
+OK     vídeo e áudio com a mesma duração (Δ 0 ms)
+       arquivo 18.0 MB, 2.8 Mb/s
+       capítulos: 00 4.25 s · 01 6.25 s · 02 5.50 s · 03 6.00 s · 04 5.50 s · 05 5.50 s · 06 5.00 s · 07 7.50 s · trocas de 0.8 s
+
+SOM
+OK     loudness integrado -14.0 LUFS (alvo −14)
+OK     pico real -1.4 dBTP (limite −1)
+       a voz sozinha, na escala da mixagem: -13.6 LUFS
+       a trilha sozinha, na escala da mixagem: -26.6 LUFS
+       os efeitos sozinhos, na escala da mixagem: -23.4 LUFS
+
+VOZ (voz oficial, uma geração inteira por capítulo, nada emendado)
+       Victor Pinho (LuQ9eaWO9yCQrR73VQFa) · eleven_multilingual_v2 · ajustes {"stability": 0.4, "similarity_boost": 0.8, "style": 0.35, "use_speaker_boost": true}
+OK     capítulo 00: 3.81 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000025; 1 geração(ões) inteiras feitas)
+OK     capítulo 00: sem chiado depois da fala (pior janela depois da última letra: 0% em 4–10 kHz a -120.0 dB)
+OK     capítulo 00: "do/no Glória" (nunca "de Glória"); enviado à API: "Visita chegando sem avisar… e a lata de biscoito vazia?"
+OK     capítulo 01: 5.53 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000034; 1 geração(ões) inteiras feitas)
+OK     capítulo 01: sem chiado depois da fala (pior janela depois da última letra: 0% em 4–10 kHz a -120.0 dB)
+OK     capítulo 01: "do/no Glória" (nunca "de Glória"); enviado à API: "Toc, toc! Ô de casa! É a tia, a prima e mais três que cê nem conhece."
+OK     capítulo 02: 4.74 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000029; 1 geração(ões) inteiras feitas)
+OK     capítulo 02: sem chiado depois da fala (pior janela depois da última letra: 0% em 4–10 kHz a -120.0 dB)
+OK     capítulo 02: "do/no Glória" (nunca "de Glória"); enviado à API: "Café até tem… mas cadê a quitanda? Nem um biscoito de polvilho!"
+OK     capítulo 03: 5.39 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000035; 1 geração(ões) inteiras feitas)
+OK     capítulo 03: sem chiado depois da fala (pior janela depois da última letra: 0% em 4–10 kHz a -120.0 dB)
+OK     capítulo 03: "do/no Glória" (nunca "de Glória"); enviado à API: "Calma, sô! Pede da padaria do Glória: pão de queijo, rosca e bolo de fubá."
+OK     capítulo 04: 4.55 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000027; 1 geração(ões) inteiras feitas)
+OK     capítulo 04: sem chiado depois da fala (pior janela depois da última letra: 0% em 4–10 kHz a -120.0 dB)
+OK     capítulo 04: "do/no Glória" (nunca "de Glória"); enviado à API: "E pra caprichar: queijo, doce de leite e requeijão do mercadim."
+OK     capítulo 05: 3.81 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000028; 1 geração(ões) inteiras feitas)
+OK     capítulo 05: sem chiado depois da fala (pior janela depois da última letra: 0% em 4–10 kHz a -120.0 dB)
+OK     capítulo 05: "do/no Glória" (nunca "de Glória"); enviado à API: "Chegou antes do café esfriar. A visita nem desconfiou."
+OK     capítulo 06: 4.13 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000027; 1 geração(ões) inteiras feitas)
+OK     capítulo 06: sem chiado depois da fala (pior janela depois da última letra: 0% em 4–10 kHz a -120.0 dB)
+OK     capítulo 06: "do/no Glória" (nunca "de Glória"); enviado à API: "Agora fala aí: qual quitanda não pode faltar quando chega visita?"
+OK     capítulo 07: 4.83 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000028; 1 geração(ões) inteiras feitas)
+OK     capítulo 07: sem chiado depois da fala (pior janela depois da última letra: 40% em 4–10 kHz a -36.2 dB)
+OK     capítulo 07: "do/no Glória" (nunca "de Glória"); enviado à API: "Uai Pérr-tim. Chegou visita? Tudo pérr-tim de você. Segue a gente!"
+
+MAPA DE TEMPOS E GATILHOS
+OK     mapa de tempos de linha.py (total 45–60 s, capítulos 5–7 s, apoios ≥ 1,5 s, fecho 6–8 s, logo nos 3 últimos s)
+OK     toda palavra "em" da cena está na fala
+
+LEITURA (linhas de apoio)
+       cap 01 · apoio 1: 4.44 s inteira · A tia, a prima e mais três.
+       cap 02 · apoio 1: 3.09 s inteira · Nem um biscoito de polvilho!
+       cap 03 · apoio 1: 5.44 s inteira · Pão de queijo, rosca e bolo de fubá.
+       cap 04 · apoio 1: 5.61 s inteira · Queijo, doce de leite e requeijão.
+       cap 05 · apoio 1: 3.84 s inteira · A visita nem desconfiou.
+       cap 06 · apoio 1: 5.11 s inteira · Qual quitanda não pode faltar?
+OK     6 linhas de apoio, a mais curta fica 3.09 s inteira na tela (mínimo 1,5 s)
+OK     a linha de apoio anterior sai antes de a próxima entrar (nunca duas ao mesmo tempo)
+OK     quebras de linha: nunca separam as duas últimas palavras, "pertim de você", "do/no Glória" nem o emoji, e nunca deixam artigo/palavra curta no fim da linha
+
+ÁREAS SEGURAS E COMPOSIÇÃO
+OK     conteúdo entre x 80–940 e y 265–1456: 1287 caixas em 147 quadros fora das trocas
+OK     nenhuma caixa na coluna de botões (x ≥ 940, y 1060–1560)
+OK     a linha de apoio nunca fica por cima de card, balão ou peça de cena
+       faixa usada pelo conteúdo: y 305–1442
+OK     sem quadro vazio nas 7 trocas de capítulo (sempre há conteúdo na tela)
+OK     coluna de botões: 0 pixel de conteúdo em 203 quadros amostrados (só o fundo creme passa por ali)
+OK     sem trechos pretos
+OK     sem imagem congelada por 1,5 s ou mais
+
+CAPA E FECHO
+OK     a capa é o quadro 0 do vídeo (PSNR 41.5 dB entre capa.png e o 1º quadro)
+OK     regra das capas (revisao/capa.txt): dentro da regra das capas
+OK     fecho com 7.50 s (alvo 6–8 s)
+OK     fecho: a última mudança de texto é em 47.70 s; o texto fica parado 3.05 s até o fim (mínimo 3 s)
+OK     a logo oficial está na tela em todos os 12 quadros amostrados dos 3 últimos segundos (parada desde 44.40 s)
+OK     fecho: 8 elementos (logo oficial, título, chip, seta, marca) iguais entre 47.75 s e o fim (maior diferença média 0.84 de 255)
+       elementos: rótulo 0.32, título, linha 1 0.52, título, linha 2 0.32, logo oficial 0.25, assinatura 0.77, chip Segue 0.30, seta 0.84, marca 0.77
+
+RESULTADO: aprovado

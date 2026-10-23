@@ -37,6 +37,7 @@ A cara é **mais jovem, animada e viva**, com a marca em destaque. A pasta `reel
 |---|---|---|---|
 | **tudo-pertim-01** | "Prazer, UaiPertim!" | 00 capa · 01 quem sou eu · 02 o que tem · 03 como funciona · 04 sem aperto · 05 feito em Minas · 06 sua vez · 07 fecho | final com voz, 52,25 s, revisão aprovada: [`exports/tiktok/tudo-pertim/ep01/`](../../exports/tiktok/tudo-pertim/ep01) |
 | **tudo-pertim-02** | "Um dia no Glória" | 00 capa · 01 7h da manhã · 02 meio-dia · 03 3h da tarde · 04 6h da tarde · 05 sexta à noite · 06 sua vez · 07 fecho | final com voz, 51,5 s, revisão aprovada: [`exports/tiktok/tudo-pertim/ep02/`](../../exports/tiktok/tudo-pertim/ep02) |
+| **tudo-pertim-03** | "Visita sem avisar" (transição da galinha) | 00 capa · 01 o desespero · 02 a cozinha · 03 socorro · 04 o capricho · 05 chegou · 06 sua vez · 07 fecho | final com voz, 50,75 s, revisão aprovada: [`exports/tiktok/tudo-pertim/ep03/`](../../exports/tiktok/tudo-pertim/ep03) |
 
 Em cada episódio, `output/<id>/` traz:
 
@@ -95,6 +96,21 @@ A prévia (`--previa`) vai para `output/<id>/previa/`, fora do git. A cópia par
     - Conteúdo entre **x 80–940 e y 265–1456**. Nada em **x ≥ 940 entre y 1060 e 1560**: o motor recorta essa coluna, e a revisão confere caixa por caixa e pixel por pixel.
     - Essa área já fica dentro da interface do TikTok (≈ 130 px no topo, 380 px embaixo e 140 px à direita). A `zonas-seguras.jpg` desenha também esse contorno, em azul.
     - **Capa** = quadro 0: cada linha do título com ≤ 72% da largura (778 px), conteúdo entre y 285–1635, bloco (adesivo + título + motinha) centrado no recorte 3:4.
+
+## Transição por episódio (opcional, desde o ep03)
+
+A troca de capítulo é escolhida no JSON do episódio, em `"transicao"`. Sem o campo, continua a motinha, e o ep01 e o ep02 saem idênticos.
+
+| `transicao` | Quem atravessa e varre o capítulo | Variações a cada troca | Som |
+|---|---|---|---|
+| *(sem o campo)* / `"moto"` | A motinha com a sacola da marca, com poeira e confete na borda | Sentido alterna; altura, pulinho e empinada mudam (`VARIA`) | Motor + vento, andando de um lado ao outro |
+| `"galinha"` | Uma galinha caipira em disparada, batendo as asas; **as penas** que voam ao longo da borda varrem o capítulo | Em ciclo de 4: tropeça no meio; com o pintinho correndo atrás; freia no meio e olha para a câmera; dá um pulão. O sentido alterna e a altura muda (`VARIA_G`) | Cacarejo ("có-có-có-CÓÓ") + bater de asas, andando de um lado ao outro |
+
+- A duração é a mesma para todas: 1,5 tempo da batida (0,75 s a 120 bpm), começando num meio tempo.
+- Quem atravessa fica sempre com a base acima de y 1060, fora da coluna de botões.
+- Com a galinha, a motinha não faz as trocas; ela só aparece dentro das cenas que a usam (ex.: `chegou`).
+- No `fecho`, `"galinha": {"em": "+1.6"}` faz a galinha cruzar ao fundo uma última vez, atrás da logo e do texto. Ela termina antes dos 3 s finais, então nada se mexe sobre a logo parada.
+- **Transição nova:** é uma função `travessiaX(k, u)` (posição, borda da varredura, sentido e jeito) mais `drawWipeX(ctx, t, k, u)` em `src/anim.js`. Ela é ligada em `travessia()`/`drawWipe()` pelo valor de `TRANS`, com o som próprio em `scripts/audio.py`.
 
 ## Céu do dia e relógio (opcionais, desde o ep02)
 
@@ -180,6 +196,7 @@ A chave do ElevenLabs fica **só em Segredos de rede**: a rede da nuvem põe o c
 
 | `tipo` | Visual | Campos |
 |---|---|---|
+| `capa` com `"cena": "porta"` | O adesivo, o título e, no lugar da motinha, a porta tremendo com o "TOC TOC" (batidas a cada 1,5 s) e a lata de biscoito vazia com a mosquinha rodando | `cena: "porta"`, `marcador`, `lata: {em}` |
 | `capa` | Adesivo do episódio, título grande (palavra no marcador amarelo, olhinhos 👀 piscando), a motinha chegando freando e derrapando (no quadro 0 já está na derrapada, com fumaça e marca de pneu), confete, figurinhas "UAI!" e brilho, buzina | `marcador`, `olhos: {em}`, `confete: {em}`, `buzina: {em}` |
 | `quem` | A logo oficial entra com mola no meio da praça; as lojinhas brotam em volta (olhando para a logo) e o coreto; estrela, coração e confete | `logo: {em}`, `lojas: [{tipo, em}]` (até 4), `confete: {em}` |
 | `vitrine` | 4 lojinhas dormindo acendem uma a uma (brilho, placa balançando, olhinhos abrindo), cada uma com o seu item pulando na batida e a plaquinha do nome; o docim pula no fim, com corações e confete | `lojas: [{tipo, t, em, item: pao\|cesta\|remedio\|lanche\|queijo\|doce}]` (até 4), `docim: {em}` |
@@ -192,7 +209,12 @@ A chave do ElevenLabs fica **só em Segredos de rede**: a rede da nuvem põe o c
 | `calor` | O sol forte com raios girando; o termômetro com o mercúrio subindo; a sorveteria soltando picolés e casquinha | `termometro: {em}`, `sorveteria: {em}`, `picoles: {em}`, `geladim: {em}` |
 | `janta` | O mercadim; o tomate que sai quicando três vezes até cair na sacola da marca; o check | `mercadim: {em}`, `tomate: {em}`, `resolve: {em}` |
 | `noite` | A pizza girando; o lanche e o espetinho pipocando e pulando na batida; a motinha chegando com a sacola | `pizza: {em}`, `lanche: {em}`, `espeto: {em}`, `moto: {em}` |
-| `enquete` | Até 4 balões estilo enquete (emoji + texto + bolinha de marcar), um a um com "pop", com corações e estrelas dos lados | `opcoes: [{t, emoji, em}]` |
+| `enquete` | Balões de resposta (emoji opcional + texto, do tamanho da resposta), inclinados e desalinhados, um a um com "pop", com corações e estrelas pipocando. Com 5 ou 6 respostas, os balões ficam mais baixos e entram em ondas | `opcoes: [{t, emoji?, em}]` (até 6) |
+| `visita` | A porta tremendo com dois "TOC!", que abre com luz; os bonequinhos da visita (corpo de pílula, olhos de pontinho, sem cara infantil) brotando um a um; os balões "Ô de casa!" | `toc: {em}`, `abre: {em}`, `pessoas: [{em}]` (até 5) |
+| `cozinha` | O bule fumegando na mesinha; o armário de parede que abre vazio, com teia e aranhinha; o "?"; a lata de biscoito que tomba vazia | `bule: {em}`, `armario: {em}`, `lata: {em}` |
+| `socorro` | A padaria pulando de alegria; os itens voando da porta para a sacola com a logo oficial; o check | `padaria: {em}`, `itens: [{tipo, em}]` (até 3: paoQueijo, rosca, bolo, …) |
+| `capricho` | O mercadim num gramadinho; a toalha xadrez desenrolando na mesa; os itens saindo do mercadim e pousando um a um | `toalha: {em}`, `itens: [{tipo, em}]` (até 3: queijo, doce, requeijao, …) |
+| `chegou` | A motinha chegando com a sacola; a mesa farta; a visita atrás da mesa com coraçõezinhos subindo; a piscadinha para a câmera | `moto: {em}`, `mesa: {em}`, `visita: {em}`, `piscadinha: {em}` |
 | `fecho` | Título do capítulo, a logo oficial grande e fixa, a assinatura "Tudo pertim de você.", chip "Segue @uaipertim" com seta e confete final | `logo: {em}`, `assinatura: {t, em}`, `chip: {t, em}`, `confete: {em}` |
 
 **Cena nova:** é um bloco `CENAS.<nome> = { setup(cap), draw(ctx, cap, t) }` em `src/anim.js`.
