@@ -97,16 +97,27 @@
         "suor": {
           "em": "comerciante"
         },
-        "baloes": {
+        "balao": {
           "t": [
             "Hoje tem carne de panela,",
             "frango e peixe."
           ],
+          "em": "responde"
+        },
+        "contador": {
+          "n": [
+            1,
+            2,
+            5,
+            12,
+            30
+          ],
           "em": [
             "responde",
             "mesma",
+            "coisa",
             "dia",
-            "carne"
+            "inteiro"
           ]
         },
         "sol": {

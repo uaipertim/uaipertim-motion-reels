@@ -60,6 +60,14 @@ FECHO_MIN, FECHO_MAX = 6.0, 8.0
 LOGO_PRONTA = 0.9             # a logo do fecho entra e para em até 0,9 s depois da palavra (src/anim.js, CENAS.fecho)
 
 
+def pron(c, t):
+    """o texto enviado à API: primeiro as grafias só deste capítulo (campo "pronuncia" do capítulo no JSON, ex.:
+    {"UaiPertim": "Uai perr-tím"}), depois a regra fixa de pronúncia (audio/voz_oficial.json → pronounce())"""
+    for k, v in sorted((c.get('pronuncia') or {}).items(), key=lambda kv: -len(kv[0])):
+        t = re.sub(rf'(?<![\wÀ-ÿ]){re.escape(k)}(?![\wÀ-ÿ])', v, t)
+    return pronounce(t)
+
+
 def norm(s):
     s = unicodedata.normalize('NFD', s.lower())
     return re.sub(r'[^a-z0-9]', '', ''.join(c for c in s if unicodedata.category(c) != 'Mn'))
@@ -87,13 +95,13 @@ def tokens(al):
     return [w for w in out if norm(w['w'])]
 
 
-def palavras(texto, al, desloc):
+def palavras(texto, al, desloc, c):
     """as palavras DA TELA no tempo do vídeo: cada palavra do roteiro consome as palavras da grafia de pronúncia
     (ex.: "UaiPertim." -> "Uai" + "Pérr-tim.")"""
     api = tokens(al)
     out, k = [], 0
     for w in [w for w in texto.split() if norm(w)]:
-        n = len([x for x in pronounce(w).split() if norm(x)])
+        n = len([x for x in pron(c, w).split() if norm(x)])
         grupo = api[k:k + n]
         assert len(grupo) == n, f'alinhamento não bate com o texto em "{w}"'
         k += n
@@ -123,7 +131,7 @@ def falas():
     F = {}
     for n, c in enumerate(SCRIPT['capitulos']):
         texto = ' '.join(f['texto'] for f in c['fala'])
-        api = pronounce(texto)
+        api = pron(c, texto)
         al = estimado(api)
         ws = tokens(al)
         F[f'{n:02d}'] = {'texto': texto, 'texto_api': api, 'alinhamento': al, 'inicio_da_fala': ws[0]['t0'], 'fim_da_fala': ws[-1]['t1'], 'seed': None}
@@ -172,19 +180,19 @@ def main():
         texto = ' '.join(f['texto'] for f in c['fala'])
         assert F['texto'] == texto, f'capítulo {n:02d}: o texto mudou desde a narração; rode scripts/voz.py {EP}'
         api = F.get('texto_api', texto)
-        assert api == pronounce(texto), f'capítulo {n:02d}: a regra de pronúncia mudou desde a narração; rode scripts/voz.py {EP} --refaz {n}'
+        assert api == pron(c, texto), f'capítulo {n:02d}: a regra de pronúncia mudou desde a narração; rode scripts/voz.py {EP} --refaz {n}'
         al = F['alinhamento']
         ini, fim = F['inicio_da_fala'], F['fim_da_fala']
         t0 = t
         v0 = t0 + c.get('inicio', 0.10 if n == 0 else 0.25)
         desloc = v0 - ini                               # tempo do arquivo -> tempo do vídeo
         v1 = fim + desloc
-        ws = palavras(texto, al, desloc)
+        ws = palavras(texto, al, desloc, c)
         # as frases: o trecho de caracteres de cada uma no texto falado (já com a grafia de pronúncia)
         frases, pos = [], 0
         L = letras(al)
         for f in c['fala']:
-            fa = pronounce(f['texto'])
+            fa = pron(c, f['texto'])
             a, b = pos, pos + len(fa)
             alfa = [x for x in L[a:b] if x[1].isalnum()]
             frases.append({'texto': f['texto'], 'apoio': f.get('apoio'), 't0': round(alfa[0][2] + desloc, 4), 't1': round(alfa[-1][3] + desloc, 4)})

@@ -1352,28 +1352,67 @@
     },
   };
 
-  // ---- balcão (DO OUTRO LADO DO BALCÃO): a lojinha atrás do balcão, com a gotinha de suor; o mesmo balão
-  //      "Hoje tem…" se repetindo e empilhando; o sol vira lua por cima (o dia inteiro)
+  // ---- balcão (DO OUTRO LADO DO BALCÃO): a lojinha atrás do balcão; UM balão grande "Hoje tem…" e, ao lado, o
+  //      contador que sobe (×1 → ×2 → ×5 → ×12 → ×30) na "mesma coisa"/"dia inteiro", com a lojinha suando cada vez
+  //      mais; o sol vira lua embaixo do contador (o dia inteiro)
   CENAS.balcao = {
     setup(cap) {
       const d = cap.diagrama, ev = cap.ev;
       ev.loja = at(cap, d.loja.em, cap.t0 + 0.2);
       ev.suor = Math.max(at(cap, d.suor.em, ev.loja + 0.8), ev.loja + 0.4);
-      let prev = ev.loja + 0.2;
-      ev.baloes = d.baloes.em.map((w) => (prev = Math.max(at(cap, w, prev + 0.5), prev + 0.38)));
-      ev.sol = at(cap, d.sol.em, ev.baloes[1]);
-      cue(ev.loja, 'sprout', { i: 0 }); cue(ev.suor, 'pop', { f: 980 });
-      ev.baloes.forEach((x, i) => cue(x, 'msg', { i }));
+      ev.balao = Math.max(at(cap, d.balao.em, ev.loja + 0.8), ev.loja + 0.3);
+      let prev = ev.balao - 0.3;
+      ev.conta = d.contador.em.map((w) => (prev = Math.max(at(cap, w, prev + 0.4), prev + 0.3)));
+      ev.sol = at(cap, d.sol.em, ev.conta[2]);
+      cue(ev.loja, 'sprout', { i: 0 }); cue(ev.suor, 'pop', { f: 980 }); cue(ev.balao, 'msg', { i: 0 });
+      ev.conta.forEach((x, i) => cue(x, 'light', { i }));
       cue(ev.sol, 'rise');
     },
     draw(ctx, cap, t) {
       const d = cap.diagrama, ev = cap.ev;
       const top = Math.max(diaTop(cap), 860);
       const SX = 236, SB = 1405, SW = 236, K = SW / 200;
+      const nivel = ev.conta.filter((x) => x <= t).length;           // quantas vezes o contador já subiu (0…5)
+      // o balão grande (um só)
+      const [L1, L2] = d.balao.t;
+      const FS = fitSize([L1, L2], 800, 690, 48);
+      const bw = Math.max(tw(L1, FS, 800), tw(L2, FS, 800)) + 76, bx = 140, by = top + 8;
+      const b1 = by + 30 + 0.8 * FS, b2 = b1 + 1.22 * FS, bh = b2 - by + 0.32 * FS + 24;
+      const eb = p(t, ev.balao, ev.balao + 0.4);
+      if (eb > 0) {
+        pop(ctx, eb, bx + 40, by + bh, () => {
+          balao(ctx, bx, by, bw, bh, { lado: 'esq', border: C.coral });
+          txt(ctx, L1, bx + 38, b1, { size: FS, weight: 800, color: C.tinta });
+          txt(ctx, L2, bx + 38, b2, { size: FS, weight: 800, color: C.coral });
+        }, 1.6);
+        if (eb >= 1) BOX('balão', bx, by, bx + bw, by + bh + 26);
+      }
+      // o contador que sobe
+      const CX = 720, CY = by + bh + 150, CR = 90;
+      if (nivel > 0) {
+        const tk = ev.conta[nivel - 1], kk = 1 + 0.22 * Math.exp(-(t - tk) * 7) * Math.cos((t - tk) * 18);
+        const e0 = p(t, ev.conta[0], ev.conta[0] + 0.35);
+        pop(ctx, e0, CX, CY + CR, () => {
+          ctx.save(); ctx.translate(CX, CY); ctx.scale(kk, kk); ctx.rotate((nivel % 2 ? -4 : 4) * DEG);
+          ctx.beginPath(); ctx.arc(0, 0, CR, 0, TAU); ctx.fillStyle = C.coral; ctx.shadowColor = 'rgba(200,60,20,0.3)'; ctx.shadowBlur = 18; ctx.fill(); ctx.shadowColor = 'transparent';
+          ctx.lineWidth = 7; ctx.strokeStyle = C.papel; ctx.beginPath(); ctx.arc(0, 0, CR - 12, 0, TAU); ctx.stroke();
+          const s = '×' + d.contador.n[nivel - 1], fs = fitSize([s], 900, CR * 1.45, 92);
+          txt(ctx, s, 0, fs * 0.36, { size: fs, weight: 900, align: 'center', color: C.branco });
+          ctx.restore();
+          // os risquinhos de "subiu!" a cada nova vez
+          const u = p(t, tk, tk + 0.45);
+          if (u > 0 && u < 1) {
+            ctx.save(); ctx.strokeStyle = css(C.amarelo, 1 - u); ctx.lineWidth = 7; ctx.lineCap = 'round';
+            for (let i = 0; i < 6; i++) { const a = -Math.PI / 2 + (i - 2.5) * 0.42, r0 = CR + 14 + 20 * u, r1 = r0 + 22; ctx.beginPath(); ctx.moveTo(CX + Math.cos(a) * r0, CY + Math.sin(a) * r0); ctx.lineTo(CX + Math.cos(a) * r1, CY + Math.sin(a) * r1); ctx.stroke(); }
+            ctx.restore();
+          }
+        }, 2);
+        if (e0 >= 1) BOX('contador', CX - CR - 40, CY - CR - 40, CX + CR + 30, CY + CR + 10);
+      }
       // o sol que atravessa o céu e vira lua (o dia inteiro)
       const es = ent(t, ev.loja + 0.2, 0.5);
       if (es > 0) {
-        const u = E.inOutSine(p(t, ev.sol, ev.sol + 1.8)), cxs = SX, cys = SB - 250 * K - 30, R = 105;
+        const u = E.inOutSine(p(t, ev.sol, ev.sol + 1.8)), cxs = CX, cys = SB + 5, R = 80;
         ctx.save(); ctx.globalAlpha *= es;
         ctx.setLineDash([4, 14]); ctx.lineCap = 'round'; ctx.lineWidth = 6; ctx.strokeStyle = css(C.amareloDark, 0.4);
         ctx.beginPath(); ctx.arc(cxs, cys, R, Math.PI, 0); ctx.stroke(); ctx.setLineDash([]);
@@ -1381,51 +1420,39 @@
         if (lua < 1) {
           ctx.globalAlpha = es * (1 - lua);
           ctx.strokeStyle = C.amarelo; ctx.lineWidth = 6;
-          for (let i = 0; i < 8; i++) { const b = i / 8 * TAU + t * 0.6; ctx.beginPath(); ctx.moveTo(sx + Math.cos(b) * 34, sy + Math.sin(b) * 34); ctx.lineTo(sx + Math.cos(b) * 46, sy + Math.sin(b) * 46); ctx.stroke(); }
-          ctx.fillStyle = C.amarelo; ctx.beginPath(); ctx.arc(sx, sy, 26, 0, TAU); ctx.fill();
+          for (let i = 0; i < 8; i++) { const b = i / 8 * TAU + t * 0.6; ctx.beginPath(); ctx.moveTo(sx + Math.cos(b) * 32, sy + Math.sin(b) * 32); ctx.lineTo(sx + Math.cos(b) * 42, sy + Math.sin(b) * 42); ctx.stroke(); }
+          ctx.fillStyle = C.amarelo; ctx.beginPath(); ctx.arc(sx, sy, 24, 0, TAU); ctx.fill();
         }
         if (lua > 0) {
           ctx.globalAlpha = es * lua;
-          ctx.fillStyle = '#F3D98E'; ctx.beginPath(); ctx.arc(sx, sy, 28, 0.6, TAU - 0.6 + 0.0001); ctx.arc(sx + 16, sy - 8, 24, TAU - 0.9, 0.9, true); ctx.closePath(); ctx.fill();
+          ctx.fillStyle = '#F3D98E'; ctx.beginPath(); ctx.arc(sx, sy, 26, 0.6, TAU - 0.6 + 0.0001); ctx.arc(sx + 15, sy - 8, 22, TAU - 0.9, 0.9, true); ctx.closePath(); ctx.fill();
         }
         ctx.restore();
-        BOX('sol e lua', cxs - R - 46, cys - R - 46, cxs + R + 46, cys);
+        BOX('sol e lua', cxs - R - 42, cys - R - 42, cxs + R + 42, cys);
       }
-      // a lojinha atrás do balcão
+      // a lojinha atrás do balcão, suando cada vez mais
       const e = p(t, ev.loja, ev.loja + 0.55);
       if (e > 0) {
-        const k = E.outBack(e, 2.2);
-        ctx.save(); ctx.translate(SX, SB); ctx.scale(lerp(0.6, 1, k), k); ctx.translate(-SX, -SB);
+        const k = E.outBack(e, 2.2), treme = nivel >= 3 ? (nivel - 2) * 1.2 * Math.sin(t * 38) : 0;
+        ctx.save(); ctx.translate(SX + treme, SB); ctx.scale(lerp(0.6, 1, k), k); ctx.translate(-SX, -SB);
         const cansada = clamp((t - ev.suor) / 0.4);
-        shop(ctx, d.loja.tipo || 'restaurante', SX, SB, SW, { blink: blinkAt(t, 2), look: [0.85, 0.15 + 0.2 * cansada], swing: 5 * Math.sin((t - ev.loja) * 6) * Math.exp(-(t - ev.loja) * 2.5) });
+        shop(ctx, d.loja.tipo || 'restaurante', SX, SB, SW, { blink: blinkAt(t, 2), look: [0.85, 0.15 + 0.25 * cansada], swing: 5 * Math.sin((t - ev.loja) * 6) * Math.exp(-(t - ev.loja) * 2.5) + 0.6 * treme });
         ctx.fillStyle = C.madeira; rr(ctx, SX - 130, SB - 92, 260, 22, 8); ctx.fill();
         ctx.fillStyle = C.madeiraDark; rr(ctx, SX - 120, SB - 72, 240, 72, 6); ctx.fill();
         ctx.fillStyle = css(C.papel, 0.25); for (let i = 0; i < 4; i++) { rr(ctx, SX - 104 + i * 54, SB - 60, 42, 50, 6); ctx.fill(); }
         ctx.restore();
         BOX('lojinha', SX - 130, SB - 255 * K, SX + 130, SB);
-        // a gotinha de suor escorrendo (em loop)
+        // as gotinhas de suor: mais gotas, maiores e mais rápidas a cada vez que o contador sobe
         if (t >= ev.suor) {
-          const ph = ((t - ev.suor) % 1.6) / 1.6;
-          gota(ctx, SX + 118 * K - 100 * K + 12, SB - 250 * K + 108 * K + ph * 34, 34, clamp((t - ev.suor) / 0.2) * (1 - p(ph, 0.75, 1)));
+          const n = Math.min(4, 1 + Math.floor(nivel * 0.7)), tam = 30 + 3.5 * nivel, per = 1.6 - 0.16 * nivel;
+          const POS = [[0.62, 0.43], [-0.62, 0.45], [0.68, 0.30], [-0.66, 0.31]];
+          for (let i = 0; i < n; i++) {
+            const ph = (((t - ev.suor) + i * 0.37) % per) / per;
+            const gx = SX + treme + POS[i][0] * 100 * K, gy = SB - 250 * K + POS[i][1] * 250 * K + ph * 34;
+            gota(ctx, gx, gy, tam, clamp((t - ev.suor) / 0.2) * (1 - p(ph, 0.75, 1)));
+          }
         }
       }
-      // o mesmo balão, de novo e de novo
-      const L1 = d.baloes.t[0], L2 = d.baloes.t[1], FS = 31;
-      const bw = Math.max(tw(L1, FS, 800), tw(L2, FS, 800)) + 56, bh = 108;
-      ev.baloes.forEach((t0, i) => {
-        const eb = p(t, t0, t0 + 0.38);
-        if (eb <= 0) return;
-        const x = 915 - bw - 12 + i * 4, y0 = top + 22 + i * 118;
-        const velho = ev.baloes.filter((x_) => x_ <= t).length - 1 - i;
-        pop(ctx, eb, x, y0 + bh, () => {
-          ctx.save(); ctx.translate(x + bw / 2, y0 + bh / 2); ctx.rotate((i % 2 ? 1.2 : -1.2) * DEG); ctx.translate(-(x + bw / 2), -(y0 + bh / 2));
-          balao(ctx, x, y0, bw, bh, { lado: 'esq', alpha: 1 - 0.1 * Math.max(0, velho) });
-          txt(ctx, L1, x + 28, y0 + 46, { size: FS, weight: 800, color: C.tinta });
-          txt(ctx, L2, x + 28, y0 + 85, { size: FS, weight: 800, color: C.coral });
-          ctx.restore();
-        }, 1.7);
-        if (eb >= 1) BOX(`balão ${i + 1}`, x - 4, y0 - 6, x + bw + 4, y0 + bh + 26);
-      });
     },
   };
 

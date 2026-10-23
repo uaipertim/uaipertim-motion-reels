@@ -55,6 +55,14 @@ PARA = ('voice_not_found', 'invalid_api_key', 'unauthorized', 'missing_permissio
         'quota_exceeded', 'detected_unusual_activity')
 
 
+def pron(c, t):
+    """o texto enviado à API: primeiro as grafias só deste capítulo (campo "pronuncia" do capítulo no JSON, ex.:
+    {"UaiPertim": "Uai perr-tím"}), depois a regra fixa de pronúncia (audio/voz_oficial.json → pronounce())"""
+    for k, v in sorted((c.get('pronuncia') or {}).items(), key=lambda kv: -len(kv[0])):
+        t = re.sub(rf'(?<![\wÀ-ÿ]){re.escape(k)}(?![\wÀ-ÿ])', v, t)
+    return pronounce(t)
+
+
 def texto_cap(c):
     return ' '.join(f['texto'] for f in c['fala'])
 
@@ -145,12 +153,12 @@ def gerar(refaz):
         key = f'{n:02d}'
         texto = texto_cap(c)
         confere_texto(texto)
-        api = pronounce(texto)
+        api = pron(c, texto)
         atual = D['capitulos'].get(key)
         if atual and atual['texto'] == texto and atual.get('texto_api') == api and n not in refaz and os.path.exists(os.path.join(OUT, f'cap-{key}.wav')):
             continue
-        prev = pronounce(texto_cap(caps[n - 1])) if n else None
-        nxt = pronounce(texto_cap(caps[n + 1])) if n + 1 < len(caps) else None
+        prev = pron(caps[n - 1], texto_cap(caps[n - 1])) if n else None
+        nxt = pron(caps[n + 1], texto_cap(caps[n + 1])) if n + 1 < len(caps) else None
         hist = atual['historico'] if atual and atual['texto'] == texto else []
         seed = c.get('seed', SEED0) + 1000 * len(hist)
         for k in range(TENTATIVAS):

@@ -18,9 +18,9 @@
   "pronuncia": {
     "UaiPertim": "Uai Pérr-tim",
     "Pertim": "Pérr-tim",
-    "UaiFood": "Uai Fúd",
-    "WhatsApp": "Uótsap",
+    "UaiFood": "Uai fúdi",
+    "WhatsApp": "Uátsap",
     "Burguer": "Búrguer"
   },
-  "_doc_pronuncia_2": "Acrescentadas em 2026-10-23 (Reel especial 'Por que UaiPertim?'), também só para a API: 'UaiFood' vai como 'Uai Fúd' (soa 'uai fúd', nunca 'uai fô-od'), 'WhatsApp' como 'Uótsap' e 'Burguer' como 'Búrguer' (o 'búrguer' natural). Na tela continua a grafia normal."
+  "_doc_pronuncia_2": "Acrescentadas em 2026-10-23 (Reel especial 'Por que UaiPertim?'), também só para a API: 'UaiFood' vai como 'Uai fúdi' (soa 'uai fúdi'; 'Uai Fúd' saía 'uai fód'), 'WhatsApp' como 'Uátsap' (soa 'uátsap'; 'Uótsap' saía 'uótsap') e 'Burguer' como 'Búrguer' (o 'búrguer' natural). Na tela continua a grafia normal. Grafias só de um capítulo vão no campo 'pronuncia' do capítulo, no JSON do episódio (reels/explica-so)."
 }

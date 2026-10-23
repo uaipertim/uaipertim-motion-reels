@@ -5,7 +5,7 @@ Vídeos curtos que explicam uma coisa do dia a dia em capítulos, com a cara da 
 | Episódio | Tema | Capítulos | Saída |
 |---|---|---|---|
 | **explica-so-01** | "Faltou um trem?" | 00 capa · 01 o causo · 02 o Glória tem · 03 a sacola · 04 chegou · 05 fecho | [`output/explica-so-01/`](output/explica-so-01) · 38,6 s |
-| **historia-uaipertim** (especial) | "Por que UaiPertim?" (a nossa história) | 00 capa · 01 o Glória hoje · 02 do outro lado do balcão · 03 a ideia · 04 o nome · 05 feito aqui · 06 fecho | [`output/historia-uaipertim/`](output/historia-uaipertim) · 63,8 s |
+| **historia-uaipertim** (especial) | "Por que UaiPertim?" (a nossa história) | 00 capa · 01 o Glória hoje · 02 do outro lado do balcão · 03 a ideia · 04 o nome · 05 feito aqui · 06 fecho | [`output/historia-uaipertim/`](output/historia-uaipertim) · 63,4 s |
 
 Em cada episódio, `output/<id>/` traz:
 
@@ -33,17 +33,26 @@ A história do UaiPertim, no mesmo motor e com a mesma identidade. O que muda em
   - "Por que / UaiPertim?" com o marcador amarelo, tudo centrado no recorte 3:4.
   - Com `"marca": false`, a marca do topo não aparece no quadro 0 e entra na troca para o capítulo 01.
 - **Saída extra:** `capa-3x4.png`, o recorte 3:4 da capa, para conferir e para o "Editar capa". O `capa.png` é a capa inteira, 9:16.
-- **Pronúncia** (só na API, em `audio/voz_oficial.json`): "UaiFood" → "Uai Fúd", "WhatsApp" → "Uótsap", "Burguer" → "Búrguer".
+- **Pronúncia** (só na API, em `audio/voz_oficial.json`): "UaiFood" → "Uai fúdi", "WhatsApp" → "Uátsap", "Burguer" → "Búrguer". Grafias de um capítulo só vão no campo `"pronuncia"` do capítulo, no JSON (`pron()` em `voz.py`/`linha.py`); este episódio não precisou delas.
 
-**Estado:** pronto e aprovado (`output/historia-uaipertim/revisao/relatorio-tecnico.txt` termina em `RESULTADO: aprovado`), com 63,77 s.
+**Estado:** pronto e aprovado (`output/historia-uaipertim/revisao/relatorio-tecnico.txt` termina em `RESULTADO: aprovado`), com 63,37 s.
 
-- **Capítulos:** 00 2,88 s · 01 9,43 s · 02 9,77 s · 03 8,48 s · 04 12,18 s · 05 8,13 s · 06 7,50 s, com trocas de 0,9 s.
-- **Voz:** seed 42 em todos os capítulos, menos no 00, que usou a seed 2042 (3 gerações inteiras, por causa do "é" de "Pérr-tim").
-- **Pronúncia** (conferida pelo alinhamento, F1 da vogal):
-  - "Fúd" com 300 Hz, um /u/ (o "u" de "tudo" deu 311 Hz; o "o" de "dono", 460 Hz);
-  - "Uótsap" com 576 Hz, um "ó" aberto;
-  - "Búrguer" com 326 Hz, um /u/;
-  - o "é" de "Pérr-tim" com 544–603 Hz nos capítulos 04 e 06 e pico de 496 Hz no 00 (no explica-so-01 aprovado, 479 Hz pelo mesmo método).
+- **Capítulos:** 00 2,80 s · 01 9,20 s · 02 9,77 s · 03 8,48 s · 04 12,09 s · 05 8,13 s · 06 7,50 s, com trocas de 0,9 s.
+- **Versão 2 (correções):**
+  - 00 gerado de novo até a pergunta subir no fim;
+  - 01 com "Uátsap";
+  - 04 com "Uai fúdi" e o "Pertim" com a força no TIM;
+  - na cena do 02, um balão só, com o contador ×1 → ×30.
+  - A voz dos capítulos 02, 03, 05 e 06 não mudou.
+- **Voz:**
+  - capítulo 00 com a seed 5042, a 5ª de 7 gerações inteiras: o F0 dos últimos 0,6 s sobe de 98 para 230 Hz e termina em 204 Hz (+8,5 st), e o "Pérr-tim" tem o TIM tônico e o é aberto (F1 até 523 Hz);
+  - capítulos 01 e 04 com a seed 1042;
+  - os outros com a seed 42.
+- **Pronúncia** (conferida pelo alinhamento):
+  - "Uátsap" com o á aberto (F1 734 Hz) e o p final soltando, um estouro em −38 dB depois da oclusão;
+  - "fúdi" com o ú fechado (F1 299 Hz) e o i final (F2 2198 Hz, 0,18 s);
+  - o "Pérr-tim" do 04 com o TIM tônico nas duas vezes (vogal do TIM com 0,175 s contra 0,116 s do é; F0 143 contra 133 Hz e 130 contra 109 Hz) e o é aberto (F1 até 543 e 535 Hz);
+  - "Búrguer" com o ú fechado (F1 326 Hz).
 
 ## A cara da UaiPertim (o que muda em relação ao motor do Hospeda)
 
@@ -175,7 +184,7 @@ A narração gerada (`audio/<id>/voz/cap-NN.wav` + `falas.json`) fica no reposit
 | `fecho` | Título do capítulo, a logo oficial grande e fixa, chip coral com seta | `logo: {em}`, `chip: {t, em}` |
 | `capaHistoria` | Capa no padrão do Dicionário: selo coral (o `rotulo`), a lojinha curiosa grande olhando para o título, título com a palavra no marcador amarelo e a pontuação que pula | `marcador`, `pulo: {em}`, `loja` (tipo da lojinha), `marca: false` (sem a marca no quadro 0) |
 | `mensagens` | Casinha com relógio; balões de mensagem genéricos (creme ou verde da marca, sem logo de aplicativo) chegando um atrás do outro; "digitando…" piscando enquanto o relógio corre | `casa: {em}`, `msgs: [{lado: esq\|dir, t?, tipo?: cardapio\|digitando, em}]` (até 4) |
-| `balcao` | Lojinha atrás do balcão com a gotinha de suor; o mesmo balão se repetindo e empilhando; o sol vira lua por cima | `loja: {em, tipo}`, `suor: {em}`, `baloes: {t: [linha 1, linha 2], em: [4 palavras]}`, `sol: {em}` |
+| `balcao` | Lojinha atrás do balcão, suando cada vez mais; UM balão grande e, ao lado, o contador que sobe (×1 → ×2 → ×5 → ×12 → ×30); o sol vira lua embaixo do contador | `loja: {em, tipo}`, `suor: {em}`, `balao: {t: [linha 1, linha 2], em}`, `contador: {n: [números], em: [palavras]}`, `sol: {em}` |
 | `ideia` | Balões espalhados que estouram e a lâmpada que acende; lojinhas que descem e se arrumam lado a lado numa rua; check | `some: {em}`, `lojas: {em, tipos: [4 tipos]}`, `rua: {em}`, `check: {em}` |
 | `nome` | Placa "UaiFood" com o carimbo, que vira "UaiPertim"; o mapinha de Minas em cima do "Uai"; lojinha e casinha que se aproximam até ficarem coladinhas | `placa`, `carimbo: {em, t}`, `vira`, `minas`, `casas: {em, loja}`, `perto` (todos com `em`) |
 | `feito` | Calendário com as folhas virando até "3 MESES"; mapinha de Minas com o pin; lojinha do hambúrguer com o nome escrito (sem logo) e o selo verde | `calendario: {em, folhas: [[número, rótulo]…]}`, `vira`, `minas`, `loja`, `selo: {em, t: [2 linhas]}`, `nome: {em, t}` |

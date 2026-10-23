@@ -1,13 +1,13 @@
 {
- "duracao": 63.762,
+ "duracao": 63.367,
  "apoios": [
   {
    "cap": 1,
    "i": 1,
    "texto": "Quase tudo é por mensagem.",
-   "entra": 4.083,
-   "inteira_de": 4.423,
-   "ate": 14.111,
+   "entra": 4.001,
+   "inteira_de": 4.341,
+   "ate": 13.797,
    "linhas": [
     "Quase tudo é por mensagem."
    ]
@@ -16,9 +16,9 @@
    "cap": 2,
    "i": 1,
    "texto": "A mesma resposta, o dia inteiro.",
-   "entra": 14.411,
-   "inteira_de": 14.751,
-   "ate": 24.776,
+   "entra": 14.097,
+   "inteira_de": 14.437,
+   "ate": 24.462,
    "linhas": [
     "A mesma resposta, o dia inteiro."
    ]
@@ -27,9 +27,9 @@
    "cap": 3,
    "i": 1,
    "texto": "O comércio da cidade num lugar só.",
-   "entra": 25.076,
-   "inteira_de": 25.416,
-   "ate": 34.159,
+   "entra": 24.762,
+   "inteira_de": 25.102,
+   "ate": 33.845,
    "linhas": [
     "O comércio da cidade num lugar só."
    ]
@@ -40,7 +40,7 @@
    "texto": "Uai de Minas. Pertim de você.",
    "entra": 37.737,
    "inteira_de": 38.077000000000005,
-   "ate": 47.234,
+   "ate": 46.839,
    "linhas": [
     "Uai de Minas. Pertim de você."
    ]
@@ -49,9 +49,9 @@
    "cap": 5,
    "i": 1,
    "texto": "O primeiro parceiro: Varanda Burguer House.",
-   "entra": 50.441,
-   "inteira_de": 50.781000000000006,
-   "ate": 56.262,
+   "entra": 50.046,
+   "inteira_de": 50.386,
+   "ate": 55.867,
    "linhas": [
     "O primeiro parceiro:",
     "Varanda Burguer House."
@@ -62,100 +62,100 @@
   {
    "de": 0,
    "para": 1,
-   "t0": 2.883,
-   "t1": 3.783
+   "t0": 2.801,
+   "t1": 3.701
   },
   {
    "de": 1,
    "para": 2,
-   "t0": 13.211,
-   "t1": 14.111
+   "t0": 12.897,
+   "t1": 13.797
   },
   {
    "de": 2,
    "para": 3,
-   "t0": 23.876,
-   "t1": 24.776
+   "t0": 23.562,
+   "t1": 24.462
   },
   {
    "de": 3,
    "para": 4,
-   "t0": 33.259,
-   "t1": 34.159
+   "t0": 32.945,
+   "t1": 33.845
   },
   {
    "de": 4,
    "para": 5,
-   "t0": 46.334,
-   "t1": 47.234
+   "t0": 45.939,
+   "t1": 46.839
   },
   {
    "de": 5,
    "para": 6,
-   "t0": 55.362,
-   "t1": 56.262
+   "t0": 54.967,
+   "t1": 55.867
   }
  ],
  "montagens": [
   {
    "n": 0,
    "t0": 0,
-   "t1": 2.883,
-   "primeira": 1.83,
-   "ultima": 1.83
+   "t1": 2.801,
+   "primeira": 1.679,
+   "ultima": 1.679
   },
   {
    "n": 1,
-   "t0": 3.783,
-   "t1": 13.211,
-   "primeira": 3.933,
-   "ultima": 11.103
+   "t0": 3.701,
+   "t1": 12.897,
+   "primeira": 3.851,
+   "ultima": 10.743
   },
   {
    "n": 2,
-   "t0": 14.111,
-   "t1": 23.876,
-   "primeira": 15.534,
-   "ultima": 20.561
+   "t0": 13.797,
+   "t1": 23.562,
+   "primeira": 15.22,
+   "ultima": 18.945
   },
   {
    "n": 3,
-   "t0": 24.776,
-   "t1": 33.259,
-   "primeira": 26.129,
-   "ultima": 31.667
+   "t0": 24.462,
+   "t1": 32.945,
+   "primeira": 25.815,
+   "ultima": 31.353
   },
   {
    "n": 4,
-   "t0": 34.159,
-   "t1": 46.334,
-   "primeira": 34.595,
-   "ultima": 44.545
+   "t0": 33.845,
+   "t1": 45.939,
+   "primeira": 34.35,
+   "ultima": 44.091
   },
   {
    "n": 5,
-   "t0": 47.234,
-   "t1": 55.362,
-   "primeira": 47.434000000000005,
-   "ultima": 52.523
+   "t0": 46.839,
+   "t1": 54.967,
+   "primeira": 47.039,
+   "ultima": 52.128
   },
   {
    "n": 6,
-   "t0": 56.262,
-   "t1": 63.762,
-   "primeira": 57.139,
-   "ultima": 60.162
+   "t0": 55.867,
+   "t1": 63.367,
+   "primeira": 56.744,
+   "ultima": 59.766999999999996
   }
  ],
  "fecho": {
-  "ultima_mudanca_de_texto": 60.711999999999996,
-  "duracao": 63.762,
+  "ultima_mudanca_de_texto": 60.31699999999999,
+  "duracao": 63.367,
   "logo": {
-   "entra": 57.139,
-   "parada": 58.039
+   "entra": 56.744,
+   "parada": 57.644
   },
-  "t0": 56.262,
-  "t1": 63.762
+  "t0": 55.867,
+  "t1": 63.367
  },
  "capa": {
   "tamanho": 136,
