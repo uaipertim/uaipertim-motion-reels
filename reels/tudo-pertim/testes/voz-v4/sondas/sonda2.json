@@ -1,0 +1,352 @@
+{
+ "v4_sem_pausa": {
+  "modelo": "eleven_v4",
+  "texto": "Trem qualquer coisa objeto situação tudo.",
+  "http": 200,
+  "erro": null,
+  "duracao": 4.32,
+  "silencios": [
+   [
+    1.47,
+    1.59,
+    0.12
+   ],
+   [
+    3.46,
+    3.78,
+    0.32
+   ]
+  ],
+  "md5_audio": "2858976dfac576f0861904bc98852f2d",
+  "palavras": [
+   [
+    "Trem",
+    0.0,
+    0.24
+   ],
+   [
+    "qualquer",
+    0.32,
+    0.72
+   ],
+   [
+    "coisa",
+    0.88,
+    1.36
+   ],
+   [
+    "objeto",
+    1.6,
+    2.4
+   ],
+   [
+    "situação",
+    2.64,
+    3.36
+   ],
+   [
+    "tudo.",
+    3.76,
+    4.4
+   ]
+  ]
+ },
+ "v4_break_1s_sem_ponto": {
+  "modelo": "eleven_v4",
+  "texto": "Trem <break time=\"1.0s\" /> qualquer coisa objeto situação tudo.",
+  "http": 200,
+  "erro": null,
+  "duracao": 4.32,
+  "silencios": [
+   [
+    1.47,
+    1.59,
+    0.12
+   ],
+   [
+    3.46,
+    3.78,
+    0.32
+   ]
+  ],
+  "md5_audio": "84184fe96172ad7f9caeb92d98c3fda3",
+  "palavras": [
+   [
+    "Trem",
+    0.0,
+    0.24
+   ],
+   [
+    "<break",
+    0.32,
+    0.32
+   ],
+   [
+    "time=\"1.0s\"",
+    0.32,
+    0.32
+   ],
+   [
+    "/>",
+    0.32,
+    0.32
+   ],
+   [
+    "qualquer",
+    0.32,
+    0.72
+   ],
+   [
+    "coisa",
+    0.88,
+    1.36
+   ],
+   [
+    "objeto",
+    1.6,
+    2.4
+   ],
+   [
+    "situação",
+    2.64,
+    3.36
+   ],
+   [
+    "tudo.",
+    3.76,
+    4.4
+   ]
+  ]
+ },
+ "v4_tag_pause": {
+  "modelo": "eleven_v4",
+  "texto": "Trem [pause] qualquer coisa objeto situação tudo.",
+  "http": 200,
+  "erro": null,
+  "duracao": 5.36,
+  "silencios": [
+   [
+    0.43,
+    1.37,
+    0.94
+   ],
+   [
+    2.38,
+    2.53,
+    0.15
+   ],
+   [
+    3.4,
+    3.55,
+    0.15
+   ],
+   [
+    4.4,
+    4.82,
+    0.42
+   ]
+  ],
+  "md5_audio": "53e497c4085122e733343ee139529c5b",
+  "palavras": [
+   [
+    "Trem",
+    0.0,
+    0.4
+   ],
+   [
+    "[pause]",
+    1.28,
+    1.424
+   ],
+   [
+    "qualquer",
+    1.472,
+    1.68
+   ],
+   [
+    "coisa",
+    1.76,
+    2.24
+   ],
+   [
+    "objeto",
+    2.56,
+    3.28
+   ],
+   [
+    "situação",
+    3.6,
+    4.32
+   ],
+   [
+    "tudo.",
+    4.8,
+    5.44
+   ]
+  ]
+ },
+ "v2_break_1s_sem_ponto": {
+  "modelo": "eleven_multilingual_v2",
+  "texto": "Trem <break time=\"1.0s\" /> qualquer coisa objeto situação tudo.",
+  "http": 200,
+  "erro": null,
+  "duracao": 3.762,
+  "silencios": [
+   [
+    0.35,
+    1.46,
+    1.11
+   ]
+  ],
+  "md5_audio": "963456ee03a31129765d14fe3c4348fc",
+  "palavras": [
+   [
+    "Trem",
+    0.0,
+    0.325
+   ],
+   [
+    "<break",
+    1.44,
+    1.44
+   ],
+   [
+    "time=\"1.0s\"",
+    1.44,
+    1.44
+   ],
+   [
+    "/>",
+    1.44,
+    1.44
+   ],
+   [
+    "qualquer",
+    1.44,
+    1.753
+   ],
+   [
+    "coisa",
+    1.8,
+    2.067
+   ],
+   [
+    "objeto",
+    2.101,
+    2.635
+   ],
+   [
+    "situação",
+    2.682,
+    3.181
+   ],
+   [
+    "tudo.",
+    3.216,
+    3.762
+   ]
+  ]
+ },
+ "v2_seed42_a": {
+  "modelo": "eleven_multilingual_v2",
+  "texto": "Domingo de manhã, cê já fez o pedido?",
+  "http": 200,
+  "erro": null,
+  "duracao": 2.368,
+  "silencios": [],
+  "md5_audio": "9080f57ccf51e987eba970d148678698",
+  "palavras": [
+   [
+    "Domingo",
+    0.0,
+    0.453
+   ],
+   [
+    "de",
+    0.499,
+    0.557
+   ],
+   [
+    "manhã,",
+    0.604,
+    0.998
+   ],
+   [
+    "cê",
+    1.057,
+    1.138
+   ],
+   [
+    "já",
+    1.207,
+    1.3
+   ],
+   [
+    "fez",
+    1.37,
+    1.567
+   ],
+   [
+    "o",
+    1.637,
+    1.66
+   ],
+   [
+    "pedido?",
+    1.707,
+    2.368
+   ]
+  ]
+ },
+ "v2_seed42_b": {
+  "modelo": "eleven_multilingual_v2",
+  "texto": "Domingo de manhã, cê já fez o pedido?",
+  "http": 200,
+  "erro": null,
+  "duracao": 2.368,
+  "silencios": [],
+  "md5_audio": "3ecb44b4da592c55950e2ebf5db8b1cb",
+  "palavras": [
+   [
+    "Domingo",
+    0.0,
+    0.453
+   ],
+   [
+    "de",
+    0.499,
+    0.557
+   ],
+   [
+    "manhã,",
+    0.604,
+    0.998
+   ],
+   [
+    "cê",
+    1.057,
+    1.138
+   ],
+   [
+    "já",
+    1.207,
+    1.3
+   ],
+   [
+    "fez",
+    1.37,
+    1.567
+   ],
+   [
+    "o",
+    1.637,
+    1.66
+   ],
+   [
+    "pedido?",
+    1.707,
+    2.368
+   ]
+  ]
+ }
+}
