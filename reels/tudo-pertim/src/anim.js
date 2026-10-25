@@ -910,19 +910,19 @@
     shadow(ctx, 0, 1, 50, 6, 0.16);
     ctx.lineCap = 'round'; ctx.lineJoin = 'round';
     const sentado = pose === 'sentado', rabo = o.rabo || 0;
-    const cab = sentado ? { x: 30, y: -128 } : { x: 60, y: -92 };
+    const cab = sentado ? { x: 10, y: -118 } : { x: 60, y: -92 }, pd = o.pidao ? 1 : 0;
     duasPassadas(ctx, o.contorno || 0, (F, S, silhueta) => {
       // o rabo abanando
       ctx.beginPath();
-      if (sentado) { ctx.moveTo(-30, -14); ctx.quadraticCurveTo(-64, -10 + 14 * Math.sin(rabo), -70, -34 + 18 * Math.sin(rabo)); }
-      else { ctx.moveTo(-46, -70); ctx.quadraticCurveTo(-70, -84 + 10 * Math.sin(rabo), -78, -108 + 14 * Math.sin(rabo)); }
-      S(CARAMELO_ESC, 11);
+      if (sentado) { ctx.moveTo(-34, -12); ctx.quadraticCurveTo(-72, -6 + 12 * Math.sin(rabo), -86, -38 + 20 * Math.sin(rabo)); S(CARAMELO_ESC, 13); }
+      else { ctx.moveTo(-46, -70); ctx.quadraticCurveTo(-70, -84 + 10 * Math.sin(rabo), -78, -108 + 14 * Math.sin(rabo)); S(CARAMELO_ESC, 11); }
       if (sentado) {
-        // sentado: a coxa no chão, as patas da frente retas, o peito alto
-        ctx.beginPath(); ctx.ellipse(-12, -26, 34, 24, 0, 0, TAU); F(CARAMELO);
-        ctx.beginPath(); ctx.ellipse(8, -60, 30, 44, -0.25, 0, TAU); F(CARAMELO);
-        for (const lx of [16, 34]) { ctx.beginPath(); ctx.moveTo(lx, -54); ctx.lineTo(lx + 2, -4); S(CARAMELO, 12); }
-        ctx.beginPath(); ctx.ellipse(18, -2, 11, 5, 0, 0, TAU); F(CARAMELO_ESC); ctx.beginPath(); ctx.ellipse(38, -2, 11, 5, 0, 0, TAU); F(CARAMELO_ESC);
+        // sentado (de três quartos): a anca no chão com a pata de trás, o peito alto e as duas patas da frente retas
+        ctx.beginPath(); ctx.ellipse(-18, -30, 36, 30, -0.1, 0, TAU); F(CARAMELO);
+        ctx.beginPath(); ctx.ellipse(-34, -6, 17, 7, 0, 0, TAU); F(CARAMELO_ESC);
+        ctx.beginPath(); ctx.ellipse(8, -62, 30, 48, -0.12, 0, TAU); F(CARAMELO);
+        for (const lx of [0, 26]) { ctx.beginPath(); ctx.moveTo(lx, -60); ctx.lineTo(lx + 1, -10); S(CARAMELO, 16); }
+        for (const lx of [1, 27]) { ctx.beginPath(); ctx.ellipse(lx + 3, -6, 13, 7.5, 0, 0, TAU); F(CARAMELO_CLARO); }
       } else {
         // correndo: quatro patas em galope e o corpo comprido
         [[-30, 0], [-22, 1.2], [30, 2.4], [38, 3.4]].forEach(([lx, ph]) => {
@@ -932,27 +932,41 @@
         ctx.beginPath(); ctx.ellipse(0, -64, 52, 25, -0.05, 0, TAU); F(CARAMELO);
         ctx.beginPath(); ctx.moveTo(30, -76); ctx.quadraticCurveTo(44, -98, 54, -104); ctx.lineTo(70, -84); ctx.quadraticCurveTo(58, -72, 48, -58); ctx.closePath(); F(CARAMELO);
       }
-      // a cabeça: de lado ou de frente (olhando para a câmera)
-      ctx.beginPath(); ctx.arc(cab.x, cab.y, 23, 0, TAU); F(CARAMELO);
-      if (o.olhar) { ctx.beginPath(); ctx.ellipse(cab.x, cab.y + 12, 16, 12, 0, 0, TAU); F(CARAMELO_CLARO); }
-      else { ctx.beginPath(); ctx.ellipse(cab.x + 19, cab.y + 6, 17, 11, 0.1, 0, TAU); F(CARAMELO_CLARO); }
-      // as orelhas caídas
-      const orelhas = o.olhar ? [[-18, -0.5], [18, 0.5]] : [[-8, -0.3]];
-      orelhas.forEach(([ox, r]) => { ctx.beginPath(); ctx.ellipse(cab.x + ox, cab.y - 2 + (o.pidao ? 6 : 0), 9, 19, r + (o.pidao ? 0.25 * Math.sign(r || -1) : 0), 0, TAU); F(CARAMELO_ESC); });
-      if (silhueta) return;
-      // a barriguinha clara
-      if (!sentado) { ctx.fillStyle = CARAMELO_CLARO; ctx.beginPath(); ctx.ellipse(6, -52, 34, 11, 0, 0, TAU); ctx.fill(); }
-      else { ctx.fillStyle = CARAMELO_CLARO; ctx.beginPath(); ctx.ellipse(18, -66, 14, 26, -0.2, 0, TAU); ctx.fill(); }
-      // o focinho, os olhos e as sobrancelhas
       if (o.olhar) {
-        ctx.fillStyle = C.tinta; ctx.beginPath(); ctx.ellipse(cab.x, cab.y + 8, 6, 4.5, 0, 0, TAU); ctx.fill();
-        const re = o.pidao ? 6.5 : 4.2;
-        for (const ex of [-9, 9]) {
-          ctx.fillStyle = C.tinta; ctx.beginPath(); ctx.arc(cab.x + ex, cab.y - 6, re, 0, TAU); ctx.fill();
-          ctx.fillStyle = C.branco; ctx.beginPath(); ctx.arc(cab.x + ex - re * 0.35, cab.y - 6 - re * 0.35, re * 0.38, 0, TAU); ctx.fill();
+        // a cabeça olhando para a câmera (três quartos): crânio grande, focinho comprido, orelhas caídas e a língua de fora
+        ctx.beginPath(); ctx.ellipse(cab.x + 22, cab.y - 14 + 4 * pd, 10, 19, -0.75 - 0.25 * pd, 0, TAU); F(CARAMELO_ESC);
+        if (!o.linguica) { ctx.beginPath(); ctx.ellipse(cab.x + 24, cab.y + 30, 8, 12, 0.12, 0, TAU); F('#E9767A'); }
+        ctx.beginPath(); ctx.ellipse(cab.x, cab.y, 32, 29, 0, 0, TAU); F(CARAMELO);
+        ctx.beginPath(); ctx.ellipse(cab.x + 21, cab.y + 13, 23, 14, 0.12, 0, TAU); F(CARAMELO_CLARO);
+        ctx.beginPath(); ctx.ellipse(cab.x - 28, cab.y + 4 + 4 * pd, 11, 24, 0.3 + 0.2 * pd, 0, TAU); F(CARAMELO_ESC);
+      } else {
+        // a cabeça de lado
+        ctx.beginPath(); ctx.arc(cab.x, cab.y, 23, 0, TAU); F(CARAMELO);
+        ctx.beginPath(); ctx.ellipse(cab.x + 19, cab.y + 6, 17, 11, 0.1, 0, TAU); F(CARAMELO_CLARO);
+        ctx.beginPath(); ctx.ellipse(cab.x - 8, cab.y - 2 + (o.pidao ? 6 : 0), 9, 19, -0.3 + (o.pidao ? -0.25 : 0), 0, TAU); F(CARAMELO_ESC);
+      }
+      if (silhueta) return;
+      // a barriguinha / o peito claro
+      if (!sentado) { ctx.fillStyle = CARAMELO_CLARO; ctx.beginPath(); ctx.ellipse(6, -52, 34, 11, 0, 0, TAU); ctx.fill(); }
+      else {
+        ctx.fillStyle = CARAMELO_CLARO; ctx.beginPath(); ctx.ellipse(14, -74, 15, 22, -0.15, 0, TAU); ctx.fill();
+        // o risco das patas da frente e da coxa (para as patas lerem separadas do peito)
+        ctx.strokeStyle = CARAMELO_ESC; ctx.lineWidth = 3;
+        for (const lx of [-7, 13]) { ctx.beginPath(); ctx.moveTo(lx, -46); ctx.lineTo(lx + 0.5, -13); ctx.stroke(); }
+        ctx.beginPath(); ctx.arc(-18, -30, 24, 2.3, 4.0); ctx.stroke();
+      }
+      if (o.olhar) {
+        // o nariz escuro na ponta do focinho, a boca, os olhos e as sobrancelhas
+        ctx.fillStyle = C.tinta; ctx.beginPath(); ctx.ellipse(cab.x + 39, cab.y + 7, 8, 6, 0.1, 0, TAU); ctx.fill();
+        ctx.fillStyle = C.branco; ctx.beginPath(); ctx.arc(cab.x + 37, cab.y + 4.5, 2, 0, TAU); ctx.fill();
+        ctx.strokeStyle = C.tinta; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(cab.x + 38, cab.y + 13); ctx.lineTo(cab.x + 37, cab.y + 19);
+        ctx.quadraticCurveTo(cab.x + 28, cab.y + 25, cab.x + 16, cab.y + 20); ctx.stroke();
+        const re = o.pidao ? 7 : 4.6;
+        for (const ex of [-10, 12]) {
+          ctx.fillStyle = C.tinta; ctx.beginPath(); ctx.arc(cab.x + ex, cab.y - 8, re, 0, TAU); ctx.fill();
+          ctx.fillStyle = C.branco; ctx.beginPath(); ctx.arc(cab.x + ex - re * 0.35, cab.y - 8 - re * 0.35, re * 0.38, 0, TAU); ctx.fill();
         }
-        if (o.pidao) { ctx.strokeStyle = CARAMELO_ESC; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(cab.x - 15, cab.y - 15); ctx.lineTo(cab.x - 5, cab.y - 19); ctx.moveTo(cab.x + 15, cab.y - 15); ctx.lineTo(cab.x + 5, cab.y - 19); ctx.stroke(); }
-        ctx.strokeStyle = C.tinta; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.arc(cab.x, cab.y + 11, 6, 0.2 * Math.PI, 0.8 * Math.PI); ctx.stroke();
+        if (o.pidao) { ctx.strokeStyle = CARAMELO_ESC; ctx.lineWidth = 3.5; ctx.beginPath(); ctx.moveTo(cab.x - 19, cab.y - 17); ctx.lineTo(cab.x - 7, cab.y - 23); ctx.moveTo(cab.x + 21, cab.y - 17); ctx.lineTo(cab.x + 9, cab.y - 23); ctx.stroke(); }
       } else {
         ctx.fillStyle = C.tinta; ctx.beginPath(); ctx.arc(cab.x + 34, cab.y + 2, 5, 0, TAU); ctx.fill();
         ctx.beginPath(); ctx.arc(cab.x + 6, cab.y - 6, o.pidao ? 5.5 : 3.8, 0, TAU); ctx.fill();
@@ -961,7 +975,7 @@
     });
     // a linguiça na boca, balançando (3 gomos)
     if (o.linguica) {
-      let lx = o.olhar ? cab.x : cab.x + 28, ly = o.olhar ? cab.y + 16 : cab.y + 12; const bal = Math.sin(o.balanco || 0);
+      let lx = o.olhar ? cab.x + 30 : cab.x + 28, ly = o.olhar ? cab.y + 20 : cab.y + 12; const bal = Math.sin(o.balanco || 0);
       for (let i = 0; i < 3; i++) {
         const a = (o.olhar ? 1.57 : 1.2) + 0.5 * bal * (i + 1) / 2, nx = lx + Math.cos(a) * 16, ny = ly + Math.sin(a) * 16;
         ctx.save(); ctx.translate((lx + nx) / 2, (ly + ny) / 2); ctx.rotate(a);
@@ -2803,6 +2817,19 @@
       const ev = cap.ev, T = cap.cenaTop;
       const IX = 500, IW = 380, IH = 200, IB = PE - 20, IT = IB - IH;
       const ei = ent(t, ev.isopor, 0.45);
+      // a tampa, do mesmo isopor, presa na dobradiça da borda de trás: fechada é a placa por cima; aberta, fica em pé
+      //      atrás da boca do isopor (por trás das garrafas e do gelo que saem de dentro)
+      enter(ctx, ei, IX, IB, () => {
+        const ab = E.outBack(p(t, ev.tampa, ev.tampa + 0.45), 1.6), hl = lerp(26, 124, ab), enc = 26 * clamp(ab);
+        const yb = IT + 6, yt = yb - hl, xl = IX - IW / 2 - 6, xr = IX + IW / 2 + 6;
+        ctx.beginPath(); ctx.moveTo(xl, yb); ctx.lineTo(xl + enc, yt + 14); ctx.quadraticCurveTo(xl + enc, yt, xl + enc + 14, yt);
+        ctx.lineTo(xr - enc - 14, yt); ctx.quadraticCurveTo(xr - enc, yt, xr - enc, yt + 14); ctx.lineTo(xr, yb); ctx.closePath();
+        ctx.fillStyle = C.papel; ctx.fill(); ctx.strokeStyle = C.cremeDeep; ctx.lineWidth = 5; ctx.stroke();
+        if (ab > 0.15) {                                         // o lado de dentro da tampa (o rebaixo)
+          ctx.globalAlpha *= clamp((ab - 0.15) * 3); ctx.strokeStyle = css(C.cremeDeep, 0.8); ctx.lineWidth = 4;
+          rr(ctx, xl + enc + 26, yt + 18, xr - xl - 2 * enc - 52, hl - 34, 12); ctx.stroke();
+        }
+      });
       // as garrafas subindo de dentro do isopor (atrás da frente dele)
       const cores = [C.coral, C.verde, C.amarelo], alvos = [[400, IT - 120], [500, IT - 160], [600, IT - 120]];
       alvos.forEach(([ax, ay], i) => {
@@ -2811,6 +2838,11 @@
         ctx.save(); ctx.translate(ax, y); ctx.rotate((i - 1) * 0.12 * u); itemRefri(ctx, 0, 0, 160, cores[i]); ctx.restore();
         if (u >= 1) BOX(`refri ${i + 1}`, ax - 40, ay - 110, ax + 40, ay + 86);
       });
+      // o gelo aparecendo na boca do isopor quando a tampa abre
+      const eg0 = E.outBack(p(t, ev.tampa + 0.1, ev.tampa + 0.45), 1.6);
+      if (eg0 > 0) [[330, 0.2], [380, 1.1], [450, 2.3], [560, 0.7], [640, 1.9], [680, 2.8]].forEach(([x, r], i) => {
+        ctx.save(); ctx.translate(x, IT + 4 - 16 * eg0 - 4 * (i % 2)); ctx.rotate(r); ctx.scale(eg0, eg0); itemGelo(ctx, 0, 0, 58); ctx.restore();
+      });
       enter(ctx, ei, IX, IB, () => {
         shadow(ctx, IX, IB, IW * 0.55, 10, 0.14);
         ctx.fillStyle = C.papel; rr(ctx, IX - IW / 2, IT, IW, IH, 22); ctx.fill(); ctx.strokeStyle = C.cremeDeep; ctx.lineWidth = 5; ctx.stroke();
@@ -2818,13 +2850,6 @@
         ctx.fillStyle = C.cremeDeep; rr(ctx, IX - 60, IT + 34, 120, 22, 11); ctx.fill();                           // a alça
         BOX('isopor', IX - IW / 2, IT - 30, IX + IW / 2, IB);
       });
-      // a tampa (abre girando na dobradiça de trás)
-      if (ei > 0) {
-        const ab = E.outBack(p(t, ev.tampa, ev.tampa + 0.4), 1.6);
-        ctx.save(); ctx.globalAlpha *= clamp(ei * 2); ctx.translate(IX + IW / 2, IT + 4); ctx.rotate(1.25 * ab);
-        ctx.fillStyle = C.verde; rr(ctx, -IW - 6, -30, IW + 12, 34, 14); ctx.fill(); ctx.fillStyle = C.verdeDark; rr(ctx, -IW - 6, -6, IW + 12, 10, 5); ctx.fill();
-        ctx.restore();
-      }
       // trincando: os brilhos de gelado nas garrafas
       [[350, IT - 210], [650, IT - 230], [500, IT - 300]].forEach(([x, y], i) => sticker(ctx, 'brilho', x, y, 50, p(t, ev.trinca + i * 0.1, ev.trinca + 0.35 + i * 0.1), t));
       // o gelo: os cubos pulando e o saco de gelo caindo do lado

@@ -71,7 +71,7 @@ OK     sem trechos pretos
 OK     sem imagem congelada por 1,5 s ou mais
 
 CAPA E FECHO
-OK     a capa é o quadro 0 do vídeo (PSNR 43.4 dB entre capa.png e o 1º quadro)
+OK     a capa é o quadro 0 do vídeo (PSNR 43.3 dB entre capa.png e o 1º quadro)
 OK     regra das capas (revisao/capa.txt): dentro da regra das capas
 OK     fecho com 7.50 s (alvo 6–8 s)
 OK     fecho: a última mudança de texto é em 46.95 s; o texto fica parado 3.05 s até o fim (mínimo 3 s)
