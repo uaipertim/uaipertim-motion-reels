@@ -1,0 +1,130 @@
+{
+ "A-atual": {
+  "ok": true,
+  "http": 200,
+  "enviado": {
+   "model_id": "eleven_multilingual_v2",
+   "voice_settings": {
+    "stability": 0.4,
+    "similarity_boost": 0.8,
+    "style": 0.35,
+    "use_speaker_boost": true
+   },
+   "seed": 42
+  }
+ },
+ "B-v4-perr-tim": {
+  "ok": true,
+  "http": 200,
+  "enviado": {
+   "model_id": "eleven_v4",
+   "voice_settings": {
+    "stability": 0.5,
+    "similarity_boost": 0.75
+   },
+   "seed": 42
+  }
+ },
+ "B-v4-pertim-acento": {
+  "ok": true,
+  "http": 200,
+  "enviado": {
+   "model_id": "eleven_v4",
+   "voice_settings": {
+    "stability": 0.5,
+    "similarity_boost": 0.75
+   },
+   "seed": 42
+  }
+ },
+ "B-v4-perrtim": {
+  "ok": true,
+  "http": 200,
+  "enviado": {
+   "model_id": "eleven_v4",
+   "voice_settings": {
+    "stability": 0.5,
+    "similarity_boost": 0.75
+   },
+   "seed": 42
+  }
+ },
+ "B-v4-pertim-puro": {
+  "ok": true,
+  "http": 200,
+  "enviado": {
+   "model_id": "eleven_v4",
+   "voice_settings": {
+    "stability": 0.5,
+    "similarity_boost": 0.75
+   },
+   "seed": 42
+  }
+ },
+ "A-dicionario-pausas": {
+  "ok": true,
+  "http": 200,
+  "enviado": {
+   "model_id": "eleven_multilingual_v2",
+   "voice_settings": {
+    "stability": 0.4,
+    "similarity_boost": 0.8,
+    "style": 0.35,
+    "use_speaker_boost": true
+   },
+   "seed": 42
+  }
+ },
+ "B-v4-dicionario-pausas": {
+  "ok": true,
+  "http": 200,
+  "enviado": {
+   "model_id": "eleven_v4",
+   "voice_settings": {
+    "stability": 0.5,
+    "similarity_boost": 0.75
+   },
+   "seed": 42
+  }
+ },
+ "B-v4-perr-tim-repetida": {
+  "ok": true,
+  "http": 200,
+  "enviado": {
+   "model_id": "eleven_v4",
+   "voice_settings": {
+    "stability": 0.5,
+    "similarity_boost": 0.75
+   },
+   "seed": 42
+  }
+ },
+ "B-v4-previous-next": {
+  "ok": true,
+  "http": 200,
+  "enviado": {
+   "model_id": "eleven_v4",
+   "voice_settings": {
+    "stability": 0.5,
+    "similarity_boost": 0.75
+   },
+   "seed": 42,
+   "previous_text": "No sábado também tem!",
+   "next_text": "Uai, é o Uai Pérr-tim."
+  }
+ },
+ "B-v4-com-style-e-speaker-boost": {
+  "ok": true,
+  "http": 200,
+  "enviado": {
+   "model_id": "eleven_v4",
+   "voice_settings": {
+    "stability": 0.5,
+    "similarity_boost": 0.75,
+    "style": 0.35,
+    "use_speaker_boost": true
+   },
+   "seed": 42
+  }
+ }
+}

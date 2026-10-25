@@ -1,0 +1,650 @@
+{
+ "arquivos": {
+  "A-atual": {
+   "texto_api": "Ô, sô, cê já ouviu falar do Uai Pérr-tim? No domingo à tarde, bateu a fome e a geladeira tava vazia. Aí foi só fazer o pedido e esperar a entrega, pertinho de casa. No sábado também tem! E pode chamar no Uátsap do comércio, uai, mas com o Uai Pérr-tim é mais rapidim. Sabe qual é o melhor dia pra pedir? Domingo. Uai, é o Uai Pérr-tim.",
+   "tem_alinhamento": true,
+   "caracteres_alinhados": 335,
+   "caracteres_enviados": 335,
+   "domingo": [
+    {
+     "palavra": "domingo",
+     "fim_de_frase": false,
+     "do": {
+      "dur": 0.081,
+      "f0": 248
+     },
+     "min": {
+      "dur": 0.058,
+      "f0": 144
+     },
+     "go": {
+      "dur": 0.035,
+      "f0": 170
+     },
+     "tonica": "do"
+    },
+    {
+     "palavra": "Domingo.",
+     "fim_de_frase": true,
+     "do": {
+      "dur": 0.127,
+      "f0": 219
+     },
+     "min": {
+      "dur": 0.116,
+      "f0": 123
+     },
+     "go": {
+      "dur": 0.116,
+      "f0": null
+     },
+     "tonica": "do"
+    }
+   ],
+   "uaipertim": [
+    {
+     "grafia": "Uai Pérr-tim",
+     "fim_de_frase": true,
+     "vogal_PER": {
+      "dur": 0.07,
+      "f0": null
+     },
+     "vogal_TIM": {
+      "dur": 0.174,
+      "f0": 157
+     },
+     "forca": "TIM",
+     "murmurio_ms": 100,
+     "F2_meio": 2561,
+     "F2_fim": 1528,
+     "fim": "fecha com consoante nasal, F2 caindo (lábios: \"im\")"
+    },
+    {
+     "grafia": "Uai Pérr-tim",
+     "fim_de_frase": false,
+     "vogal_PER": {
+      "dur": 0.081,
+      "f0": null
+     },
+     "vogal_TIM": {
+      "dur": 0.151,
+      "f0": 121
+     },
+     "forca": "TIM",
+     "murmurio_ms": 60,
+     "F2_meio": 2404,
+     "F2_fim": 2662,
+     "fim": "fecha com consoante nasal, F2 alto (língua: \"in\")"
+    },
+    {
+     "grafia": "Uai Pérr-tim",
+     "fim_de_frase": true,
+     "vogal_PER": {
+      "dur": 0.116,
+      "f0": 172
+     },
+     "vogal_TIM": {
+      "dur": 0.151,
+      "f0": 105
+     },
+     "forca": "empate",
+     "murmurio_ms": 170,
+     "F2_meio": 2498,
+     "F2_fim": 1334,
+     "fim": "fecha com consoante nasal, F2 caindo (lábios: \"im\")"
+    }
+   ]
+  },
+  "B-v4-perr-tim": {
+   "texto_api": "Ô, sô, cê já ouviu falar do Uai Pérr-tim? No domingo à tarde, bateu a fome e a geladeira tava vazia. Aí foi só fazer o pedido e esperar a entrega, pertinho de casa. No sábado também tem! E pode chamar no Uátsap do comércio, uai, mas com o Uai Pérr-tim é mais rapidim. Sabe qual é o melhor dia pra pedir? Domingo. Uai, é o Uai Pérr-tim.",
+   "tem_alinhamento": true,
+   "caracteres_alinhados": 335,
+   "caracteres_enviados": 335,
+   "domingo": [
+    {
+     "palavra": "domingo",
+     "fim_de_frase": false,
+     "do": {
+      "dur": 0.026,
+      "f0": 249
+     },
+     "min": {
+      "dur": 0.04,
+      "f0": 251
+     },
+     "go": {
+      "dur": 0.04,
+      "f0": 233
+     },
+     "tonica": "min"
+    },
+    {
+     "palavra": "Domingo.",
+     "fim_de_frase": true,
+     "do": {
+      "dur": 0.08,
+      "f0": 229
+     },
+     "min": {
+      "dur": 0.08,
+      "f0": 161
+     },
+     "go": {
+      "dur": 0.16,
+      "f0": null
+     },
+     "tonica": "do"
+    }
+   ],
+   "uaipertim": [
+    {
+     "grafia": "Uai Pérr-tim",
+     "fim_de_frase": true,
+     "vogal_PER": {
+      "dur": 0.08,
+      "f0": 252
+     },
+     "vogal_TIM": {
+      "dur": 0.12,
+      "f0": 214
+     },
+     "forca": "empate",
+     "murmurio_ms": 150,
+     "F2_meio": 2573,
+     "F2_fim": 4069,
+     "fim": "fecha com consoante nasal, F2 alto (língua: \"in\")"
+    },
+    {
+     "grafia": "Uai Pérr-tim",
+     "fim_de_frase": false,
+     "vogal_PER": {
+      "dur": 0.08,
+      "f0": 141
+     },
+     "vogal_TIM": {
+      "dur": 0.12,
+      "f0": 190
+     },
+     "forca": "TIM",
+     "murmurio_ms": 100,
+     "F2_meio": 2590,
+     "F2_fim": 2565,
+     "fim": "fecha com consoante nasal, F2 alto (língua: \"in\")"
+    },
+    {
+     "grafia": "Uai Pérr-tim",
+     "fim_de_frase": true,
+     "vogal_PER": {
+      "dur": 0.08,
+      "f0": 172
+     },
+     "vogal_TIM": {
+      "dur": 0.08,
+      "f0": 189
+     },
+     "forca": "empate",
+     "murmurio_ms": 30,
+     "F2_meio": 2477,
+     "F2_fim": 2660,
+     "fim": "fecha com consoante nasal, F2 alto (língua: \"in\")"
+    }
+   ]
+  },
+  "B-v4-pertim-acento": {
+   "texto_api": "Ô, sô, cê já ouviu falar do Uai Pértim? No domingo à tarde, bateu a fome e a geladeira tava vazia. Aí foi só fazer o pedido e esperar a entrega, pertinho de casa. No sábado também tem! E pode chamar no Uátsap do comércio, uai, mas com o Uai Pértim é mais rapidim. Sabe qual é o melhor dia pra pedir? Domingo. Uai, é o Uai Pértim.",
+   "tem_alinhamento": true,
+   "caracteres_alinhados": 329,
+   "caracteres_enviados": 329,
+   "domingo": [
+    {
+     "palavra": "domingo",
+     "fim_de_frase": false,
+     "do": {
+      "dur": 0.026,
+      "f0": 259
+     },
+     "min": {
+      "dur": 0.04,
+      "f0": 253
+     },
+     "go": {
+      "dur": 0.04,
+      "f0": 219
+     },
+     "tonica": "do"
+    },
+    {
+     "palavra": "Domingo.",
+     "fim_de_frase": true,
+     "do": {
+      "dur": 0.048,
+      "f0": 149
+     },
+     "min": {
+      "dur": 0.048,
+      "f0": 168
+     },
+     "go": {
+      "dur": 0.08,
+      "f0": 116
+     },
+     "tonica": "min"
+    }
+   ],
+   "uaipertim": [
+    {
+     "grafia": "Uai Pértim",
+     "fim_de_frase": true,
+     "vogal_PER": {
+      "dur": 0.08,
+      "f0": 108
+     },
+     "vogal_TIM": {
+      "dur": 0.08,
+      "f0": 200
+     },
+     "forca": "empate",
+     "murmurio_ms": 70,
+     "F2_meio": 2562,
+     "F2_fim": 3536,
+     "fim": "fecha com consoante nasal, F2 alto (língua: \"in\")"
+    },
+    {
+     "grafia": "Uai Pértim",
+     "fim_de_frase": false,
+     "vogal_PER": {
+      "dur": 0.08,
+      "f0": 130
+     },
+     "vogal_TIM": {
+      "dur": 0.12,
+      "f0": 210
+     },
+     "forca": "TIM",
+     "murmurio_ms": 40,
+     "F2_meio": 2535,
+     "F2_fim": 2781,
+     "fim": "fecha com consoante nasal, F2 alto (língua: \"in\")"
+    },
+    {
+     "grafia": "Uai Pértim",
+     "fim_de_frase": true,
+     "vogal_PER": {
+      "dur": 0.08,
+      "f0": 240
+     },
+     "vogal_TIM": {
+      "dur": 0.12,
+      "f0": 188
+     },
+     "forca": "empate",
+     "murmurio_ms": 50,
+     "F2_meio": 2425,
+     "F2_fim": 2797,
+     "fim": "fecha com consoante nasal, F2 alto (língua: \"in\")"
+    }
+   ]
+  },
+  "B-v4-perrtim": {
+   "texto_api": "Ô, sô, cê já ouviu falar do Uai Pérrtim? No domingo à tarde, bateu a fome e a geladeira tava vazia. Aí foi só fazer o pedido e esperar a entrega, pertinho de casa. No sábado também tem! E pode chamar no Uátsap do comércio, uai, mas com o Uai Pérrtim é mais rapidim. Sabe qual é o melhor dia pra pedir? Domingo. Uai, é o Uai Pérrtim.",
+   "tem_alinhamento": true,
+   "caracteres_alinhados": 332,
+   "caracteres_enviados": 332,
+   "domingo": [
+    {
+     "palavra": "domingo",
+     "fim_de_frase": false,
+     "do": {
+      "dur": 0.026,
+      "f0": null
+     },
+     "min": {
+      "dur": 0.04,
+      "f0": 241
+     },
+     "go": {
+      "dur": 0.04,
+      "f0": 218
+     },
+     "tonica": "min"
+    },
+    {
+     "palavra": "Domingo.",
+     "fim_de_frase": true,
+     "do": {
+      "dur": 0.08,
+      "f0": 230
+     },
+     "min": {
+      "dur": 0.08,
+      "f0": 205
+     },
+     "go": {
+      "dur": 0.08,
+      "f0": 116
+     },
+     "tonica": "do"
+    }
+   ],
+   "uaipertim": [
+    {
+     "grafia": "Uai Pérrtim",
+     "fim_de_frase": true,
+     "vogal_PER": {
+      "dur": 0.08,
+      "f0": 159
+     },
+     "vogal_TIM": {
+      "dur": 0.054,
+      "f0": null
+     },
+     "forca": "PER",
+     "murmurio_ms": 80,
+     "F2_meio": 2337,
+     "F2_fim": 1773,
+     "fim": "fecha com consoante nasal, F2 caindo (lábios: \"im\")"
+    },
+    {
+     "grafia": "Uai Pérrtim",
+     "fim_de_frase": false,
+     "vogal_PER": {
+      "dur": 0.08,
+      "f0": 151
+     },
+     "vogal_TIM": {
+      "dur": 0.08,
+      "f0": 103
+     },
+     "forca": "empate",
+     "murmurio_ms": 60,
+     "F2_meio": 2375,
+     "F2_fim": 2378,
+     "fim": "fecha com consoante nasal, F2 alto (língua: \"in\")"
+    },
+    {
+     "grafia": "Uai Pérrtim",
+     "fim_de_frase": true,
+     "vogal_PER": {
+      "dur": 0.08,
+      "f0": 168
+     },
+     "vogal_TIM": {
+      "dur": 0.08,
+      "f0": null
+     },
+     "forca": "empate",
+     "murmurio_ms": 90,
+     "F2_meio": 2606,
+     "F2_fim": 2303,
+     "fim": "fecha com consoante nasal, F2 alto (língua: \"in\")"
+    }
+   ]
+  },
+  "B-v4-pertim-puro": {
+   "texto_api": "Ô, sô, cê já ouviu falar do UaiPertim? No domingo à tarde, bateu a fome e a geladeira tava vazia. Aí foi só fazer o pedido e esperar a entrega, pertinho de casa. No sábado também tem! E pode chamar no Uátsap do comércio, uai, mas com o UaiPertim é mais rapidim. Sabe qual é o melhor dia pra pedir? Domingo. Uai, é o UaiPertim.",
+   "tem_alinhamento": true,
+   "caracteres_alinhados": 326,
+   "caracteres_enviados": 326,
+   "domingo": [
+    {
+     "palavra": "domingo",
+     "fim_de_frase": false,
+     "do": {
+      "dur": 0.026,
+      "f0": 246
+     },
+     "min": {
+      "dur": 0.02,
+      "f0": 258
+     },
+     "go": {
+      "dur": 0.02,
+      "f0": 237
+     },
+     "tonica": "do"
+    },
+    {
+     "palavra": "Domingo.",
+     "fim_de_frase": true,
+     "do": {
+      "dur": 0.08,
+      "f0": 248
+     },
+     "min": {
+      "dur": 0.08,
+      "f0": 241
+     },
+     "go": {
+      "dur": 0.08,
+      "f0": 132
+     },
+     "tonica": "do"
+    }
+   ],
+   "uaipertim": [
+    {
+     "grafia": "UaiPertim",
+     "fim_de_frase": true,
+     "vogal_PER": {
+      "dur": 0.08,
+      "f0": 112
+     },
+     "vogal_TIM": {
+      "dur": 0.08,
+      "f0": 211
+     },
+     "forca": "empate",
+     "murmurio_ms": 50,
+     "F2_meio": 2552,
+     "F2_fim": 2777,
+     "fim": "fecha com consoante nasal, F2 alto (língua: \"in\")"
+    },
+    {
+     "grafia": "UaiPertim",
+     "fim_de_frase": false,
+     "vogal_PER": {
+      "dur": 0.08,
+      "f0": 123
+     },
+     "vogal_TIM": {
+      "dur": 0.12,
+      "f0": 185
+     },
+     "forca": "TIM",
+     "murmurio_ms": 50,
+     "F2_meio": 2541,
+     "F2_fim": 2714,
+     "fim": "fecha com consoante nasal, F2 alto (língua: \"in\")"
+    },
+    {
+     "grafia": "UaiPertim",
+     "fim_de_frase": true,
+     "vogal_PER": {
+      "dur": 0.08,
+      "f0": 275
+     },
+     "vogal_TIM": {
+      "dur": 0.08,
+      "f0": 176
+     },
+     "forca": "empate",
+     "murmurio_ms": 60,
+     "F2_meio": 2514,
+     "F2_fim": 2641,
+     "fim": "fecha com consoante nasal, F2 alto (língua: \"in\")"
+    }
+   ]
+  },
+  "A-dicionario-pausas": {
+   "texto_api": "Domingo. <break time=\"0.4s\" /> Substantivo. <break time=\"0.4s\" /> O dia de folga que termina com fome. <break time=\"0.4s\" /> Exemplo: domingo à noite, a geladeira vazia… e o Uai Pérr-tim pertinho.",
+   "tem_alinhamento": true,
+   "caracteres_alinhados": 196,
+   "caracteres_enviados": 196,
+   "domingo": [
+    {
+     "palavra": "Domingo.",
+     "fim_de_frase": true,
+     "do": {
+      "dur": 0.116,
+      "f0": 187
+     },
+     "min": {
+      "dur": 0.082,
+      "f0": 125
+     },
+     "go": {
+      "dur": 0.117,
+      "f0": 79
+     },
+     "tonica": "do"
+    },
+    {
+     "palavra": "domingo",
+     "fim_de_frase": false,
+     "do": {
+      "dur": 0.116,
+      "f0": 133
+     },
+     "min": {
+      "dur": 0.082,
+      "f0": 129
+     },
+     "go": {
+      "dur": 0.023,
+      "f0": 186
+     },
+     "tonica": "do"
+    }
+   ],
+   "uaipertim": [
+    {
+     "grafia": "Uai Pérr-tim",
+     "fim_de_frase": false,
+     "vogal_PER": {
+      "dur": 0.116,
+      "f0": 143
+     },
+     "vogal_TIM": {
+      "dur": 0.116,
+      "f0": 133
+     },
+     "forca": "empate",
+     "murmurio_ms": 40,
+     "F2_meio": 2353,
+     "F2_fim": 2604,
+     "fim": "fecha com consoante nasal, F2 alto (língua: \"in\")"
+    }
+   ],
+   "pausas": {
+    "tag_no_alinhamento": true,
+    "pausas": [
+     {
+      "entre": "Domingo. / Substantivo.",
+      "intervalo_alinhamento_s": 0.464,
+      "silencio_medido_s": 0.464
+     },
+     {
+      "entre": "Substantivo. / O",
+      "intervalo_alinhamento_s": 0.616,
+      "silencio_medido_s": 0.616
+     },
+     {
+      "entre": "fome. / Exemplo:",
+      "intervalo_alinhamento_s": 0.499,
+      "silencio_medido_s": 0.499
+     }
+    ]
+   }
+  },
+  "B-v4-dicionario-pausas": {
+   "texto_api": "Domingo. <break time=\"0.4s\" /> Substantivo. <break time=\"0.4s\" /> O dia de folga que termina com fome. <break time=\"0.4s\" /> Exemplo: domingo à noite, a geladeira vazia… e o Uai Pérr-tim pertinho.",
+   "tem_alinhamento": true,
+   "caracteres_alinhados": 196,
+   "caracteres_enviados": 196,
+   "domingo": [
+    {
+     "palavra": "Domingo.",
+     "fim_de_frase": true,
+     "do": {
+      "dur": 0.08,
+      "f0": 231
+     },
+     "min": {
+      "dur": 0.08,
+      "f0": 188
+     },
+     "go": {
+      "dur": 0.16,
+      "f0": 70
+     },
+     "tonica": "do"
+    },
+    {
+     "palavra": "domingo",
+     "fim_de_frase": false,
+     "do": {
+      "dur": 0.054,
+      "f0": 227
+     },
+     "min": {
+      "dur": 0.04,
+      "f0": 248
+     },
+     "go": {
+      "dur": 0.04,
+      "f0": 255
+     },
+     "tonica": "do"
+    }
+   ],
+   "uaipertim": [
+    {
+     "grafia": "Uai Pérr-tim",
+     "fim_de_frase": false,
+     "vogal_PER": {
+      "dur": 0.08,
+      "f0": null
+     },
+     "vogal_TIM": {
+      "dur": 0.08,
+      "f0": null
+     },
+     "forca": "empate",
+     "murmurio_ms": 70,
+     "F2_meio": 2542,
+     "F2_fim": 2538,
+     "fim": "fecha com consoante nasal, F2 alto (língua: \"in\")"
+    }
+   ],
+   "pausas": {
+    "tag_no_alinhamento": true,
+    "pausas": [
+     {
+      "entre": "Domingo. / Substantivo.",
+      "intervalo_alinhamento_s": 0.16,
+      "silencio_medido_s": 0.16
+     },
+     {
+      "entre": "Substantivo. / O",
+      "intervalo_alinhamento_s": 0.16,
+      "silencio_medido_s": 0.16
+     },
+     {
+      "entre": "fome. / Exemplo:",
+      "intervalo_alinhamento_s": 0.32,
+      "silencio_medido_s": 0.301
+     }
+    ]
+   }
+  }
+ },
+ "seed": {
+  "mp3_identico": false,
+  "duracao_s": [
+   23.44,
+   23.44
+  ],
+  "correlacao_da_onda": 0.1234,
+  "alinhamento_identico": true
+ }
+}
