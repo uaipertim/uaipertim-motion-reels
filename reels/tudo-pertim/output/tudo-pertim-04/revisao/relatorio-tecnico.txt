@@ -6,9 +6,9 @@ OK     vídeo h264 High yuv420p
 OK     resolução 1080x1920 (9:16)
 OK     60 fps, 3270 quadros
 OK     duração 54.50 s (alvo 45–60 s)
-OK     áudio aac 48000 Hz, 2 canais, 271 kb/s
+OK     áudio aac 48000 Hz, 2 canais, 272 kb/s
 OK     vídeo e áudio com a mesma duração (Δ 0 ms)
-       arquivo 20.0 MB, 2.9 Mb/s
+       arquivo 19.9 MB, 2.9 Mb/s
        capítulos: 00 5.50 s · 01 7.00 s · 02 5.00 s · 03 7.00 s · 04 6.25 s · 05 5.50 s · 06 5.50 s · 07 7.50 s · trocas de 0.8 s
 
 SOM
@@ -16,7 +16,7 @@ OK     loudness integrado -14.1 LUFS (alvo −14)
 OK     pico real -1.4 dBTP (limite −1)
        a voz sozinha, na escala da mixagem: -13.7 LUFS
        a trilha sozinha, na escala da mixagem: -26.7 LUFS
-       os efeitos sozinhos, na escala da mixagem: -22.5 LUFS
+       os efeitos sozinhos, na escala da mixagem: -22.6 LUFS
 
 VOZ (voz oficial, uma geração inteira por capítulo, nada emendado)
        Victor Pinho (LuQ9eaWO9yCQrR73VQFa) · eleven_v4 · ajustes {"stability": 0.5, "similarity_boost": 0.75}
@@ -41,9 +41,9 @@ OK     capítulo 05: "do/no Glória" (nunca "de Glória"); enviado à API: "Cheg
 OK     capítulo 06: 3.92 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000023; 1 geração(ões) inteiras feitas)
 OK     capítulo 06: sem chiado depois da fala (pior janela depois da última letra: 0% em 4–10 kHz a -120.0 dB)
 OK     capítulo 06: "do/no Glória" (nunca "de Glória"); enviado à API: "Comenta aí: o que nunca pode faltar na sua lista da semana?"
-OK     capítulo 07: 5.52 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000025; 1 geração(ões) inteiras feitas)
+OK     capítulo 07: 6.24 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000026; 1 geração(ões) inteiras feitas)
 OK     capítulo 07: sem chiado depois da fala (pior janela depois da última letra: 0% em 4–10 kHz a -120.0 dB)
-OK     capítulo 07: "do/no Glória" (nunca "de Glória"); enviado à API: "Semana começando? Deixa com o Uai Pértim. Tudo pértim de você. Segue a gente!"
+OK     capítulo 07: "do/no Glória" (nunca "de Glória"); enviado à API: "Semana começando? Relaxa, tem Uai pertím. Tudo pertím de você. Segue a gente!"
 
 MAPA DE TEMPOS E GATILHOS
 OK     mapa de tempos de linha.py (total 45–60 s, capítulos 5–7 s, apoios ≥ 1,5 s, fecho 6–8 s, logo nos 3 últimos s)
@@ -57,7 +57,7 @@ OK     a linha de apoio anterior sai antes de a próxima entrar (nunca duas ao m
 OK     quebras de linha: nunca separam as duas últimas palavras, "pertim de você", "do/no Glória" nem o emoji, e nunca deixam artigo/palavra curta no fim da linha
 
 ÁREAS SEGURAS E COMPOSIÇÃO
-OK     conteúdo entre x 80–940 e y 265–1456: 1244 caixas em 162 quadros fora das trocas
+OK     conteúdo entre x 80–940 e y 265–1456: 1239 caixas em 162 quadros fora das trocas
 OK     nenhuma caixa na coluna de botões (x ≥ 940, y 1060–1560)
 OK     a linha de apoio nunca fica por cima de card, balão ou peça de cena
        faixa usada pelo conteúdo: y 305–1440
@@ -71,8 +71,8 @@ OK     a capa é o quadro 0 do vídeo (PSNR 42.3 dB entre capa.png e o 1º quadr
 OK     regra das capas (revisao/capa.txt): dentro da regra das capas
 OK     fecho com 7.50 s (alvo 6–8 s)
 OK     fecho: a última mudança de texto é em 51.45 s; o texto fica parado 3.05 s até o fim (mínimo 3 s)
-OK     a logo oficial está na tela em todos os 12 quadros amostrados dos 3 últimos segundos (parada desde 50.18 s)
+OK     a logo oficial está na tela em todos os 12 quadros amostrados dos 3 últimos segundos (parada desde 50.77 s)
 OK     fecho: 8 elementos (logo oficial, título, chip, seta, marca) iguais entre 51.50 s e o fim (maior diferença média 0.91 de 255)
-       elementos: rótulo 0.43, título, linha 1 0.54, título, linha 2 0.33, logo oficial 0.34, assinatura 0.82, chip Segue 0.28, seta 0.91, marca 0.90
+       elementos: rótulo 0.42, título, linha 1 0.58, título, linha 2 0.32, logo oficial 0.47, assinatura 0.83, chip Segue 0.30, seta 0.91, marca 0.90
 
 RESULTADO: aprovado

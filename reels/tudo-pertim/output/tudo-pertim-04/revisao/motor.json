@@ -123,15 +123,15 @@
    "t0": 47,
    "t1": 54.5,
    "primeira": 48.2,
-   "ultima": 50.9
+   "ultima": 50.9667
   }
  ],
  "fecho": {
   "ultima_mudanca_de_texto": 51.449999999999996,
   "duracao": 54.5,
   "logo": {
-   "entra": 49.2833,
-   "parada": 50.183299999999996
+   "entra": 49.8667,
+   "parada": 50.7667
   },
   "t0": 47,
   "t1": 54.5

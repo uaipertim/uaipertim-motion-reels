@@ -1,5 +1,5 @@
 {
-  "_doc": "VOZ DA UAIPERTIM NO eleven_v4 — padrão dos episódios NOVOS do Tudo Pertim (ep05 em diante), ligada no JSON do episódio com \"voz\": \"v4\". Sem esse campo, o episódio usa audio/voz_oficial.json (eleven_multilingual_v2), que continua valendo para ep01–ep04. Aprovada no teste 46e4f36 (reels/tudo-pertim/testes/voz-v4/). A chave da API NÃO fica no projeto: vem do ambiente (Segredos de rede, cabeçalho xi-api-key) ou da variável XI_API_KEY.",
+  "_doc": "VOZ DA UAIPERTIM NO eleven_v4 — padrão dos episódios NOVOS do Tudo Pertim (EP. 04 em diante), ligada no JSON do episódio com \"voz\": \"v4\". Sem esse campo, o episódio usa audio/voz_oficial.json (eleven_multilingual_v2), que continua valendo para ep01–ep03. Aprovada no teste 46e4f36 (reels/tudo-pertim/testes/voz-v4/). A chave da API NÃO fica no projeto: vem do ambiente (Segredos de rede, cabeçalho xi-api-key) ou da variável XI_API_KEY.",
   "provider": "elevenlabs",
   "name": "Victor Pinho",
   "voiceId": "LuQ9eaWO9yCQrR73VQFa",
@@ -13,14 +13,18 @@
   "endpoint": "with-timestamps",
   "seed": 42,
   "outputFormat": "mp3_44100_128",
-  "_doc_pronuncia": "PADRÃO do v4 (aprovado de ouvido no teste 75e8a04, grafia 'acento-separado'): no texto enviado à API, SEMPRE 'UaiPertim' → 'Uai Pértim' e 'Pertim'/'pertim' → 'Pértim'/'pértim' (palavra inteira, mantém a inicial); na tela continua 'UaiPertim'/'pertim'. Plano B por capítulo: \"pronuncia\": \"UaiPértim\" ('UaiPertim' → 'UaiPértim' junto, 'pertim' → 'pértim') ou \"sem-troca\" (texto como escrito; só para testes). REPROVADAS (não usar): 'Pérrtim' e a forma com vírgulas 'Uai, Pértim,'.",
+  "_doc_pronuncia": "PADRÃO do v4 (aprovado de ouvido no teste 5376864, grafia 'pertim-i', seeds 42 e 1042): no texto enviado à API, SEMPRE 'UaiPertim' → 'Uai pertím' e 'Pertim'/'pertim' → 'pertím' (E aberto, força no final: per-TIM; palavra inteira, mantém a inicial); na tela continua 'UaiPertim'/'pertim'. Plano B por capítulo: \"pronuncia\": \"UaiPértim\" ('UaiPertim' → 'UaiPértim' junto, 'pertim' → 'pértim'), \"Pértim\" (a regra anterior: 'Uai Pértim'/'Pértim') ou \"sem-troca\" (texto como escrito; só para testes). ROTEIRO: na fala, evitar 'com o UaiPertim'/'deixa com o UaiPertim' (o 'o' emenda no 'Uai' e sai 'Uapértim'); preferir 'tem UaiPertim'. REPROVADAS (não usar): 'Pérrtim' e a forma com vírgulas 'Uai, Pértim,'.",
   "pronuncia": {
-    "UaiPertim": "Uai Pértim",
-    "Pertim": "Pértim"
+    "UaiPertim": "Uai pertím",
+    "Pertim": "pertím"
   },
   "pronuncia_planoB": {
     "UaiPértim": {
       "UaiPertim": "UaiPértim",
+      "Pertim": "Pértim"
+    },
+    "Pértim": {
+      "UaiPertim": "Uai Pértim",
       "Pertim": "Pértim"
     },
     "sem-troca": {}

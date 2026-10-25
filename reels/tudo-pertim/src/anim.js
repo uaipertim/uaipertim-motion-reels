@@ -939,12 +939,12 @@
         ctx.beginPath(); ctx.moveTo(30, -76); ctx.quadraticCurveTo(44, -98, 54, -104); ctx.lineTo(70, -84); ctx.quadraticCurveTo(58, -72, 48, -58); ctx.closePath(); F(CARAMELO);
       }
       if (o.olhar) {
-        // a cabeça olhando para a câmera (três quartos): crânio grande, focinho comprido, orelhas caídas e a língua de fora
-        ctx.beginPath(); ctx.ellipse(cab.x + 22, cab.y - 14 + 4 * pd, 10, 19, -0.75 - 0.25 * pd, 0, TAU); F(CARAMELO_ESC);
-        if (!o.linguica) { ctx.beginPath(); ctx.ellipse(cab.x + 24, cab.y + 30, 8, 12, 0.12, 0, TAU); F('#E9767A'); }
+        // a cabeça olhando para a câmera, DE FRENTE e simétrica: crânio grande, focinho claro no meio, uma orelha caída de
+        // cada lado e a língua de fora no centro
+        if (!o.linguica) { ctx.beginPath(); ctx.ellipse(cab.x, cab.y + 30, 8, 12, 0, 0, TAU); F('#E9767A'); }
         ctx.beginPath(); ctx.ellipse(cab.x, cab.y, 32, 29, 0, 0, TAU); F(CARAMELO);
-        ctx.beginPath(); ctx.ellipse(cab.x + 21, cab.y + 13, 23, 14, 0.12, 0, TAU); F(CARAMELO_CLARO);
-        ctx.beginPath(); ctx.ellipse(cab.x - 28, cab.y + 4 + 4 * pd, 11, 24, 0.3 + 0.2 * pd, 0, TAU); F(CARAMELO_ESC);
+        ctx.beginPath(); ctx.ellipse(cab.x, cab.y + 13, 20, 14, 0, 0, TAU); F(CARAMELO_CLARO);
+        for (const sx of [-1, 1]) { ctx.beginPath(); ctx.ellipse(cab.x + sx * 30, cab.y + 3 + 4 * pd, 11, 24, -sx * (0.3 + 0.2 * pd), 0, TAU); F(CARAMELO_ESC); }
       } else {
         // a cabeça de lado
         ctx.beginPath(); ctx.arc(cab.x, cab.y, 23, 0, TAU); F(CARAMELO);
@@ -962,21 +962,27 @@
         ctx.beginPath(); ctx.arc(-18, -30, 24, 2.3, 4.0); ctx.stroke();
       }
       if (o.olhar) {
-        // o nariz escuro na ponta do focinho, a boca, os olhos e as sobrancelhas
-        ctx.fillStyle = C.tinta; ctx.beginPath(); ctx.ellipse(cab.x + 39, cab.y + 7, 8, 6, 0.1, 0, TAU); ctx.fill();
-        ctx.fillStyle = C.branco; ctx.beginPath(); ctx.arc(cab.x + 37, cab.y + 4.5, 2, 0, TAU); ctx.fill();
-        ctx.strokeStyle = C.tinta; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(cab.x + 38, cab.y + 13); ctx.lineTo(cab.x + 37, cab.y + 19);
-        ctx.quadraticCurveTo(cab.x + 28, cab.y + 25, cab.x + 16, cab.y + 20); ctx.stroke();
-        // os olhos (3/4): o do lado de perto maior, no meio da cara; o do lado do focinho menor, logo acima dele
-        const olhosCao = [[-10, 1, o.pidao ? 8.5 : 5.6], [18, -6, o.pidao ? 6.6 : 4.4]];
-        olhosCao.forEach(([ex, ey, re]) => {
-          ctx.fillStyle = C.tinta; ctx.beginPath(); ctx.arc(cab.x + ex, cab.y + ey, re, 0, TAU); ctx.fill();
-          ctx.fillStyle = C.branco; ctx.beginPath(); ctx.arc(cab.x + ex - re * 0.35, cab.y + ey - re * 0.35, re * 0.38, 0, TAU); ctx.fill();
-        });
-        if (o.pidao) {                                          // as sobrancelhas de pidão, logo acima de cada olho (a ponta de dentro levantada)
+        // de frente: o nariz escuro no centro do focinho, a boca em "w", os dois olhos iguais na mesma altura (com brilho)
+        // e as sobrancelhas de pidão simétricas. A língua vem de novo aqui, por cima da mancha clara do peito e por trás do focinho
+        if (!o.linguica) {
+          ctx.beginPath(); ctx.ellipse(cab.x, cab.y + 30, 8, 12, 0, 0, TAU); ctx.fillStyle = '#E9767A'; ctx.fill(); ctx.lineWidth = 2.5; ctx.strokeStyle = C.tinta; ctx.stroke();
+          ctx.strokeStyle = css('#B84A50', 0.7); ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(cab.x, cab.y + 28); ctx.lineTo(cab.x, cab.y + 37); ctx.stroke();
+          ctx.fillStyle = CARAMELO_CLARO; ctx.beginPath(); ctx.ellipse(cab.x, cab.y + 13, 20, 14, 0, 0, TAU); ctx.fill();
+          ctx.lineWidth = 2.2; ctx.strokeStyle = C.tinta; ctx.beginPath(); ctx.ellipse(cab.x, cab.y + 13, 20, 14, 0, 0.15 * Math.PI, 0.85 * Math.PI); ctx.stroke();
+        }
+        ctx.fillStyle = C.tinta; ctx.beginPath(); ctx.ellipse(cab.x, cab.y + 6, 8, 6, 0, 0, TAU); ctx.fill();
+        ctx.fillStyle = C.branco; ctx.beginPath(); ctx.arc(cab.x - 2.5, cab.y + 3.5, 2, 0, TAU); ctx.fill();
+        ctx.strokeStyle = C.tinta; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(cab.x, cab.y + 12); ctx.lineTo(cab.x, cab.y + 17);
+        ctx.quadraticCurveTo(cab.x - 5, cab.y + 22, cab.x - 11, cab.y + 18); ctx.moveTo(cab.x, cab.y + 17); ctx.quadraticCurveTo(cab.x + 5, cab.y + 22, cab.x + 11, cab.y + 18); ctx.stroke();
+        const re = o.pidao ? 7.5 : 5;
+        for (const sx of [-1, 1]) {
+          const ex = cab.x + sx * 13, ey = cab.y - 8;
+          ctx.fillStyle = C.tinta; ctx.beginPath(); ctx.arc(ex, ey, re, 0, TAU); ctx.fill();
+          ctx.fillStyle = C.branco; ctx.beginPath(); ctx.arc(ex - re * 0.35, ey - re * 0.35, re * 0.38, 0, TAU); ctx.fill();
+        }
+        if (o.pidao) {
           ctx.strokeStyle = CARAMELO_ESC; ctx.lineWidth = 3.5; ctx.beginPath();
-          ctx.moveTo(cab.x - 20, cab.y - 9); ctx.lineTo(cab.x - 5, cab.y - 14);
-          ctx.moveTo(cab.x + 25, cab.y - 15); ctx.lineTo(cab.x + 12, cab.y - 19); ctx.stroke();
+          ctx.moveTo(cab.x - 22, cab.y - 15); ctx.lineTo(cab.x - 8, cab.y - 20); ctx.moveTo(cab.x + 22, cab.y - 15); ctx.lineTo(cab.x + 8, cab.y - 20); ctx.stroke();
         }
       } else {
         ctx.fillStyle = C.tinta; ctx.beginPath(); ctx.arc(cab.x + 34, cab.y + 2, 5, 0, TAU); ctx.fill();
@@ -986,7 +992,7 @@
     });
     // a linguiça na boca, balançando (3 gomos)
     if (o.linguica) {
-      let lx = o.olhar ? cab.x + 30 : cab.x + 28, ly = o.olhar ? cab.y + 20 : cab.y + 12; const bal = Math.sin(o.balanco || 0);
+      let lx = o.olhar ? cab.x : cab.x + 28, ly = o.olhar ? cab.y + 20 : cab.y + 12; const bal = Math.sin(o.balanco || 0);
       for (let i = 0; i < 3; i++) {
         const a = (o.olhar ? 1.57 : 1.2) + 0.5 * bal * (i + 1) / 2, nx = lx + Math.cos(a) * 16, ny = ly + Math.sin(a) * 16;
         ctx.save(); ctx.translate((lx + nx) / 2, (ly + ny) / 2); ctx.rotate(a);

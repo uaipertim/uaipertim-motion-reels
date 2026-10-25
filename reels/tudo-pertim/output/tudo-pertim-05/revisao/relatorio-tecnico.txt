@@ -14,8 +14,8 @@ OK     vídeo e áudio com a mesma duração (Δ 0 ms)
 SOM
 OK     loudness integrado -14.0 LUFS (alvo −14)
 OK     pico real -1.4 dBTP (limite −1)
-       a voz sozinha, na escala da mixagem: -13.8 LUFS
-       a trilha sozinha, na escala da mixagem: -26.8 LUFS
+       a voz sozinha, na escala da mixagem: -13.9 LUFS
+       a trilha sozinha, na escala da mixagem: -26.9 LUFS
        os efeitos sozinhos, na escala da mixagem: -22.1 LUFS
 
 VOZ (voz oficial, uma geração inteira por capítulo, nada emendado)
@@ -41,9 +41,9 @@ OK     capítulo 05: "do/no Glória" (nunca "de Glória"); enviado à API: "Cheg
 OK     capítulo 06: 3.79 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000025; 1 geração(ões) inteiras feitas)
 OK     capítulo 06: sem chiado depois da fala (pior janela depois da última letra: 0% em 4–10 kHz a -120.0 dB)
 OK     capítulo 06: "do/no Glória" (nunca "de Glória"); enviado à API: "Comenta aí: o que não pode faltar no churrasco de domingo?"
-OK     capítulo 07: 5.84 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000028; 1 geração(ões) inteiras feitas)
-OK     capítulo 07: sem chiado depois da fala (pior janela depois da última letra: 0% em 4–10 kHz a -120.0 dB)
-OK     capítulo 07: "do/no Glória" (nunca "de Glória"); enviado à API: "Churrasco de domingo? Deixa com o Uai Pértim. Tudo pértim de você. Segue a gente!"
+OK     capítulo 07: 6.32 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000027; 1 geração(ões) inteiras feitas)
+OK     capítulo 07: sem chiado depois da fala (pior janela depois da última letra: 2% em 4–10 kHz a -38.3 dB)
+OK     capítulo 07: "do/no Glória" (nunca "de Glória"); enviado à API: "Churrasco de domingo? Relaxa, tem Uai pertím. Tudo pertím de você. Segue a gente!"
 
 MAPA DE TEMPOS E GATILHOS
 OK     mapa de tempos de linha.py (total 45–60 s, capítulos 5–7 s, apoios ≥ 1,5 s, fecho 6–8 s, logo nos 3 últimos s)
@@ -61,7 +61,7 @@ OK     a linha de apoio anterior sai antes de a próxima entrar (nunca duas ao m
 OK     quebras de linha: nunca separam as duas últimas palavras, "pertim de você", "do/no Glória" nem o emoji, e nunca deixam artigo/palavra curta no fim da linha
 
 ÁREAS SEGURAS E COMPOSIÇÃO
-OK     conteúdo entre x 80–940 e y 265–1456: 1192 caixas em 141 quadros fora das trocas
+OK     conteúdo entre x 80–940 e y 265–1456: 1189 caixas em 141 quadros fora das trocas
 OK     nenhuma caixa na coluna de botões (x ≥ 940, y 1060–1560)
 OK     a linha de apoio nunca fica por cima de card, balão ou peça de cena
        faixa usada pelo conteúdo: y 305–1440
@@ -75,8 +75,8 @@ OK     a capa é o quadro 0 do vídeo (PSNR 43.5 dB entre capa.png e o 1º quadr
 OK     regra das capas (revisao/capa.txt): dentro da regra das capas
 OK     fecho com 7.50 s (alvo 6–8 s)
 OK     fecho: a última mudança de texto é em 46.20 s; o texto fica parado 3.05 s até o fim (mínimo 3 s)
-OK     a logo oficial está na tela em todos os 12 quadros amostrados dos 3 últimos segundos (parada desde 45.25 s)
-OK     fecho: 8 elementos (logo oficial, título, chip, seta, marca) iguais entre 46.25 s e o fim (maior diferença média 0.52 de 255)
-       elementos: rótulo 0.03, título, linha 1 0.36, título, linha 2 0.21, logo oficial 0.00, assinatura 0.37, chip Segue 0.09, seta 0.52, marca 0.33
+OK     a logo oficial está na tela em todos os 12 quadros amostrados dos 3 últimos segundos (parada desde 45.68 s)
+OK     fecho: 8 elementos (logo oficial, título, chip, seta, marca) iguais entre 46.25 s e o fim (maior diferença média 0.55 de 255)
+       elementos: rótulo 0.02, título, linha 1 0.35, título, linha 2 0.21, logo oficial 0.00, assinatura 0.44, chip Segue 0.10, seta 0.55, marca 0.37
 
 RESULTADO: aprovado

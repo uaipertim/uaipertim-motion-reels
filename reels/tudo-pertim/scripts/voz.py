@@ -28,8 +28,8 @@ seed 42 como ponto de partida):
     estilo 0,35 · speaker boost. Pronúncia de audio/elevenlabs.py → pronounce(): só o texto enviado à API muda
     ("UaiPertim" → "Uai Pérr-tim", "Pertim" → "Pérr-tim"); na tela continua normal.
   • "voz": "v4" (padrão do ep04 em diante): audio/voz_v4.json — eleven_v4, estabilidade 0,50 · semelhança 0,75 (sem
-    style nem speaker boost). Pronúncia padrão (só na API): "UaiPertim" → "Uai Pértim", "Pertim" → "Pértim"; as tags
-    <break …/> saem do texto enviado (o v4 as ignora). Plano B por capítulo: "pronuncia": "UaiPértim" ou "sem-troca".
+    style nem speaker boost). Pronúncia padrão (só na API): "UaiPertim" → "Uai pertím", "Pertim" → "pertím"; as tags
+    <break …/> saem do texto enviado (o v4 as ignora). Plano B por capítulo: "pronuncia": "UaiPértim", "Pértim" ou "sem-troca".
     A seed do v4 não é 100% repetível: a narração aprovada fica salva aqui e o render sempre usa o arquivo salvo
     (este script só chama a API para capítulo novo, com texto mudado ou pedido em --refaz).
 O texto vizinho vai como contexto (previous_text / next_text), já com a mesma grafia.

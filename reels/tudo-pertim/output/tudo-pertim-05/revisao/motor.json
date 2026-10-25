@@ -167,15 +167,15 @@
    "t0": 41.75,
    "t1": 49.25,
    "primeira": 42.95,
-   "ultima": 45.65
+   "ultima": 45.75
   }
  ],
  "fecho": {
-  "ultima_mudanca_de_texto": 46.199999999999996,
+  "ultima_mudanca_de_texto": 46.2,
   "duracao": 49.25,
   "logo": {
-   "entra": 44.35,
-   "parada": 45.25
+   "entra": 44.7833,
+   "parada": 45.683299999999996
   },
   "t0": 41.75,
   "t1": 49.25

@@ -18,7 +18,7 @@ Linha de apoio: uma por frase (o "apoio" de cada frase no JSON; null = nenhuma),
 antes de a anterior ter ficado 1,5 s inteira na tela (entrada de 0,34 s + 1,5 s + folga = 1,92 s entre trocas). A última
 fica ao menos 1,92 s antes da troca de capítulo.
 Pronúncia: a API recebe o texto com a grafia de scripts/voz_versao.py → para_api() (v2: "UaiPertim" vira "Uai Pérr-tim";
-v4: "Uai Pértim"/"Pértim", sem <break>, ou o plano B do capítulo); as palavras do alinhamento voltam a ser as da tela
+v4: "Uai pertím"/"pertím", sem <break>, ou o plano B do capítulo); as palavras do alinhamento voltam a ser as da tela
 aqui, então "em": "UaiPertim" funciona normalmente. No v4 ("voz": "v4") o alinhamento vem em degraus de ~40–80 ms: o
 início de cada palavra é atrasado 60 ms e arredondado para o quadro (60 fps), para nenhuma peça entrar antes da palavra.
 Voz: o áudio de cada capítulo entra INTEIRO e contínuo (só se tira o silêncio antes da 1ª letra e depois da última, com
