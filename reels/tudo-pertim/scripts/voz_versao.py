@@ -3,9 +3,9 @@ Qual voz e qual grafia vão para a API, por episódio (usado por voz.py e linha.
 
   • sem o campo "voz" no JSON do episódio (ep01–ep04) → audio/voz_oficial.json (eleven_multilingual_v2) e a regra antiga
     de pronúncia (audio/elevenlabs.py → pronounce(): "UaiPertim" → "Uai Pérr-tim", "Pertim" → "Pérr-tim"). Nada muda.
-  • "voz": "v4" (padrão do ep05 em diante) → audio/voz_v4.json (eleven_v4). O texto vai COMO ESTÁ ESCRITO, sem a troca
-    "Pérr-tim"; as tags <break …/> saem do texto enviado (o v4 as ignora). Plano B por capítulo, desligado por padrão:
-    "pronuncia": "Pértim" no capítulo ("UaiPertim" → "Uai Pértim", "Pertim"/"pertim" → "Pértim", só na API).
+  • "voz": "v4" (padrão do ep05 em diante) → audio/voz_v4.json (eleven_v4). Pronúncia padrão (só na API):
+    "UaiPertim" → "Uai Pértim", "Pertim"/"pertim" → "Pértim"/"pértim"; as tags <break …/> saem do texto enviado (o v4
+    as ignora). Plano B por capítulo: "pronuncia": "UaiPértim" (junto) ou "sem-troca" (como escrito; só para testes).
   • no v4 o alinhamento vem em degraus de ~40–80 ms: tempo_palavra() atrasa o início de cada palavra ATRASO_V4 e
     arredonda para o quadro (60 fps), para nenhuma peça entrar antes de a palavra soar.
 """
@@ -54,12 +54,13 @@ def para_api(texto, script, cap=None):
         return pronounce(texto)
     t = sem_break(texto)
     plano = (cap or {}).get('pronuncia')
+    cfg = config(script)
     if plano:
-        mapas = config(script).get('pronuncia_planoB', {})
+        mapas = cfg.get('pronuncia_planoB', {})
         if plano not in mapas:
             raise SystemExit(f'"pronuncia": "{plano}" desconhecida (opções: {", ".join(mapas)})')
-        t = troca(t, mapas[plano])
-    return t
+        return troca(t, mapas[plano])
+    return troca(t, cfg.get('pronuncia', {}))             # o padrão do v4: "Uai Pértim" / "Pértim"
 
 
 def palavras_faladas(texto, script):

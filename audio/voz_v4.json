@@ -13,13 +13,17 @@
   "endpoint": "with-timestamps",
   "seed": 42,
   "outputFormat": "mp3_44100_128",
-  "_doc_pronuncia": "No v4 o texto vai à API COMO ESTÁ ESCRITO ('UaiPertim', 'pertim'): aprovado no teste B_v4_sem-troca_Pertim. A troca 'Pérr-tim' da voz_oficial.json NÃO vale aqui. Plano B, só por capítulo e desligado por padrão: \"pronuncia\": \"Pértim\" no capítulo troca, só no texto enviado à API, 'UaiPertim' → 'Uai Pértim' e 'Pertim'/'pertim' → 'Pértim' (palavra inteira, mantém a inicial).",
-  "pronuncia": {},
+  "_doc_pronuncia": "PADRÃO do v4 (aprovado de ouvido no teste 75e8a04, grafia 'acento-separado'): no texto enviado à API, SEMPRE 'UaiPertim' → 'Uai Pértim' e 'Pertim'/'pertim' → 'Pértim'/'pértim' (palavra inteira, mantém a inicial); na tela continua 'UaiPertim'/'pertim'. Plano B por capítulo: \"pronuncia\": \"UaiPértim\" ('UaiPertim' → 'UaiPértim' junto, 'pertim' → 'pértim') ou \"sem-troca\" (texto como escrito; só para testes). REPROVADAS (não usar): 'Pérrtim' e a forma com vírgulas 'Uai, Pértim,'.",
+  "pronuncia": {
+    "UaiPertim": "Uai Pértim",
+    "Pertim": "Pértim"
+  },
   "pronuncia_planoB": {
-    "Pértim": {
-      "UaiPertim": "Uai Pértim",
+    "UaiPértim": {
+      "UaiPertim": "UaiPértim",
       "Pertim": "Pértim"
-    }
+    },
+    "sem-troca": {}
   },
   "_doc_limites": "Limites do v4 (teste 46e4f36): ignora <break> (voz.py tira as tags do texto enviado; a pausa entre capítulos vem da linha do tempo e, dentro do capítulo, da pontuação); a seed não é 100% repetível (a narração aprovada fica salva em audio/<id>/voz/ e o render sempre usa o arquivo salvo: nunca regenerar só para re-renderizar); o alinhamento vem em degraus de ~40–80 ms (linha.py atrasa as palavras 60 ms e arredonda para o quadro)."
 }
