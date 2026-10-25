@@ -1,247 +1,250 @@
 {
   "id": "tudo-pertim-04",
-  "titulo": "Churrasco de domingo",
+  "titulo": "Segunda sem coragem",
   "marca": "@uaipertim",
   "bpm": 120,
-  "transicao": "viralata",
+  "voz": "v4",
+  "transicao": "sacola",
   "capitulos": [
     {
       "rotulo": "TUDO PERTIM · EP. 04",
-      "tom": "pessego",
+      "tom": "creme",
       "titulo": [
-        "Churrasco sem",
-        "carvão? 😩"
+        "Segunda-feira",
+        "sem coragem 🥱"
       ],
       "fala": [
         {
-          "texto": "Domingo de churrasco… e ninguém lembrou do carvão?",
+          "texto": "Segunda-feira, geladeira vazia… e coragem? Nenhuma.",
           "apoio": null
         }
       ],
       "diagrama": {
         "tipo": "capa",
-        "cena": "churrasco",
-        "marcador": "carvão",
-        "cao": {
-          "em": "carvão"
+        "cena": "segunda",
+        "marcador": "coragem",
+        "calendario": {
+          "em": "Segunda-feira"
+        },
+        "geladeira": {
+          "em": "geladeira"
+        },
+        "bocejo": {
+          "em": "coragem"
         }
       }
     },
     {
-      "rotulo": "O CAUSO",
-      "tom": "pessego",
+      "rotulo": "A GELADEIRA",
+      "tom": "verde",
       "titulo": [
-        "O tio já tá",
-        "na churrasqueira."
+        "Abriu a geladeira…",
+        "e nada."
       ],
       "fala": [
         {
-          "texto": "A família chegou, o tio já tá na churrasqueira…",
+          "texto": "Abriu a geladeira: um limão, meio queijo e um pote de sorvete… com feijão.",
           "apoio": null
-        },
-        {
-          "texto": "e a grelha vazia.",
-          "apoio": "E a grelha *vazia*."
         }
       ],
       "diagrama": {
-        "tipo": "causo",
-        "familia": {
-          "em": "família"
+        "tipo": "geladeira",
+        "abre": {
+          "em": "Abriu"
         },
-        "tio": {
-          "em": "tio"
+        "limao": {
+          "em": "limão"
         },
-        "grelha": {
-          "em": "grelha"
-        }
-      },
-      "segura": 0.6,
-      "min": 5.5
-    },
-    {
-      "rotulo": "O AÇOUGUE",
-      "tom": "amarelo",
-      "titulo": [
-        "Faltou carne?",
-        "O açougue resolve."
-      ],
-      "fala": [
-        {
-          "texto": "Picanha, linguiça e aquela costelinha?",
-          "apoio": null
+        "queijo": {
+          "em": "queijo"
         },
-        {
-          "texto": "O açougue do Glória manda.",
-          "apoio": "O açougue do Glória *manda*."
-        }
-      ],
-      "diagrama": {
-        "tipo": "acougue",
-        "picanha": {
-          "em": "Picanha"
+        "sorvete": {
+          "em": "sorvete"
         },
-        "linguica": {
-          "em": "linguiça"
-        },
-        "costelinha": {
-          "em": "costelinha"
-        },
-        "manda": {
-          "em": "manda"
+        "feijao": {
+          "em": "feijão"
         }
       },
       "segura": 0.6
     },
     {
-      "rotulo": "O MERCADIM",
-      "tom": "verde",
+      "rotulo": "A PREGUIÇA",
+      "tom": "pessego",
       "titulo": [
-        "Carvão, sal",
-        "e farofa."
+        "Sair de casa?",
+        "Nem pensar."
       ],
       "fala": [
         {
-          "texto": "Carvão, sal grosso, farofa e o pão de alho… o mercadim resolve.",
-          "apoio": "Carvão, sal grosso e *pão de alho*."
+          "texto": "Sair de casa numa segunda? Cê tá doido, sô?",
+          "apoio": null
         }
       ],
       "diagrama": {
-        "tipo": "socorro",
-        "loja": "mercado",
-        "lojinha": {
-          "em": "mercadim"
+        "tipo": "preguica",
+        "nuvem": {
+          "em": "Sair"
         },
+        "afunda": {
+          "em": "segunda"
+        },
+        "zzz": {
+          "em": "doido"
+        },
+        "chinelo": {
+          "em": "sô"
+        }
+      },
+      "min": 5.0
+    },
+    {
+      "rotulo": "A SOLUÇÃO",
+      "tom": "amarelo",
+      "titulo": [
+        "Calma,",
+        "tem UaiPertim."
+      ],
+      "fala": [
+        {
+          "texto": "Calma! Faz a compra da semana com o comércio do Glória: hortifrúti, mercadim e açougue.",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "solucao",
+        "lojas": [
+          {
+            "tipo": "hortifruti",
+            "em": "hortifrúti"
+          },
+          {
+            "tipo": "mercado",
+            "em": "mercadim"
+          },
+          {
+            "tipo": "acougue",
+            "em": "açougue"
+          }
+        ],
+        "brota": {
+          "em": "comércio"
+        }
+      }
+    },
+    {
+      "rotulo": "A LISTA",
+      "tom": "verde",
+      "titulo": [
+        "Arroz, feijão",
+        "e o resto."
+      ],
+      "fala": [
+        {
+          "texto": "Arroz, feijão, ovo, verdura…",
+          "apoio": null
+        },
+        {
+          "texto": "e aquele café pra aguentar a semana.",
+          "apoio": "E aquele *café pra aguentar*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "lista",
         "itens": [
           {
-            "tipo": "carvao",
-            "em": "Carvão",
-            "som": "flop"
+            "tipo": "arroz",
+            "em": "Arroz"
           },
           {
-            "tipo": "sal",
-            "em": "sal",
-            "som": "shine"
+            "tipo": "feijao",
+            "em": "feijão"
           },
           {
-            "tipo": "farofa",
-            "em": "farofa"
+            "tipo": "ovos",
+            "em": "ovo"
           },
           {
-            "tipo": "paoAlho",
-            "em": "pão"
+            "tipo": "verdura",
+            "em": "verdura"
+          },
+          {
+            "tipo": "cafe",
+            "em": "café"
           }
         ]
       },
-      "segura": 0.5
-    },
-    {
-      "rotulo": "GELADIM",
-      "tom": "verde",
-      "titulo": [
-        "Refri gelado",
-        "e muito gelo!"
-      ],
-      "fala": [
-        {
-          "texto": "E refri trincando de gelado, com saco de gelo de quebra.",
-          "apoio": "Refri trincando e *saco de gelo*."
-        }
-      ],
-      "diagrama": {
-        "tipo": "geladim",
-        "isopor": {
-          "em": "E"
-        },
-        "refri": {
-          "em": "refri"
-        },
-        "trincando": {
-          "em": "trincando"
-        },
-        "gelo": {
-          "em": "gelo"
-        }
-      },
-      "segura": 0.6,
-      "min": 5.5
+      "segura": 0.6
     },
     {
       "rotulo": "CHEGOU",
       "tom": "amarelo",
       "titulo": [
-        "Chegou antes",
-        "da brasa pegar."
+        "Chegou, e a segunda",
+        "ficou leve."
       ],
       "fala": [
         {
-          "texto": "Chegou antes da brasa pegar.",
+          "texto": "Chegou em casa, e a segunda-feira até ficou mais leve.",
           "apoio": null
-        },
-        {
-          "texto": "O tio nem precisou sair da churrasqueira.",
-          "apoio": "O tio *nem saiu da churrasqueira*."
         }
       ],
       "diagrama": {
-        "tipo": "churrasco",
+        "tipo": "leve",
         "moto": {
           "em": "Chegou"
         },
-        "grelha": {
-          "em": "brasa"
+        "geladeira": {
+          "em": "casa"
         },
-        "fumaca": {
-          "em": "pegar"
+        "espreguica": {
+          "em": "segunda-feira"
         },
-        "familia": {
-          "em": "tio"
-        },
-        "pedacinho": {
-          "em": "churrasqueira"
+        "sol": {
+          "em": "leve"
         }
       },
-      "segura": 0.7
+      "segura": 0.7,
+      "min": 5.5
     },
     {
       "rotulo": "SUA VEZ",
       "tom": "amarelo",
       "titulo": [
-        "O que não pode",
-        "faltar no churrasco?"
+        "O que nunca",
+        "falta na lista?"
       ],
       "fala": [
         {
-          "texto": "Comenta aí: o que não pode faltar no churrasco de domingo?",
-          "apoio": "No seu, *qual é o indispensável*?"
+          "texto": "Comenta aí: o que nunca pode faltar na sua lista da semana?",
+          "apoio": "Na sua lista, *o que é sagrado*?"
         }
       ],
       "diagrama": {
         "tipo": "enquete",
         "opcoes": [
           {
-            "t": "pão de alho",
+            "t": "café",
             "em": "Comenta"
           },
           {
-            "t": "vinagrete",
+            "t": "arroz e feijão",
             "em": "aí"
           },
           {
-            "t": "farofa",
-            "em": "pode"
+            "t": "ovo",
+            "em": "nunca"
           },
           {
-            "t": "linguiça",
+            "t": "pão de queijo",
             "em": "faltar"
           },
           {
-            "t": "mandioca",
-            "em": "churrasco"
+            "t": "banana",
+            "em": "lista"
           },
           {
-            "t": "queijo coalho",
-            "em": "domingo"
+            "t": "leite",
+            "em": "semana"
           }
         ]
       },
@@ -258,7 +261,7 @@
       "min": 7.5,
       "fala": [
         {
-          "texto": "UaiPertim. Churrasco de domingo? Tudo pertim de você. Segue a gente!",
+          "texto": "Semana começando? Deixa com o UaiPertim. Tudo pertim de você. Segue a gente!",
           "apoio": null
         }
       ],
@@ -278,7 +281,7 @@
         "confete": {
           "em": "+1.2"
         },
-        "cachorro": {
+        "sacola": {
           "em": "+1.6"
         }
       }

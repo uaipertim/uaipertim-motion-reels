@@ -4,75 +4,79 @@ output/tudo-pertim-05/uaipertim-tudo-pertim-05.mp4
 FORMATO
 OK     vídeo h264 High yuv420p
 OK     resolução 1080x1920 (9:16)
-OK     60 fps, 3270 quadros
-OK     duração 54.50 s (alvo 45–60 s)
-OK     áudio aac 48000 Hz, 2 canais, 272 kb/s
+OK     60 fps, 2955 quadros
+OK     duração 49.25 s (alvo 45–60 s)
+OK     áudio aac 48000 Hz, 2 canais, 269 kb/s
 OK     vídeo e áudio com a mesma duração (Δ 0 ms)
-       arquivo 19.9 MB, 2.9 Mb/s
-       capítulos: 00 5.50 s · 01 7.00 s · 02 5.00 s · 03 7.00 s · 04 6.25 s · 05 5.50 s · 06 5.50 s · 07 7.50 s · trocas de 0.8 s
+       arquivo 18.3 MB, 3.0 Mb/s
+       capítulos: 00 4.00 s · 01 5.50 s · 02 5.25 s · 03 5.50 s · 04 5.50 s · 05 5.25 s · 06 5.50 s · 07 7.50 s · trocas de 0.8 s
 
 SOM
-OK     loudness integrado -14.1 LUFS (alvo −14)
-OK     pico real -1.2 dBTP (limite −1)
-       a voz sozinha, na escala da mixagem: -13.6 LUFS
-       a trilha sozinha, na escala da mixagem: -26.6 LUFS
-       os efeitos sozinhos, na escala da mixagem: -22.5 LUFS
+OK     loudness integrado -14.0 LUFS (alvo −14)
+OK     pico real -1.4 dBTP (limite −1)
+       a voz sozinha, na escala da mixagem: -13.8 LUFS
+       a trilha sozinha, na escala da mixagem: -26.8 LUFS
+       os efeitos sozinhos, na escala da mixagem: -22.1 LUFS
 
 VOZ (voz oficial, uma geração inteira por capítulo, nada emendado)
        Victor Pinho (LuQ9eaWO9yCQrR73VQFa) · eleven_v4 · ajustes {"stability": 0.5, "similarity_boost": 0.75}
-OK     capítulo 00: 5.04 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000027; 1 geração(ões) inteiras feitas)
+OK     capítulo 00: 3.60 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000025; 1 geração(ões) inteiras feitas)
 OK     capítulo 00: sem chiado depois da fala (pior janela depois da última letra: 0% em 4–10 kHz a -120.0 dB)
-OK     capítulo 00: "do/no Glória" (nunca "de Glória"); enviado à API: "Segunda-feira, geladeira vazia… e coragem? Nenhuma."
-OK     capítulo 01: 6.00 s contínuos da geração com seed 1042 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000026; 2 geração(ões) inteiras feitas)
+OK     capítulo 00: "do/no Glória" (nunca "de Glória"); enviado à API: "Domingo de churrasco… e ninguém lembrou do carvão?"
+OK     capítulo 01: 4.88 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000025; 1 geração(ões) inteiras feitas)
 OK     capítulo 01: sem chiado depois da fala (pior janela depois da última letra: 0% em 4–10 kHz a -120.0 dB)
-OK     capítulo 01: "do/no Glória" (nunca "de Glória"); enviado à API: "Abriu a geladeira: um limão, meio queijo e um pote de sorvete… com feijão."
-OK     capítulo 02: 3.52 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000025; 1 geração(ões) inteiras feitas)
-OK     capítulo 02: sem chiado depois da fala (pior janela depois da última letra: 1% em 4–10 kHz a -34.7 dB)
-OK     capítulo 02: "do/no Glória" (nunca "de Glória"); enviado à API: "Sair de casa numa segunda? Cê tá doido, sô?"
-OK     capítulo 03: 6.39 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000028; 1 geração(ões) inteiras feitas)
+OK     capítulo 01: "do/no Glória" (nunca "de Glória"); enviado à API: "A família chegou, o tio já tá na churrasqueira… e a grelha vazia."
+OK     capítulo 02: 4.48 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000024; 1 geração(ões) inteiras feitas)
+OK     capítulo 02: sem chiado depois da fala (pior janela depois da última letra: 2% em 4–10 kHz a -40.7 dB)
+OK     capítulo 02: "do/no Glória" (nunca "de Glória"); enviado à API: "Picanha, linguiça e aquela costelinha? O açougue do Glória manda."
+OK     capítulo 03: 5.03 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000025; 1 geração(ões) inteiras feitas)
 OK     capítulo 03: sem chiado depois da fala (pior janela depois da última letra: 0% em 4–10 kHz a -120.0 dB)
-OK     capítulo 03: "do/no Glória" (nunca "de Glória"); enviado à API: "Calma! Faz a compra da semana com o comércio do Glória: hortifrúti, mercadim e açougue."
-OK     capítulo 04: 5.66 s contínuos da geração com seed 1042 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000024; 2 geração(ões) inteiras feitas)
-OK     capítulo 04: sem chiado depois da fala (pior janela depois da última letra: 1% em 4–10 kHz a -40.3 dB)
-OK     capítulo 04: "do/no Glória" (nunca "de Glória"); enviado à API: "Arroz, feijão, ovo, verdura… e aquele café pra aguentar a semana."
-OK     capítulo 05: 3.58 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000024; 1 geração(ões) inteiras feitas)
-OK     capítulo 05: sem chiado depois da fala (pior janela depois da última letra: 1% em 4–10 kHz a -42.5 dB)
-OK     capítulo 05: "do/no Glória" (nunca "de Glória"); enviado à API: "Chegou em casa, e a segunda-feira até ficou mais leve."
-OK     capítulo 06: 3.92 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000023; 1 geração(ões) inteiras feitas)
+OK     capítulo 03: "do/no Glória" (nunca "de Glória"); enviado à API: "Carvão, sal grosso, farofa e o pão de alho… o mercadim resolve."
+OK     capítulo 04: 4.08 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000028; 1 geração(ões) inteiras feitas)
+OK     capítulo 04: sem chiado depois da fala (pior janela depois da última letra: 0% em 4–10 kHz a -120.0 dB)
+OK     capítulo 04: "do/no Glória" (nunca "de Glória"); enviado à API: "E refri trincando de gelado, com saco de gelo de quebra."
+OK     capítulo 05: 4.48 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000024; 1 geração(ões) inteiras feitas)
+OK     capítulo 05: sem chiado depois da fala (pior janela depois da última letra: 0% em 4–10 kHz a -120.0 dB)
+OK     capítulo 05: "do/no Glória" (nunca "de Glória"); enviado à API: "Chegou antes da brasa pegar. O tio nem precisou sair da churrasqueira."
+OK     capítulo 06: 3.79 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000025; 1 geração(ões) inteiras feitas)
 OK     capítulo 06: sem chiado depois da fala (pior janela depois da última letra: 0% em 4–10 kHz a -120.0 dB)
-OK     capítulo 06: "do/no Glória" (nunca "de Glória"); enviado à API: "Comenta aí: o que nunca pode faltar na sua lista da semana?"
-OK     capítulo 07: 5.12 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000030; 1 geração(ões) inteiras feitas)
+OK     capítulo 06: "do/no Glória" (nunca "de Glória"); enviado à API: "Comenta aí: o que não pode faltar no churrasco de domingo?"
+OK     capítulo 07: 5.84 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000028; 1 geração(ões) inteiras feitas)
 OK     capítulo 07: sem chiado depois da fala (pior janela depois da última letra: 0% em 4–10 kHz a -120.0 dB)
-OK     capítulo 07: "do/no Glória" (nunca "de Glória"); enviado à API: "Uai Pértim. Semana começando? Tudo pértim de você. Segue a gente!"
+OK     capítulo 07: "do/no Glória" (nunca "de Glória"); enviado à API: "Churrasco de domingo? Deixa com o Uai Pértim. Tudo pértim de você. Segue a gente!"
 
 MAPA DE TEMPOS E GATILHOS
 OK     mapa de tempos de linha.py (total 45–60 s, capítulos 5–7 s, apoios ≥ 1,5 s, fecho 6–8 s, logo nos 3 últimos s)
 OK     toda palavra "em" da cena está na fala
 
 LEITURA (linhas de apoio)
-       cap 04 · apoio 1: 3.14 s inteira · E aquele café pra aguentar.
-       cap 06 · apoio 1: 5.61 s inteira · Na sua lista, o que é sagrado?
-OK     2 linhas de apoio, a mais curta fica 3.14 s inteira na tela (mínimo 1,5 s)
+       cap 01 · apoio 1: 2.45 s inteira · E a grelha vazia.
+       cap 02 · apoio 1: 2.65 s inteira · O açougue do Glória manda.
+       cap 03 · apoio 1: 5.61 s inteira · Carvão, sal grosso e pão de alho.
+       cap 04 · apoio 1: 5.61 s inteira · Refri trincando e saco de gelo.
+       cap 05 · apoio 1: 3.45 s inteira · O tio nem saiu da churrasqueira.
+       cap 06 · apoio 1: 5.61 s inteira · No seu, qual é o indispensável?
+OK     6 linhas de apoio, a mais curta fica 2.45 s inteira na tela (mínimo 1,5 s)
 OK     a linha de apoio anterior sai antes de a próxima entrar (nunca duas ao mesmo tempo)
 OK     quebras de linha: nunca separam as duas últimas palavras, "pertim de você", "do/no Glória" nem o emoji, e nunca deixam artigo/palavra curta no fim da linha
 
 ÁREAS SEGURAS E COMPOSIÇÃO
-OK     conteúdo entre x 80–940 e y 265–1456: 1255 caixas em 162 quadros fora das trocas
+OK     conteúdo entre x 80–940 e y 265–1456: 1192 caixas em 141 quadros fora das trocas
 OK     nenhuma caixa na coluna de botões (x ≥ 940, y 1060–1560)
 OK     a linha de apoio nunca fica por cima de card, balão ou peça de cena
        faixa usada pelo conteúdo: y 305–1440
 OK     sem quadro vazio nas 7 trocas de capítulo (sempre há conteúdo na tela)
-OK     coluna de botões: 0 pixel de conteúdo em 218 quadros amostrados (só o fundo creme passa por ali)
+OK     coluna de botões: 0 pixel de conteúdo em 197 quadros amostrados (só o fundo creme passa por ali)
 OK     sem trechos pretos
 OK     sem imagem congelada por 1,5 s ou mais
 
 CAPA E FECHO
-OK     a capa é o quadro 0 do vídeo (PSNR 42.3 dB entre capa.png e o 1º quadro)
+OK     a capa é o quadro 0 do vídeo (PSNR 43.5 dB entre capa.png e o 1º quadro)
 OK     regra das capas (revisao/capa.txt): dentro da regra das capas
 OK     fecho com 7.50 s (alvo 6–8 s)
-OK     fecho: a última mudança de texto é em 51.45 s; o texto fica parado 3.05 s até o fim (mínimo 3 s)
-OK     a logo oficial está na tela em todos os 12 quadros amostrados dos 3 últimos segundos (parada desde 48.22 s)
-OK     fecho: 8 elementos (logo oficial, título, chip, seta, marca) iguais entre 51.50 s e o fim (maior diferença média 0.93 de 255)
-       elementos: rótulo 0.43, título, linha 1 0.54, título, linha 2 0.34, logo oficial 0.34, assinatura 0.79, chip Segue 0.29, seta 0.93, marca 0.92
+OK     fecho: a última mudança de texto é em 46.20 s; o texto fica parado 3.05 s até o fim (mínimo 3 s)
+OK     a logo oficial está na tela em todos os 12 quadros amostrados dos 3 últimos segundos (parada desde 45.25 s)
+OK     fecho: 8 elementos (logo oficial, título, chip, seta, marca) iguais entre 46.25 s e o fim (maior diferença média 0.52 de 255)
+       elementos: rótulo 0.03, título, linha 1 0.36, título, linha 2 0.21, logo oficial 0.00, assinatura 0.37, chip Segue 0.09, seta 0.52, marca 0.33
 
 RESULTADO: aprovado

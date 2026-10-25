@@ -1,70 +1,26 @@
 {
- "duracao": 50,
+ "duracao": 54.5,
  "apoios": [
-  {
-   "cap": 1,
-   "i": 1,
-   "texto": "E a grelha vazia.",
-   "entra": 8.166,
-   "inteira_de": 8.506,
-   "ate": 11.25,
-   "linhas": [
-    "E a grelha vazia."
-   ]
-  },
-  {
-   "cap": 2,
-   "i": 1,
-   "texto": "O açougue do Glória manda.",
-   "entra": 14.224,
-   "inteira_de": 14.564,
-   "ate": 17.5,
-   "linhas": [
-    "O açougue do Glória manda."
-   ]
-  },
-  {
-   "cap": 3,
-   "i": 1,
-   "texto": "Carvão, sal grosso e pão de alho.",
-   "entra": 17.8,
-   "inteira_de": 18.14,
-   "ate": 24,
-   "linhas": [
-    "Carvão, sal grosso e pão de alho."
-   ]
-  },
   {
    "cap": 4,
    "i": 1,
-   "texto": "Refri trincando e saco de gelo.",
-   "entra": 24.3,
-   "inteira_de": 24.64,
-   "ate": 30.25,
+   "texto": "E aquele café pra aguentar.",
+   "entra": 31.017,
+   "inteira_de": 31.357,
+   "ate": 34.5,
    "linhas": [
-    "Refri trincando e saco de gelo."
-   ]
-  },
-  {
-   "cap": 5,
-   "i": 1,
-   "texto": "O tio nem saiu da churrasqueira.",
-   "entra": 32.156,
-   "inteira_de": 32.496,
-   "ate": 36.25,
-   "linhas": [
-    "O tio nem saiu da churrasqueira."
+    "E aquele café pra aguentar."
    ]
   },
   {
    "cap": 6,
    "i": 1,
-   "texto": "No seu, qual é o indispensável?",
-   "entra": 36.55,
-   "inteira_de": 36.89,
-   "ate": 42.5,
+   "texto": "Na sua lista, o que é sagrado?",
+   "entra": 41.05,
+   "inteira_de": 41.39,
+   "ate": 47,
    "linhas": [
-    "No seu, qual é o indispensável?"
+    "Na sua lista, o que é sagrado?"
    ]
   }
  ],
@@ -72,119 +28,119 @@
   {
    "de": 0,
    "para": 1,
-   "t0": 4,
-   "t1": 4.75
+   "t0": 5.5,
+   "t1": 6.25
   },
   {
    "de": 1,
    "para": 2,
-   "t0": 10.5,
-   "t1": 11.25
+   "t0": 13.25,
+   "t1": 14
   },
   {
    "de": 2,
    "para": 3,
-   "t0": 16.75,
-   "t1": 17.5
+   "t0": 19,
+   "t1": 19.75
   },
   {
    "de": 3,
    "para": 4,
-   "t0": 23.25,
-   "t1": 24
+   "t0": 26.75,
+   "t1": 27.5
   },
   {
    "de": 4,
    "para": 5,
-   "t0": 29.5,
-   "t1": 30.25
+   "t0": 33.75,
+   "t1": 34.5
   },
   {
    "de": 5,
    "para": 6,
-   "t0": 35.5,
-   "t1": 36.25
+   "t0": 40,
+   "t1": 40.75
   },
   {
    "de": 6,
    "para": 7,
-   "t0": 41.75,
-   "t1": 42.5
+   "t0": 46.25,
+   "t1": 47
   }
  ],
  "montagens": [
   {
    "n": 0,
    "t0": 0,
-   "t1": 4,
-   "primeira": 0.6,
-   "ultima": 3.5
+   "t1": 5.5,
+   "primeira": 0.1667,
+   "ultima": 5
   },
   {
    "n": 1,
-   "t0": 4.75,
-   "t1": 10.5,
-   "primeira": 5.209,
-   "ultima": 8.576
+   "t0": 6.25,
+   "t1": 13.25,
+   "primeira": 6.5667,
+   "ultima": 11.6833
   },
   {
    "n": 2,
-   "t0": 11.25,
-   "t1": 16.75,
-   "primeira": 11.5,
-   "ultima": 15.517
+   "t0": 14,
+   "t1": 19,
+   "primeira": 14.3167,
+   "ultima": 17.3833
   },
   {
    "n": 3,
-   "t0": 17.5,
-   "t1": 23.25,
-   "primeira": 21.233,
-   "ultima": 23.183000000000003
+   "t0": 19.75,
+   "t1": 26.75,
+   "primeira": 22.4667,
+   "ultima": 25.6667
   },
   {
    "n": 4,
-   "t0": 24,
-   "t1": 29.5,
-   "primeira": 24.25,
-   "ultima": 26.885
+   "t0": 27.5,
+   "t1": 33.75,
+   "primeira": 27.7,
+   "ultima": 32.3833
   },
   {
    "n": 5,
-   "t0": 30.25,
-   "t1": 35.5,
-   "primeira": 30.5,
-   "ultima": 34.324
+   "t0": 34.5,
+   "t1": 40,
+   "primeira": 34.8167,
+   "ultima": 37.7667
   },
   {
    "n": 6,
-   "t0": 36.25,
-   "t1": 41.75,
-   "primeira": 36.55,
-   "ultima": 39.333
+   "t0": 40.75,
+   "t1": 46.25,
+   "primeira": 41.0667,
+   "ultima": 44.3333
   },
   {
    "n": 7,
-   "t0": 42.5,
-   "t1": 50,
-   "primeira": 42.75,
-   "ultima": 46.4
+   "t0": 47,
+   "t1": 54.5,
+   "primeira": 48.2,
+   "ultima": 50.9
   }
  ],
  "fecho": {
-  "ultima_mudanca_de_texto": 46.949999999999996,
-  "duracao": 50,
+  "ultima_mudanca_de_texto": 51.449999999999996,
+  "duracao": 54.5,
   "logo": {
-   "entra": 42.75,
-   "parada": 43.65
+   "entra": 49.2833,
+   "parada": 50.183299999999996
   },
-  "t0": 42.5,
-  "t1": 50
+  "t0": 47,
+  "t1": 54.5
  },
  "capa": {
-  "tamanho": 99,
+  "tamanho": 91,
   "linhas": [
-   758.9340502929688,
-   540.8890673828125
+   669.8517041015625,
+   752.3656201171875
   ]
  },
  "palavras_sem_peca": []

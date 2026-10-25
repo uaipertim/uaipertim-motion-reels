@@ -596,7 +596,7 @@ for c in CUES['cues']:
         z = filt(z, [180, 2500], 'band') * (0.55 + 0.45 * np.sin(2 * np.pi * 0.7 * tq) ** 2) * np.minimum(1, tq / 0.3) * np.clip((dd - tq) / 0.4, 0, 1)
         place_pan(sfx, z, t, 0.05, -0.4, 0.4)
     elif ty == 'sacola':
-        # a sacola comilona (ep05): os pulinhos de papel no tempo, o NHAC! (mordida crocante) no tempo cheio e o "ploc"
+        # a sacola comilona (ep04): os pulinhos de papel no tempo, o NHAC! (mordida crocante) no tempo cheio e o "ploc"
         # do próximo capítulo; depois, conforme o jeito: mastigando, o tique do palito ou o "ahh" satisfeito
         sd = c.get('dir', 1)
         dd = max(0.3, d)

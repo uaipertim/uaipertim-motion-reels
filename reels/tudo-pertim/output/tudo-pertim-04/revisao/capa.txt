@@ -1,17 +1,17 @@
 Capa — regra fixa da série (recorte 3:4, canto do play, faixa do contador, nada cortado ou escondido)
 
-OK     a) recorte 3:4 + folga 60 px: conteúdo em x 163–918, y 305–1419
+OK     a) recorte 3:4 + folga 60 px: conteúdo em x 135–906, y 305–1315
        (limite: x 60–1020, y 285–1635)
 OK     b) canto do play (x ≥ 860, y 240–440): 0 px de conteúdo
 OK     c) faixa do contador (y 1560–1680): 0 px de conteúdo
 OK     d) caixas: dentro do recorte, fora do canto do play e da faixa do contador, sem sobreposição
-OK     chip: x 342–738, y 597–697
-OK     título, linha 1: x 161–919, y 743–840
-OK     título, linha 2: x 270–810, y 842–939
-OK     churrasqueira: x 200–450, y 1128–1323
-OK     saco de carvão: x 470–660, y 1253–1323
-OK     vira-lata: x 670–928, y 1023–1323
+OK     chip: x 342–738, y 605–705
+OK     título, linha 1: x 205–875, y 751–840
+OK     título, linha 2: x 164–916, y 842–931
+OK     calendário: x 129–387, y 1105–1315
+OK     bonequinho: x 422–638, y 991–1315
+OK     geladeira: x 706–894, y 1013–1315
 OK     marca: x 430–650, y 305–363
-OK     palavra-chave com 356 px (33% da largura) e título com 759 px (70%), 541 px (50%) (máximo 72% = 778 px)
-OK     bloco centralizado na vertical do recorte 3:4: y 597–1323, centro em 960.0 (centro do recorte: 960)
+OK     palavra-chave com 417 px (39% da largura) e título com 670 px (62%), 752 px (70%) (máximo 72% = 778 px)
+OK     bloco centralizado na vertical do recorte 3:4: y 605–1315, centro em 960.0 (centro do recorte: 960)
 RESULTADO: dentro da regra das capas

@@ -904,7 +904,7 @@
     }
   }
 
-  // ---------------------------------------------------------------- peças do ep04 ("Churrasco de domingo")
+  // ---------------------------------------------------------------- peças do ep05 ("Churrasco de domingo")
   const CARAMELO = '#E0A050', CARAMELO_ESC = '#B9732A', CARAMELO_CLARO = '#F6E3C8';
   // o vira-lata caramelo (virado para a direita; origem no chão). s = largura (≈150 unidades de desenho)
   //   o.pose: 'corre' (galopando, com a linguiça na boca) ou 'sentado'; o.olhar: cara de frente para a câmera;
@@ -967,12 +967,17 @@
         ctx.fillStyle = C.branco; ctx.beginPath(); ctx.arc(cab.x + 37, cab.y + 4.5, 2, 0, TAU); ctx.fill();
         ctx.strokeStyle = C.tinta; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(cab.x + 38, cab.y + 13); ctx.lineTo(cab.x + 37, cab.y + 19);
         ctx.quadraticCurveTo(cab.x + 28, cab.y + 25, cab.x + 16, cab.y + 20); ctx.stroke();
-        const re = o.pidao ? 7 : 4.6;
-        for (const ex of [-10, 12]) {
-          ctx.fillStyle = C.tinta; ctx.beginPath(); ctx.arc(cab.x + ex, cab.y - 8, re, 0, TAU); ctx.fill();
-          ctx.fillStyle = C.branco; ctx.beginPath(); ctx.arc(cab.x + ex - re * 0.35, cab.y - 8 - re * 0.35, re * 0.38, 0, TAU); ctx.fill();
+        // os olhos (3/4): o do lado de perto maior, no meio da cara; o do lado do focinho menor, logo acima dele
+        const olhosCao = [[-10, 1, o.pidao ? 8.5 : 5.6], [18, -6, o.pidao ? 6.6 : 4.4]];
+        olhosCao.forEach(([ex, ey, re]) => {
+          ctx.fillStyle = C.tinta; ctx.beginPath(); ctx.arc(cab.x + ex, cab.y + ey, re, 0, TAU); ctx.fill();
+          ctx.fillStyle = C.branco; ctx.beginPath(); ctx.arc(cab.x + ex - re * 0.35, cab.y + ey - re * 0.35, re * 0.38, 0, TAU); ctx.fill();
+        });
+        if (o.pidao) {                                          // as sobrancelhas de pidão, logo acima de cada olho (a ponta de dentro levantada)
+          ctx.strokeStyle = CARAMELO_ESC; ctx.lineWidth = 3.5; ctx.beginPath();
+          ctx.moveTo(cab.x - 20, cab.y - 9); ctx.lineTo(cab.x - 5, cab.y - 14);
+          ctx.moveTo(cab.x + 25, cab.y - 15); ctx.lineTo(cab.x + 12, cab.y - 19); ctx.stroke();
         }
-        if (o.pidao) { ctx.strokeStyle = CARAMELO_ESC; ctx.lineWidth = 3.5; ctx.beginPath(); ctx.moveTo(cab.x - 19, cab.y - 17); ctx.lineTo(cab.x - 7, cab.y - 23); ctx.moveTo(cab.x + 21, cab.y - 17); ctx.lineTo(cab.x + 9, cab.y - 23); ctx.stroke(); }
       } else {
         ctx.fillStyle = C.tinta; ctx.beginPath(); ctx.arc(cab.x + 34, cab.y + 2, 5, 0, TAU); ctx.fill();
         ctx.beginPath(); ctx.arc(cab.x + 6, cab.y - 6, o.pidao ? 5.5 : 3.8, 0, TAU); ctx.fill();
@@ -1379,7 +1384,7 @@
       balanco: t * 14, rabo: t * 18, contorno: 2.2 });
   }
 
-  // ---- a transição da sacola (episódio com "transicao": "sacola"; desde o ep05): a sacola comilona da UaiPertim pula
+  // ---- a transição da sacola (episódio com "transicao": "sacola"; desde o ep04): a sacola comilona da UaiPertim pula
   //      na tela no tempo da batida (um pulo a cada meio tempo), abre a boca ABAIXO da logo e "engole" o capítulo com
   //      um NHAC! no tempo cheio; atrás dela já está o próximo ("ploc"). 4 jeitos em ciclo: (0) pulo e nhac direto;
   //      (1) bochechas cheias, mastigando; (2) palitando os dentes; (3) para, suspira satisfeita ("ahh") com
@@ -1900,7 +1905,7 @@
     mosquinha(ctx, 820, B - 150, t, 1.3);
   };
 
-  // a capa da churrasqueira (ep04): no quadro 0 a churrasqueira apagada, o saco de carvão vazio e o vira-lata pidão já estão na tela
+  // a capa da churrasqueira (ep05): no quadro 0 a churrasqueira apagada, o saco de carvão vazio e o vira-lata pidão já estão na tela
   CENAS.capa.churrasco = function (ctx, cap, t) {
     const Ly = cap.Ly, ev = cap.ev, B = Ly.bottom;
     churrasqueira(ctx, 325, B, 250, t, { acesa: 0 });
@@ -2814,7 +2819,7 @@
     },
   };
 
-  // ===================== cenas do ep04 ("Churrasco de domingo")
+  // ===================== cenas do ep05 ("Churrasco de domingo")
 
   // ---- causo: a família brotando, o tio de avental e pegador na churrasqueira e a grelha vazia (com o "?")
   CENAS.causo = {
@@ -3133,9 +3138,9 @@
     },
   };
 
-  // ===================== peças do ep05 ("Segunda sem coragem")
+  // ===================== peças do ep04 ("Segunda sem coragem")
 
-  // ---- a sacola comilona (transição "sacola" e o fecho do ep05): a sacola da UaiPertim viva — papel creme, faixa
+  // ---- a sacola comilona (transição "sacola" e o fecho do ep04): a sacola da UaiPertim viva — papel creme, faixa
   //      coral, alças, a logo oficial (o arquivo; nunca redesenhada, deformada, espelhada nem coberta), olhinhos no estilo
   //      das lojinhas e a boca ABAIXO da logo. Contorno tinta. (x, base) = o chão no meio; s = altura do corpo (sem as
   //      alças, que somam ~21%). o: boca 0..1 (aberta), mastiga 0..1 (bochechas cheias, mastigando), palito 0..1,
@@ -3228,7 +3233,7 @@
   // onde fica a logo da sacola na tela (para nada pousar em cima dela)
   const logoSacola = (x, base, s, sq = 1) => { const k = s / SAC.Hb; return { x, y: base + SAC.logoY * k * sq, r: SAC.logoD * k / 2 + 6 }; };
 
-  // ---- o bonequinho do ep05 (de pijama listrado): como os bonequinhos da visita, com cara de sono, bocejo, susto,
+  // ---- o bonequinho do ep04 (de pijama listrado): como os bonequinhos da visita, com cara de sono, bocejo, susto,
   //      felicidade e espreguiçada. (x, base) = o chão (ou o assento); h = altura. o: olhos ('sono' | 'susto' | 'feliz' | 'normal'),
   //      boceja 0..1, sorriso 0..1, bracos 0..1 (0 = caídos, 1 = esticados para cima), cobertor 0..1 (enrolado no
   //      cobertor, com capuz), descabelado 0..1 (o cabelo em pé do susto), look, blink, box
@@ -3386,7 +3391,7 @@
     if (o.box) BOX(o.box, x - 64 * k, base - 140 * k, x + 108 * k, base);
   }
 
-  // ---- os itens do ep05 (sem marca): limão, pote de sorvete (com feijão), pacote de arroz, de feijão, de café, caixa de ovos, verdura
+  // ---- os itens do ep04 (sem marca): limão, pote de sorvete (com feijão), pacote de arroz, de feijão, de café, caixa de ovos, verdura
   function itemLimao(ctx, x, y, s) {
     const k = s / 100;
     ctx.save(); ctx.translate(x, y); ctx.scale(k, k);
@@ -3533,9 +3538,9 @@
     ctx.restore();
   }
 
-  // ===================== cenas do ep05 ("Segunda sem coragem")
+  // ===================== cenas do ep04 ("Segunda sem coragem")
 
-  // a capa da segunda-feira (ep05): no quadro 0 o calendário com o "SEG" caindo, o bonequinho enrolado no cobertor
+  // a capa da segunda-feira (ep04): no quadro 0 o calendário com o "SEG" caindo, o bonequinho enrolado no cobertor
   // (com sono) e a geladeira entreaberta (com a luzinha) já estão na tela
   CENAS.capa.segunda = function (ctx, cap, t) {
     const Ly = cap.Ly, ev = cap.ev, B = Ly.bottom;

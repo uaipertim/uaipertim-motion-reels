@@ -24,10 +24,10 @@ se as 3 falharem, o script PARA, guarda o histórico e não troca o áudio que j
 
 VOZ (scripts/voz_versao.py escolhe pelo campo "voz" do JSON do episódio; sempre Victor Pinho, LuQ9eaWO9yCQrR73VQFa,
 seed 42 como ponto de partida):
-  • sem o campo (ep01–ep04): audio/voz_oficial.json — eleven_multilingual_v2, estabilidade 0,40 · semelhança 0,80 ·
+  • sem o campo (ep01–ep03): audio/voz_oficial.json — eleven_multilingual_v2, estabilidade 0,40 · semelhança 0,80 ·
     estilo 0,35 · speaker boost. Pronúncia de audio/elevenlabs.py → pronounce(): só o texto enviado à API muda
     ("UaiPertim" → "Uai Pérr-tim", "Pertim" → "Pérr-tim"); na tela continua normal.
-  • "voz": "v4" (padrão do ep05 em diante): audio/voz_v4.json — eleven_v4, estabilidade 0,50 · semelhança 0,75 (sem
+  • "voz": "v4" (padrão do ep04 em diante): audio/voz_v4.json — eleven_v4, estabilidade 0,50 · semelhança 0,75 (sem
     style nem speaker boost). Pronúncia padrão (só na API): "UaiPertim" → "Uai Pértim", "Pertim" → "Pértim"; as tags
     <break …/> saem do texto enviado (o v4 as ignora). Plano B por capítulo: "pronuncia": "UaiPértim" ou "sem-troca".
     A seed do v4 não é 100% repetível: a narração aprovada fica salva aqui e o render sempre usa o arquivo salvo

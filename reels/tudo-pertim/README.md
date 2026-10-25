@@ -38,8 +38,10 @@ A cara é **mais jovem, animada e viva**, com a marca em destaque. A pasta `reel
 | **tudo-pertim-01** | "Prazer, UaiPertim!" | 00 capa · 01 quem sou eu · 02 o que tem · 03 como funciona · 04 sem aperto · 05 feito em Minas · 06 sua vez · 07 fecho | final com voz, 52,25 s, revisão aprovada: [`exports/tiktok/tudo-pertim/ep01/`](../../exports/tiktok/tudo-pertim/ep01) |
 | **tudo-pertim-02** | "Um dia no Glória" | 00 capa · 01 7h da manhã · 02 meio-dia · 03 3h da tarde · 04 6h da tarde · 05 sexta à noite · 06 sua vez · 07 fecho | final com voz, 51,5 s, revisão aprovada: [`exports/tiktok/tudo-pertim/ep02/`](../../exports/tiktok/tudo-pertim/ep02) |
 | **tudo-pertim-03** | "Visita sem avisar" (transição da galinha) | 00 capa · 01 o desespero · 02 a cozinha · 03 socorro · 04 o capricho · 05 chegou · 06 sua vez · 07 fecho | final com voz, 50,75 s, revisão aprovada: [`exports/tiktok/tudo-pertim/ep03/`](../../exports/tiktok/tudo-pertim/ep03) |
-| **tudo-pertim-04** | "Churrasco de domingo" (transição do vira-lata) | 00 capa · 01 o causo · 02 o açougue · 03 o mercadim · 04 geladim · 05 chegou · 06 sua vez · 07 fecho | final com voz, 50,0 s, revisão aprovada: [`exports/tiktok/tudo-pertim/ep04/`](../../exports/tiktok/tudo-pertim/ep04) |
-| **tudo-pertim-05** | "Segunda sem coragem" (transição da sacola; 1º episódio com a voz v4) | 00 capa · 01 a geladeira · 02 a preguiça · 03 a solução · 04 a lista · 05 chegou · 06 sua vez · 07 fecho | final com voz v4, 54,5 s, revisão aprovada: [`exports/tiktok/tudo-pertim/ep05/`](../../exports/tiktok/tudo-pertim/ep05) |
+| **tudo-pertim-04** | "Segunda sem coragem" (transição da sacola; 1º episódio com a voz v4) | 00 capa · 01 a geladeira · 02 a preguiça · 03 a solução · 04 a lista · 05 chegou · 06 sua vez · 07 fecho | final com voz v4, 54,5 s, revisão aprovada: [`exports/tiktok/tudo-pertim/ep04/`](../../exports/tiktok/tudo-pertim/ep04) |
+| **tudo-pertim-05** | "Churrasco de domingo" (transição do vira-lata; voz v4) | 00 capa · 01 o causo · 02 o açougue · 03 o mercadim · 04 geladim · 05 chegou · 06 sua vez · 07 fecho | final com voz v4, 49,25 s, revisão aprovada: [`exports/tiktok/tudo-pertim/ep05/`](../../exports/tiktok/tudo-pertim/ep05) |
+
+O "Segunda sem coragem" e o "Churrasco de domingo" trocaram de número (o Segunda é o EP. 04 e o Churrasco, o EP. 05): JSON, pastas de áudio e de saída, exports e o adesivo da capa acompanham. O Churrasco foi para a voz v4 (no v2, o "Domingo" do começo da capa saía "DÓmingo").
 
 Em cada episódio, `output/<id>/` traz:
 
@@ -86,10 +88,11 @@ A prévia (`--previa`) vai para `output/<id>/previa/`, fora do git. A cópia par
    - Título "Em breve / no Glória.".
    - A **logo oficial grande** entra com mola e **para**: fica visível e parada nos 3 últimos segundos.
    - Assinatura "Tudo pertim de você." e chip coral "Segue @uaipertim" com seta.
+   - **A fala do fecho (regra para todo episódio novo):** a pergunta é para quem assiste e o UaiPertim entra como **resposta**. Ex.: "Semana começando? Deixa com o UaiPertim. Tudo pertim de você. Segue a gente!". **Nunca** "UaiPertim. <pergunta>?" (a marca antes da pergunta).
    - O confete do fecho termina antes dos 3 últimos segundos. Todo texto do fecho fica ≥ 3 s parado antes do fim.
 9. **Voz** (só na etapa final, depois da prévia aprovada). Sempre Victor Pinho, `LuQ9eaWO9yCQrR73VQFa`, endpoint `with-timestamps`, seed 42 como ponto de partida. **Cada capítulo é UMA geração inteira.** Nunca se emendam palavras ou trechos; se uma frase sair ruim, o capítulo inteiro é gerado de novo com outra seed (`--refaz N`, até 3 seeds; se as 3 falharem, o script para e ninguém muda o texto sem avisar). Veja "Voz v2 × v4" abaixo.
-   - **ep01–ep04** (sem o campo `"voz"`): `audio/voz_oficial.json`, `eleven_multilingual_v2`. **Pronúncia** (só no texto enviado à API, por `audio/elevenlabs.py → pronounce()`): "UaiPertim" → "Uai Pérr-tim", "Pertim"/"pertim" → "Pérr-tim".
-   - **ep05 em diante: `"voz": "v4"`** no JSON do episódio → `audio/voz_v4.json`, `eleven_v4`. Pronúncia padrão: "UaiPertim" → "Uai Pértim", "Pertim"/"pertim" → "Pértim"/"pértim" (só na API).
+   - **ep01–ep03** (sem o campo `"voz"`): `audio/voz_oficial.json`, `eleven_multilingual_v2`. **Pronúncia** (só no texto enviado à API, por `audio/elevenlabs.py → pronounce()`): "UaiPertim" → "Uai Pérr-tim", "Pertim"/"pertim" → "Pérr-tim".
+   - **ep04 em diante: `"voz": "v4"`** no JSON do episódio → `audio/voz_v4.json`, `eleven_v4`. Pronúncia padrão: "UaiPertim" → "Uai Pértim", "Pertim"/"pertim" → "Pértim"/"pértim" (só na API).
    - O `voz.py` recusa "de Glória": é sempre "do Glória"/"no Glória". Se a API recusar a voz, o script **para e avisa**; a voz nunca é trocada.
    - A chave nunca aparece em chat, log, arquivo ou commit.
 10. **Mix.** −14 LUFS, pico real ≤ −1 dBTP, trilha com ducking suave sob a voz.
@@ -136,7 +139,7 @@ Os dois só aparecem quando o JSON pede. Um episódio sem eles (como o ep01) é 
 
 ## Fazer o próximo episódio (só pelo JSON)
 
-1. Copie `episodios/tudo-pertim-01.json` para `episodios/tudo-pertim-02.json` e troque `id`, `titulo` e os `capitulos` (formato abaixo). **Do ep05 em diante, ponha `"voz": "v4"`** (ep01–ep04 não têm o campo). Não mexa em código.
+1. Copie `episodios/tudo-pertim-01.json` para `episodios/tudo-pertim-02.json` e troque `id`, `titulo` e os `capitulos` (formato abaixo). **Do ep04 em diante, ponha `"voz": "v4"`** (ep01–ep03 não têm o campo). Não mexa em código.
 2. Confira o visual **sem gastar a API** (tempos estimados, sem voz; vai para `output/<id>/previa/`, fora do git):
 
 ```bash
@@ -163,9 +166,9 @@ O comando roda, em ordem:
 
 ### Voz v2 × v4 (o campo `"voz"`)
 
-**A partir do ep05, o padrão é `"voz": "v4"`** no JSON do episódio. Sem o campo, o episódio usa a voz antiga (v2), que continua valendo para ep01–ep04: a narração deles já está salva e eles renderizam idênticos.
+**A partir do ep04, o padrão é `"voz": "v4"`** no JSON do episódio. Sem o campo, o episódio usa a voz antiga (v2), que continua valendo para ep01–ep03: a narração deles já está salva e eles renderizam idênticos.
 
-| | v2 (sem o campo; ep01–ep04) | v4 (`"voz": "v4"`; ep05+) |
+| | v2 (sem o campo; ep01–ep03) | v4 (`"voz": "v4"`; ep04+) |
 |---|---|---|
 | Configuração | `audio/voz_oficial.json`: `eleven_multilingual_v2`, stability 0,40 · similarity 0,80 · style 0,35 · speaker boost | `audio/voz_v4.json`: `eleven_v4`, stability 0,50 · similarity 0,75 (sem `style` e sem `use_speaker_boost`) |
 | Grafia enviada à API | "UaiPertim" → "Uai Pérr-tim", "Pertim" → "Pérr-tim" | **sempre "UaiPertim" → "Uai Pértim" e "Pertim"/"pertim" → "Pértim"/"pértim"** (grafia "acento-separado", aprovada de ouvido no teste `75e8a04`); na tela continua "UaiPertim"/"pertim" |
@@ -207,7 +210,7 @@ A chave do ElevenLabs fica **só em Segredos de rede**: a rede da nuvem põe o c
 
 - **Os capítulos:** o **capítulo 0 é a capa** (cena `capa`), e o seu `rotulo` ("TUDO PERTIM · EP. NN") vira o adesivo da capa. Cada capítulo 1… ganha um segmento na barra de progresso. O último é sempre o `fecho`, com `"min": 7.5`.
 - **`bpm`:** o andamento da trilha e da entrada dos títulos (118–124).
-- **`voz`:** `"v4"` (padrão do ep05 em diante) ou sem o campo (a voz antiga v2 de ep01–ep04). Veja "Voz v2 × v4". No v4, o capítulo aceita `"pronuncia": "UaiPértim"` ou `"sem-troca"` (plano B; o padrão é "Uai Pértim").
+- **`voz`:** `"v4"` (padrão do ep04 em diante) ou sem o campo (a voz antiga v2 de ep01–ep03). Veja "Voz v2 × v4". No v4, o capítulo aceita `"pronuncia": "UaiPértim"` ou `"sem-troca"` (plano B; o padrão é "Uai Pértim").
 - **`fala`:** as frases do capítulo, na ordem. O texto falado é a junção delas e vai **inteiro numa geração só**.
 - **`apoio`:** a linha de apoio que entra com a frase (`null` = nenhuma). Aceita `*marcador amarelo*` e `~coral~`.
 - **`titulo`:** sempre 2 linhas (a 2ª em coral). Na capa, `👀` no fim de uma linha vira os olhinhos desenhados (piscam e olham em volta), `⏰` vira o relógio girando, e `marcador` é a palavra no marcador amarelo.

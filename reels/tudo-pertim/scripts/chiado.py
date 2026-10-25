@@ -42,7 +42,7 @@ def ultima_letra(al, y=None, sr=None):
     """o fim da última letra (alfanumérica) do alinhamento, em segundos. No eleven_v4 o alinhamento às vezes cola a
     última letra no fim do arquivo (o som já tinha acabado antes); nesse caso (fim ≥ duração − 20 ms, com o áudio dado)
     vale o fim da parte vozeada medido no som (fim_sonoro), para a conferência do corte e do chiado medirem a cauda de
-    verdade. Nas vozes do v2 (ep01–ep04) isso nunca acontece: o resultado é o de sempre."""
+    verdade. Nas vozes do v2 (ep01–ep03) isso nunca acontece: o resultado é o de sempre."""
     fim = None
     for c, b in zip(al['characters'], al['character_end_times_seconds']):
         if c.isalnum():
