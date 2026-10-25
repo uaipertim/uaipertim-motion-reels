@@ -16,7 +16,8 @@ Conferência automática de cada geração (se falhar, o capítulo inteiro é ge
 se as 3 falharem, o script PARA, guarda o histórico e não troca o áudio que já existia — nunca se muda o texto sozinho):
   • ritmo entre 8 e 19 caracteres falados por segundo;
   • nenhuma pausa interna maior que 0,9 s entre palavras;
-  • a fala termina antes do fim do áudio (nada cortado no fim);
+  • a fala termina antes do fim do áudio (nada cortado no fim): sobram ≥ 50 ms depois da última letra e os últimos 40 ms
+    do arquivo estão abaixo de −45 dBFS (no v4, quando a última letra vem colada no fim do arquivo, o fim da fala é medido no som: chiado.py);
   • nenhum chiado depois da fala (scripts/chiado.py): depois do fim da última letra do alinhamento, nenhum trecho acima
     de −45 dB com mais de 50% da energia em 4–10 kHz, a não ser que a última palavra termine em s/z/x (ex.: um
     "Glória" que sai "Glórias").
@@ -134,7 +135,7 @@ def palavras(al):
 def confere(x, al, texto):
     """(ok, motivo, números) de uma geração"""
     ws = palavras(al)
-    ini, fim = ws[0]['t0'], ws[-1]['fim_letra']
+    ini, fim = ws[0]['t0'], chiado.ultima_letra(al, x, SR)   # (no v4, a última letra colada no fim do arquivo vem do som)
     letras = sum(c.isalnum() for c in texto)
     ritmo = letras / max(0.1, fim - ini)
     gaps = [b['t0'] - a['fim_letra'] for a, b in zip(ws, ws[1:])]
@@ -145,7 +146,9 @@ def confere(x, al, texto):
         return False, f'ritmo {ritmo:.1f} letras/s', n
     if maior > 0.9:
         return False, f'pausa interna de {maior:.2f} s', n
-    if sobra < 0.05:
+    cauda = x[-int(0.04 * SR):]
+    n['fim_do_arquivo_db'] = round(float(20 * np.log10(np.sqrt(np.mean(np.square(cauda, dtype=np.float64))) + 1e-12)), 1)
+    if sobra < 0.05 or n['fim_do_arquivo_db'] > -45:
         return False, 'fala cortada no fim', n
     ok_ch, motivo_ch, num_ch = chiado.confere(x, SR, al, texto)
     n.update({'chiado_pior_fracao': num_ch['pior_fracao_4_10khz'], 'chiado_pior_db': num_ch['pior_db']})
@@ -195,7 +198,7 @@ def gerar(refaz, seed_fixa=None):
         wavfile.write(os.path.join(OUT, f'cap-{key}.wav'), SR, pcm)
         ws = palavras(al)
         D['capitulos'][key] = {'n': n, 'texto': texto, 'texto_api': api, 'seed': seed, 'formato': fmt, 'duracao_audio': round(len(x) / SR, 3),
-                               'inicio_da_fala': round(ws[0]['t0'], 3), 'fim_da_fala': round(ws[-1]['fim_letra'], 3),
+                               'inicio_da_fala': round(ws[0]['t0'], 3), 'fim_da_fala': round(chiado.ultima_letra(al, x, SR), 3),
                                'sha1_audio': hashlib.sha1(pcm.tobytes()).hexdigest(), 'geracoes': len(hist), 'historico': hist,
                                'alinhamento': al}
         D.update({'voz': VOZ['name'], 'voice_id': VOICE, 'modelo': MODEL, 'ajustes': SETTINGS, 'pronuncia': VOZ.get('pronuncia', {}),

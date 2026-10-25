@@ -595,6 +595,50 @@ for c in CUES['cues']:
         z = np.sign(np.sin(2 * np.pi * np.cumsum(f) / SR)) * 0.5
         z = filt(z, [180, 2500], 'band') * (0.55 + 0.45 * np.sin(2 * np.pi * 0.7 * tq) ** 2) * np.minimum(1, tq / 0.3) * np.clip((dd - tq) / 0.4, 0, 1)
         place_pan(sfx, z, t, 0.05, -0.4, 0.4)
+    elif ty == 'sacola':
+        # a sacola comilona (ep05): os pulinhos de papel no tempo, o NHAC! (mordida crocante) no tempo cheio e o "ploc"
+        # do próximo capítulo; depois, conforme o jeito: mastigando, o tique do palito ou o "ahh" satisfeito
+        sd = c.get('dir', 1)
+        dd = max(0.3, d)
+        tn = c.get('nhac', dd * 0.5)
+        for j in range(4):
+            pouso = add(filt(noise(0.09), [500, 3200], 'band') * np.exp(-tt(0.09) / 0.02) * 0.7, thump(0.14, 120, 0.03, 0.5) * 0.5)
+            place(sfx, pouso, t + j * dd / 3, 0.2, sd * (-0.8 + 1.6 * j / 3))
+        crunch = np.zeros(int(0.16 * SR))
+        for q in range(5):
+            b = filt(noise(0.03), [1800, 7000], 'band') * np.exp(-tt(0.03) / 0.006)
+            i0 = int((q * 0.022 + 0.004 * (q % 2)) * SR)
+            crunch[i0:i0 + len(b)] += b[:len(crunch) - i0] * (1.0 - 0.12 * q)
+        nh = add(crunch * 0.9, thump(0.2, 85, 0.05, 0.9) * 0.6, click(0.02, 2600, 0.003) * 0.5)
+        place(sfx, nh, t + tn, 0.55, sd * (-0.8 + 1.6 * tn / dd)); place(send, nh, t + tn, 0.08)
+        place(sfx, add(pop(520) * 0.8, plop() * 0.5), t + tn + 0.13, 0.36, sd * 0.3)
+        jeito = c.get('jeito', 0)
+        if jeito == 1:
+            for q in range(4):
+                place(sfx, filt(noise(0.05), [900, 4200], 'band') * np.exp(-tt(0.05) / 0.012), t + tn + 0.24 + q * 0.11, 0.16, sd * 0.5)
+        elif jeito == 2:
+            for q in range(2):
+                place(sfx, wood(2400, 0.04, 0.008), t + tn + 0.3 + q * 0.12, 0.2, sd * 0.5)
+        elif jeito == 3:
+            da = 0.55
+            tq = tt(da)
+            f = 300 - 90 * tq / da
+            v = np.sin(2 * np.pi * np.cumsum(f) / SR) * 0.5 + filt(noise(da), [500, 2200], 'band') * 0.5
+            v = filt(v, 1800, 'low') * np.minimum(1, tq / 0.08) * np.clip((da - tq) / 0.3, 0, 1)
+            place(sfx, v, t + tn + 0.2, 0.3, 0.0); place(sfx, sparkle(), t + tn + 0.3, 0.14)
+    elif ty == 'grilo':
+        # o grilinho da geladeira vazia: "cri-cri" (dois trinados agudos, baixinho)
+        for q in range(2):
+            dq = 0.07
+            tq = tt(dq)
+            v = np.sin(2 * np.pi * 4300 * tq) * (0.5 + 0.5 * np.sign(np.sin(2 * np.pi * 70 * tq))) * np.minimum(1, tq / 0.004) * np.clip((dq - tq) / 0.01, 0, 1)
+            place(sfx, v, t + q * 0.14, 0.07, -0.4)
+    elif ty == 'zzz':
+        # o ronquinho/bocejo de sono: um sopro grave que sobe e desce
+        dz = 0.7
+        tq = tt(dz)
+        v = filt(noise(dz), [180, 900], 'band') * (0.6 + 0.4 * np.sin(2 * np.pi * 24 * tq)) * np.sin(np.pi * np.clip(tq / dz, 0, 1)) ** 2
+        place(sfx, v, t, 0.3, 0.1)
     elif ty == 'heart':
         place(sfx, pop(900), t, 0.4); place(sfx, sparkle(), t + 0.05, 0.22); place(send, sparkle(), t, 0.12)
     else:

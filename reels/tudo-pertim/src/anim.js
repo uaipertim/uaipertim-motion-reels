@@ -12,7 +12,7 @@
  * O que é vivo: as lojinhas com olhinhos piscam, pulam na batida, sorriem e olham para o que acontece; figurinhas
  * (estrela, coração, brilho, "UAI!") pipocam; confete nos destaques; balões de fala; chips com ícones riscados.
  *
- * Cenas (CENAS): capa · quem · vitrine · pedido · aperto · minas · comenta · fecho. Nunca telas, celulares ou
+ * Cenas (CENAS): capa · quem · vitrine · pedido · aperto · minas · comenta · fecho (e as de cada episódio, abaixo). Nunca telas, celulares ou
  * interface de app; nunca nomes de lojas reais (só categorias).
  *
  * Regras de quadro: conteúdo entre x 80–940 e y 265–1456; nada (nem a motinha da troca) em x ≥ 940 entre y 1060 e 1560;
@@ -324,6 +324,7 @@
     misterio: { wall: '#F4A98A', wallDark: '#D9876A', a: C.coral, b: C.amarelo, door: '#7A3A18' },
     sorveteria: { wall: '#FBD9CB', wallDark: '#E9A890', a: C.coral, b: '#FFFFFF', door: C.coralDark },
     acougue: { wall: '#FBF6EE', wallDark: '#E2D6C2', a: '#D8402A', b: '#FFFFFF', door: C.coralDark },
+    hortifruti: { wall: '#A9D48C', wallDark: '#7DB35E', a: C.coral, b: '#FFFFFF', door: C.verdeDark },
   };
   function face(ctx, blink, look, smile = 0) {        // os olhinhos do celular-personagem (Phone.tsx → PhoneFace, humor "happy"), viewBox 300×150
     ctx.fillStyle = css(C.coral, 0.28);
@@ -365,6 +366,11 @@
       ctx.fillStyle = '#B8473A'; ctx.beginPath(); ctx.ellipse(-4, 2, 26, 17, -0.2, 0, TAU); ctx.fill();
       ctx.fillStyle = C.papel; ctx.beginPath(); ctx.ellipse(-8, 0, 9, 7, 0, 0, TAU); ctx.fill();
       ctx.fillStyle = C.papel; rr(ctx, 16, -6, 18, 8, 4); ctx.fill(); ctx.beginPath(); ctx.arc(34, -6, 5, 0, TAU); ctx.arc(34, 2, 5, 0, TAU); ctx.fill();
+    } else if (kind === 'hortifruti') {                // a maçã com a folhinha e a cenoura
+      ctx.fillStyle = C.coral; ctx.beginPath(); ctx.arc(-11, 3, 15, 0, TAU); ctx.fill();
+      ctx.fillStyle = C.verde; ctx.beginPath(); ctx.ellipse(-6, -15, 8, 4, -0.6, 0, TAU); ctx.fill();
+      ctx.fillStyle = '#F08A2C'; ctx.beginPath(); ctx.moveTo(8, -8); ctx.lineTo(30, -2); ctx.lineTo(12, 16); ctx.closePath(); ctx.fill();
+      ctx.strokeStyle = C.verde; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(10, -6); ctx.lineTo(6, -16); ctx.moveTo(12, -6); ctx.lineTo(16, -17); ctx.stroke();
     } else if (kind === 'sorveteria') {                // a casquinha
       ctx.fillStyle = C.madeira; ctx.beginPath(); ctx.moveTo(-13, -2); ctx.lineTo(13, -2); ctx.lineTo(0, 24); ctx.closePath(); ctx.fill();
       ctx.fillStyle = C.coralLight; ctx.beginPath(); ctx.arc(0, -8, 15, 0, TAU); ctx.fill();
@@ -1274,6 +1280,7 @@
   function travessia(k, u) {
     if (TRANS === 'galinha') return travessiaGalinha(k, u);
     if (TRANS === 'viralata') return travessiaViralata(k, u);
+    if (TRANS === 'sacola') return travessiaSacola(k, u);
     const v = VARIA[k % VARIA.length], dir = k % 2 === 0 ? -1 : 1;
     const e = 0.75 * u + 0.25 * E.inOutSine(u);
     const x = lerp(dir > 0 ? -260 : W + 260, dir > 0 ? W + 260 : -260, e);
@@ -1372,9 +1379,95 @@
       balanco: t * 14, rabo: t * 18, contorno: 2.2 });
   }
 
+  // ---- a transição da sacola (episódio com "transicao": "sacola"; desde o ep05): a sacola comilona da UaiPertim pula
+  //      na tela no tempo da batida (um pulo a cada meio tempo), abre a boca ABAIXO da logo e "engole" o capítulo com
+  //      um NHAC! no tempo cheio; atrás dela já está o próximo ("ploc"). 4 jeitos em ciclo: (0) pulo e nhac direto;
+  //      (1) bochechas cheias, mastigando; (2) palitando os dentes; (3) para, suspira satisfeita ("ahh") com
+  //      coraçõezinhos e segue. O sentido alterna e a altura muda; a base fica sempre acima de y 1060 (nunca na coluna
+  //      de botões) e nada (boca, migalha, "NHAC!", figurinha) fica por cima da logo da sacola.
+  const VARIA_S = [{ base: 1010 }, { base: 960 }, { base: 1030 }, { base: 940 }, { base: 990 }, { base: 1020 }, { base: 970 }];
+  const SACOLA_S = 330;                                   // o corpo; com as alças, ~400 px de altura (tamanho de protagonista)
+  // o NHAC! cai no primeiro tempo cheio da batida dentro da troca (a troca começa num meio tempo)
+  function nhacU(k) {
+    const t1 = CAPS[k].t1, b = Math.ceil(t1 / BT - 1e-6) * BT;
+    let u = (b - t1) / TR;
+    if (u < 0.2) u += BT / TR;
+    if (k % 4 === 3 && u > 0.5) u -= BT / 2 / TR;          // o suspiro precisa de espaço depois da mordida: o nhac vai no meio tempo anterior
+    return u;
+  }
+  function travessiaSacola(k, u) {
+    const v = VARIA_S[k % VARIA_S.length], jeito = k % 4, dir = k % 2 === 0 ? -1 : 1, un = nhacU(k);
+    const xa = dir > 0 ? -240 : W + 240, xb = dir > 0 ? W + 240 : -240;
+    let e = u, parada = 0;
+    const a = un + 0.06, b = a + 0.24;
+    if (jeito === 3) {                                       // chega no meio, para, suspira e segue
+      if (u < a) e = 0.5 * u / a;
+      else if (u < b) { e = 0.5; parada = 1; }
+      else e = 0.5 + 0.5 * (u - b) / (1 - b);
+    }
+    const x = lerp(xa, xb, e);
+    const h = (u * 3) % 1, voa = parada ? 0 : 1;
+    const pulo = voa * 110 * Math.sin(Math.PI * h);
+    const pouso = clamp(1 - Math.min(h, 1 - h) / 0.1);
+    const sq = parada ? 1 + 0.03 * Math.sin(u * 40) : 1 - 0.18 * pouso + 0.07 * Math.sin(Math.PI * h);
+    const boca = E.outCubic(p(u, un - 0.24, un - 0.03)) * (1 - p(u, un - 0.01, un + 0.05));
+    return {
+      dir, x, base: v.base - pulo, chao: v.base, borda: x, sq, tilt: -dir * 0.09 * Math.sin(Math.PI * h) * voa, jeito, un,
+      boca, mastiga: jeito === 1 ? p(u, un + 0.02, un + 0.1) : 0, palito: jeito === 2 ? p(u, un + 0.06, un + 0.2) : 0,
+      suspiro: jeito === 3 ? p(u, a, a + 0.06) * (1 - p(u, b - 0.05, b)) : 0, parada, a, b,
+    };
+  }
+  // o "NHAC!" num estouro amarelo (fica sempre ao lado da sacola, nunca em cima da logo)
+  function nhac(ctx, x, y, e, t) {
+    if (e <= 0.002) return;
+    const k = E.outBack(clamp(e), 2.6);
+    ctx.save(); ctx.translate(x, y); ctx.rotate(-9 * DEG); ctx.scale(k, k);
+    ctx.beginPath(); for (let j = 0; j <= 24; j++) { const a = j / 24 * TAU, r2 = j % 2 ? 40 : 56; ctx.lineTo(Math.cos(a) * r2 * 1.7, Math.sin(a) * r2 * 0.85); }
+    ctx.closePath(); ctx.lineJoin = 'round'; ctx.lineWidth = 9; ctx.strokeStyle = C.branco; ctx.stroke(); ctx.fillStyle = C.amarelo; ctx.fill();
+    txt(ctx, 'NHAC!', 0, 15, { size: 44, weight: 900, align: 'center', color: C.coral });
+    ctx.restore();
+  }
+  const MIGALHA = ['#C98A4B', '#A86B33', '#E2CDB2', '#E8B04F'];
+  function drawWipeSacola(ctx, t, k, u) {
+    const T = travessiaSacola(k, u), kk = SACOLA_S / SAC.Hb;
+    const g = ctx.createLinearGradient(T.borda - 80, 0, T.borda + 80, 0);
+    g.addColorStop(0, css(C.papel, 0)); g.addColorStop(0.5, css(C.papel, 0.9)); g.addColorStop(1, css(C.papel, 0));
+    ctx.fillStyle = g; ctx.fillRect(T.borda - 80, 0, 160, H);
+    // as migalhas que ficam para trás, ao longo da borda (atrás da sacola)
+    for (let i = 0; i < 30; i++) {
+      const x = T.borda - T.dir * (16 + 160 * hash(i, k + 31)), y = (hash(i, k + 33) * (H - 300) + 240 + 220 * u * hash(i, k + 35)) % H;
+      ctx.save(); ctx.translate(x, y); ctx.rotate(u * 8 + i); ctx.globalAlpha = 0.85 * (1 - 0.5 * hash(i, k + 37));
+      ctx.fillStyle = MIGALHA[i % 4]; rr(ctx, -7, -5, 14, 10, 4); ctx.fill(); ctx.restore();
+    }
+    // a mordida: as migalhas espirrando da boca (para trás e para cima, atrás da sacola)
+    const ub = (u - T.un) / 0.3;
+    if (ub > 0 && ub < 1) {
+      for (let i = 0; i < 12; i++) {
+        const a = -Math.PI / 2 - T.dir * (0.3 + 1.1 * hash(i, k + 41)), v = 260 + 260 * hash(i, k + 43);
+        const x = T.x + Math.cos(a) * v * ub, y = T.base + SAC.mouthY * kk + Math.sin(a) * v * ub + 500 * ub * ub;
+        ctx.save(); ctx.globalAlpha = 1 - ub; ctx.translate(x, y); ctx.rotate(ub * 9 + i); ctx.fillStyle = MIGALHA[i % 4]; rr(ctx, -6, -4, 12, 8, 3); ctx.fill(); ctx.restore();
+      }
+    }
+    // a poeirinha do pouso
+    for (let i = 0; i < 4; i++) { ctx.fillStyle = css(C.cremeDeep, 0.45 - 0.08 * i); ctx.beginPath(); ctx.arc(T.x - T.dir * (150 + i * 50), T.chao - 12 - i * 4, 16 + 7 * i, 0, TAU); ctx.fill(); }
+    sacolaComilona(ctx, T.x, T.base, SACOLA_S, t, { dir: T.dir, sq: T.sq, tilt: T.tilt, boca: T.boca, mastiga: T.mastiga, palito: T.palito, suspiro: T.suspiro,
+      look: [T.dir * 0.7, T.boca > 0.3 ? 0.4 : 0.1], blink: blinkAt(t, k + 17), contorno: 2.4 });
+    // o NHAC! na frente da boca, do lado de onde ela vai (fora da sacola)
+    nhac(ctx, T.x + T.dir * 250, T.base - 150 * kk, p(u, T.un - 0.02, T.un + 0.07) * (1 - p(u, T.un + 0.3, T.un + 0.4)), t);
+    // o suspiro satisfeito: "ahh…" em cima das alças e os coraçõezinhos dos lados (longe da logo)
+    if (T.suspiro > 0.01) {
+      const top = T.base - (SAC.Hb + 90) * kk;
+      txt(ctx, 'ahh…', T.x, top - 18, { size: 50, weight: 900, align: 'center', color: css(C.coral, T.suspiro) });
+      for (let i = 0; i < 4; i++) {
+        const ph = clamp((u - T.a) / 0.3 - i * 0.18), sx = i % 2 ? 1 : -1;
+        if (ph > 0 && ph < 1) sticker(ctx, 'coracao', T.x + sx * (178 + 18 * i), T.base - 260 * kk - 150 * ph, 40, Math.min(1, ph * 4) * (1 - p(ph, 0.75, 1)), t);
+      }
+    }
+  }
   function drawWipe(ctx, t, k, u) {
     if (TRANS === 'galinha') return drawWipeGalinha(ctx, t, k, u);
     if (TRANS === 'viralata') return drawWipeViralata(ctx, t, k, u);
+    if (TRANS === 'sacola') return drawWipeSacola(ctx, t, k, u);
     const T = travessia(k, u);
     // a cortina: uma faixa creme macia ao longo da borda da varredura
     const g = ctx.createLinearGradient(T.borda - 80, 0, T.borda + 80, 0);
@@ -1685,7 +1778,7 @@
       const MS = 320;                                       // a motinha da capa
       // a altura do adesivo inclinado (a mesma conta de adesivo(): h 64, −4°, mais a folga da borda)
       const aw = 2 * 26 + tw(cap.rotulo, 26, 900, 3), rot = 4 * DEG;
-      const chipH = 2 * (32 * Math.cos(rot) + (aw / 2) * Math.sin(rot) + 5), ilH = d.cena === 'porta' || d.cena === 'churrasco' ? 330 : MS * 1.0;
+      const chipH = 2 * (32 * Math.cos(rot) + (aw / 2) * Math.sin(rot) + 5), ilH = d.cena === 'porta' || d.cena === 'churrasco' || d.cena === 'segunda' ? 330 : MS * 1.0;
       const titleH = 0.78 * S + 1.0 * S + 0.2 * S;
       const total = chipH + 44 + titleH + 56 + ilH;
       const top = 960 - total / 2;                          // o bloco centrado no recorte 3:4 (y 240–1680)
@@ -1700,6 +1793,17 @@
       cap.ev.confete = at(cap, d.confete && d.confete.em, cap.t0 + 1.2);
       cap.ev.buzina = Math.min(at(cap, d.buzina && d.buzina.em, cap.t1 - 1.4), cap.t1 - 0.95);
       cap.ev.sai = cap.t1 - 0.5;                            // a motinha arranca e sai pela esquerda
+      if (d.cena === 'segunda') {
+        // o calendário com o "SEG" caindo, o bonequinho bocejando no cobertor e a geladeira entreaberta
+        cap.ev.cal = at(cap, d.calendario && d.calendario.em, cap.t0 + 0.2);
+        cap.ev.geladeira = at(cap, d.geladeira && d.geladeira.em, cap.t0 + 1.0);
+        cap.ev.bocejo = at(cap, d.bocejo && d.bocejo.em, cap.t0 + 2.0);
+        cap.ev.bocejos = [];
+        for (let tb = cap.ev.bocejo + 2.6; tb < cap.t1 - 1.0; tb += 2.6) cap.ev.bocejos.push(tb);
+        cap.ev.confete = null;
+        cue(cap.ev.cal, 'flop'); cue(cap.ev.geladeira, 'door'); cue(cap.ev.bocejo, 'zzz');
+        return;
+      }
       if (d.cena === 'churrasco') {
         // a churrasqueira apagada com a fumacinha triste, o saco de carvão vazio e o vira-lata pidão espiando
         cap.ev.cao = at(cap, d.cao && d.cao.em, cap.t0 + 1.5);
@@ -1751,6 +1855,7 @@
       });
       if (d.cena === 'porta') return CENAS.capa.porta(ctx, cap, t);
       if (d.cena === 'churrasco') return CENAS.capa.churrasco(ctx, cap, t);
+      if (d.cena === 'segunda') return CENAS.capa.segunda(ctx, cap, t);
       // a motinha (o mascote) chegando da direita: no quadro 0 está freando, inclinada, com fumaça e a marca do pneu
       const M = Ly.moto, MS = cap.motoS, u = p(t, 0, 0.75), us = p(t, ev.sai, cap.t1);
       const x = M.x + 34 * (1 - E.outCubic(u)) - 1000 * E.inCubic(us);
@@ -2947,6 +3052,11 @@
         FECHO.ultima = Math.max(FECHO.ultima, ev.cachorro + 1.15);
         cue(ev.cachorro, 'cachorro', { d: 1.1, dir: 1 });
       }
+      if (d.sacola) {
+        ev.sacola = Math.min(at(cap, d.sacola.em, cap.t0 + 1.6), DUR - 3.0 - 1.3);   // termina antes dos 3 s finais
+        FECHO.ultima = Math.max(FECHO.ultima, ev.sacola + 1.15);
+        cue(ev.sacola, 'sacola', { d: 1.1, dir: 1, nhac: 0.55, jeito: 0 });
+      }
       cue(ev.logo, 'logo'); cue(ev.ass, 'tick'); cue(ev.chip, 'pop', { f: 700 }); cue(ev.seta, 'whoosh'); cue(ev.confete, 'confete');
     },
     draw(ctx, cap, t) {
@@ -2969,6 +3079,15 @@
           const cx = lerp(-200, W + 200, uc);
           for (let i = 0; i < 4; i++) { ctx.fillStyle = css(C.cremeDeep, 0.5 - 0.1 * i); ctx.beginPath(); ctx.arc(cx - 110 - i * 40, 990 - i * 4, 14 + 6 * i, 0, TAU); ctx.fill(); }
           viralata(ctx, cx, 1000, 160, { dir: 1, passo: cx / 14, linguica: true, balanco: t * 14, rabo: t * 18 });
+        }
+      }
+      if (ev.sacola !== undefined) {
+        // a sacola comilona passando ao fundo aos pulos (atrás da logo e do texto), com um nhac no meio
+        const us = p(t, ev.sacola, ev.sacola + 1.1);
+        if (us > 0 && us < 1) {
+          const sx = lerp(-180, W + 180, us), hh = (us * 3) % 1, nh = Math.sin(Math.PI * p(us, 0.38, 0.55));
+          for (let i = 0; i < 3; i++) { ctx.fillStyle = css(C.cremeDeep, 0.45 - 0.1 * i); ctx.beginPath(); ctx.arc(sx - 100 - i * 36, 994 - i * 4, 12 + 5 * i, 0, TAU); ctx.fill(); }
+          sacolaComilona(ctx, sx, 1000 - 70 * Math.sin(Math.PI * hh), 190, t, { dir: 1, sq: 1 - 0.15 * clamp(1 - Math.min(hh, 1 - hh) / 0.1), boca: nh, look: [0.7, 0.1], contorno: 2 });
         }
       }
       const e = p(t, ev.logo, ev.logo + 0.9);
@@ -3010,6 +3129,642 @@
           ctx.restore();
           if (es >= 1) BOX('seta', x0 - 10, y0, x1 + 4, cy + 20);
         }
+      }
+    },
+  };
+
+  // ===================== peças do ep05 ("Segunda sem coragem")
+
+  // ---- a sacola comilona (transição "sacola" e o fecho do ep05): a sacola da UaiPertim viva — papel creme, faixa
+  //      coral, alças, a logo oficial (o arquivo; nunca redesenhada, deformada, espelhada nem coberta), olhinhos no estilo
+  //      das lojinhas e a boca ABAIXO da logo. Contorno tinta. (x, base) = o chão no meio; s = altura do corpo (sem as
+  //      alças, que somam ~21%). o: boca 0..1 (aberta), mastiga 0..1 (bochechas cheias, mastigando), palito 0..1,
+  //      suspiro 0..1 (olhos fechados felizes e a boquinha do "ahh"), sq (1 = normal; < 1 amassa no pouso, > 1 estica
+  //      no ar: só o papel; a logo nunca), tilt, look [-1..1, -1..1], dir (o lado do palito), contorno.
+  const SAC = { Hb: 340, Wt: 236, Wb: 262, band: 30, eyeY: -276, logoY: -186, logoD: 118, mouthY: -70 };
+  function sacolaComilona(ctx, x, base, s, t, o = {}) {
+    const k = s / SAC.Hb, sq = o.sq ?? 1, dir = o.dir || 1, m = clamp(o.mastiga || 0), sus = clamp(o.suspiro || 0);
+    const bo = clamp(o.boca || 0), lk = o.look || [0, 0];
+    ctx.save(); ctx.translate(x, base); ctx.rotate(o.tilt || 0);
+    ctx.globalAlpha *= o.alpha ?? 1;
+    shadow(ctx, 0, 2, 132 * k * (1.1 - 0.1 * sq), 9 * k, 0.16);
+    ctx.save(); ctx.scale(k * (1 + (1 - sq) * 0.6), k * sq);
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    const { Hb, Wt, Wb } = SAC, inch = 26 * m;               // as bochechas cheias estufam os lados de baixo
+    const corpo = () => {
+      ctx.beginPath(); ctx.moveTo(-Wt / 2, -Hb); ctx.lineTo(Wt / 2, -Hb);
+      ctx.bezierCurveTo(Wt / 2 + 4, -Hb * 0.55, Wb / 2 + inch * 1.3, -Hb * 0.32, Wb / 2, 0);
+      ctx.lineTo(-Wb / 2, 0);
+      ctx.bezierCurveTo(-Wb / 2 - inch * 1.3, -Hb * 0.32, -Wt / 2 - 4, -Hb * 0.55, -Wt / 2, -Hb); ctx.closePath();
+    };
+    duasPassadas(ctx, o.contorno ?? 2.4, (F, S, silhueta) => {
+      for (const dx of [-56, 56]) { ctx.beginPath(); ctx.moveTo(dx - 30, -Hb + 6); ctx.bezierCurveTo(dx - 30, -Hb - 80, dx + 30, -Hb - 80, dx + 30, -Hb + 6); S(C.coralDark, 14); }
+      corpo(); F(C.papel);
+      if (silhueta) return;
+      // a faixa coral (no papel) e as dobrinhas do papel
+      ctx.save(); corpo(); ctx.clip();
+      ctx.fillStyle = C.coral; ctx.fillRect(-Wb, -Hb, 2 * Wb, SAC.band);
+      ctx.strokeStyle = css(C.cremeDeep, 0.7); ctx.lineWidth = 3;
+      for (const dx of [-0.36, 0.36]) { ctx.beginPath(); ctx.moveTo(dx * Wt, -Hb + SAC.band); ctx.lineTo(dx * Wb * 1.04, -6); ctx.stroke(); }
+      ctx.restore();
+      // as bochechas
+      const bc = 0.3 + 0.5 * m + 0.2 * sus;
+      ctx.fillStyle = css(C.coral, bc); for (const sx of [-1, 1]) { ctx.beginPath(); ctx.ellipse(sx * (84 + 10 * m), SAC.mouthY - 18, 22 + 8 * m, 13 + 5 * m, 0, 0, TAU); ctx.fill(); }
+      // os olhinhos (como os das lojinhas: branco, contorno tinta, pupila com brilho); no suspiro, fechados e felizes
+      const bl = Math.max(o.blink || 0, sus > 0.5 ? 1 : 0), fel = sus > 0.5 || m > 0.5;
+      [-46, 46].forEach((ex, i) => {
+        const cy = SAC.eyeY + 2;
+        if (fel) {
+          ctx.strokeStyle = C.tinta; ctx.lineWidth = 7; ctx.beginPath(); ctx.arc(ex, cy + 8, 18, Math.PI * 1.15, Math.PI * 1.85); ctx.stroke();
+          return;
+        }
+        const ry = Math.max(3, 25 * (1 - 0.92 * bl));
+        ctx.beginPath(); ctx.ellipse(ex, cy, 25, ry, 0, 0, TAU); ctx.fillStyle = C.branco; ctx.fill(); ctx.lineWidth = 5; ctx.strokeStyle = C.tinta; ctx.stroke();
+        if (bl < 0.7) {
+          ctx.save(); ctx.beginPath(); ctx.ellipse(ex, cy, 25, ry, 0, 0, TAU); ctx.clip();
+          ctx.fillStyle = C.tinta; ctx.beginPath(); ctx.arc(ex + (i ? -3 : 3) + lk[0] * 9, cy + 3 + lk[1] * 7, 12, 0, TAU); ctx.fill();
+          ctx.fillStyle = C.branco; ctx.beginPath(); ctx.arc(ex + (i ? -7 : -1) + lk[0] * 9, cy - 3 + lk[1] * 7, 4.5, 0, TAU); ctx.fill();
+          ctx.restore();
+        }
+      });
+      // as sobrancelhas (na faixa coral)
+      ctx.strokeStyle = C.tinta; ctx.lineWidth = 6;
+      const sob = -8 * bo;                                  // sobem quando a boca abre
+      ctx.beginPath(); ctx.moveTo(-66, SAC.eyeY - 32 + sob); ctx.quadraticCurveTo(-46, SAC.eyeY - 44 + sob, -26, SAC.eyeY - 36 + sob); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(26, SAC.eyeY - 36 + sob); ctx.quadraticCurveTo(46, SAC.eyeY - 44 + sob, 66, SAC.eyeY - 32 + sob); ctx.stroke();
+      // a boca (sempre ABAIXO da logo)
+      const my = SAC.mouthY;
+      if (bo > 0.04) {
+        const mw = 34 + 54 * bo, mh = 8 + 50 * bo, y0 = my - 6 - 14 * bo;
+        ctx.beginPath(); ctx.moveTo(-mw, y0); ctx.quadraticCurveTo(0, y0 - 10 * bo, mw, y0); ctx.quadraticCurveTo(mw * 0.9, y0 + mh * 1.25, 0, y0 + mh * 1.3); ctx.quadraticCurveTo(-mw * 0.9, y0 + mh * 1.25, -mw, y0); ctx.closePath();
+        ctx.fillStyle = '#3A1F17'; ctx.fill(); ctx.lineWidth = 5; ctx.strokeStyle = C.tinta; ctx.stroke();
+        ctx.save(); ctx.clip();
+        ctx.fillStyle = C.coralLight; ctx.beginPath(); ctx.ellipse(0, y0 + mh * 1.2, mw * 0.5, mh * 0.45, 0, 0, TAU); ctx.fill();   // a linguinha
+        ctx.fillStyle = C.branco; for (const tx of [-mw * 0.32, mw * 0.32]) { rr(ctx, tx - 11, y0 - 8, 22, 12 + 10 * bo, 4); ctx.fill(); }   // os dentinhos
+        ctx.restore();
+      } else if (m > 0.05) {
+        // mastigando: a boca fechada que mexe de um lado pro outro
+        const mv = Math.sin(t * 22) * 8 * m;
+        ctx.strokeStyle = C.tinta; ctx.lineWidth = 7;
+        ctx.beginPath(); ctx.moveTo(-30 + mv, my); ctx.quadraticCurveTo(-10 + mv, my + 12 + 6 * Math.sin(t * 22 + 1), 8 + mv, my + 2); ctx.quadraticCurveTo(22 + mv, my + 12, 32 + mv, my - 2); ctx.stroke();
+      } else if (sus > 0.05) {
+        ctx.fillStyle = '#3A1F17'; ctx.beginPath(); ctx.ellipse(0, my + 2, 13 * sus + 4, 16 * sus + 4, 0, 0, TAU); ctx.fill();
+      } else {
+        ctx.strokeStyle = C.tinta; ctx.lineWidth = 7;
+        ctx.beginPath(); ctx.moveTo(-36, my - 4); ctx.quadraticCurveTo(0, my + 24, 36, my - 4); ctx.stroke();
+      }
+      // o palito de dente no canto da boca, balançando
+      const pl = clamp(o.palito || 0);
+      if (pl > 0.02) {
+        const ang = -0.45 + 0.22 * Math.sin(t * 9), cx0 = dir * 30, L_ = 74 * pl;
+        ctx.strokeStyle = C.madeira; ctx.lineWidth = 7; ctx.beginPath(); ctx.moveTo(cx0, my + 2); ctx.lineTo(cx0 + dir * Math.cos(ang) * L_, my + 2 + Math.sin(ang) * L_); ctx.stroke();
+      }
+    });
+    ctx.restore();
+    // a logo oficial: só translada e acompanha a inclinação, com escala uniforme (nunca achatada nem espelhada)
+    logo(ctx, 0, SAC.logoY * k * sq, SAC.logoD * k);
+    ctx.restore();
+  }
+  // onde fica a logo da sacola na tela (para nada pousar em cima dela)
+  const logoSacola = (x, base, s, sq = 1) => { const k = s / SAC.Hb; return { x, y: base + SAC.logoY * k * sq, r: SAC.logoD * k / 2 + 6 }; };
+
+  // ---- o bonequinho do ep05 (de pijama listrado): como os bonequinhos da visita, com cara de sono, bocejo, susto,
+  //      felicidade e espreguiçada. (x, base) = o chão (ou o assento); h = altura. o: olhos ('sono' | 'susto' | 'feliz' | 'normal'),
+  //      boceja 0..1, sorriso 0..1, bracos 0..1 (0 = caídos, 1 = esticados para cima), cobertor 0..1 (enrolado no
+  //      cobertor, com capuz), descabelado 0..1 (o cabelo em pé do susto), look, blink, box
+  const ZE = { pele: '#E8B48C', cabelo: '#5E2C12', pijama: '#8FC1E3', pijamaEsc: '#5E95C2', coberta: C.amarelo, cobertaEsc: C.amareloDark };
+  function ze(ctx, x, base, h, t, o = {}) {
+    const cab = h * 0.2, by = base - h + cab * 2, cx = x, cy = by - cab * 0.85;
+    const up = clamp(o.bracos || 0), cob = clamp(o.cobertor || 0);
+    ctx.save();
+    if (!o.semSombra) shadow(ctx, x, base, h * 0.28, 7, 0.14);
+    ctx.lineCap = 'round';
+    // os braços (atrás do corpo quando esticados para cima)
+    const braco = (sx) => {
+      const ox = x + sx * h * 0.17, oy = by + h * 0.1;
+      const hx = lerp(x + sx * h * 0.28, x + sx * h * 0.24, up), hy = lerp(by + h * 0.32, by - h * 0.36, up);
+      ctx.strokeStyle = ZE.pijama; ctx.lineWidth = h * 0.075; ctx.beginPath(); ctx.moveTo(ox, oy); ctx.quadraticCurveTo(lerp(ox + sx * h * 0.08, ox + sx * h * 0.14, up), lerp(oy + h * 0.1, oy - h * 0.2, up), hx, hy); ctx.stroke();
+      ctx.fillStyle = ZE.pele; ctx.beginPath(); ctx.arc(hx, hy, h * 0.045, 0, TAU); ctx.fill();
+    };
+    if (cob < 0.5) { braco(-1); braco(1); }
+    if (cob > 0) {                                          // o capuz do cobertor, atrás da cabeça
+      ctx.fillStyle = ZE.coberta; ctx.beginPath(); ctx.arc(cx, cy - cab * 0.05, cab * 1.38, 0, TAU); ctx.fill();
+    }
+    // o corpo de pijama listrado
+    if (cob < 1) {
+      ctx.save(); rr(ctx, x - h * 0.2, by, h * 0.4, base - by, h * 0.18); ctx.fillStyle = ZE.pijama; ctx.fill(); ctx.clip();
+      ctx.strokeStyle = css(ZE.pijamaEsc, 0.55); ctx.lineWidth = h * 0.035;
+      for (let i = -3; i <= 3; i++) { ctx.beginPath(); ctx.moveTo(x + i * h * 0.075, by); ctx.lineTo(x + i * h * 0.075, base); ctx.stroke(); }
+      ctx.fillStyle = C.branco; for (let i = 0; i < 3; i++) { ctx.beginPath(); ctx.arc(x, by + h * (0.08 + i * 0.1), h * 0.014, 0, TAU); ctx.fill(); }
+      ctx.restore();
+    }
+    // a cabeça
+    ctx.fillStyle = ZE.pele; ctx.beginPath(); ctx.arc(cx, cy, cab, 0, TAU); ctx.fill();
+    ctx.fillStyle = ZE.cabelo;
+    if (cob < 0.5) {
+      ctx.beginPath(); ctx.arc(cx, cy - cab * 0.1, cab * 1.03, Math.PI * 1.05, Math.PI * 1.95); ctx.fill();
+      const dsc = clamp(o.descabelado || 0);                // o topete (em pé no susto)
+      for (const [dx, a] of [[-0.35, -0.5], [0, 0], [0.35, 0.5]]) {
+        ctx.save(); ctx.translate(cx + dx * cab, cy - cab * 0.95); ctx.rotate(a * (0.4 + 0.6 * dsc));
+        ctx.beginPath(); ctx.moveTo(-cab * 0.16, 0); ctx.lineTo(0, -cab * (0.28 + 0.45 * dsc)); ctx.lineTo(cab * 0.16, 0); ctx.closePath(); ctx.fill();
+        ctx.restore();
+      }
+    }
+    // o rosto
+    const lk = o.look || [0, 0], ex = cab * 0.36, olh = o.olhos || 'normal', bc = clamp(o.boceja || 0);
+    ctx.fillStyle = css(C.coral, 0.3); for (const sx of [-1, 1]) { ctx.beginPath(); ctx.ellipse(cx + sx * cab * 0.56, cy + cab * 0.3, cab * 0.18, cab * 0.11, 0, 0, TAU); ctx.fill(); }
+    ctx.fillStyle = C.tinta; ctx.strokeStyle = C.tinta; ctx.lineWidth = cab * 0.09;
+    [-1, 1].forEach((sx) => {
+      const exx = cx + sx * ex + lk[0] * cab * 0.12, eyy = cy - cab * 0.08 + lk[1] * cab * 0.08;
+      if (olh === 'sono' || bc > 0.35) {                    // de olho fechado (sono ou no meio do bocejo), com a olheira
+        ctx.beginPath(); ctx.moveTo(exx - cab * 0.15, eyy); ctx.quadraticCurveTo(exx, eyy + cab * 0.08, exx + cab * 0.15, eyy); ctx.stroke();
+        ctx.save(); ctx.strokeStyle = css('#9C6B8A', 0.45); ctx.lineWidth = cab * 0.05; ctx.beginPath(); ctx.arc(exx, eyy + cab * 0.06, cab * 0.14, 0.2 * Math.PI, 0.8 * Math.PI); ctx.stroke(); ctx.restore();
+      } else if (olh === 'feliz') {
+        ctx.beginPath(); ctx.arc(exx, eyy + cab * 0.06, cab * 0.14, Math.PI * 1.1, Math.PI * 1.9); ctx.stroke();
+      } else if (olh === 'susto') {
+        ctx.save(); ctx.fillStyle = C.branco; ctx.beginPath(); ctx.arc(exx, eyy, cab * 0.22, 0, TAU); ctx.fill(); ctx.lineWidth = cab * 0.06; ctx.stroke(); ctx.restore();
+        ctx.beginPath(); ctx.arc(exx + lk[0] * cab * 0.06, eyy + lk[1] * cab * 0.06, cab * 0.08, 0, TAU); ctx.fill();
+        ctx.beginPath(); ctx.moveTo(exx - cab * 0.2, eyy - cab * 0.38); ctx.lineTo(exx + cab * 0.16, eyy - cab * 0.46); ctx.stroke();   // as sobrancelhas lá em cima
+      } else {
+        const bl = o.blink || 0;
+        ctx.beginPath(); ctx.ellipse(exx, eyy, cab * 0.1, cab * 0.13 * (1 - 0.9 * bl), 0, 0, TAU); ctx.fill();
+      }
+    });
+    // a boca: bocejo (o "O" grande, com a linguinha), susto (o "o") ou sorriso
+    if (bc > 0.05) {
+      ctx.fillStyle = '#5A2A1A'; ctx.beginPath(); ctx.ellipse(cx, cy + cab * 0.42, cab * (0.12 + 0.1 * bc), cab * (0.08 + 0.3 * bc), 0, 0, TAU); ctx.fill();
+      ctx.fillStyle = C.coralLight; ctx.beginPath(); ctx.ellipse(cx, cy + cab * (0.42 + 0.2 * bc), cab * 0.1 * bc + 1, cab * 0.08 * bc + 1, 0, 0, TAU); ctx.fill();
+    } else if (olh === 'susto') {
+      ctx.fillStyle = '#5A2A1A'; ctx.beginPath(); ctx.ellipse(cx, cy + cab * 0.42, cab * 0.12, cab * 0.16, 0, 0, TAU); ctx.fill();
+    } else if (olh === 'sono') {
+      ctx.beginPath(); ctx.moveTo(cx - cab * 0.16, cy + cab * 0.4); ctx.lineTo(cx + cab * 0.16, cy + cab * 0.38); ctx.stroke();
+    } else {
+      ctx.beginPath(); ctx.arc(cx, cy + cab * 0.22, cab * (0.28 + 0.1 * (o.sorriso || 0)), 0.15 * Math.PI, 0.85 * Math.PI); ctx.stroke();
+    }
+    // o cobertor: a borda do capuz na testa e o corpo enrolado (xadrez), por cima do pijama
+    if (cob > 0) {
+      ctx.save(); ctx.globalAlpha *= cob;
+      ctx.strokeStyle = ZE.coberta; ctx.lineWidth = cab * 0.36; ctx.beginPath(); ctx.arc(cx, cy + cab * 0.05, cab * 1.12, Math.PI * 1.08, Math.PI * 1.92); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(x - cab * 1.25, cy + cab * 0.55); ctx.quadraticCurveTo(x - h * 0.34, base - h * 0.25, x - h * 0.3, base);
+      ctx.lineTo(x + h * 0.3, base); ctx.quadraticCurveTo(x + h * 0.34, base - h * 0.25, x + cab * 1.25, cy + cab * 0.55);
+      ctx.quadraticCurveTo(x, cy + cab * 1.25, x - cab * 1.25, cy + cab * 0.55); ctx.closePath();
+      ctx.fillStyle = ZE.coberta; ctx.fill();
+      ctx.clip();
+      ctx.strokeStyle = css(ZE.cobertaEsc, 0.8); ctx.lineWidth = h * 0.03;
+      for (let i = -4; i <= 4; i++) { ctx.beginPath(); ctx.moveTo(x + i * h * 0.08, cy); ctx.lineTo(x + i * h * 0.08, base); ctx.stroke(); }
+      ctx.strokeStyle = css(C.coral, 0.55); ctx.lineWidth = h * 0.022;
+      for (let j = 0; j < 6; j++) { const yy = cy + cab * 1.2 + j * h * 0.09; ctx.beginPath(); ctx.moveTo(x - h * 0.4, yy); ctx.lineTo(x + h * 0.4, yy); ctx.stroke(); }
+      ctx.restore();
+    }
+    ctx.restore();
+    if (o.box) BOX(o.box, x - h * (cob > 0 ? 0.36 : 0.32), base - h - cab * (0.4 + 0.5 * (o.descabelado || 0)) - (up > 0.1 ? h * 0.25 * up : 0), x + h * (cob > 0 ? 0.36 : 0.32), base);
+  }
+
+  // ---- a geladeira: (x, base) = o chão no meio; w × h. o: abre 0..1 (a porta gira na dobradiça da esquerda e mostra o
+  //      lado de dentro), fresta 0..1 (entreaberta, com a luz escapando), luz 0..1, dentro(ix0, iy0, ix1, iy1, prateleiras)
+  //      desenha o conteúdo (por trás da porta)
+  function geladeira(ctx, x, base, w, h, o = {}) {
+    const x0 = x - w / 2, top = base - h, ab = clamp(o.abre || 0), fr = clamp(o.fresta || 0), luz = clamp(o.luz ?? Math.max(ab, fr));
+    ctx.save();
+    shadow(ctx, x, base, w * 0.6, 9, 0.14);
+    ctx.fillStyle = C.tinta2; rr(ctx, x0 + w * 0.08, base - 10, w * 0.14, 10, 3); ctx.fill(); rr(ctx, x0 + w * 0.78, base - 10, w * 0.14, 10, 3); ctx.fill();   // os pezinhos
+    ctx.fillStyle = '#E9E3DA'; rr(ctx, x0, top, w, h - 8, w * 0.08); ctx.fill(); ctx.lineWidth = 5; ctx.strokeStyle = C.cremeDeep; ctx.stroke();
+    // o vão de dentro (iluminado quando abre)
+    const ix0 = x0 + w * 0.06, ix1 = x0 + w * 0.94, iy0 = top + w * 0.06, iy1 = base - 8 - w * 0.06;
+    ctx.fillStyle = mixHex('#6E6158', '#FFF4CF', luz); rr(ctx, ix0, iy0, ix1 - ix0, iy1 - iy0, w * 0.05); ctx.fill();
+    const prat = [iy0 + (iy1 - iy0) * 0.27, iy0 + (iy1 - iy0) * 0.53, iy0 + (iy1 - iy0) * 0.79];
+    ctx.fillStyle = css(C.branco, 0.85); prat.forEach((py) => { rr(ctx, ix0 + 4, py, ix1 - ix0 - 8, 7, 3); ctx.fill(); });
+    if (o.dentro) o.dentro(ix0, iy0, ix1, iy1, prat);
+    // a luz que escapa
+    if (luz > 0.01) {
+      const g = ctx.createRadialGradient(x, top + h * 0.35, 10, x, top + h * 0.35, w * 1.25);
+      g.addColorStop(0, css('#FFE48A', 0.38 * luz)); g.addColorStop(1, css('#FFE48A', 0));
+      ctx.fillStyle = g; ctx.fillRect(x - w * 1.3, top - h * 0.2, w * 2.6, h * 1.25);
+    }
+    // a porta (dobradiça à esquerda): a borda solta vai de x0 + w (fechada) até passar da dobradiça (aberta, mostra o lado de dentro)
+    const a = Math.max(E.outCubic(ab), 0.16 * fr), free = lerp(x0 + w, x0 - w * 0.3, a), sk = 22 * Math.sin(Math.PI * Math.min(1, a * 1.1)) * (free > x0 ? 0.6 : 1);
+    const lado = free > x0;
+    if (fr > 0 && ab < 0.05) {                               // entreaberta: a luzinha amarela escapando pela fresta (no máx. 30 px para fora)
+      const gx = x0 + w, gl = ctx.createLinearGradient(free, 0, gx + 30, 0);
+      gl.addColorStop(0, css('#FFD95A', 0.95)); gl.addColorStop(1, css('#FFD95A', 0));
+      ctx.fillStyle = gl; ctx.beginPath(); ctx.moveTo(free, top + 8); ctx.lineTo(gx + 30, top - 20); ctx.lineTo(gx + 30, base + 4); ctx.lineTo(free, base - 16); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = '#FFE48A'; ctx.fillRect(free, top + 10, gx - free - 4, h - 30);
+    }
+    ctx.beginPath(); ctx.moveTo(x0, top); ctx.lineTo(free, top - sk); ctx.lineTo(free, base - 8 + sk); ctx.lineTo(x0, base - 8); ctx.closePath();
+    ctx.fillStyle = lado ? '#F4F0EA' : '#E0D8CC'; ctx.fill(); ctx.lineWidth = 5; ctx.strokeStyle = C.cremeDeep; ctx.stroke();
+    if (lado) {
+      // o lado de fora: a linha do congelador e o puxador perto da borda solta
+      const fw = free - x0;
+      ctx.strokeStyle = C.cremeDeep; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(x0 + 2, top + h * 0.3); ctx.lineTo(free - 2, top + h * 0.3 - sk * 0.4); ctx.stroke();
+      ctx.fillStyle = C.cinza; for (const [y0_, y1_] of [[0.12, 0.24], [0.36, 0.56]]) rr(ctx, free - Math.min(30, fw * 0.16) - 10, top + h * y0_, 10, h * (y1_ - y0_), 5), ctx.fill();
+      ctx.fillStyle = C.coral; ctx.beginPath(); ctx.arc(x0 + fw * 0.3, top + h * 0.15, Math.min(14, fw * 0.06), 0, TAU); ctx.fill();   // o ímã
+    } else {
+      // o lado de dentro da porta: as prateleirinhas
+      ctx.fillStyle = css(C.branco, 0.8); for (const f of [0.3, 0.55, 0.8]) rr(ctx, free + 6, top + h * f, x0 - free - 12, 8, 3), ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  // ---- o calendário de mesa (folhinha) com "SEG": a folha presa num aro só, caindo de lado. (x, base) = o pé; cai 0..1
+  function calendario(ctx, x, base, s, t, o = {}) {
+    const k = s / 100, cai = o.cai ?? 0.3;
+    ctx.save(); ctx.translate(x, base); ctx.scale(k, k);
+    shadow(ctx, 0, 0, 62, 7, 0.14);
+    ctx.fillStyle = C.madeiraDark; ctx.beginPath(); ctx.moveTo(-58, 0); ctx.lineTo(-44, -112); ctx.lineTo(44, -112); ctx.lineTo(58, 0); ctx.closePath(); ctx.fill();   // o cavalete
+    ctx.fillStyle = C.coral; rr(ctx, -60, -132, 120, 30, 9); ctx.fill();                                                                 // a capa de cima
+    // a folha do "SEG" (presa só no aro da esquerda, pendendo)
+    const ang = (6 + 16 * cai) * DEG + 0.04 * Math.sin(t * 2.2) * (0.4 + cai);
+    ctx.save(); ctx.translate(-34, -110); ctx.rotate(ang);
+    ctx.fillStyle = 'rgba(80,40,20,0.15)'; rr(ctx, -16, 6, 120, 116, 10); ctx.fill();
+    ctx.fillStyle = C.branco; rr(ctx, -20, 0, 120, 116, 10); ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = C.cremeDeep; ctx.stroke();
+    ctx.fillStyle = css(C.coral, 0.15); rr(ctx, -20, 0, 120, 26, 10); ctx.fill();
+    txt(ctx, 'SEG', 40, 82, { size: 46, weight: 900, align: 'center', color: C.coral });
+    ctx.strokeStyle = css(C.cinza, 0.6); ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(14, 96); ctx.lineTo(66, 96); ctx.stroke();
+    ctx.restore();
+    for (const ax of [-34, 34]) { ctx.strokeStyle = C.tinta2; ctx.lineWidth = 5; ctx.beginPath(); ctx.arc(ax, -112, 8, Math.PI * 0.9, Math.PI * 2.1); ctx.stroke(); }   // os aros
+    ctx.restore();
+    if (o.box) BOX(o.box, x - 64 * k, base - 140 * k, x + 108 * k, base);
+  }
+
+  // ---- os itens do ep05 (sem marca): limão, pote de sorvete (com feijão), pacote de arroz, de feijão, de café, caixa de ovos, verdura
+  function itemLimao(ctx, x, y, s) {
+    const k = s / 100;
+    ctx.save(); ctx.translate(x, y); ctx.scale(k, k);
+    ctx.fillStyle = '#C9D84A'; ctx.beginPath(); ctx.ellipse(0, 0, 40, 31, -0.15, 0, TAU); ctx.fill();
+    ctx.fillStyle = '#B3C43A'; ctx.beginPath(); ctx.ellipse(38, -6, 8, 6, -0.15, 0, TAU); ctx.fill();
+    ctx.fillStyle = css(C.branco, 0.5); ctx.beginPath(); ctx.ellipse(-12, -12, 12, 6, -0.4, 0, TAU); ctx.fill();
+    ctx.fillStyle = C.verde; ctx.beginPath(); ctx.ellipse(-30, -30, 18, 8, -0.6, 0, TAU); ctx.fill();
+    ctx.restore();
+  }
+  function potePote(ctx, x, base, s, aberto, t) {         // o pote de sorvete (rótulo de sorvete, sem marca); aberto 0..1 mostra o feijão
+    const k = s / 100;
+    ctx.save(); ctx.translate(x, base); ctx.scale(k, k);
+    ctx.fillStyle = C.branco; ctx.beginPath(); ctx.moveTo(-46, -70); ctx.lineTo(46, -70); ctx.lineTo(38, 0); ctx.lineTo(-38, 0); ctx.closePath(); ctx.fill();
+    ctx.lineWidth = 3; ctx.strokeStyle = C.cremeDeep; ctx.stroke();
+    ctx.fillStyle = '#F7B6C2'; ctx.beginPath(); ctx.moveTo(-43, -48); ctx.lineTo(43, -48); ctx.lineTo(40, -22); ctx.lineTo(-40, -22); ctx.closePath(); ctx.fill();
+    // a casquinha desenhada no rótulo
+    ctx.fillStyle = C.madeira; ctx.beginPath(); ctx.moveTo(-9, -36); ctx.lineTo(9, -36); ctx.lineTo(0, -16); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = C.coralLight; ctx.beginPath(); ctx.arc(0, -40, 9, 0, TAU); ctx.fill();
+    if (aberto > 0) {                                        // o feijão lá dentro
+      ctx.fillStyle = '#5A2E1E'; ctx.beginPath(); ctx.ellipse(0, -70, 46, 11, 0, 0, TAU); ctx.fill();
+      ctx.fillStyle = '#7A3E26'; for (let i = 0; i < 9; i++) { ctx.beginPath(); ctx.ellipse(-34 + i * 8.5, -71 + 4 * Math.sin(i * 2.1), 5, 3.4, i, 0, TAU); ctx.fill(); }
+    }
+    // a tampa: pula e fica de lado
+    const tp = E.outBack(clamp(aberto), 2);
+    ctx.save(); ctx.translate(lerp(0, 58, tp), lerp(-72, -118, Math.sin(Math.PI * Math.min(1, aberto * 1.4))) + lerp(0, 40, tp)); ctx.rotate(lerp(0, 0.9, tp));
+    ctx.fillStyle = '#F7B6C2'; rr(ctx, -50, -10, 100, 14, 6); ctx.fill(); ctx.fillStyle = css(C.branco, 0.6); rr(ctx, -40, -8, 80, 4, 2); ctx.fill();
+    ctx.restore();
+    ctx.restore();
+  }
+  function pacote(ctx, x, y, s, cor, faixa, janela) {        // um pacote em pé (arroz, feijão, café): papel, faixa e a janelinha
+    const k = s / 100;
+    ctx.save(); ctx.translate(x, y); ctx.scale(k, k);
+    ctx.fillStyle = 'rgba(80,40,20,0.15)'; rr(ctx, -32, -44, 70, 96, 10); ctx.fill();
+    ctx.fillStyle = cor; rr(ctx, -36, -48, 72, 96, 10); ctx.fill();
+    ctx.fillStyle = faixa; ctx.fillRect(-36, -18, 72, 22);
+    ctx.fillStyle = css(C.tinta, 0.18); ctx.beginPath(); ctx.moveTo(-36, -48); ctx.lineTo(36, -48); ctx.lineTo(30, -58); ctx.lineTo(-30, -58); ctx.closePath(); ctx.fill();   // a dobra de cima
+    janela(ctx);
+    ctx.restore();
+  }
+  function itemArroz(ctx, x, y, s) {
+    pacote(ctx, x, y, s, C.branco, C.amarelo, (c) => {
+      c.fillStyle = '#F6F1E6'; rr(c, -22, 12, 44, 28, 8); c.fill(); c.strokeStyle = C.cremeDeep; c.lineWidth = 2; c.stroke();
+      c.fillStyle = '#E8DFCB'; for (let i = 0; i < 8; i++) { c.beginPath(); c.ellipse(-14 + (i % 4) * 9, 20 + Math.floor(i / 4) * 10, 3.5, 1.8, i, 0, TAU); c.fill(); }
+    });
+  }
+  function itemFeijaoPac(ctx, x, y, s) {
+    pacote(ctx, x, y, s, '#F3E3C8', C.coral, (c) => {
+      c.fillStyle = '#FFF6E6'; rr(c, -22, 12, 44, 28, 8); c.fill();
+      c.fillStyle = '#6B3420'; for (let i = 0; i < 8; i++) { c.beginPath(); c.ellipse(-14 + (i % 4) * 9, 20 + Math.floor(i / 4) * 10, 4, 2.6, i, 0, TAU); c.fill(); }
+    });
+  }
+  function itemCafe(ctx, x, y, s) {
+    pacote(ctx, x, y, s, '#8A5A3A', C.amarelo, (c) => {
+      c.fillStyle = '#5A3420'; for (const [bx, by] of [[-10, 24], [10, 26]]) { c.beginPath(); c.ellipse(bx, by, 9, 12, 0.4, 0, TAU); c.fill(); c.strokeStyle = '#B98A5E'; c.lineWidth = 2; c.beginPath(); c.moveTo(bx - 3, by - 9); c.quadraticCurveTo(bx + 4, by, bx - 2, by + 9); c.stroke(); }
+    });
+  }
+  function itemOvos(ctx, x, y, s) {                           // a caixa de ovos aberta, com 3 ovinhos aparecendo
+    const k = s / 100;
+    ctx.save(); ctx.translate(x, y); ctx.scale(k, k);
+    ctx.fillStyle = '#D9CBB4'; rr(ctx, -52, -4, 104, 34, 8); ctx.fill();
+    ctx.fillStyle = '#E8DCC8'; rr(ctx, -52, -30, 104, 12, 6); ctx.fill();
+    for (const ex of [-30, 0, 30]) { ctx.fillStyle = '#F6E7D2'; ctx.beginPath(); ctx.ellipse(ex, -10, 14, 18, 0, 0, TAU); ctx.fill(); ctx.fillStyle = css(C.branco, 0.7); ctx.beginPath(); ctx.ellipse(ex - 4, -16, 4, 6, 0, 0, TAU); ctx.fill(); }
+    ctx.fillStyle = '#D9CBB4'; rr(ctx, -52, 0, 104, 30, 8); ctx.fill();
+    ctx.strokeStyle = css(C.tinta, 0.15); ctx.lineWidth = 3; for (const ex of [-17, 17]) { ctx.beginPath(); ctx.moveTo(ex, 4); ctx.lineTo(ex, 26); ctx.stroke(); }
+    ctx.restore();
+  }
+  function itemVerdura(ctx, x, y, s) {                        // o maço de couve/alface
+    const k = s / 100;
+    ctx.save(); ctx.translate(x, y); ctx.scale(k, k);
+    ctx.fillStyle = C.verdeDark; ctx.beginPath(); ctx.ellipse(-20, -6, 22, 40, -0.4, 0, TAU); ctx.ellipse(20, -6, 22, 40, 0.4, 0, TAU); ctx.fill();
+    ctx.fillStyle = C.verde; ctx.beginPath(); ctx.ellipse(0, -12, 24, 46, 0, 0, TAU); ctx.fill();
+    ctx.fillStyle = C.verdeLight; ctx.beginPath(); ctx.ellipse(0, -16, 10, 34, 0, 0, TAU); ctx.fill();
+    ctx.strokeStyle = css(C.branco, 0.6); ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(0, 34); ctx.lineTo(0, -46); ctx.stroke();
+    ctx.fillStyle = C.coral; rr(ctx, -16, 22, 32, 10, 4); ctx.fill();   // o elástico
+    ctx.restore();
+  }
+  Object.assign(ITENS, { limao: itemLimao, arroz: itemArroz, feijao: itemFeijaoPac, cafe: itemCafe, ovos: itemOvos, verdura: itemVerdura });
+
+  // ---- a nuvem cinza (só em cima dele), com chuvisco; vira sol quando sol 0..1
+  function nuvemCinza(ctx, x, y, s, t, o = {}) {
+    const k = s / 100, sol = clamp(o.sol || 0), e = clamp(o.e ?? 1);
+    if (e <= 0.002) return;
+    ctx.save(); ctx.translate(x, y); ctx.scale(k * E.outBack(e, 2), k * E.outBack(e, 2));
+    if (sol < 1) {
+      ctx.save(); ctx.globalAlpha *= 1 - sol; ctx.scale(1 - 0.5 * sol, 1 - 0.5 * sol);
+      ctx.strokeStyle = css('#7C8FA6', 0.7); ctx.lineWidth = 4; ctx.lineCap = 'round';
+      for (let i = 0; i < 5; i++) { const ph = (t * 1.6 + i * 0.37) % 1, dx = -50 + i * 25; ctx.globalAlpha = (1 - sol) * Math.sin(Math.PI * ph); ctx.beginPath(); ctx.moveTo(dx - 4 * ph, 30 + ph * 70); ctx.lineTo(dx - 4 * ph - 4, 44 + ph * 70); ctx.stroke(); }
+      ctx.globalAlpha = 1 - sol;
+      ctx.fillStyle = '#A7A3A6'; ctx.beginPath(); ctx.arc(-38, 6, 30, 0, TAU); ctx.arc(0, -10, 40, 0, TAU); ctx.arc(40, 6, 30, 0, TAU); ctx.fill();
+      rr(ctx, -68, 0, 136, 34, 17); ctx.fill();
+      ctx.fillStyle = css('#C9C5C7', 0.8); ctx.beginPath(); ctx.arc(-6, -20, 18, 0, TAU); ctx.fill();
+      ctx.restore();
+    }
+    if (sol > 0) {                                           // o sol sorrindo
+      ctx.save(); ctx.scale(E.outBack(sol, 2.4), E.outBack(sol, 2.4)); ctx.rotate(t * 0.6);
+      ctx.fillStyle = C.amarelo; for (let i = 0; i < 10; i++) { ctx.save(); ctx.rotate(i * TAU / 10); rr(ctx, -7, -78, 14, 24, 7); ctx.fill(); ctx.restore(); }
+      ctx.rotate(-t * 0.6);
+      ctx.beginPath(); ctx.arc(0, 0, 46, 0, TAU); ctx.fillStyle = C.amareloLight; ctx.fill(); ctx.lineWidth = 6; ctx.strokeStyle = C.amarelo; ctx.stroke();
+      ctx.strokeStyle = C.tinta; ctx.lineWidth = 5; ctx.lineCap = 'round';
+      for (const sx of [-1, 1]) { ctx.beginPath(); ctx.arc(sx * 15, -4, 7, Math.PI * 1.1, Math.PI * 1.9); ctx.stroke(); }
+      ctx.beginPath(); ctx.arc(0, 8, 14, 0.15 * Math.PI, 0.85 * Math.PI); ctx.stroke();
+      ctx.restore();
+    }
+    ctx.restore();
+  }
+  // o "Zzz" subindo
+  function zzz(ctx, x, y, t, e) {
+    if (e <= 0.002) return;
+    for (let i = 0; i < 3; i++) {
+      const ph = (t * 0.5 + i / 3) % 1, a = Math.sin(Math.PI * ph) * e;
+      txt(ctx, 'Z', x + 50 * ph + 12 * Math.sin(ph * 6 + i), y - 170 * ph, { size: 40 + 26 * ph, weight: 900, align: 'center', color: css(C.tinta2, a) });
+    }
+  }
+  // o grilinho cantando (verde, com as notinhas)
+  function grilo(ctx, x, base, s, t) {
+    const k = s / 100, canta = Math.max(0, Math.sin(t * 9)) > 0.6;
+    ctx.save(); ctx.translate(x, base); ctx.scale(k, k);
+    ctx.strokeStyle = C.verdeDark; ctx.lineWidth = 4; ctx.lineCap = 'round';
+    for (const [lx, ly] of [[-22, 0], [-4, 0], [14, 0]]) { ctx.beginPath(); ctx.moveTo(lx, -16); ctx.lineTo(lx - 8, ly); ctx.stroke(); }
+    ctx.beginPath(); ctx.moveTo(-18, -22); ctx.lineTo(-38, -46); ctx.lineTo(-44, 0); ctx.stroke();               // a pernona de trás
+    ctx.fillStyle = C.verde; ctx.beginPath(); ctx.ellipse(-6, -22, 30, 13, -0.1, 0, TAU); ctx.fill();
+    ctx.fillStyle = C.verdeLight; ctx.beginPath(); ctx.ellipse(-10, -27 - (canta ? 4 : 0), 22, 7, -0.25 - (canta ? 0.2 : 0), 0, TAU); ctx.fill();   // a asinha que vibra
+    ctx.fillStyle = C.verde; ctx.beginPath(); ctx.arc(26, -26, 12, 0, TAU); ctx.fill();
+    ctx.fillStyle = C.tinta; ctx.beginPath(); ctx.arc(30, -29, 3.4, 0, TAU); ctx.fill();
+    ctx.strokeStyle = C.verdeDark; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(30, -36); ctx.quadraticCurveTo(44, -70, 66, -62); ctx.moveTo(26, -37); ctx.quadraticCurveTo(30, -74, 48, -78); ctx.stroke();
+    // as notinhas
+    for (let i = 0; i < 2; i++) {
+      const ph = (t * 0.8 + i * 0.5) % 1, a = Math.sin(Math.PI * ph);
+      const nx = 40 + 30 * ph + i * 16, ny = -60 - 70 * ph;
+      ctx.fillStyle = css(C.verdeDark, a); ctx.strokeStyle = css(C.verdeDark, a); ctx.lineWidth = 3.5;
+      ctx.beginPath(); ctx.ellipse(nx, ny, 8, 6, -0.4, 0, TAU); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(nx + 7, ny - 2); ctx.lineTo(nx + 7, ny - 30); ctx.quadraticCurveTo(nx + 14, ny - 22, nx + 20, ny - 20); ctx.stroke();
+    }
+    ctx.restore();
+  }
+  // o "?!" num balão coral
+  function susto(ctx, x, y, r, e, t, t0) {
+    if (e <= 0.002) return;
+    const k = E.outBack(e, 2.6) * (1 + 0.06 * Math.sin((t - t0) * 7));
+    ctx.save(); ctx.translate(x, y); ctx.rotate(-0.12); ctx.scale(k, k);
+    ctx.beginPath(); for (let j = 0; j <= 20; j++) { const a = j / 20 * TAU, r2 = j % 2 ? r * 0.82 : r; ctx.lineTo(Math.cos(a) * r2, Math.sin(a) * r2); }
+    ctx.closePath(); ctx.lineJoin = 'round'; ctx.lineWidth = 8; ctx.strokeStyle = C.branco; ctx.stroke(); ctx.fillStyle = C.coral; ctx.fill();
+    txt(ctx, '?!', 0, r * 0.36, { size: r * 1.05, weight: 900, align: 'center', color: C.branco });
+    ctx.restore();
+  }
+
+  // ===================== cenas do ep05 ("Segunda sem coragem")
+
+  // a capa da segunda-feira (ep05): no quadro 0 o calendário com o "SEG" caindo, o bonequinho enrolado no cobertor
+  // (com sono) e a geladeira entreaberta (com a luzinha) já estão na tela
+  CENAS.capa.segunda = function (ctx, cap, t) {
+    const Ly = cap.Ly, ev = cap.ev, B = Ly.bottom;
+    // o "SEG" despenca mais um pouco na palavra (e balança)
+    const cai = 0.35 + 0.65 * E.outBack(p(t, ev.cal, ev.cal + 0.5), 2.2);
+    calendario(ctx, 225, B, 150, t, { cai, box: 'calendário' });
+    // o bonequinho no cobertor: boceja na palavra (e de novo, de tempos em tempos)
+    const boc = (x0) => Math.sin(Math.PI * p(t, x0, x0 + 1.1));
+    const bc = Math.max(boc(ev.bocejo), ...ev.bocejos.map(boc));
+    ze(ctx, 530, B, 300, t, { cobertor: 1, olhos: 'sono', boceja: bc, box: 'bonequinho' });
+    // a geladeira entreaberta (a porta abre mais um tiquinho na palavra)
+    const fr = 1 + 0.6 * Math.sin(Math.PI * p(t, ev.geladeira, ev.geladeira + 0.6));
+    geladeira(ctx, 800, B, 180, 300, { fresta: fr * 0.62, luz: 1 });
+    BOX('geladeira', 800 - 94, B - 302, 800 + 94, B);
+  };
+
+  // ---- geladeira: abre com luz e revela, no tempo da voz, o limão solitário, o meio queijo e o pote de sorvete…
+  //      que abre e mostra o feijão ("?!" e o bonequinho levando susto); o grilinho canta na geladeira vazia
+  CENAS.geladeira = {
+    setup(cap) {
+      const d = cap.diagrama, ev = cap.ev;
+      ev.abre = at(cap, d.abre.em, cap.t0 + 0.3);
+      ev.limao = Math.max(at(cap, d.limao.em, ev.abre + 0.6), ev.abre + 0.45);
+      ev.queijo = Math.max(at(cap, d.queijo.em, ev.limao + 0.5), ev.limao + 0.3);
+      ev.sorvete = Math.max(at(cap, d.sorvete.em, ev.queijo + 0.5), ev.queijo + 0.3);
+      ev.feijao = Math.max(at(cap, d.feijao.em, ev.sorvete + 0.6), ev.sorvete + 0.45);
+      cue(ev.abre, 'door'); cue(ev.abre + 0.12, 'light');
+      cue(ev.limao, 'pop', { f: 620 }); cue(ev.queijo, 'pop', { f: 700 }); cue(ev.sorvete, 'pop', { f: 780 });
+      cue(ev.feijao, 'question'); cue(ev.feijao + 0.08, 'jump');
+      for (let tk = ev.abre + 0.5; tk < cap.t1 - 0.3; tk += 1.1) cue(tk, 'grilo');
+    },
+    draw(ctx, cap, t) {
+      const ev = cap.ev, T = cap.cenaTop;
+      const GX = 360, GW = 300, GB = PE - 10, GH = Math.min(600, GB - T - 24);
+      const ab = E.outCubic(p(t, ev.abre, ev.abre + 0.55)), sus = t >= ev.feijao;
+      const eg = ent(t, cap.t0 + 0.1, 0.45);
+      let potY = 0;
+      enter(ctx, eg, GX, GB, () => {
+        geladeira(ctx, GX, GB, GW, GH, { abre: ab, dentro: (ix0, iy0, ix1, iy1, prat) => {
+          potY = prat[2];
+          pop(ctx, p(t, ev.limao, ev.limao + 0.35), GX - 20, prat[0], () => itemLimao(ctx, GX - 20, prat[0] - 30, 92), 2.4);
+          pop(ctx, p(t, ev.queijo, ev.queijo + 0.35), GX + 40, prat[1], () => itemQueijo(ctx, GX + 30, prat[1] - 40, 118), 2.4);
+          pop(ctx, p(t, ev.sorvete, ev.sorvete + 0.35), GX + 60, prat[2], () => potePote(ctx, GX + 58, prat[2], 124, p(t, ev.feijao - 0.05, ev.feijao + 0.4), t), 2.4);
+          if (ab > 0.5) grilo(ctx, GX - 86, prat[2], 80, t);
+        } });
+      });
+      if (eg >= 1) BOX('geladeira', GX - GW / 2 - (ab > 0.5 ? GW * 0.3 : 0), GB - GH, GX + GW / 2, GB);
+      // o "?!" do feijão (por cima, ao lado do pote)
+      susto(ctx, GX + 150, (potY || GB - 150) - 150, 52, p(t, ev.feijao, ev.feijao + 0.3), t, ev.feijao);
+      // o bonequinho de pijama olhando a geladeira (no feijão: o susto, com o cabelo em pé e um pulinho)
+      const ez = ent(t, cap.t0 + 0.2, 0.45), pulo = 46 * Math.sin(Math.PI * p(t, ev.feijao, ev.feijao + 0.4));
+      enter(ctx, ez, 760, PE - 10, () => ze(ctx, 760, PE - 10 - pulo, 330, t, {
+        olhos: sus ? 'susto' : 'normal', descabelado: sus ? p(t, ev.feijao, ev.feijao + 0.25) : 0, look: [-0.9, 0.2],
+        blink: sus ? 0 : blinkAt(t, 71), sorriso: 0, box: ez >= 1 ? 'bonequinho' : null }));
+    },
+  };
+
+  // ---- preguica: o bonequinho de pijama afundando no sofá, a nuvem cinza só em cima dele, o "Zzz" e o chinelo
+  CENAS.preguica = {
+    setup(cap) {
+      const d = cap.diagrama, ev = cap.ev;
+      ev.nuvem = at(cap, d.nuvem.em, cap.t0 + 0.3);
+      ev.afunda = Math.max(at(cap, d.afunda.em, ev.nuvem + 0.6), ev.nuvem + 0.4);
+      ev.zzz = Math.max(at(cap, d.zzz.em, ev.afunda + 0.6), ev.afunda + 0.4);
+      ev.chinelo = Math.max(at(cap, d.chinelo.em, ev.zzz + 0.4), ev.zzz + 0.3);
+      cue(ev.nuvem, 'whoosh'); cue(ev.afunda, 'flop'); cue(ev.zzz, 'zzz'); cue(ev.chinelo, 'plop');
+    },
+    draw(ctx, cap, t) {
+      const ev = cap.ev;
+      const SX = 500, SW = 560, SB = PE - 10, k = SW / 300;
+      const es = ent(t, cap.t0 + 0.1, 0.45);
+      const sink = 48 * E.outCubic(p(t, ev.afunda, ev.afunda + 0.9)), ZH = 300, zb = SB - 40 * k + sink;
+      const cab = ZH * 0.2, headY = zb - ZH + cab * 2 - cab * 0.85, headX = SX + 10;
+      enter(ctx, es, SX, SB, () => {
+        sofa(ctx, SX, SB, SW);
+        // ele, sentado e afundando (o assento cobre a parte de baixo)
+        const bc = Math.sin(Math.PI * p(t, ev.zzz - 1.3, ev.zzz - 0.2));
+        ze(ctx, headX, zb, ZH, t, { olhos: 'sono', boceja: bc, semSombra: true });
+        ctx.save(); ctx.translate(SX, SB); ctx.scale(k, k);
+        ctx.fillStyle = C.coralBg; rr(ctx, -112, -66, 224, 48, 18); ctx.fill();
+        ctx.strokeStyle = css(C.coralDark, 0.35); ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(-100, -62); ctx.quadraticCurveTo(0, -56 + sink / k * 0.4, 100, -62); ctx.stroke();
+        ctx.restore();
+        if (es >= 1) BOX('sofá', SX - 154 * k, SB - 150 * k, SX + 154 * k, SB);
+      });
+      // a nuvem cinza só em cima dele
+      const en = p(t, ev.nuvem, ev.nuvem + 0.45);
+      nuvemCinza(ctx, headX, headY - 175 + 6 * Math.sin(t * 2), 120, t, { e: en });
+      if (en >= 1) BOX('nuvem', headX - 100, headY - 240, headX + 100, headY - 120);
+      // o "Zzz"
+      zzz(ctx, headX + 120, headY - 40, t, p(t, ev.zzz, ev.zzz + 0.4));
+      // os chinelos no chão
+      pop(ctx, p(t, ev.chinelo, ev.chinelo + 0.35), 850, SB, () => chinelos(ctx, 850, SB, 92), 2.4);
+      if (t >= ev.chinelo + 0.35) BOX('chinelos', 850 - 50, SB - 90, 850 + 50, SB);
+    },
+  };
+
+  // ---- solucao: as 3 lojinhas (hortifrúti, mercadim, açougue) brotam apagadas e acendem em sequência, acenando
+  CENAS.solucao = {
+    setup(cap) {
+      const d = cap.diagrama, ev = cap.ev;
+      ev.brota = at(cap, d.brota && d.brota.em, cap.t0 + 0.6);
+      let prev = ev.brota;
+      ev.lojas = d.lojas.map((o) => (prev = Math.max(at(cap, o.em, prev + 0.4), prev + 0.3)));
+      [0, 1, 2].forEach((i) => cue(cap.t0 + 0.12 + i * 0.12, 'sprout', { i }));
+      cue(ev.brota, 'jump');
+      ev.lojas.forEach((x, i) => { cue(x, 'light'); cue(x + 0.05, 'pop', { f: 640 + 120 * i }); });
+      cue(ev.lojas[ev.lojas.length - 1] + 0.5, 'shine');
+    },
+    draw(ctx, cap, t) {
+      const d = cap.diagrama, ev = cap.ev, T = cap.cenaTop;
+      const xs = [210, 510, 810], w = 250, base = PE - 10, lados = [1, 1, -1];
+      d.lojas.forEach((o, i) => {
+        const lit = E.outCubic(p(t, ev.lojas[i], ev.lojas[i] + 0.35)), x = xs[i];
+        // o brilho de quando acende (atrás)
+        if (lit > 0) {
+          const g = ctx.createRadialGradient(x, base - w * 0.75, 10, x, base - w * 0.75, w * 0.95);
+          g.addColorStop(0, css(C.amareloLight, 0.55 * lit)); g.addColorStop(1, css(C.amareloLight, 0));
+          ctx.fillStyle = g; ctx.fillRect(x - w, base - w * 1.8, 2 * w, w * 1.8);
+        }
+        const e = p(t, cap.t0 + 0.1 + i * 0.12, cap.t0 + 0.6 + i * 0.12);
+        const festa = t >= ev.brota ? 1 : 0;
+        lojinha(ctx, o.tipo, x, base, w, t, { e, lit, smile: lit, altura: 11 + 22 * festa * (1 - lit) + 26 * lit * Math.exp(-Math.max(0, t - ev.lojas[i]) * 2), fase: i * 0.33,
+          look: t >= ev.brota && lit < 1 ? [0, 0] : [0, 0.25], seed: 80 + i, box: e >= 1 ? `lojinha ${i + 1}` : null });
+        // o bracinho acenando (sai da parede, para cima, só depois de acender)
+        if (lit > 0.2) {
+          const s = lados[i], ox = x + s * w * 0.4, oy = base - w * 0.62, a = -Math.PI / 2 + s * (0.35 + 0.35 * Math.sin((t - ev.lojas[i]) * 10)), L_ = 62 * clamp((lit - 0.2) / 0.8);
+          const col = (LOOK[o.tipo] || LOOK.loja).wallDark;
+          ctx.strokeStyle = col; ctx.lineWidth = 13; ctx.lineCap = 'round';
+          ctx.beginPath(); ctx.moveTo(ox, oy); ctx.lineTo(ox + Math.cos(a) * L_, oy + Math.sin(a) * L_); ctx.stroke();
+          ctx.fillStyle = C.branco; ctx.beginPath(); ctx.arc(ox + Math.cos(a) * L_, oy + Math.sin(a) * L_, 12, 0, TAU); ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = col; ctx.stroke();
+        }
+        sticker(ctx, i % 2 ? 'coracao' : 'estrela', x + (i === 2 ? -60 : 60), base - w * 1.27 - 70, 52, p(t, ev.lojas[i] + 0.1, ev.lojas[i] + 0.4), t);
+      });
+    },
+  };
+
+  // ---- lista: os itens da compra da semana caindo um a um na sacola da marca (sem marca nenhuma nos produtos)
+  CENAS.lista = {
+    setup(cap) {
+      const d = cap.diagrama, ev = cap.ev;
+      let prev = cap.t0 + 0.2;
+      ev.itens = d.itens.map((it) => (prev = Math.max(at(cap, it.em, prev + 0.4), prev + 0.3)));
+      ev.sacola = Math.min(cap.t0 + 0.25, ev.itens[0] - 0.3);
+      ev.fim = ev.itens[ev.itens.length - 1] + 0.7;
+      cue(ev.sacola, 'pop', { f: 460 });
+      ev.itens.forEach((x) => { cue(x, 'whoosh'); cue(x + 0.42, 'plop'); });
+      cue(ev.fim, 'check'); cue(ev.fim + 0.05, 'confete');
+    },
+    draw(ctx, cap, t) {
+      const d = cap.diagrama, ev = cap.ev, T = cap.cenaTop;
+      const S = { x: 510, bot: PE - 20, w: 320, h: 260 }, tp = S.bot - S.h, n = d.itens.length;
+      const dxi = (i) => (i - (n - 1) / 2) * 56;
+      // as figurinhas e o confete atrás da sacola com a logo
+      sticker(ctx, 'estrela', 200, tp + 40, 60, p(t, ev.fim, ev.fim + 0.35), t);
+      sticker(ctx, 'coracao', 820, tp + 20, 58, p(t, ev.fim + 0.1, ev.fim + 0.45), t);
+      confete(ctx, t, ev.fim + 0.05, S.x, tp - 120, 61, { n: 34, v: 900 });
+      const es = ent(t, ev.sacola, 0.45);
+      enter(ctx, es, S.x, S.bot, () => {
+        ctx.strokeStyle = C.coralDark; ctx.lineWidth = 14; ctx.lineCap = 'round';
+        for (const dx of [-70, 70]) { ctx.beginPath(); ctx.moveTo(S.x + dx - 32, tp + 4); ctx.bezierCurveTo(S.x + dx - 32, tp - 80, S.x + dx + 32, tp - 80, S.x + dx + 32, tp + 4); ctx.stroke(); }
+        // os itens que já caíram, aparecendo pela boca (atrás da frente)
+        d.itens.forEach((it, i) => {
+          const tl = ev.itens[i] + 0.42; if (t < tl) return;
+          const bq = 10 * Math.sin(Math.PI * p(t, tl, tl + 0.2));
+          ITENS[it.tipo](ctx, S.x + dxi(i), tp - 14 - bq + (i % 2) * 8, 104);
+        });
+        ctx.fillStyle = C.papel; ctx.beginPath(); ctx.moveTo(S.x - S.w / 2, tp); ctx.lineTo(S.x + S.w / 2, tp); ctx.lineTo(S.x + S.w / 2 + 14, S.bot); ctx.lineTo(S.x - S.w / 2 - 14, S.bot); ctx.closePath();
+        ctx.shadowColor = 'rgba(120,60,30,0.2)'; ctx.shadowBlur = 18; ctx.fill(); ctx.shadowColor = 'transparent';
+        ctx.lineWidth = 3; ctx.strokeStyle = C.cremeDeep; ctx.stroke();
+        ctx.fillStyle = C.coral; ctx.fillRect(S.x - S.w / 2, tp, S.w, 30);
+        logo(ctx, S.x, tp + 30 + (S.h - 30) / 2, Math.min(160, S.h - 50));
+        if (es >= 1) BOX('sacola', S.x - S.w / 2 - 14, tp - 80, S.x + S.w / 2 + 14, S.bot);
+      });
+      // os itens caindo do alto até a boca da sacola (por cima de tudo, mas param antes da logo)
+      d.itens.forEach((it, i) => {
+        const t0 = ev.itens[i]; if (t < t0 || t >= t0 + 0.42) return;
+        const u = p(t, t0, t0 + 0.42), x = S.x + dxi(i) + 40 * (1 - u) * (i % 2 ? 1 : -1), y = lerp(T + 40, tp - 14, u * u);
+        ctx.save(); ctx.translate(x, y); ctx.rotate((1 - u) * (i % 2 ? 0.6 : -0.6)); ITENS[it.tipo](ctx, 0, 0, 110); ctx.restore();
+      });
+      check(ctx, S.x + S.w / 2 - 4, tp + 8, 44, p(t, ev.fim, ev.fim + 0.4), { box: t >= ev.fim + 0.4 ? 'check' : null });
+    },
+  };
+
+  // ---- leve ("CHEGOU"): a motinha chega, a geladeira abre cheia e iluminada, o bonequinho se espreguiça feliz e a
+  //      nuvem cinza vira sol
+  CENAS.leve = {
+    setup(cap) {
+      const d = cap.diagrama, ev = cap.ev;
+      ev.moto = at(cap, d.moto.em, cap.t0 + 0.3);
+      ev.chega = ev.moto + 1.0;
+      ev.geladeira = Math.max(at(cap, d.geladeira.em, ev.moto + 0.5), ev.moto + 0.4);
+      ev.espreguica = Math.max(at(cap, d.espreguica.em, ev.geladeira + 0.5), ev.geladeira + 0.4);
+      ev.sol = Math.max(at(cap, d.sol.em, ev.espreguica + 0.6), ev.espreguica + 0.4);
+      cue(ev.moto, 'moto', { d: 1.0 }); cue(ev.chega, 'horn');
+      cue(ev.geladeira, 'door'); cue(ev.geladeira + 0.1, 'light'); cue(ev.espreguica, 'jump'); cue(ev.sol, 'shine'); cue(ev.sol + 0.1, 'heart');
+    },
+    draw(ctx, cap, t) {
+      const ev = cap.ev, T = cap.cenaTop;
+      const GX = 770, GW = 250, GB = PE - 10, GH = Math.min(500, GB - T - 40), ZX = 440;
+      // a geladeira cheia e iluminada
+      const ab = E.outCubic(p(t, ev.geladeira, ev.geladeira + 0.5)), eg = ent(t, cap.t0 + 0.1, 0.45);
+      enter(ctx, eg, GX, GB, () => {
+        geladeira(ctx, GX, GB, GW, GH, { abre: ab, dentro: (ix0, iy0, ix1, iy1, prat) => {
+          const cheia = [[0, 'verdura', -50, 66], [0, 'tomate', 40, 70], [1, 'queijo', -45, 74], [1, 'ovos', 45, 66], [2, 'arroz', -55, 64], [2, 'cafe', 5, 64], [2, 'feijao', 62, 64], [3, 'limao', -40, 56], [3, 'paoQueijo', 40, 56]];
+          cheia.forEach(([pi, kk, dx, sz], j) => {
+            const py = pi < 3 ? prat[pi] : iy1;
+            const ee = p(t, ev.geladeira + 0.15 + j * 0.04, ev.geladeira + 0.45 + j * 0.04);
+            const dy = kk === 'arroz' || kk === 'cafe' || kk === 'feijao' ? -sz * 0.5 : kk === 'ovos' ? -sz * 0.3 : -sz * 0.36;
+            pop(ctx, ee, GX + dx, py, () => ITENS[kk](ctx, GX + dx, py + dy, sz), 2.2);
+          });
+        } });
+      });
+      if (eg >= 1) BOX('geladeira', GX - GW / 2 - (ab > 0.5 ? GW * 0.3 : 0), GB - GH, GX + GW / 2, GB);
+      if (ab > 0.5) sticker(ctx, 'brilho', GX + 70, GB - GH - 40, 50, p(t, ev.geladeira + 0.3, ev.geladeira + 0.6), t);
+      // a nuvem cinza que vira sol, em cima do bonequinho
+      const ZH = 320, cab = ZH * 0.2, headY = PE - 10 - ZH + cab * 2 - cab * 0.85;
+      nuvemCinza(ctx, ZX, headY - 230 + 5 * Math.sin(t * 2), 120, t, { e: ent(t, cap.t0 + 0.15, 0.4), sol: E.outCubic(p(t, ev.sol, ev.sol + 0.5)) });
+      if (t >= cap.t0 + 0.6) BOX(t >= ev.sol + 0.5 ? 'sol' : 'nuvem', ZX - 100, headY - 330, ZX + 100, headY - 140);
+      // o bonequinho se espreguiçando, feliz
+      const up = E.outBack(p(t, ev.espreguica, ev.espreguica + 0.6), 1.6) * (1 - 0.15 * Math.max(0, Math.sin((t - ev.espreguica) * 3)));
+      const ez = ent(t, cap.t0 + 0.2, 0.45), feliz = t >= ev.espreguica;
+      enter(ctx, ez, ZX, PE - 10, () => ze(ctx, ZX, PE - 10 - (feliz ? 6 * hop(t) : 0), ZH, t, {
+        olhos: feliz ? 'feliz' : 'sono', bracos: feliz ? up : 0, boceja: feliz ? 0.4 * Math.sin(Math.PI * p(t, ev.espreguica, ev.espreguica + 0.8)) : 0,
+        sorriso: 1, box: ez >= 1 ? 'bonequinho' : null }));
+      // a motinha chegando com a sacola (para à esquerda)
+      if (t >= ev.moto - 0.05) {
+        const um = p(t, ev.moto, ev.chega), x = lerp(-120, 200, E.outCubic(um)), sp = Math.sin(Math.PI * um), MS = 200;
+        moto(ctx, x, PE - 10 - (um >= 1 ? 3 * hop(t) : 0), MS, { dir: 1, roll: x / 16, speed: sp, tilt: -0.04 * sp });
+        if (um >= 1) BOX('motinha', 200 - MS * 0.55, PE - 10 - MS * 0.98, 200 + MS * 0.55, PE - 10);
       }
     },
   };
@@ -3117,7 +3872,8 @@
       if (cap.diagrama.tipo !== 'capa') layoutTitulo(cap);
       CENAS[cap.diagrama.tipo].setup(cap, k);
       if (k > 0) {
-        cue(CAPS[k - 1].t1, { galinha: 'galinha', viralata: 'cachorro' }[TRANS] || 'trans', { d: TR, k, dir: travessia(k - 1, 0).dir });   // quem atravessa (o som anda junto)
+        if (TRANS === 'sacola') cue(CAPS[k - 1].t1, 'sacola', { d: TR, k, dir: travessia(k - 1, 0).dir, nhac: nhacU(k - 1) * TR, jeito: (k - 1) % 4 });   // os pulos, o NHAC! e o ploc
+        else cue(CAPS[k - 1].t1, { galinha: 'galinha', viralata: 'cachorro' }[TRANS] || 'trans', { d: TR, k, dir: travessia(k - 1, 0).dir });   // quem atravessa (o som anda junto)
         cue(rotuloT(cap), 'pop', { f: 820 });                                        // o "plop" do adesivo do rótulo
         tituloT(cap).forEach((x, i) => cue(x, 'punch', { i }));
         if (cap.relogio) { cue(relogioT(cap), 'pop', { f: 980 }); cue(relogioT(cap) + 0.12, 'alarme'); }

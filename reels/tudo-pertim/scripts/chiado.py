@@ -22,14 +22,35 @@ FRACAO = 0.5
 BANDA = (4000.0, 10000.0)
 JANELA, PASSO = 0.020, 0.010
 SOPRO_MAX_S, SOPRO_MAX_DB = 0.030, -38.0      # trecho curto e baixo depois da fala = sopro, não chiado
+VOZ_ATE_HZ = 3000.0                            # v4: o fim da fala pelo som usa só a parte vozeada (abaixo de 3 kHz)
 
 
-def ultima_letra(al):
-    """o fim da última letra (alfanumérica) do alinhamento, em segundos"""
+def fim_sonoro(y, sr):
+    """o fim da parte vozeada da fala (energia abaixo de 3 kHz acima de −45 dBFS, em janelas de 10 ms): um chiado agudo
+    inventado depois da fala NÃO conta como fala (ele continua sendo pego por confere())"""
+    from scipy.signal import butter, sosfiltfilt
+    z = sosfiltfilt(butter(4, VOZ_ATE_HZ, 'low', fs=sr, output='sos'), np.asarray(y, dtype=np.float64))
+    n = int(0.01 * sr); k = len(z) // n
+    if k == 0:
+        return None
+    db = 20 * np.log10(np.sqrt(np.mean(z[:k * n].reshape(k, n) ** 2, axis=1)) + 1e-12)
+    idx = np.where(db > LIMIAR_DB)[0]
+    return (idx[-1] + 1) * 0.01 if len(idx) else None
+
+
+def ultima_letra(al, y=None, sr=None):
+    """o fim da última letra (alfanumérica) do alinhamento, em segundos. No eleven_v4 o alinhamento às vezes cola a
+    última letra no fim do arquivo (o som já tinha acabado antes); nesse caso (fim ≥ duração − 20 ms, com o áudio dado)
+    vale o fim da parte vozeada medido no som (fim_sonoro), para a conferência do corte e do chiado medirem a cauda de
+    verdade. Nas vozes do v2 (ep01–ep04) isso nunca acontece: o resultado é o de sempre."""
     fim = None
     for c, b in zip(al['characters'], al['character_end_times_seconds']):
         if c.isalnum():
             fim = b
+    if y is not None and fim is not None and fim >= len(y) / sr - 0.02:
+        fs = fim_sonoro(y, sr)
+        if fs is not None:
+            fim = min(fim, fs)
     return fim
 
 
@@ -40,10 +61,10 @@ def termina_em_sibilante(texto):
 
 def confere(x, sr, al, texto):
     """(ok, motivo, números): x = o áudio mono da geração (float), al = o alinhamento, texto = o texto enviado à API"""
-    fim = ultima_letra(al)
     y = np.asarray(x, dtype=np.float64)
     if y.ndim > 1:
         y = y.mean(axis=1)
+    fim = ultima_letra(al, y, sr)
     i0 = int(round(fim * sr))
     cauda = y[i0:]
     n, h = int(JANELA * sr), int(PASSO * sr)

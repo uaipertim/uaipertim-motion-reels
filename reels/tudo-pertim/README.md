@@ -39,6 +39,7 @@ A cara é **mais jovem, animada e viva**, com a marca em destaque. A pasta `reel
 | **tudo-pertim-02** | "Um dia no Glória" | 00 capa · 01 7h da manhã · 02 meio-dia · 03 3h da tarde · 04 6h da tarde · 05 sexta à noite · 06 sua vez · 07 fecho | final com voz, 51,5 s, revisão aprovada: [`exports/tiktok/tudo-pertim/ep02/`](../../exports/tiktok/tudo-pertim/ep02) |
 | **tudo-pertim-03** | "Visita sem avisar" (transição da galinha) | 00 capa · 01 o desespero · 02 a cozinha · 03 socorro · 04 o capricho · 05 chegou · 06 sua vez · 07 fecho | final com voz, 50,75 s, revisão aprovada: [`exports/tiktok/tudo-pertim/ep03/`](../../exports/tiktok/tudo-pertim/ep03) |
 | **tudo-pertim-04** | "Churrasco de domingo" (transição do vira-lata) | 00 capa · 01 o causo · 02 o açougue · 03 o mercadim · 04 geladim · 05 chegou · 06 sua vez · 07 fecho | final com voz, 50,0 s, revisão aprovada: [`exports/tiktok/tudo-pertim/ep04/`](../../exports/tiktok/tudo-pertim/ep04) |
+| **tudo-pertim-05** | "Segunda sem coragem" (transição da sacola; 1º episódio com a voz v4) | 00 capa · 01 a geladeira · 02 a preguiça · 03 a solução · 04 a lista · 05 chegou · 06 sua vez · 07 fecho | final com voz v4, 54,5 s, revisão aprovada: [`exports/tiktok/tudo-pertim/ep05/`](../../exports/tiktok/tudo-pertim/ep05) |
 
 Em cada episódio, `output/<id>/` traz:
 
@@ -106,12 +107,14 @@ A troca de capítulo é escolhida no JSON do episódio, em `"transicao"`. Sem o 
 |---|---|---|---|
 | *(sem o campo)* / `"moto"` | A motinha com a sacola da marca, com poeira e confete na borda | Sentido alterna; altura, pulinho e empinada mudam (`VARIA`) | Motor + vento, andando de um lado ao outro |
 | `"viralata"` | Um vira-lata caramelo correndo com uma linguiça na boca (tamanho de protagonista, ≈ 400 px, contorno tinta); **o rastro de poeira e fumacinha** ao longo da borda varre o capítulo | Em ciclo de 4: correndo feliz, aos pulinhos, a linguiça balançando; derrapa no meio e volta um passo; com o tio da churrasqueira (avental e pegador) correndo atrás; para no meio, olha para a câmera e sai em disparada. O sentido alterna e a altura muda (`VARIA_V`) | Patinhas em galope + latidinho abafado, andando de um lado ao outro |
+| `"sacola"` | A sacola comilona da UaiPertim (papel creme, faixa coral, a **logo oficial** de `public/img` — nunca redesenhada, deformada, espelhada nem coberta —, olhinhos no estilo das lojinhas, contorno tinta, ≈ 400 px com as alças) pula na tela um pulo a cada meio tempo, abre uma **boca abaixo da logo** e "engole" o capítulo com um **NHAC!** no tempo cheio; atrás dela já está o próximo ("ploc"); **as migalhas** varrem a borda | Em ciclo de 4: pulo e nhac direto; bochechas cheias, mastigando; palitando os dentes; para no meio e suspira satisfeita ("ahh…") com coraçõezinhos. O sentido alterna e a altura muda (`VARIA_S`). Boca, migalhas, "NHAC!" e figurinhas nunca ficam por cima da logo; ao pular, só o papel amassa | Pulinhos de papel + mordida crocante (NHAC!) + "ploc"; mastigando, o tique do palito ou o "ahh" |
 | `"galinha"` | Uma galinha caipira em disparada, batendo as asas; **as penas** que voam ao longo da borda varrem o capítulo | Em ciclo de 4: tropeça no meio; com o pintinho correndo atrás; freia no meio e olha para a câmera; dá um pulão. O sentido alterna e a altura muda (`VARIA_G`) | Cacarejo ("có-có-có-CÓÓ") + bater de asas, andando de um lado ao outro |
 
 - A duração é a mesma para todas: 1,5 tempo da batida (0,75 s a 120 bpm), começando num meio tempo.
 - Quem atravessa fica sempre com a base acima de y 1060, fora da coluna de botões.
 - Com a galinha, a motinha não faz as trocas; ela só aparece dentro das cenas que a usam (ex.: `chegou`).
 - No `fecho`, `"cachorro": {"em": "+1.6"}` faz o vira-lata cruzar ao fundo, do mesmo jeito.
+- No `fecho`, `"sacola": {"em": "+1.6"}` faz a sacola comilona passar ao fundo aos pulos, com um nhac (atrás da logo e do texto; termina antes dos 3 s finais).
 - No `fecho`, `"galinha": {"em": "+1.6"}` faz a galinha cruzar ao fundo uma última vez, atrás da logo e do texto. Ela termina antes dos 3 s finais, então nada se mexe sobre a logo parada.
 - **Transição nova:** é uma função `travessiaX(k, u)` (posição, borda da varredura, sentido e jeito) mais `drawWipeX(ctx, t, k, u)` em `src/anim.js`. Ela é ligada em `travessia()`/`drawWipe()` pelo valor de `TRANS`, com o som próprio em `scripts/audio.py`.
 
@@ -169,6 +172,7 @@ O comando roda, em ordem:
 | Plano B de pronúncia | — | **no capítulo**, só na API: `"pronuncia": "UaiPértim"` ("UaiPertim" → "UaiPértim" junto, "pertim" → "pértim") ou `"pronuncia": "sem-troca"` (texto como escrito; só para testes). **Reprovadas, não usar:** "Pérrtim" e a forma com vírgulas "Uai, Pértim," |
 | `<break …/>` | funciona | **ignorado pelo v4**: o `voz.py` tira as tags do texto enviado. A pausa entre capítulos vem da linha do tempo; dentro do capítulo, fica a pausa natural da pontuação |
 | Seed | quase repetível | **não é repetível**: a narração aprovada fica salva em `audio/<id>/voz/` e o render sempre usa o arquivo salvo. Nunca regenere a voz só para re-renderizar (o `voz.py` só chama a API para capítulo novo, com texto mudado ou pedido em `--refaz`) |
+| Fim da fala | o fim da última letra do alinhamento | igual; mas quando o alinhamento cola a última letra no fim do arquivo (acontece no v4: o som já tinha acabado), o fim da fala é medido no som, só na parte vozeada (< 3 kHz, `scripts/chiado.py → fim_sonoro`), para a conferência do corte e do chiado medirem a cauda de verdade. A conferência do corte também exige os últimos 40 ms do arquivo abaixo de −45 dBFS. Nas vozes do v2 isso nunca acontece: o resultado é o de sempre |
 | Alinhamento | em ms | em degraus de ~40–80 ms: o `linha.py` atrasa o início de cada palavra 60 ms e o arredonda para o quadro (60 fps), para nenhuma peça entrar antes de a palavra soar |
 
 Vale para as duas: recusar "de Glória" (sempre "do Glória"/"no Glória"), a checagem de chiado final e as 3 seeds por capítulo. A validação do fluxo com o v4 (um capítulo passando por `voz.py` → `linha.py` → render) está em `testes/voz-v4/validacao/` (`valida.sh`, `VALIDACAO.md`); o teste de comparação v2 × v4, em `testes/voz-v4/RELATORIO.md`.
@@ -216,6 +220,7 @@ A chave do ElevenLabs fica **só em Segredos de rede**: a rede da nuvem põe o c
 
 | `tipo` | Visual | Campos |
 |---|---|---|
+| `capa` com `"cena": "segunda"` | O adesivo, o título e, no lugar da motinha, o calendário com o "SEG" caindo (preso num aro só), o bonequinho bocejando enrolado no cobertor xadrez e a geladeira entreaberta com a luzinha escapando | `cena: "segunda"`, `marcador`, `calendario: {em}`, `geladeira: {em}`, `bocejo: {em}` |
 | `capa` com `"cena": "churrasco"` | O adesivo, o título e, no lugar da motinha, a churrasqueira apagada com uma fumacinha triste, o saco de carvão vazio virado e o vira-lata sentado com cara de pidão (choraminga na palavra) | `cena: "churrasco"`, `marcador`, `cao: {em}` |
 | `capa` com `"cena": "porta"` | O adesivo, o título e, no lugar da motinha, a porta tremendo com o "TOC TOC" (batidas a cada 1,5 s) e a lata de biscoito vazia com a mosquinha rodando | `cena: "porta"`, `marcador`, `lata: {em}` |
 | `capa` | Adesivo do episódio, título grande (palavra no marcador amarelo, olhinhos 👀 piscando), a motinha chegando freando e derrapando (no quadro 0 já está na derrapada, com fumaça e marca de pneu), confete, figurinhas "UAI!" e brilho, buzina | `marcador`, `olhos: {em}`, `confete: {em}`, `buzina: {em}` |
@@ -240,7 +245,12 @@ A chave do ElevenLabs fica **só em Segredos de rede**: a rede da nuvem põe o c
 | `acougue` | A lojinha do açougue (toldo vermelho e branco); a picanha e a costelinha pulando na tábua; a linguiça pendurada no gancho, balançando | `picanha: {em}`, `linguica: {em}`, `costelinha: {em}`, `manda: {em}` |
 | `geladim` | O isopor abre; três garrafas de refri (sem marca, com gotinhas) sobem geladas; os brilhos de "trincando"; os cubos de gelo tilintando e o saco de gelo caindo com "tum" | `isopor: {em}`, `refri: {em}`, `trincando: {em}`, `gelo: {em}` |
 | `churrasco` | A motinha chegando; a churrasqueira acesa com a grelha enchendo; a fumaça que vira coração; a família comemorando; o tio jogando um pedacinho para o vira-lata, que abana o rabo | `moto: {em}`, `grelha: {em}`, `fumaca: {em}`, `familia: {em}`, `pedacinho: {em}` |
-| `fecho` | Título do capítulo, a logo oficial grande e fixa, a assinatura "Tudo pertim de você.", chip "Segue @uaipertim" com seta e confete final | `logo: {em}`, `assinatura: {t, em}`, `chip: {t, em}`, `confete: {em}` |
+| `geladeira` | A geladeira abre com luz; no tempo da voz aparecem o limão solitário, o meio queijo e o pote de sorvete, que abre e mostra o feijão ("?!" e o bonequinho de pijama levando susto, de cabelo em pé); o grilinho canta lá dentro ("cri-cri") | `abre: {em}`, `limao: {em}`, `queijo: {em}`, `sorvete: {em}`, `feijao: {em}` |
+| `preguica` | O bonequinho de pijama afundando no sofá, a nuvem cinza com chuvisco só em cima dele, o "Zzz" subindo e os chinelos no chão | `nuvem: {em}`, `afunda: {em}`, `zzz: {em}`, `chinelo: {em}` |
+| `solucao` | 3 lojinhas brotam apagadas e acendem em sequência (brilho, sorriso, bracinho acenando), com estrela e coração | `lojas: [{tipo, em}]` (3; `hortifruti`, `mercado`, `acougue`…), `brota: {em}` |
+| `lista` | Os itens da compra (sem marca) caem um a um do alto na sacola da marca e ficam aparecendo pela boca; check, confete e figurinhas atrás da sacola | `itens: [{tipo, em}]` (até 5: `arroz`, `feijao`, `ovos`, `verdura`, `cafe`, `limao`, …) |
+| `leve` | A motinha chega; a geladeira abre cheia e iluminada; o bonequinho se espreguiça feliz; a nuvem cinza vira sol sorrindo | `moto: {em}`, `geladeira: {em}`, `espreguica: {em}`, `sol: {em}` |
+| `fecho` | Título do capítulo, a logo oficial grande e fixa, a assinatura "Tudo pertim de você.", chip "Segue @uaipertim" com seta e confete final | `logo: {em}`, `assinatura: {t, em}`, `chip: {t, em}`, `confete: {em}`; opcionais, cruzando ao fundo antes dos 3 s finais: `galinha`, `cachorro` ou `sacola: {em}` |
 
 **Cena nova:** é um bloco `CENAS.<nome> = { setup(cap), draw(ctx, cap, t) }` em `src/anim.js`.
 

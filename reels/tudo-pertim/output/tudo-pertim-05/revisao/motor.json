@@ -1,0 +1,147 @@
+{
+ "duracao": 54.5,
+ "apoios": [
+  {
+   "cap": 4,
+   "i": 1,
+   "texto": "E aquele café pra aguentar.",
+   "entra": 31.017,
+   "inteira_de": 31.357,
+   "ate": 34.5,
+   "linhas": [
+    "E aquele café pra aguentar."
+   ]
+  },
+  {
+   "cap": 6,
+   "i": 1,
+   "texto": "Na sua lista, o que é sagrado?",
+   "entra": 41.05,
+   "inteira_de": 41.39,
+   "ate": 47,
+   "linhas": [
+    "Na sua lista, o que é sagrado?"
+   ]
+  }
+ ],
+ "trocas": [
+  {
+   "de": 0,
+   "para": 1,
+   "t0": 5.5,
+   "t1": 6.25
+  },
+  {
+   "de": 1,
+   "para": 2,
+   "t0": 13.25,
+   "t1": 14
+  },
+  {
+   "de": 2,
+   "para": 3,
+   "t0": 19,
+   "t1": 19.75
+  },
+  {
+   "de": 3,
+   "para": 4,
+   "t0": 26.75,
+   "t1": 27.5
+  },
+  {
+   "de": 4,
+   "para": 5,
+   "t0": 33.75,
+   "t1": 34.5
+  },
+  {
+   "de": 5,
+   "para": 6,
+   "t0": 40,
+   "t1": 40.75
+  },
+  {
+   "de": 6,
+   "para": 7,
+   "t0": 46.25,
+   "t1": 47
+  }
+ ],
+ "montagens": [
+  {
+   "n": 0,
+   "t0": 0,
+   "t1": 5.5,
+   "primeira": 0.1667,
+   "ultima": 5
+  },
+  {
+   "n": 1,
+   "t0": 6.25,
+   "t1": 13.25,
+   "primeira": 6.5667,
+   "ultima": 11.6833
+  },
+  {
+   "n": 2,
+   "t0": 14,
+   "t1": 19,
+   "primeira": 14.3167,
+   "ultima": 17.3833
+  },
+  {
+   "n": 3,
+   "t0": 19.75,
+   "t1": 26.75,
+   "primeira": 22.4667,
+   "ultima": 25.6667
+  },
+  {
+   "n": 4,
+   "t0": 27.5,
+   "t1": 33.75,
+   "primeira": 27.7,
+   "ultima": 32.3833
+  },
+  {
+   "n": 5,
+   "t0": 34.5,
+   "t1": 40,
+   "primeira": 34.8167,
+   "ultima": 37.7667
+  },
+  {
+   "n": 6,
+   "t0": 40.75,
+   "t1": 46.25,
+   "primeira": 41.0667,
+   "ultima": 44.3333
+  },
+  {
+   "n": 7,
+   "t0": 47,
+   "t1": 54.5,
+   "primeira": 47.3167,
+   "ultima": 50.9
+  }
+ ],
+ "fecho": {
+  "ultima_mudanca_de_texto": 51.449999999999996,
+  "duracao": 54.5,
+  "logo": {
+   "entra": 47.3167,
+   "parada": 48.216699999999996
+  },
+  "t0": 47,
+  "t1": 54.5
+ },
+ "capa": {
+  "tamanho": 91,
+  "linhas": [
+   669.8517041015625,
+   752.3656201171875
+  ]
+ },
+ "palavras_sem_peca": []
+}

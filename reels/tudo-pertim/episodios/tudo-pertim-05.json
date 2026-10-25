@@ -1,0 +1,290 @@
+{
+  "id": "tudo-pertim-05",
+  "titulo": "Segunda sem coragem",
+  "marca": "@uaipertim",
+  "bpm": 120,
+  "voz": "v4",
+  "transicao": "sacola",
+  "capitulos": [
+    {
+      "rotulo": "TUDO PERTIM · EP. 05",
+      "tom": "creme",
+      "titulo": [
+        "Segunda-feira",
+        "sem coragem 🥱"
+      ],
+      "fala": [
+        {
+          "texto": "Segunda-feira, geladeira vazia… e coragem? Nenhuma.",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "capa",
+        "cena": "segunda",
+        "marcador": "coragem",
+        "calendario": {
+          "em": "Segunda-feira"
+        },
+        "geladeira": {
+          "em": "geladeira"
+        },
+        "bocejo": {
+          "em": "coragem"
+        }
+      }
+    },
+    {
+      "rotulo": "A GELADEIRA",
+      "tom": "verde",
+      "titulo": [
+        "Abriu a geladeira…",
+        "e nada."
+      ],
+      "fala": [
+        {
+          "texto": "Abriu a geladeira: um limão, meio queijo e um pote de sorvete… com feijão.",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "geladeira",
+        "abre": {
+          "em": "Abriu"
+        },
+        "limao": {
+          "em": "limão"
+        },
+        "queijo": {
+          "em": "queijo"
+        },
+        "sorvete": {
+          "em": "sorvete"
+        },
+        "feijao": {
+          "em": "feijão"
+        }
+      },
+      "segura": 0.6
+    },
+    {
+      "rotulo": "A PREGUIÇA",
+      "tom": "pessego",
+      "titulo": [
+        "Sair de casa?",
+        "Nem pensar."
+      ],
+      "fala": [
+        {
+          "texto": "Sair de casa numa segunda? Cê tá doido, sô?",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "preguica",
+        "nuvem": {
+          "em": "Sair"
+        },
+        "afunda": {
+          "em": "segunda"
+        },
+        "zzz": {
+          "em": "doido"
+        },
+        "chinelo": {
+          "em": "sô"
+        }
+      },
+      "min": 5.0
+    },
+    {
+      "rotulo": "A SOLUÇÃO",
+      "tom": "amarelo",
+      "titulo": [
+        "Calma,",
+        "tem UaiPertim."
+      ],
+      "fala": [
+        {
+          "texto": "Calma! Faz a compra da semana com o comércio do Glória: hortifrúti, mercadim e açougue.",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "solucao",
+        "lojas": [
+          {
+            "tipo": "hortifruti",
+            "em": "hortifrúti"
+          },
+          {
+            "tipo": "mercado",
+            "em": "mercadim"
+          },
+          {
+            "tipo": "acougue",
+            "em": "açougue"
+          }
+        ],
+        "brota": {
+          "em": "comércio"
+        }
+      }
+    },
+    {
+      "rotulo": "A LISTA",
+      "tom": "verde",
+      "titulo": [
+        "Arroz, feijão",
+        "e o resto."
+      ],
+      "fala": [
+        {
+          "texto": "Arroz, feijão, ovo, verdura…",
+          "apoio": null
+        },
+        {
+          "texto": "e aquele café pra aguentar a semana.",
+          "apoio": "E aquele *café pra aguentar*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "lista",
+        "itens": [
+          {
+            "tipo": "arroz",
+            "em": "Arroz"
+          },
+          {
+            "tipo": "feijao",
+            "em": "feijão"
+          },
+          {
+            "tipo": "ovos",
+            "em": "ovo"
+          },
+          {
+            "tipo": "verdura",
+            "em": "verdura"
+          },
+          {
+            "tipo": "cafe",
+            "em": "café"
+          }
+        ]
+      },
+      "segura": 0.6
+    },
+    {
+      "rotulo": "CHEGOU",
+      "tom": "amarelo",
+      "titulo": [
+        "Chegou, e a segunda",
+        "ficou leve."
+      ],
+      "fala": [
+        {
+          "texto": "Chegou em casa, e a segunda-feira até ficou mais leve.",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "leve",
+        "moto": {
+          "em": "Chegou"
+        },
+        "geladeira": {
+          "em": "casa"
+        },
+        "espreguica": {
+          "em": "segunda-feira"
+        },
+        "sol": {
+          "em": "leve"
+        }
+      },
+      "segura": 0.7,
+      "min": 5.5
+    },
+    {
+      "rotulo": "SUA VEZ",
+      "tom": "amarelo",
+      "titulo": [
+        "O que nunca",
+        "falta na lista?"
+      ],
+      "fala": [
+        {
+          "texto": "Comenta aí: o que nunca pode faltar na sua lista da semana?",
+          "apoio": "Na sua lista, *o que é sagrado*?"
+        }
+      ],
+      "diagrama": {
+        "tipo": "enquete",
+        "opcoes": [
+          {
+            "t": "café",
+            "em": "Comenta"
+          },
+          {
+            "t": "arroz e feijão",
+            "em": "aí"
+          },
+          {
+            "t": "ovo",
+            "em": "nunca"
+          },
+          {
+            "t": "pão de queijo",
+            "em": "faltar"
+          },
+          {
+            "t": "banana",
+            "em": "lista"
+          },
+          {
+            "t": "leite",
+            "em": "semana"
+          }
+        ]
+      },
+      "segura": 0.8,
+      "min": 5.5
+    },
+    {
+      "rotulo": "PRA NÃO PERDER",
+      "tom": "amarelo",
+      "titulo": [
+        "Em breve",
+        "no Glória."
+      ],
+      "min": 7.5,
+      "fala": [
+        {
+          "texto": "UaiPertim. Semana começando? Tudo pertim de você. Segue a gente!",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "fecho",
+        "logo": {
+          "em": "UaiPertim"
+        },
+        "assinatura": {
+          "t": "Tudo pertim de você.",
+          "em": "Tudo"
+        },
+        "chip": {
+          "t": "Segue @uaipertim",
+          "em": "Segue"
+        },
+        "confete": {
+          "em": "+1.2"
+        },
+        "sacola": {
+          "em": "+1.6"
+        }
+      }
+    }
+  ]
+}

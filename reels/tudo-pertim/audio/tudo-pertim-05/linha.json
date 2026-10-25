@@ -1,0 +1,1107 @@
+{
+ "episodio": "tudo-pertim-05",
+ "titulo": "Segunda sem coragem",
+ "marca": "@uaipertim",
+ "bpm": 120,
+ "transicao": "sacola",
+ "duracao": 54.5,
+ "tr": 0.75,
+ "ap_entra": 0.34,
+ "ap_leitura": 1.5,
+ "previa": false,
+ "capitulos": [
+  {
+   "n": 0,
+   "rotulo": "TUDO PERTIM · EP. 05",
+   "tom": "creme",
+   "titulo": [
+    "Segunda-feira",
+    "sem coragem 🥱"
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "capa",
+    "cena": "segunda",
+    "marcador": "coragem",
+    "calendario": {
+     "em": "Segunda-feira"
+    },
+    "geladeira": {
+     "em": "geladeira"
+    },
+    "bocejo": {
+     "em": "coragem"
+    }
+   },
+   "t0": 0.0,
+   "t1": 5.5,
+   "voz_t0": 0.1,
+   "voz_t1": 4.98,
+   "palavras": [
+    {
+     "w": "Segunda-feira,",
+     "n": "segundafeira",
+     "i0": 0,
+     "t0": 0.1667,
+     "t1": 0.98
+    },
+    {
+     "w": "geladeira",
+     "n": "geladeira",
+     "i0": 15,
+     "t0": 1.4333,
+     "t1": 1.78
+    },
+    {
+     "w": "vazia…",
+     "n": "vazia",
+     "i0": 25,
+     "t0": 1.9167,
+     "t1": 2.5
+    },
+    {
+     "w": "e",
+     "n": "e",
+     "i0": 32,
+     "t0": 3.0833,
+     "t1": 3.14
+    },
+    {
+     "w": "coragem?",
+     "n": "coragem",
+     "i0": 34,
+     "t0": 3.4333,
+     "t1": 3.94
+    },
+    {
+     "w": "Nenhuma.",
+     "n": "nenhuma",
+     "i0": 43,
+     "t0": 4.4833,
+     "t1": 4.98
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Segunda-feira, geladeira vazia… e coragem? Nenhuma.",
+     "apoio": null,
+     "t0": 0.1,
+     "t1": 4.98
+    }
+   ],
+   "apoios": [],
+   "seed": 42
+  },
+  {
+   "n": 1,
+   "rotulo": "A GELADEIRA",
+   "tom": "verde",
+   "titulo": [
+    "Abriu a geladeira…",
+    "e nada."
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "geladeira",
+    "abre": {
+     "em": "Abriu"
+    },
+    "limao": {
+     "em": "limão"
+    },
+    "queijo": {
+     "em": "queijo"
+    },
+    "sorvete": {
+     "em": "sorvete"
+    },
+    "feijao": {
+     "em": "feijão"
+    }
+   },
+   "t0": 6.25,
+   "t1": 13.25,
+   "voz_t0": 6.5,
+   "voz_t1": 12.42,
+   "palavras": [
+    {
+     "w": "Abriu",
+     "n": "abriu",
+     "i0": 0,
+     "t0": 6.5667,
+     "t1": 6.847
+    },
+    {
+     "w": "a",
+     "n": "a",
+     "i0": 6,
+     "t0": 6.9333,
+     "t1": 6.9
+    },
+    {
+     "w": "geladeira:",
+     "n": "geladeira",
+     "i0": 8,
+     "t0": 7.0833,
+     "t1": 7.54
+    },
+    {
+     "w": "um",
+     "n": "um",
+     "i0": 19,
+     "t0": 7.9667,
+     "t1": 7.94
+    },
+    {
+     "w": "limão,",
+     "n": "limao",
+     "i0": 22,
+     "t0": 8.0833,
+     "t1": 8.42
+    },
+    {
+     "w": "meio",
+     "n": "meio",
+     "i0": 29,
+     "t0": 8.8,
+     "t1": 9.06
+    },
+    {
+     "w": "queijo",
+     "n": "queijo",
+     "i0": 34,
+     "t0": 9.2333,
+     "t1": 9.62
+    },
+    {
+     "w": "e",
+     "n": "e",
+     "i0": 41,
+     "t0": 9.7167,
+     "t1": 9.7
+    },
+    {
+     "w": "um",
+     "n": "um",
+     "i0": 43,
+     "t0": 9.8333,
+     "t1": 9.94
+    },
+    {
+     "w": "pote",
+     "n": "pote",
+     "i0": 46,
+     "t0": 10.0333,
+     "t1": 10.26
+    },
+    {
+     "w": "de",
+     "n": "de",
+     "i0": 51,
+     "t0": 10.3667,
+     "t1": 10.34
+    },
+    {
+     "w": "sorvete…",
+     "n": "sorvete",
+     "i0": 54,
+     "t0": 10.4333,
+     "t1": 11.3
+    },
+    {
+     "w": "com",
+     "n": "com",
+     "i0": 63,
+     "t0": 11.4333,
+     "t1": 11.54
+    },
+    {
+     "w": "feijão.",
+     "n": "feijao",
+     "i0": 67,
+     "t0": 11.6833,
+     "t1": 12.42
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Abriu a geladeira: um limão, meio queijo e um pote de sorvete… com feijão.",
+     "apoio": null,
+     "t0": 6.5,
+     "t1": 12.42
+    }
+   ],
+   "apoios": [],
+   "seed": 1042
+  },
+  {
+   "n": 2,
+   "rotulo": "A PREGUIÇA",
+   "tom": "pessego",
+   "titulo": [
+    "Sair de casa?",
+    "Nem pensar."
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "preguica",
+    "nuvem": {
+     "em": "Sair"
+    },
+    "afunda": {
+     "em": "segunda"
+    },
+    "zzz": {
+     "em": "doido"
+    },
+    "chinelo": {
+     "em": "sô"
+    }
+   },
+   "t0": 14.0,
+   "t1": 19.0,
+   "voz_t0": 14.25,
+   "voz_t1": 17.53,
+   "palavras": [
+    {
+     "w": "Sair",
+     "n": "sair",
+     "i0": 0,
+     "t0": 14.3167,
+     "t1": 14.57
+    },
+    {
+     "w": "de",
+     "n": "de",
+     "i0": 5,
+     "t0": 14.7167,
+     "t1": 14.81
+    },
+    {
+     "w": "casa",
+     "n": "casa",
+     "i0": 8,
+     "t0": 14.95,
+     "t1": 15.05
+    },
+    {
+     "w": "numa",
+     "n": "numa",
+     "i0": 13,
+     "t0": 15.1833,
+     "t1": 15.29
+    },
+    {
+     "w": "segunda?",
+     "n": "segunda",
+     "i0": 18,
+     "t0": 15.4333,
+     "t1": 16.01
+    },
+    {
+     "w": "Cê",
+     "n": "ce",
+     "i0": 27,
+     "t0": 16.3833,
+     "t1": 16.49
+    },
+    {
+     "w": "tá",
+     "n": "ta",
+     "i0": 30,
+     "t0": 16.6333,
+     "t1": 16.81
+    },
+    {
+     "w": "doido,",
+     "n": "doido",
+     "i0": 33,
+     "t0": 16.95,
+     "t1": 17.25
+    },
+    {
+     "w": "sô?",
+     "n": "so",
+     "i0": 40,
+     "t0": 17.3833,
+     "t1": 17.53
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Sair de casa numa segunda? Cê tá doido, sô?",
+     "apoio": null,
+     "t0": 14.25,
+     "t1": 17.53
+    }
+   ],
+   "apoios": [],
+   "seed": 42
+  },
+  {
+   "n": 3,
+   "rotulo": "A SOLUÇÃO",
+   "tom": "amarelo",
+   "titulo": [
+    "Calma,",
+    "tem UaiPertim."
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "solucao",
+    "lojas": [
+     {
+      "tipo": "hortifruti",
+      "em": "hortifrúti"
+     },
+     {
+      "tipo": "mercado",
+      "em": "mercadim"
+     },
+     {
+      "tipo": "acougue",
+      "em": "açougue"
+     }
+    ],
+    "brota": {
+     "em": "comércio"
+    }
+   },
+   "t0": 19.75,
+   "t1": 26.75,
+   "voz_t0": 20.0,
+   "voz_t1": 26.09,
+   "palavras": [
+    {
+     "w": "Calma!",
+     "n": "calma",
+     "i0": 0,
+     "t0": 20.0667,
+     "t1": 20.64
+    },
+    {
+     "w": "Faz",
+     "n": "faz",
+     "i0": 7,
+     "t0": 20.9833,
+     "t1": 21.04
+    },
+    {
+     "w": "a",
+     "n": "a",
+     "i0": 11,
+     "t0": 21.1833,
+     "t1": 21.2
+    },
+    {
+     "w": "compra",
+     "n": "compra",
+     "i0": 13,
+     "t0": 21.3333,
+     "t1": 21.52
+    },
+    {
+     "w": "da",
+     "n": "da",
+     "i0": 20,
+     "t0": 21.6667,
+     "t1": 21.68
+    },
+    {
+     "w": "semana",
+     "n": "semana",
+     "i0": 23,
+     "t0": 21.8167,
+     "t1": 22.16
+    },
+    {
+     "w": "com",
+     "n": "com",
+     "i0": 30,
+     "t0": 22.2667,
+     "t1": 22.24
+    },
+    {
+     "w": "o",
+     "n": "o",
+     "i0": 34,
+     "t0": 22.3333,
+     "t1": 22.32
+    },
+    {
+     "w": "comércio",
+     "n": "comercio",
+     "i0": 36,
+     "t0": 22.4667,
+     "t1": 22.88
+    },
+    {
+     "w": "do",
+     "n": "do",
+     "i0": 45,
+     "t0": 23.0167,
+     "t1": 23.04
+    },
+    {
+     "w": "Glória:",
+     "n": "gloria",
+     "i0": 48,
+     "t0": 23.2167,
+     "t1": 23.76
+    },
+    {
+     "w": "hortifrúti,",
+     "n": "hortifruti",
+     "i0": 56,
+     "t0": 23.9833,
+     "t1": 24.64
+    },
+    {
+     "w": "mercadim",
+     "n": "mercadim",
+     "i0": 68,
+     "t0": 24.7833,
+     "t1": 25.44
+    },
+    {
+     "w": "e",
+     "n": "e",
+     "i0": 77,
+     "t0": 25.5333,
+     "t1": 25.52
+    },
+    {
+     "w": "açougue.",
+     "n": "acougue",
+     "i0": 79,
+     "t0": 25.6667,
+     "t1": 26.4
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Calma! Faz a compra da semana com o comércio do Glória: hortifrúti, mercadim e açougue.",
+     "apoio": null,
+     "t0": 20.0,
+     "t1": 26.4
+    }
+   ],
+   "apoios": [],
+   "seed": 42
+  },
+  {
+   "n": 4,
+   "rotulo": "A LISTA",
+   "tom": "verde",
+   "titulo": [
+    "Arroz, feijão",
+    "e o resto."
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "lista",
+    "itens": [
+     {
+      "tipo": "arroz",
+      "em": "Arroz"
+     },
+     {
+      "tipo": "feijao",
+      "em": "feijão"
+     },
+     {
+      "tipo": "ovos",
+      "em": "ovo"
+     },
+     {
+      "tipo": "verdura",
+      "em": "verdura"
+     },
+     {
+      "tipo": "cafe",
+      "em": "café"
+     }
+    ]
+   },
+   "t0": 27.5,
+   "t1": 33.75,
+   "voz_t0": 27.75,
+   "voz_t1": 33.11,
+   "palavras": [
+    {
+     "w": "Arroz,",
+     "n": "arroz",
+     "i0": 0,
+     "t0": 27.8167,
+     "t1": 28.47
+    },
+    {
+     "w": "feijão,",
+     "n": "feijao",
+     "i0": 7,
+     "t0": 28.6833,
+     "t1": 29.19
+    },
+    {
+     "w": "ovo,",
+     "n": "ovo",
+     "i0": 15,
+     "t0": 29.7667,
+     "t1": 29.99
+    },
+    {
+     "w": "verdura…",
+     "n": "verdura",
+     "i0": 20,
+     "t0": 30.2167,
+     "t1": 30.79
+    },
+    {
+     "w": "e",
+     "n": "e",
+     "i0": 29,
+     "t0": 31.2,
+     "t1": 31.163
+    },
+    {
+     "w": "aquele",
+     "n": "aquele",
+     "i0": 31,
+     "t0": 31.25,
+     "t1": 31.51
+    },
+    {
+     "w": "café",
+     "n": "cafe",
+     "i0": 38,
+     "t0": 31.6833,
+     "t1": 31.91
+    },
+    {
+     "w": "pra",
+     "n": "pra",
+     "i0": 43,
+     "t0": 32.05,
+     "t1": 32.07
+    },
+    {
+     "w": "aguentar",
+     "n": "aguentar",
+     "i0": 47,
+     "t0": 32.2167,
+     "t1": 32.55
+    },
+    {
+     "w": "a",
+     "n": "a",
+     "i0": 56,
+     "t0": 32.6333,
+     "t1": 32.603
+    },
+    {
+     "w": "semana.",
+     "n": "semana",
+     "i0": 58,
+     "t0": 32.6833,
+     "t1": 33.11
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Arroz, feijão, ovo, verdura…",
+     "apoio": null,
+     "t0": 27.75,
+     "t1": 30.79
+    },
+    {
+     "texto": "e aquele café pra aguentar a semana.",
+     "apoio": "E aquele *café pra aguentar*.",
+     "t0": 31.137,
+     "t1": 33.11
+    }
+   ],
+   "apoios": [
+    {
+     "t": 31.017,
+     "texto": "E aquele *café pra aguentar*.",
+     "ate": 34.5
+    }
+   ],
+   "seed": 1042
+  },
+  {
+   "n": 5,
+   "rotulo": "CHEGOU",
+   "tom": "amarelo",
+   "titulo": [
+    "Chegou, e a segunda",
+    "ficou leve."
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "leve",
+    "moto": {
+     "em": "Chegou"
+    },
+    "geladeira": {
+     "em": "casa"
+    },
+    "espreguica": {
+     "em": "segunda-feira"
+    },
+    "sol": {
+     "em": "leve"
+    }
+   },
+   "t0": 34.5,
+   "t1": 40.0,
+   "voz_t0": 34.75,
+   "voz_t1": 38.03,
+   "palavras": [
+    {
+     "w": "Chegou",
+     "n": "chegou",
+     "i0": 0,
+     "t0": 34.8167,
+     "t1": 35.07
+    },
+    {
+     "w": "em",
+     "n": "em",
+     "i0": 7,
+     "t0": 35.2167,
+     "t1": 35.23
+    },
+    {
+     "w": "casa,",
+     "n": "casa",
+     "i0": 10,
+     "t0": 35.45,
+     "t1": 35.71
+    },
+    {
+     "w": "e",
+     "n": "e",
+     "i0": 16,
+     "t0": 35.9667,
+     "t1": 35.95
+    },
+    {
+     "w": "a",
+     "n": "a",
+     "i0": 18,
+     "t0": 36.05,
+     "t1": 36.03
+    },
+    {
+     "w": "segunda-feira",
+     "n": "segundafeira",
+     "i0": 20,
+     "t0": 36.1667,
+     "t1": 36.83
+    },
+    {
+     "w": "até",
+     "n": "ate",
+     "i0": 34,
+     "t0": 37.0167,
+     "t1": 37.11
+    },
+    {
+     "w": "ficou",
+     "n": "ficou",
+     "i0": 38,
+     "t0": 37.2167,
+     "t1": 37.39
+    },
+    {
+     "w": "mais",
+     "n": "mais",
+     "i0": 44,
+     "t0": 37.5333,
+     "t1": 37.63
+    },
+    {
+     "w": "leve.",
+     "n": "leve",
+     "i0": 49,
+     "t0": 37.7667,
+     "t1": 38.03
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Chegou em casa, e a segunda-feira até ficou mais leve.",
+     "apoio": null,
+     "t0": 34.75,
+     "t1": 38.03
+    }
+   ],
+   "apoios": [],
+   "seed": 42
+  },
+  {
+   "n": 6,
+   "rotulo": "SUA VEZ",
+   "tom": "amarelo",
+   "titulo": [
+    "O que nunca",
+    "falta na lista?"
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "enquete",
+    "opcoes": [
+     {
+      "t": "café",
+      "em": "Comenta"
+     },
+     {
+      "t": "arroz e feijão",
+      "em": "aí"
+     },
+     {
+      "t": "ovo",
+      "em": "nunca"
+     },
+     {
+      "t": "pão de queijo",
+      "em": "faltar"
+     },
+     {
+      "t": "banana",
+      "em": "lista"
+     },
+     {
+      "t": "leite",
+      "em": "semana"
+     }
+    ]
+   },
+   "t0": 40.75,
+   "t1": 46.25,
+   "voz_t0": 41.0,
+   "voz_t1": 44.67,
+   "palavras": [
+    {
+     "w": "Comenta",
+     "n": "comenta",
+     "i0": 0,
+     "t0": 41.0667,
+     "t1": 41.4
+    },
+    {
+     "w": "aí:",
+     "n": "ai",
+     "i0": 8,
+     "t0": 41.5333,
+     "t1": 41.68
+    },
+    {
+     "w": "o",
+     "n": "o",
+     "i0": 12,
+     "t0": 41.9333,
+     "t1": 41.92
+    },
+    {
+     "w": "que",
+     "n": "que",
+     "i0": 14,
+     "t0": 42.0167,
+     "t1": 42.2
+    },
+    {
+     "w": "nunca",
+     "n": "nunca",
+     "i0": 18,
+     "t0": 42.3333,
+     "t1": 42.6
+    },
+    {
+     "w": "pode",
+     "n": "pode",
+     "i0": 24,
+     "t0": 42.7333,
+     "t1": 42.92
+    },
+    {
+     "w": "faltar",
+     "n": "faltar",
+     "i0": 29,
+     "t0": 43.0167,
+     "t1": 43.32
+    },
+    {
+     "w": "na",
+     "n": "na",
+     "i0": 36,
+     "t0": 43.4667,
+     "t1": 43.48
+    },
+    {
+     "w": "sua",
+     "n": "sua",
+     "i0": 39,
+     "t0": 43.5833,
+     "t1": 43.72
+    },
+    {
+     "w": "lista",
+     "n": "lista",
+     "i0": 43,
+     "t0": 43.9333,
+     "t1": 44.04
+    },
+    {
+     "w": "da",
+     "n": "da",
+     "i0": 49,
+     "t0": 44.1833,
+     "t1": 44.2
+    },
+    {
+     "w": "semana?",
+     "n": "semana",
+     "i0": 52,
+     "t0": 44.3333,
+     "t1": 44.92
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Comenta aí: o que nunca pode faltar na sua lista da semana?",
+     "apoio": "Na sua lista, *o que é sagrado*?",
+     "t0": 41.0,
+     "t1": 44.92
+    }
+   ],
+   "apoios": [
+    {
+     "t": 41.05,
+     "texto": "Na sua lista, *o que é sagrado*?",
+     "ate": 47.0
+    }
+   ],
+   "seed": 42
+  },
+  {
+   "n": 7,
+   "rotulo": "PRA NÃO PERDER",
+   "tom": "amarelo",
+   "titulo": [
+    "Em breve",
+    "no Glória."
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "fecho",
+    "logo": {
+     "em": "UaiPertim"
+    },
+    "assinatura": {
+     "t": "Tudo pertim de você.",
+     "em": "Tudo"
+    },
+    "chip": {
+     "t": "Segue @uaipertim",
+     "em": "Segue"
+    },
+    "confete": {
+     "em": "+1.2"
+    },
+    "sacola": {
+     "em": "+1.6"
+    }
+   },
+   "t0": 47.0,
+   "t1": 54.5,
+   "voz_t0": 47.25,
+   "voz_t1": 52.08,
+   "palavras": [
+    {
+     "w": "UaiPertim.",
+     "n": "uaipertim",
+     "i0": 0,
+     "t0": 47.3167,
+     "t1": 48.29
+    },
+    {
+     "w": "Semana",
+     "n": "semana",
+     "i0": 12,
+     "t0": 48.5167,
+     "t1": 48.69
+    },
+    {
+     "w": "começando?",
+     "n": "comecando",
+     "i0": 19,
+     "t0": 48.9167,
+     "t1": 49.65
+    },
+    {
+     "w": "Tudo",
+     "n": "tudo",
+     "i0": 30,
+     "t0": 49.7833,
+     "t1": 50.05
+    },
+    {
+     "w": "pertim",
+     "n": "pertim",
+     "i0": 35,
+     "t0": 50.1833,
+     "t1": 50.49
+    },
+    {
+     "w": "de",
+     "n": "de",
+     "i0": 42,
+     "t0": 50.5833,
+     "t1": 50.61
+    },
+    {
+     "w": "você.",
+     "n": "voce",
+     "i0": 45,
+     "t0": 50.7167,
+     "t1": 51.33
+    },
+    {
+     "w": "Segue",
+     "n": "segue",
+     "i0": 51,
+     "t0": 51.55,
+     "t1": 51.57
+    },
+    {
+     "w": "a",
+     "n": "a",
+     "i0": 57,
+     "t0": 51.65,
+     "t1": 51.623
+    },
+    {
+     "w": "gente!",
+     "n": "gente",
+     "i0": 59,
+     "t0": 51.7167,
+     "t1": 52.37
+    }
+   ],
+   "frases": [
+    {
+     "texto": "UaiPertim. Semana começando? Tudo pertim de você. Segue a gente!",
+     "apoio": null,
+     "t0": 47.25,
+     "t1": 52.37
+    }
+   ],
+   "apoios": [],
+   "seed": 42
+  }
+ ],
+ "colocacao": [
+  {
+   "cap": 0,
+   "arquivo": "voz/cap-00.wav",
+   "de_s": 0.0,
+   "ate_s": 5.04,
+   "no_video_s": 0.1,
+   "amostras": 241920,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 1,
+   "arquivo": "voz/cap-01.wav",
+   "de_s": 0.0,
+   "ate_s": 6.0,
+   "no_video_s": 6.5,
+   "amostras": 288000,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 2,
+   "arquivo": "voz/cap-02.wav",
+   "de_s": 0.0,
+   "ate_s": 3.52,
+   "no_video_s": 14.25,
+   "amostras": 168960,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 3,
+   "arquivo": "voz/cap-03.wav",
+   "de_s": 0.0,
+   "ate_s": 6.39,
+   "no_video_s": 20.0,
+   "amostras": 306720,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 4,
+   "arquivo": "voz/cap-04.wav",
+   "de_s": 0.0,
+   "ate_s": 5.66,
+   "no_video_s": 27.75,
+   "amostras": 271680,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 5,
+   "arquivo": "voz/cap-05.wav",
+   "de_s": 0.0,
+   "ate_s": 3.58,
+   "no_video_s": 34.75,
+   "amostras": 171840,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 6,
+   "arquivo": "voz/cap-06.wav",
+   "de_s": 0.0,
+   "ate_s": 3.92,
+   "no_video_s": 41.0,
+   "amostras": 188160,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 7,
+   "arquivo": "voz/cap-07.wav",
+   "de_s": 0.0,
+   "ate_s": 5.12,
+   "no_video_s": 47.25,
+   "amostras": 245760,
+   "fade_ms": [
+    8,
+    60
+   ]
+  }
+ ],
+ "mapa": {
+  "ok": true,
+  "falhas": []
+ }
+}
