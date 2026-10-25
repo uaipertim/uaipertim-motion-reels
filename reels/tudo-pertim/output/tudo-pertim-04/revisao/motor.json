@@ -1,0 +1,191 @@
+{
+ "duracao": 50,
+ "apoios": [
+  {
+   "cap": 1,
+   "i": 1,
+   "texto": "E a grelha vazia.",
+   "entra": 8.166,
+   "inteira_de": 8.506,
+   "ate": 11.25,
+   "linhas": [
+    "E a grelha vazia."
+   ]
+  },
+  {
+   "cap": 2,
+   "i": 1,
+   "texto": "O açougue do Glória manda.",
+   "entra": 14.224,
+   "inteira_de": 14.564,
+   "ate": 17.5,
+   "linhas": [
+    "O açougue do Glória manda."
+   ]
+  },
+  {
+   "cap": 3,
+   "i": 1,
+   "texto": "Carvão, sal grosso e pão de alho.",
+   "entra": 17.8,
+   "inteira_de": 18.14,
+   "ate": 24,
+   "linhas": [
+    "Carvão, sal grosso e pão de alho."
+   ]
+  },
+  {
+   "cap": 4,
+   "i": 1,
+   "texto": "Refri trincando e saco de gelo.",
+   "entra": 24.3,
+   "inteira_de": 24.64,
+   "ate": 30.25,
+   "linhas": [
+    "Refri trincando e saco de gelo."
+   ]
+  },
+  {
+   "cap": 5,
+   "i": 1,
+   "texto": "O tio nem saiu da churrasqueira.",
+   "entra": 32.156,
+   "inteira_de": 32.496,
+   "ate": 36.25,
+   "linhas": [
+    "O tio nem saiu da churrasqueira."
+   ]
+  },
+  {
+   "cap": 6,
+   "i": 1,
+   "texto": "No seu, qual é o indispensável?",
+   "entra": 36.55,
+   "inteira_de": 36.89,
+   "ate": 42.5,
+   "linhas": [
+    "No seu, qual é o indispensável?"
+   ]
+  }
+ ],
+ "trocas": [
+  {
+   "de": 0,
+   "para": 1,
+   "t0": 4,
+   "t1": 4.75
+  },
+  {
+   "de": 1,
+   "para": 2,
+   "t0": 10.5,
+   "t1": 11.25
+  },
+  {
+   "de": 2,
+   "para": 3,
+   "t0": 16.75,
+   "t1": 17.5
+  },
+  {
+   "de": 3,
+   "para": 4,
+   "t0": 23.25,
+   "t1": 24
+  },
+  {
+   "de": 4,
+   "para": 5,
+   "t0": 29.5,
+   "t1": 30.25
+  },
+  {
+   "de": 5,
+   "para": 6,
+   "t0": 35.5,
+   "t1": 36.25
+  },
+  {
+   "de": 6,
+   "para": 7,
+   "t0": 41.75,
+   "t1": 42.5
+  }
+ ],
+ "montagens": [
+  {
+   "n": 0,
+   "t0": 0,
+   "t1": 4,
+   "primeira": 0.6,
+   "ultima": 3.5
+  },
+  {
+   "n": 1,
+   "t0": 4.75,
+   "t1": 10.5,
+   "primeira": 5.209,
+   "ultima": 8.576
+  },
+  {
+   "n": 2,
+   "t0": 11.25,
+   "t1": 16.75,
+   "primeira": 11.5,
+   "ultima": 15.517
+  },
+  {
+   "n": 3,
+   "t0": 17.5,
+   "t1": 23.25,
+   "primeira": 21.233,
+   "ultima": 23.183000000000003
+  },
+  {
+   "n": 4,
+   "t0": 24,
+   "t1": 29.5,
+   "primeira": 24.25,
+   "ultima": 26.885
+  },
+  {
+   "n": 5,
+   "t0": 30.25,
+   "t1": 35.5,
+   "primeira": 30.5,
+   "ultima": 34.324
+  },
+  {
+   "n": 6,
+   "t0": 36.25,
+   "t1": 41.75,
+   "primeira": 36.55,
+   "ultima": 39.333
+  },
+  {
+   "n": 7,
+   "t0": 42.5,
+   "t1": 50,
+   "primeira": 42.75,
+   "ultima": 46.4
+  }
+ ],
+ "fecho": {
+  "ultima_mudanca_de_texto": 46.949999999999996,
+  "duracao": 50,
+  "logo": {
+   "entra": 42.75,
+   "parada": 43.65
+  },
+  "t0": 42.5,
+  "t1": 50
+ },
+ "capa": {
+  "tamanho": 99,
+  "linhas": [
+   758.9340502929688,
+   540.8890673828125
+  ]
+ },
+ "palavras_sem_peca": []
+}

@@ -1,0 +1,287 @@
+{
+  "id": "tudo-pertim-04",
+  "titulo": "Churrasco de domingo",
+  "marca": "@uaipertim",
+  "bpm": 120,
+  "transicao": "viralata",
+  "capitulos": [
+    {
+      "rotulo": "TUDO PERTIM · EP. 04",
+      "tom": "pessego",
+      "titulo": [
+        "Churrasco sem",
+        "carvão? 😩"
+      ],
+      "fala": [
+        {
+          "texto": "Domingo de churrasco… e ninguém lembrou do carvão?",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "capa",
+        "cena": "churrasco",
+        "marcador": "carvão",
+        "cao": {
+          "em": "carvão"
+        }
+      }
+    },
+    {
+      "rotulo": "O CAUSO",
+      "tom": "pessego",
+      "titulo": [
+        "O tio já tá",
+        "na churrasqueira."
+      ],
+      "fala": [
+        {
+          "texto": "A família chegou, o tio já tá na churrasqueira…",
+          "apoio": null
+        },
+        {
+          "texto": "e a grelha vazia.",
+          "apoio": "E a grelha *vazia*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "causo",
+        "familia": {
+          "em": "família"
+        },
+        "tio": {
+          "em": "tio"
+        },
+        "grelha": {
+          "em": "grelha"
+        }
+      },
+      "segura": 0.6,
+      "min": 5.5
+    },
+    {
+      "rotulo": "O AÇOUGUE",
+      "tom": "amarelo",
+      "titulo": [
+        "Faltou carne?",
+        "O açougue resolve."
+      ],
+      "fala": [
+        {
+          "texto": "Picanha, linguiça e aquela costelinha?",
+          "apoio": null
+        },
+        {
+          "texto": "O açougue do Glória manda.",
+          "apoio": "O açougue do Glória *manda*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "acougue",
+        "picanha": {
+          "em": "Picanha"
+        },
+        "linguica": {
+          "em": "linguiça"
+        },
+        "costelinha": {
+          "em": "costelinha"
+        },
+        "manda": {
+          "em": "manda"
+        }
+      },
+      "segura": 0.6
+    },
+    {
+      "rotulo": "O MERCADIM",
+      "tom": "verde",
+      "titulo": [
+        "Carvão, sal",
+        "e farofa."
+      ],
+      "fala": [
+        {
+          "texto": "Carvão, sal grosso, farofa e o pão de alho… o mercadim resolve.",
+          "apoio": "Carvão, sal grosso e *pão de alho*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "socorro",
+        "loja": "mercado",
+        "lojinha": {
+          "em": "mercadim"
+        },
+        "itens": [
+          {
+            "tipo": "carvao",
+            "em": "Carvão",
+            "som": "flop"
+          },
+          {
+            "tipo": "sal",
+            "em": "sal",
+            "som": "shine"
+          },
+          {
+            "tipo": "farofa",
+            "em": "farofa"
+          },
+          {
+            "tipo": "paoAlho",
+            "em": "pão"
+          }
+        ]
+      },
+      "segura": 0.5
+    },
+    {
+      "rotulo": "GELADIM",
+      "tom": "verde",
+      "titulo": [
+        "Refri gelado",
+        "e muito gelo!"
+      ],
+      "fala": [
+        {
+          "texto": "E refri trincando de gelado, com saco de gelo de quebra.",
+          "apoio": "Refri trincando e *saco de gelo*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "geladim",
+        "isopor": {
+          "em": "E"
+        },
+        "refri": {
+          "em": "refri"
+        },
+        "trincando": {
+          "em": "trincando"
+        },
+        "gelo": {
+          "em": "gelo"
+        }
+      },
+      "segura": 0.6,
+      "min": 5.5
+    },
+    {
+      "rotulo": "CHEGOU",
+      "tom": "amarelo",
+      "titulo": [
+        "Chegou antes",
+        "da brasa pegar."
+      ],
+      "fala": [
+        {
+          "texto": "Chegou antes da brasa pegar.",
+          "apoio": null
+        },
+        {
+          "texto": "O tio nem precisou sair da churrasqueira.",
+          "apoio": "O tio *nem saiu da churrasqueira*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "churrasco",
+        "moto": {
+          "em": "Chegou"
+        },
+        "grelha": {
+          "em": "brasa"
+        },
+        "fumaca": {
+          "em": "pegar"
+        },
+        "familia": {
+          "em": "tio"
+        },
+        "pedacinho": {
+          "em": "churrasqueira"
+        }
+      },
+      "segura": 0.7
+    },
+    {
+      "rotulo": "SUA VEZ",
+      "tom": "amarelo",
+      "titulo": [
+        "O que não pode",
+        "faltar no churrasco?"
+      ],
+      "fala": [
+        {
+          "texto": "Comenta aí: o que não pode faltar no churrasco de domingo?",
+          "apoio": "No seu, *qual é o indispensável*?"
+        }
+      ],
+      "diagrama": {
+        "tipo": "enquete",
+        "opcoes": [
+          {
+            "t": "pão de alho",
+            "em": "Comenta"
+          },
+          {
+            "t": "vinagrete",
+            "em": "aí"
+          },
+          {
+            "t": "farofa",
+            "em": "pode"
+          },
+          {
+            "t": "linguiça",
+            "em": "faltar"
+          },
+          {
+            "t": "mandioca",
+            "em": "churrasco"
+          },
+          {
+            "t": "queijo coalho",
+            "em": "domingo"
+          }
+        ]
+      },
+      "segura": 0.8,
+      "min": 5.5
+    },
+    {
+      "rotulo": "PRA NÃO PERDER",
+      "tom": "amarelo",
+      "titulo": [
+        "Em breve",
+        "no Glória."
+      ],
+      "min": 7.5,
+      "fala": [
+        {
+          "texto": "UaiPertim. Churrasco de domingo? Tudo pertim de você. Segue a gente!",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "fecho",
+        "logo": {
+          "em": "UaiPertim"
+        },
+        "assinatura": {
+          "t": "Tudo pertim de você.",
+          "em": "Tudo"
+        },
+        "chip": {
+          "t": "Segue @uaipertim",
+          "em": "Segue"
+        },
+        "confete": {
+          "em": "+1.2"
+        },
+        "cachorro": {
+          "em": "+1.6"
+        }
+      }
+    }
+  ]
+}

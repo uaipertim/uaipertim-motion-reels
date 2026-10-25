@@ -38,6 +38,7 @@ A cara é **mais jovem, animada e viva**, com a marca em destaque. A pasta `reel
 | **tudo-pertim-01** | "Prazer, UaiPertim!" | 00 capa · 01 quem sou eu · 02 o que tem · 03 como funciona · 04 sem aperto · 05 feito em Minas · 06 sua vez · 07 fecho | final com voz, 52,25 s, revisão aprovada: [`exports/tiktok/tudo-pertim/ep01/`](../../exports/tiktok/tudo-pertim/ep01) |
 | **tudo-pertim-02** | "Um dia no Glória" | 00 capa · 01 7h da manhã · 02 meio-dia · 03 3h da tarde · 04 6h da tarde · 05 sexta à noite · 06 sua vez · 07 fecho | final com voz, 51,5 s, revisão aprovada: [`exports/tiktok/tudo-pertim/ep02/`](../../exports/tiktok/tudo-pertim/ep02) |
 | **tudo-pertim-03** | "Visita sem avisar" (transição da galinha) | 00 capa · 01 o desespero · 02 a cozinha · 03 socorro · 04 o capricho · 05 chegou · 06 sua vez · 07 fecho | final com voz, 50,75 s, revisão aprovada: [`exports/tiktok/tudo-pertim/ep03/`](../../exports/tiktok/tudo-pertim/ep03) |
+| **tudo-pertim-04** | "Churrasco de domingo" (transição do vira-lata) | 00 capa · 01 o causo · 02 o açougue · 03 o mercadim · 04 geladim · 05 chegou · 06 sua vez · 07 fecho | final com voz, 50,0 s, revisão aprovada: [`exports/tiktok/tudo-pertim/ep04/`](../../exports/tiktok/tudo-pertim/ep04) |
 
 Em cada episódio, `output/<id>/` traz:
 
@@ -104,11 +105,13 @@ A troca de capítulo é escolhida no JSON do episódio, em `"transicao"`. Sem o 
 | `transicao` | Quem atravessa e varre o capítulo | Variações a cada troca | Som |
 |---|---|---|---|
 | *(sem o campo)* / `"moto"` | A motinha com a sacola da marca, com poeira e confete na borda | Sentido alterna; altura, pulinho e empinada mudam (`VARIA`) | Motor + vento, andando de um lado ao outro |
+| `"viralata"` | Um vira-lata caramelo correndo com uma linguiça na boca (tamanho de protagonista, ≈ 400 px, contorno tinta); **o rastro de poeira e fumacinha** ao longo da borda varre o capítulo | Em ciclo de 4: correndo feliz, aos pulinhos, a linguiça balançando; derrapa no meio e volta um passo; com o tio da churrasqueira (avental e pegador) correndo atrás; para no meio, olha para a câmera e sai em disparada. O sentido alterna e a altura muda (`VARIA_V`) | Patinhas em galope + latidinho abafado, andando de um lado ao outro |
 | `"galinha"` | Uma galinha caipira em disparada, batendo as asas; **as penas** que voam ao longo da borda varrem o capítulo | Em ciclo de 4: tropeça no meio; com o pintinho correndo atrás; freia no meio e olha para a câmera; dá um pulão. O sentido alterna e a altura muda (`VARIA_G`) | Cacarejo ("có-có-có-CÓÓ") + bater de asas, andando de um lado ao outro |
 
 - A duração é a mesma para todas: 1,5 tempo da batida (0,75 s a 120 bpm), começando num meio tempo.
 - Quem atravessa fica sempre com a base acima de y 1060, fora da coluna de botões.
 - Com a galinha, a motinha não faz as trocas; ela só aparece dentro das cenas que a usam (ex.: `chegou`).
+- No `fecho`, `"cachorro": {"em": "+1.6"}` faz o vira-lata cruzar ao fundo, do mesmo jeito.
 - No `fecho`, `"galinha": {"em": "+1.6"}` faz a galinha cruzar ao fundo uma última vez, atrás da logo e do texto. Ela termina antes dos 3 s finais, então nada se mexe sobre a logo parada.
 - **Transição nova:** é uma função `travessiaX(k, u)` (posição, borda da varredura, sentido e jeito) mais `drawWipeX(ctx, t, k, u)` em `src/anim.js`. Ela é ligada em `travessia()`/`drawWipe()` pelo valor de `TRANS`, com o som próprio em `scripts/audio.py`.
 
@@ -196,6 +199,7 @@ A chave do ElevenLabs fica **só em Segredos de rede**: a rede da nuvem põe o c
 
 | `tipo` | Visual | Campos |
 |---|---|---|
+| `capa` com `"cena": "churrasco"` | O adesivo, o título e, no lugar da motinha, a churrasqueira apagada com uma fumacinha triste, o saco de carvão vazio virado e o vira-lata sentado com cara de pidão (choraminga na palavra) | `cena: "churrasco"`, `marcador`, `cao: {em}` |
 | `capa` com `"cena": "porta"` | O adesivo, o título e, no lugar da motinha, a porta tremendo com o "TOC TOC" (batidas a cada 1,5 s) e a lata de biscoito vazia com a mosquinha rodando | `cena: "porta"`, `marcador`, `lata: {em}` |
 | `capa` | Adesivo do episódio, título grande (palavra no marcador amarelo, olhinhos 👀 piscando), a motinha chegando freando e derrapando (no quadro 0 já está na derrapada, com fumaça e marca de pneu), confete, figurinhas "UAI!" e brilho, buzina | `marcador`, `olhos: {em}`, `confete: {em}`, `buzina: {em}` |
 | `quem` | A logo oficial entra com mola no meio da praça; as lojinhas brotam em volta (olhando para a logo) e o coreto; estrela, coração e confete | `logo: {em}`, `lojas: [{tipo, em}]` (até 4), `confete: {em}` |
@@ -212,9 +216,13 @@ A chave do ElevenLabs fica **só em Segredos de rede**: a rede da nuvem põe o c
 | `enquete` | Balões de resposta (emoji opcional + texto, do tamanho da resposta), inclinados e desalinhados, um a um com "pop", com corações e estrelas pipocando. Com 5 ou 6 respostas, os balões ficam mais baixos e entram em ondas | `opcoes: [{t, emoji?, em}]` (até 6) |
 | `visita` | A porta tremendo com dois "TOC!", que abre com luz; os bonequinhos da visita (corpo de pílula, olhos de pontinho, sem cara infantil) brotando um a um; os balões "Ô de casa!" | `toc: {em}`, `abre: {em}`, `pessoas: [{em}]` (até 5) |
 | `cozinha` | O bule fumegando na mesinha; o armário de parede que abre vazio, com teia e aranhinha; o "?"; a lata de biscoito que tomba vazia | `bule: {em}`, `armario: {em}`, `lata: {em}` |
-| `socorro` | A padaria pulando de alegria; os itens voando da porta para a sacola com a logo oficial; o check | `padaria: {em}`, `itens: [{tipo, em}]` (até 3: paoQueijo, rosca, bolo, …) |
+| `socorro` | A lojinha (padaria, ou a de `loja`) pulando de alegria; os itens voando da porta para a sacola com a logo oficial; o check | `loja` (opcional: `mercado`, `acougue`…), `padaria: {em}` ou `lojinha: {em}`, `itens: [{tipo, em, som?}]` (até 4; `som` troca o "plop" da chegada, ex.: `flop` para o saco de carvão) |
 | `capricho` | O mercadim num gramadinho; a toalha xadrez desenrolando na mesa; os itens saindo do mercadim e pousando um a um | `toalha: {em}`, `itens: [{tipo, em}]` (até 3: queijo, doce, requeijao, …) |
 | `chegou` | A motinha chegando com a sacola; a mesa farta; a visita atrás da mesa com coraçõezinhos subindo; a piscadinha para a câmera | `moto: {em}`, `mesa: {em}`, `visita: {em}`, `piscadinha: {em}` |
+| `causo` | A família brotando (bonequinhos do ep03); o tio de avental e pegador ao lado da churrasqueira apagada; o "?" sobre a grelha vazia | `familia: {em}`, `tio: {em}`, `grelha: {em}` |
+| `acougue` | A lojinha do açougue (toldo vermelho e branco); a picanha e a costelinha pulando na tábua; a linguiça pendurada no gancho, balançando | `picanha: {em}`, `linguica: {em}`, `costelinha: {em}`, `manda: {em}` |
+| `geladim` | O isopor abre; três garrafas de refri (sem marca, com gotinhas) sobem geladas; os brilhos de "trincando"; os cubos de gelo tilintando e o saco de gelo caindo com "tum" | `isopor: {em}`, `refri: {em}`, `trincando: {em}`, `gelo: {em}` |
+| `churrasco` | A motinha chegando; a churrasqueira acesa com a grelha enchendo; a fumaça que vira coração; a família comemorando; o tio jogando um pedacinho para o vira-lata, que abana o rabo | `moto: {em}`, `grelha: {em}`, `fumaca: {em}`, `familia: {em}`, `pedacinho: {em}` |
 | `fecho` | Título do capítulo, a logo oficial grande e fixa, a assinatura "Tudo pertim de você.", chip "Segue @uaipertim" com seta e confete final | `logo: {em}`, `assinatura: {t, em}`, `chip: {t, em}`, `confete: {em}` |
 
 **Cena nova:** é um bloco `CENAS.<nome> = { setup(cap), draw(ctx, cap, t) }` em `src/anim.js`.

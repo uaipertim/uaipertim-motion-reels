@@ -561,6 +561,29 @@ for c in CUES['cues']:
         for j in range(int(max(0.3, d) / 0.075)):
             asa = filt(noise(0.05), [600, 3000], 'band') * np.exp(-tt(0.05) / 0.012)
             place(sfx, asa, t + j * 0.075, 0.2, sd * (-0.8 + 1.6 * j * 0.075 / max(0.3, d)))
+    elif ty == 'cachorro':
+        # o vira-lata: as patinhas em galope ("ta-ta-tum") andando de um lado ao outro + um latidinho abafado (a linguiça na boca)
+        sd = c.get('dir', 1)
+        dd = max(0.3, d)
+        if not c.get('so_latido'):
+            j = 0
+            while j * 0.055 < dd:
+                pata = add(click(0.02, 1400 + 300 * (j % 3), 0.004) * 0.7, thump(0.06, 140, 0.012, 0.5) * 0.4)
+                place(sfx, pata, t + j * 0.055 + (0.012 if j % 3 == 2 else 0), 0.22 * (0.7 if j % 3 else 1.0), sd * (-0.8 + 1.6 * j * 0.055 / dd))
+                j += 1
+        tq = tt(0.16)
+        f = 330 * np.exp(-tq / 0.12) + 170
+        wuf = (2 * ((np.cumsum(f) / SR) % 1) - 1) * 0.6 + filt(noise(0.16), [300, 1400], 'band') * 0.5
+        wuf = filt(wuf, 900, 'low') * np.minimum(1, tq / 0.01) * np.exp(-tq / 0.06)
+        place(sfx, np.tanh(2.2 * wuf), t + dd * 0.45, 0.4, sd * 0.1)
+    elif ty == 'pidao':
+        # o choramingo do vira-lata pidão: um "hmmm" agudo que desce, com tremidinho
+        dd = 0.6
+        tq = tt(dd)
+        f = (880 - 260 * tq / dd) * (1 + 0.025 * np.sin(2 * np.pi * 9 * tq))
+        v = np.sin(2 * np.pi * np.cumsum(f) / SR) + 0.25 * np.sin(4 * np.pi * np.cumsum(f) / SR)
+        v = filt(v, 2500, 'low') * np.minimum(1, tq / 0.06) * np.clip((dd - tq) / 0.25, 0, 1)
+        place(sfx, v * 0.6, t, 0.3, 0.4); place(send, v * 0.6, t, 0.06)
     elif ty == 'toc':
         # a batida na porta: madeira oca e grave
         place(sfx, add(wood(320, 0.18, 0.04) * 0.9, thump(0.25, 90, 0.05, 0.7) * 0.6, click(0.02, 2200, 0.003) * 0.4), t, 0.55, -0.3)
