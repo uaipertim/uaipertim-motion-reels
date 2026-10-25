@@ -48,6 +48,7 @@ AUD = os.path.join(ROOT, 'audio', EP)
 DEST = os.path.join(AUD, 'previa') if PREVIA else AUD
 SCRIPT = json.load(open(os.path.join(ROOT, 'episodios', EP + '.json'), encoding='utf-8'))
 SR_IN, SR = 44100, 48000
+PERFIL = SCRIPT.get('perfil_voz', 'narracao')   # o perfil de voz do episódio (o mesmo de scripts/voz.py)
 TR = 0.9                      # a troca de capítulo (a motinha na rua)
 AP_ENTRA = 0.34               # a linha de apoio entra em 0,34 s (a anterior sai antes: as duas nunca se sobrepõem)
 AP_LEITURA = 1.5              # e fica ao menos 1,5 s inteira na tela
@@ -65,7 +66,7 @@ def pron(c, t):
     {"UaiPertim": "Uai perr-tím"}), depois a regra fixa de pronúncia (audio/voz_oficial.json → pronounce())"""
     for k, v in sorted((c.get('pronuncia') or {}).items(), key=lambda kv: -len(kv[0])):
         t = re.sub(rf'(?<![\wÀ-ÿ]){re.escape(k)}(?![\wÀ-ÿ])', v, t)
-    return pronounce(t)
+    return pronounce(t, PERFIL)
 
 
 def norm(s):
@@ -225,7 +226,8 @@ def main():
         for n, ini, fim, desloc in pistas:
             sr, y = wavfile.read(os.path.join(AUD, 'voz', f'cap-{n:02d}.wav'))
             y = y.astype(np.float64) / 32768
-            a, b = max(0.0, ini - PRE), min(len(y) / sr, fim + POS)
+            pre = PRE + (0.04 if FALAS[f'{n:02d}'].get('modelo') == 'eleven_v4' else 0.0)   # v4: o alinhamento vem em degraus de ~40 ms
+            a, b = max(0.0, ini - pre), min(len(y) / sr, fim + POS)
             seg = resample_poly(y[int(round(a * sr)):int(round(b * sr))], SR, sr)
             k0, k1 = int(0.008 * SR), int(0.06 * SR)
             seg[:k0] *= np.linspace(0, 1, k0); seg[-k1:] *= np.linspace(1, 0, k1)

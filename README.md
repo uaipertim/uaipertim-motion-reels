@@ -180,7 +180,7 @@ npm run dicionario -- 01        # ou: npm run dicionario -- episodios/dicionario
 ```
 
 Faz tudo em sequência (`scripts/dicionario.sh`):
-1. `python3 audio/dicionario.py <json>`: narração com a **voz oficial** (`audio/voz_oficial.json`, ElevenLabs, com a regra fixa de pronúncia abaixo; "num" e "cê" como estão), com o tempo de cada palavra. Calcula os tempos das cenas e salva em `public/audio/dicionario/NN/` (`narracao.mp3`, `timing.json` e `mix.wav`: trilha do projeto + efeitos curtos + ducking de -11 dB sob a voz). O mp3 só é gerado de novo se o texto enviado à voz (já com a pronúncia) mudar.
+1. `python3 audio/dicionario.py <json>`: narração com a **voz oficial** (`audio/voz_oficial.json`, ElevenLabs, **sempre no perfil `pausas`**: `eleven_multilingual_v2`, que respeita o `<break time="0.4s" />` entre as partes; com a pronúncia desse perfil, "Uai Pérr-tim"; "num" e "cê" como estão), com o tempo de cada palavra. Calcula os tempos das cenas e salva em `public/audio/dicionario/NN/` (`narracao.mp3`, `timing.json` e `mix.wav`: trilha do projeto + efeitos curtos + ducking de -11 dB sob a voz). O mp3 só é gerado de novo se o texto enviado à voz (já com a pronúncia) mudar.
 2. `remotion render DicionarioMineiro … --props=<json>` → `out/dicionario/dicionario-NN-palavra.mp4`.
 3. Capa = quadro 0 → `out/dicionario/capa-dicionario-NN.png` + prévia do recorte 3:4 (`capa-dicionario-NN_3x4.png`).
 
@@ -423,16 +423,22 @@ npm run audio:setup   # baixa as vozes (Piper pt-BR + Kokoro) e instala as libs 
 
 **Regra fixa da marca: "O Glória" (masculino).** A cidade é sempre tratada no masculino: "do Glória", "no Glória", "pro Glória" (nunca "de Glória" nem "em Glória"). O nome completo "São João Batista do Glória" continua igual. Vale na tela, na voz e nas legendas.
 
-**Regra fixa de pronúncia (todos os vídeos):** "Pertim" se fala com o **E aberto** e a força no final: "per-TIM" com "pé" aberto (nunca "PÊRtim"). Na tela nada muda (continua "Pertim" e "UaiPertim"); só a grafia enviada à ElevenLabs:
+**Regra fixa de pronúncia (todos os vídeos):** "Pertim" se fala com o **E aberto** e a força no final: "per-TIM" com "pé" aberto (nunca "PÊRtim"). Na tela nada muda (continua "Pertim" e "UaiPertim"); só a grafia enviada à ElevenLabs, que depende do perfil de voz:
 
-| Na tela | Enviado à voz |
-|---|---|
-| Pertim / pertim | Pérr-tim / pérr-tim ("Pértim" ainda saía com o E fechado) |
-| UaiPertim (a marca) | Uai Pérr-tim ("Uai Pértim" ainda saía com o E fechado) |
+| Na tela | Perfil `narracao` (eleven_v4) | Perfil `pausas` (multilingual_v2) |
+|---|---|---|
+| Pertim / pertim | Pértim / pértim | Pérr-tim / pérr-tim |
+| UaiPertim (a marca) | Uai Pértim | Uai Pérr-tim |
+| WhatsApp · UaiFood · Burguer | Uátsap · Uai fúdi · Búrguer | Uátsap · Uai fúdi · Búrguer |
 
-O dicionário fica em `audio/voz_oficial.json` → `pronuncia` e é aplicado automaticamente a TODO texto enviado à API (`pronounce()` em `audio/elevenlabs.py`: palavra inteira, sem diferenciar maiúsculas, mantendo a inicial, chaves mais longas primeiro). Palavra nova com pronúncia própria = mais uma entrada nesse dicionário.
+Cada perfil tem o seu dicionário em `audio/voz_oficial.json` → `perfis.<perfil>.pronuncia`, aplicado a todo texto enviado à API (`pronounce(texto, perfil)` em `audio/elevenlabs.py`: palavra inteira, sem diferenciar maiúsculas, mantendo a inicial, chaves mais longas primeiro). Uma palavra nova com pronúncia própria é mais uma entrada no dicionário do perfil.
 
-**Voz oficial da UaiPertim (ElevenLabs):** Victor Pinho (`LuQ9eaWO9yCQrR73VQFa`), modelo `eleven_multilingual_v2`; ajustes, seed e grafias de pronúncia em `audio/voz_oficial.json` (sem a chave). `python3 audio/elevenlabs.py --video v3` lê o roteiro da timeline (`narration.script`) e salva o mp3 + o tempo de cada palavra (`.alignment.json`); com `narration.engine: "file"`, `audio/tts.py` recorta cada fala do mp3 (`src`) e a posiciona no frame `from`. A chave vem do ambiente (Segredos de rede) ou de `XI_API_KEY`, nunca do repositório.
+**Voz oficial da UaiPertim (ElevenLabs):** Victor Pinho (`LuQ9eaWO9yCQrR73VQFa`), com seed 42 e **dois perfis** (decisão do teste em `audio/teste-v4/relatorio.md`):
+
+- **`narracao`:** `eleven_v4`, estabilidade 0,50 e semelhança 0,75, sem style e sem speaker boost. Serve para toda narração nova: série Explica, Sô!, Reels especiais e qualquer vídeo narrado novo.
+- **`pausas`:** `eleven_multilingual_v2`, com 0,40 / 0,80 / estilo 0,35 / speaker boost. Serve para textos com `<break time=... />`, como o **Dicionário Mineiro**, que fica fixo nesse perfil, porque o eleven_v4 não respeita o `<break>`.
+
+Com o perfil `narracao`, um texto com `<break>` gera um aviso no console sugerindo o `pausas`; nada é convertido sozinho. Os episódios já publicados ficam com o que foi usado neles. Ajustes, seed e grafias ficam em `audio/voz_oficial.json` (sem a chave). `python3 audio/elevenlabs.py --video v3` lê o roteiro da timeline (`narration.script`; o perfil vem de `narration.perfil_voz`, com padrão `narracao`) e salva o mp3 + o tempo de cada palavra (`.alignment.json`); com `narration.engine: "file"`, `audio/tts.py` recorta cada fala do mp3 (`src`) e a posiciona no frame `from`. A chave vem do ambiente (Segredos de rede) ou de `XI_API_KEY`, nunca do repositório.
 
 **Trocar por voz gravada:** grave as falas `n1`…`n6` como WAV, coloque em `audio/build/vo/` (Vídeo 1) ou `audio/build/v2/vo/` (Vídeo 2) com esses nomes e rode `python3 audio/build_audio.py [--video v2] --no-tts`.
 

@@ -2,7 +2,8 @@
 
     python3 audio/elevenlabs.py --video v3
 
-Lê o roteiro em narration.script da timeline do vídeo, aplica as grafias de pronúncia e salva:
+Lê o roteiro em narration.script da timeline do vídeo, aplica as grafias de pronúncia do perfil de voz (narration.perfil_voz;
+padrão "narracao" = eleven_v4; textos com <break> pedem "pausas") e salva:
   - narration.src (ex.: public/audio/narracao_video3.mp3)
   - o mesmo caminho com .alignment.json: tempo (s) de cada palavra, para cortar e sincronizar as falas.
 A chave nunca é impressa nem salva: vem do ambiente (Segredos de rede injetam o xi-api-key) ou de XI_API_KEY.
@@ -22,20 +23,45 @@ from common import ROOT, load_timeline  # noqa: E402
 API = "https://api.elevenlabs.io/v1/text-to-speech/{voice}/with-timestamps?output_format={fmt}"
 
 
-def pronounce(text):
-    """Regra fixa de pronúncia (audio/voz_oficial.json → pronuncia): troca palavras inteiras, sem diferenciar
-    maiúsculas, mantendo a inicial maiúscula/minúscula e aplicando as chaves mais longas primeiro."""
+PERFIS = ("narracao", "pausas")
+BREAK = re.compile(r"<break\b", re.IGNORECASE)
+
+
+def perfil(nome):
+    """O perfil de voz de audio/voz_oficial.json: "narracao" (eleven_v4, narração corrida) ou "pausas"
+    (eleven_multilingual_v2, textos com <break time=... />). Devolve a voz + o modelo, os ajustes e o dicionário dele."""
+    if nome not in PERFIS:
+        raise ValueError(f"perfil de voz desconhecido: {nome!r} (use um de {PERFIS})")
     voz = json.load(open(ROOT / "audio" / "voz_oficial.json", encoding="utf-8"))
-    for word, spelled in sorted(voz.get("pronuncia", {}).items(), key=lambda kv: -len(kv[0])):
+    p = voz["perfis"][nome]
+    return {"nome": nome, "name": voz["name"], "voiceId": voz["voiceId"], "seed": voz["seed"], "outputFormat": voz["outputFormat"],
+            "model": p["model"], "voiceSettings": p["voiceSettings"], "pronuncia": p.get("pronuncia", {})}
+
+
+def avisa_break(text, nome, onde=""):
+    """narração com <break> no perfil "narracao": o eleven_v4 não respeita a pausa. Só avisa (não converte)."""
+    if nome != "pausas" and BREAK.search(text or ""):
+        print(f"AVISO{(' ' + onde) if onde else ''}: o texto tem <break time=... />, que o perfil \"{nome}\" (eleven_v4) não respeita. "
+              "Use o perfil \"pausas\" (eleven_multilingual_v2) para este texto.", file=sys.stderr)
+        return True
+    return False
+
+
+def pronounce(text, nome):
+    """Regra de pronúncia do perfil (audio/voz_oficial.json → perfis.<nome>.pronuncia): troca palavras inteiras, sem
+    diferenciar maiúsculas, mantendo a inicial maiúscula/minúscula e aplicando as chaves mais longas primeiro."""
+    for word, spelled in sorted(perfil(nome)["pronuncia"].items(), key=lambda kv: -len(kv[0])):
         def rep(m, spelled=spelled):
             return spelled if m.group(0)[0].isupper() else spelled[0].lower() + spelled[1:]
         text = re.sub(rf"(?<![\wÀ-ÿ]){re.escape(word)}(?![\wÀ-ÿ])", rep, text, flags=re.IGNORECASE)
     return text
 
 
-def speak(text):
-    voz = json.load(open(ROOT / "audio" / "voz_oficial.json", encoding="utf-8"))
-    text = pronounce(text)
+def speak(text, nome):
+    """uma geração inteira com o perfil `nome` ("narracao" ou "pausas"); devolve (texto enviado, mp3, alinhamento)"""
+    voz = perfil(nome)
+    avisa_break(text, nome)
+    text = pronounce(text, nome)
     body = json.dumps({"text": text, "model_id": voz["model"], "voice_settings": voz["voiceSettings"], "seed": voz["seed"]}).encode()
     headers = {"Content-Type": "application/json"}
     if os.environ.get("XI_API_KEY"):
@@ -69,7 +95,8 @@ def words(text, al):
 def main():
     tl = load_timeline()
     nar = tl["narration"]
-    text, audio, al = speak(nar["script"])
+    nome = nar.get("perfil_voz", "narracao")          # vídeo narrado novo: "narracao"; com <break>, marque "pausas"
+    text, audio, al = speak(nar["script"], nome)
     dst = ROOT / nar["src"]
     dst.write_bytes(audio)
     ws = words(text, al)

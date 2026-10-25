@@ -41,15 +41,20 @@ from scipy.io import wavfile
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REPO = os.path.dirname(os.path.dirname(ROOT))
 sys.path.insert(0, os.path.join(REPO, 'audio'))
-from elevenlabs import pronounce  # noqa: E402  (a regra fixa de pronúncia da UaiPertim)
+from elevenlabs import avisa_break, perfil, pronounce  # noqa: E402  (os perfis de voz e a pronúncia de cada um)
 
 EP = sys.argv[1] if len(sys.argv) > 1 and not sys.argv[1].startswith('--') else 'explica-so-01'
 OUT = os.path.join(ROOT, 'audio', EP, 'voz')
 API = 'https://api.elevenlabs.io/v1/text-to-speech/{voice}/with-timestamps?output_format={fmt}'
-VOZ = json.load(open(os.path.join(REPO, 'audio', 'voz_oficial.json'), encoding='utf-8'))
-VOICE, MODEL, SETTINGS, SEED0 = VOZ['voiceId'], VOZ['model'], VOZ['voiceSettings'], VOZ.get('seed', 42)
 SR = 44100
 SCRIPT = json.load(open(os.path.join(ROOT, 'episodios', EP + '.json'), encoding='utf-8'))
+# o perfil de voz do episódio ("perfil_voz" no JSON): "narracao" (eleven_v4) por padrão; "pausas" (eleven_multilingual_v2)
+# para texto com <break> e nos episódios já publicados (gerados assim). Ver audio/voz_oficial.json → perfis.
+PERFIL = SCRIPT.get('perfil_voz', 'narracao')
+VOZ = perfil(PERFIL)
+VOICE, MODEL, SETTINGS, SEED0 = VOZ['voiceId'], VOZ['model'], VOZ['voiceSettings'], VOZ.get('seed', 42)
+# o alinhamento do eleven_v4 vem em degraus de ~40 ms: as conferências de pausa e de fim cortado têm essa folga
+PASSO = 0.04 if MODEL == 'eleven_v4' else 0.0
 TENTATIVAS = 4
 PARA = ('voice_not_found', 'invalid_api_key', 'unauthorized', 'missing_permissions', 'needs_authorization', 'voice_access_denied',
         'quota_exceeded', 'detected_unusual_activity')
@@ -60,7 +65,7 @@ def pron(c, t):
     {"UaiPertim": "Uai perr-tím"}), depois a regra fixa de pronúncia (audio/voz_oficial.json → pronounce())"""
     for k, v in sorted((c.get('pronuncia') or {}).items(), key=lambda kv: -len(kv[0])):
         t = re.sub(rf'(?<![\wÀ-ÿ]){re.escape(k)}(?![\wÀ-ÿ])', v, t)
-    return pronounce(t)
+    return pronounce(t, PERFIL)
 
 
 def texto_cap(c):
@@ -78,7 +83,7 @@ def tts(text, prev, nxt, seed):
     key = os.environ.get('ELEVENLABS_API_KEY') or os.environ.get('XI_API_KEY')
     if key:
         headers['xi-api-key'] = key                    # nunca impresso nem gravado
-    ultimo = VOZ.get('outputFormat', 'mp3_44100_128')
+    ultimo = VOZ.get('outputFormat') or 'mp3_44100_128'
     for fmt in ('pcm_44100', 'mp3_44100_192', ultimo):  # o melhor que o plano liberar
         req = urllib.request.Request(API.format(voice=VOICE, fmt=fmt), data=json.dumps(body).encode(), headers=headers, method='POST')
         try:
@@ -137,10 +142,14 @@ def confere(x, al, texto):
     n = {'ritmo_letras_s': round(ritmo, 1), 'maior_pausa_s': round(maior, 2), 'sobra_no_fim_s': round(sobra, 2), 'fala_s': round(fim - ini, 2)}
     if not 8 <= ritmo <= 19:
         return False, f'ritmo {ritmo:.1f} letras/s', n
-    if maior > 0.9:
+    if maior > 0.9 + PASSO:
         return False, f'pausa interna de {maior:.2f} s', n
-    if sobra < 0.05:
-        return False, 'fala cortada no fim', n
+    if sobra < 0.05 - PASSO:
+        # no v4 o fim do alinhamento pode cair no último degrau: aí quem decide é o áudio (os últimos 30 ms em silêncio)
+        cauda = x[-int(0.03 * SR):]
+        silencio = PASSO and np.sqrt(np.mean(cauda ** 2)) < np.abs(x).max() * 10 ** (-40 / 20)
+        if not silencio:
+            return False, 'fala cortada no fim', n
     return True, 'ok', n
 
 
@@ -153,9 +162,13 @@ def gerar(refaz):
         key = f'{n:02d}'
         texto = texto_cap(c)
         confere_texto(texto)
+        avisa_break(texto, PERFIL, f'(capítulo {key})')
         api = pron(c, texto)
         atual = D['capitulos'].get(key)
-        if atual and atual['texto'] == texto and atual.get('texto_api') == api and n not in refaz and os.path.exists(os.path.join(OUT, f'cap-{key}.wav')):
+        # o capítulo já gerado vale se o texto, a grafia enviada e o perfil forem os mesmos (sem "perfil" = gerado antes
+        # dos perfis, com a configuração que hoje é a do "pausas")
+        if (atual and atual['texto'] == texto and atual.get('texto_api') == api and atual.get('perfil', 'pausas') == PERFIL
+                and n not in refaz and os.path.exists(os.path.join(OUT, f'cap-{key}.wav'))):
             continue
         prev = pron(caps[n - 1], texto_cap(caps[n - 1])) if n else None
         nxt = pron(caps[n + 1], texto_cap(caps[n + 1])) if n + 1 < len(caps) else None
@@ -172,11 +185,11 @@ def gerar(refaz):
         pcm = np.round(np.clip(x, -1, 1) * 32767).astype(np.int16)
         wavfile.write(os.path.join(OUT, f'cap-{key}.wav'), SR, pcm)
         ws = palavras(al)
-        D['capitulos'][key] = {'n': n, 'texto': texto, 'texto_api': api, 'seed': seed, 'formato': fmt, 'duracao_audio': round(len(x) / SR, 3),
+        D['capitulos'][key] = {'n': n, 'texto': texto, 'texto_api': api, 'perfil': PERFIL, 'modelo': MODEL, 'seed': seed, 'formato': fmt, 'duracao_audio': round(len(x) / SR, 3),
                                'inicio_da_fala': round(ws[0]['t0'], 3), 'fim_da_fala': round(ws[-1]['fim_letra'], 3),
                                'sha1_audio': hashlib.sha1(pcm.tobytes()).hexdigest(), 'geracoes': len(hist), 'historico': hist,
                                'alinhamento': al}
-        D.update({'voz': VOZ['name'], 'voice_id': VOICE, 'modelo': MODEL, 'ajustes': SETTINGS, 'pronuncia': VOZ.get('pronuncia', {}),
+        D.update({'voz': VOZ['name'], 'voice_id': VOICE, 'perfil': PERFIL, 'modelo': MODEL, 'ajustes': SETTINGS, 'pronuncia': VOZ.get('pronuncia', {}),
                   'regra': 'uma geração inteira por capítulo; nada emendado'})
         json.dump(D, open(path, 'w'), ensure_ascii=False, indent=1)
 

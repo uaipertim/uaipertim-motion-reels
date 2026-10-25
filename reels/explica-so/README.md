@@ -91,9 +91,18 @@ A história do UaiPertim, no mesmo motor e com a mesma identidade. O que muda em
    - Chip coral "Segue @uaipertim", com uma seta desenhada.
    - Todo texto do fecho fica **≥ 3 s parado** antes do fim.
 8. **Voz oficial da UaiPertim** (`audio/voz_oficial.json`).
-   - Victor Pinho, `LuQ9eaWO9yCQrR73VQFa`, `eleven_multilingual_v2`: estabilidade 0,40 · semelhança 0,80 · estilo 0,35 · speaker boost · seed 42 como ponto de partida.
+   - Victor Pinho, `LuQ9eaWO9yCQrR73VQFa`, com seed 42 como ponto de partida. A voz tem **dois perfis** (decisão do teste em `audio/teste-v4/relatorio.md`), escolhidos pelo campo `"perfil_voz"` do JSON do episódio:
+     - **`narracao` (o padrão para todo episódio novo):** `eleven_v4`, com estabilidade 0,50 e semelhança 0,75. Não envia style nem speaker boost (fica o padrão do modelo).
+     - **`pausas`:** `eleven_multilingual_v2`, com estabilidade 0,40, semelhança 0,80, estilo 0,35 e speaker boost. Use para texto com `<break time=... />`, que o v4 não respeita. O `voz.py` avisa no console se um episódio no perfil `narracao` tiver `<break>`; ele não converte sozinho.
+   - **Episódios já publicados:** o `explica-so-01` e o `historia-uaipertim` foram gerados no que hoje é o perfil `pausas` e ficam marcados `"perfil_voz": "pausas"` (refazer o vídeo não gera a voz de novo).
+   - O `falas.json` registra o perfil e o modelo de cada capítulo. Um capítulo é gerado de novo se o texto, a grafia enviada ou o perfil mudarem.
+   - **Alinhamento do eleven_v4:** vem em degraus de ~40 ms. Por isso a conferência automática tem essa folga: pausa interna até 0,94 s; e, se o alinhamento terminar no último degrau, quem decide se a fala foi cortada é o áudio (os 30 ms finais em silêncio). O `linha.py` também guarda 0,04 s a mais antes da 1ª letra. A regra de uma geração inteira por capítulo não muda.
    - **Cada capítulo é UMA geração inteira** (endpoint `with-timestamps`, todas as frases numa chamada). Se uma frase sair ruim, o capítulo inteiro é gerado de novo com outra seed (`--refaz N`, seed + 1000). Nunca se emendam palavras ou trechos.
-   - **Pronúncia:** vale a regra de `audio/elevenlabs.py → pronounce()`, só no texto enviado à API: "UaiPertim" → "Uai Pérr-tim", "Pertim"/"pertim" → "Pérr-tim". Na tela continua normal.
+   - **Pronúncia:** vale o dicionário do perfil (`audio/elevenlabs.py → pronounce(texto, perfil)`), só no texto enviado à API; na tela continua normal.
+     - No perfil `narracao`: "UaiPertim" → "Uai Pértim", "Pertim"/"pertim" → "Pértim".
+     - No perfil `pausas`: "UaiPertim" → "Uai Pérr-tim", "Pertim"/"pertim" → "Pérr-tim".
+     - Nos dois: "WhatsApp" → "Uátsap", "UaiFood" → "Uai fúdi", "Burguer" → "Búrguer".
+     - Uma grafia só de um capítulo vai no campo `"pronuncia"` do capítulo.
    - O `voz.py` recusa "de Glória": é sempre "do Glória"/"no Glória".
    - Se a API recusar a voz (não encontrada, sem permissão, chave inválida), o script **para e avisa**. A voz nunca é trocada.
 9. **Mix.** −14 LUFS, pico real ≤ −1 dBTP. A trilha sintetizada é contínua, alegre (Dó 7M(9) → Lá m9 → Fá 7M(9) → Sol 6/9, 100 BPM), com ducking suave sob a voz. Os efeitos vêm da animação: a motinha, a buzina, a porta, o "boing" do "?", as lojinhas brotando, o carimbo, os itens caindo na sacola e o check.

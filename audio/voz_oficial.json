@@ -1,26 +1,47 @@
 {
-  "_doc": "VOZ OFICIAL DA UAIPERTIM (ElevenLabs), escolhida em 2026-10-15 entre 4 amostras. Use estes valores em toda narração nova (audio/elevenlabs.py lê este arquivo). A chave da API NÃO fica no projeto: ela vem do ambiente (Segredos de rede, cabeçalho xi-api-key) ou da variável XI_API_KEY.",
+  "_doc": "VOZ OFICIAL DA UAIPERTIM (ElevenLabs): Victor Pinho, escolhida em 2026-10-15 entre 4 amostras. A chave da API NÃO fica no projeto: vem do ambiente (Segredos de rede, cabeçalho xi-api-key) ou de ELEVENLABS_API_KEY/XI_API_KEY. A mesma voz tem DOIS PERFIS (decisão de 2026-10-25, depois do teste em audio/teste-v4/relatorio.md): 'narracao' (eleven_v4) para toda narração nova (série Explica, Sô!, Reels especiais como historia-uaipertim e qualquer vídeo narrado novo); 'pausas' (eleven_multilingual_v2) para textos com pausas marcadas <break time=... /> (Dicionário Mineiro e afins), porque o eleven_v4 não respeita o <break>. Os episódios já publicados ficam com o que foi usado neles (os JSONs deles marcam \"perfil_voz\": \"pausas\").",
   "provider": "elevenlabs",
   "name": "Victor Pinho",
   "voiceId": "LuQ9eaWO9yCQrR73VQFa",
   "perfil": "masculina, jovem, sotaque brasileiro; jovial e animada, de conversa (não é locutor de anúncio)",
   "origem": "Biblioteca pública de vozes da ElevenLabs (não precisa ser adicionada à conta para gerar)",
-  "model": "eleven_multilingual_v2",
-  "voiceSettings": {
-    "stability": 0.4,
-    "similarity_boost": 0.8,
-    "style": 0.35,
-    "use_speaker_boost": true
-  },
   "seed": 42,
   "outputFormat": "mp3_44100_128",
-  "_doc_pronuncia": "REGRA FIXA DE PRONÚNCIA (vale para TODO texto enviado à ElevenLabs; audio/elevenlabs.py → pronounce()). Só a grafia enviada à API muda; na tela continua 'UaiPertim' e 'Pertim'. A troca é por palavra inteira, ignora maiúsculas, preserva a inicial e aplica as chaves mais longas primeiro. 'Pertim' tem o E ABERTO e a força no final (per-TIM): vai como 'Pérr-tim' (nunca 'PÊRtim'; 'Pértim' ainda saía com o E fechado no 02); a marca 'UaiPertim' vai como 'Uai Pérr-tim' (escolhida entre 4 amostras em 2026-10-16: 'Uai Pértim' ainda saía com o E fechado).",
-  "pronuncia": {
-    "UaiPertim": "Uai Pérr-tim",
-    "Pertim": "Pérr-tim",
-    "UaiFood": "Uai fúdi",
-    "WhatsApp": "Uátsap",
-    "Burguer": "Búrguer"
+  "perfis": {
+    "narracao": {
+      "_doc": "Narração corrida, sem <break>. eleven_v4 com stability 0.50 e similarity_boost 0.75; style e use_speaker_boost NÃO são enviados (padrão do modelo). Pronúncia: 'UaiPertim' -> 'Uai Pértim' e 'Pertim' -> 'Pértim' (sem 'rr' e sem hífen; no v4 o 'Pérr-tim' fechava em 'in'); 'WhatsApp' -> 'Uátsap', 'UaiFood' -> 'Uai fúdi', 'Burguer' -> 'Búrguer'. O alinhamento do v4 vem em degraus de ~40 ms.",
+      "model": "eleven_v4",
+      "voiceSettings": {
+        "stability": 0.5,
+        "similarity_boost": 0.75
+      },
+      "pronuncia": {
+        "UaiPertim": "Uai Pértim",
+        "Pertim": "Pértim",
+        "UaiFood": "Uai fúdi",
+        "WhatsApp": "Uátsap",
+        "Burguer": "Búrguer"
+      }
+    },
+    "pausas": {
+      "_doc": "Texto com pausas marcadas <break time=\"0.4s\" /> (Dicionário Mineiro e qualquer texto com <break>): a configuração de antes, que respeita a pausa. 'Pertim' tem o E ABERTO e a força no final (per-TIM): vai como 'Pérr-tim'; a marca como 'Uai Pérr-tim'.",
+      "model": "eleven_multilingual_v2",
+      "voiceSettings": {
+        "stability": 0.4,
+        "similarity_boost": 0.8,
+        "style": 0.35,
+        "use_speaker_boost": true
+      },
+      "pronuncia": {
+        "UaiPertim": "Uai Pérr-tim",
+        "Pertim": "Pérr-tim",
+        "UaiFood": "Uai fúdi",
+        "WhatsApp": "Uátsap",
+        "Burguer": "Búrguer"
+      }
+    }
   },
-  "_doc_pronuncia_2": "Acrescentadas em 2026-10-23 (Reel especial 'Por que UaiPertim?'), também só para a API: 'UaiFood' vai como 'Uai fúdi' (soa 'uai fúdi'; 'Uai Fúd' saía 'uai fód'), 'WhatsApp' como 'Uátsap' (soa 'uátsap'; 'Uótsap' saía 'uótsap') e 'Burguer' como 'Búrguer' (o 'búrguer' natural). Na tela continua a grafia normal. Grafias só de um capítulo vão no campo 'pronuncia' do capítulo, no JSON do episódio (reels/explica-so)."
+  "_doc_pronuncia": "REGRA FIXA DE PRONÚNCIA (vale para TODO texto enviado à ElevenLabs; audio/elevenlabs.py → pronounce()). Só a grafia enviada à API muda; na tela continua 'UaiPertim' e 'Pertim'. A troca é por palavra inteira, ignora maiúsculas, preserva a inicial e aplica as chaves mais longas primeiro. 'Pertim' tem o E ABERTO e a força no final (per-TIM): vai como 'Pérr-tim' (nunca 'PÊRtim'; 'Pértim' ainda saía com o E fechado no 02); a marca 'UaiPertim' vai como 'Uai Pérr-tim' (escolhida entre 4 amostras em 2026-10-16: 'Uai Pértim' ainda saía com o E fechado).",
+  "_doc_pronuncia_2": "Acrescentadas em 2026-10-23 (Reel especial 'Por que UaiPertim?'), também só para a API: 'UaiFood' vai como 'Uai fúdi' (soa 'uai fúdi'; 'Uai Fúd' saía 'uai fód'), 'WhatsApp' como 'Uátsap' (soa 'uátsap'; 'Uótsap' saía 'uótsap') e 'Burguer' como 'Búrguer' (o 'búrguer' natural). Na tela continua a grafia normal. Grafias só de um capítulo vão no campo 'pronuncia' do capítulo, no JSON do episódio (reels/explica-so).",
+  "_doc_pronuncia_geral": "A troca de pronúncia é só no texto enviado à API (na tela continua 'UaiPertim', 'Pertim' etc.), por palavra inteira, sem diferenciar maiúsculas, preservando a inicial e aplicando as chaves mais longas primeiro (audio/elevenlabs.py → pronounce(texto, perfil))."
 }

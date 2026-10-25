@@ -2,7 +2,7 @@
 
     python3 audio/dicionario.py episodios/dicionario/01-uai.json
 
-1. Narração com a voz oficial (audio/voz_oficial.json) numa chamada só, com o tempo de cada palavra:
+1. Narração com a voz oficial (audio/voz_oficial.json, perfil "pausas": eleven_multilingual_v2, que respeita o <break>) numa chamada só, com o tempo de cada palavra:
    "[palavra]." → "[significado] Tipo: [exemplo]" → "[ponte]" → "[cta sem emoji]".
    O mp3 só é gerado de novo se o texto mudar (economiza créditos).
 2. Tempos das cenas calculados pela voz (12 a 14 s no total) → public/audio/dicionario/NN/timing.json,
@@ -25,6 +25,9 @@ FPS = 30
 BPM = 124
 BAR = 4 * 60 / BPM
 GAP = '<break time="0.4s" />'
+# o Dicionário tem pausas marcadas (<break>): fica SEMPRE no perfil "pausas" (eleven_multilingual_v2), que respeita a
+# pausa; o perfil "narracao" (eleven_v4) não respeita. Ver audio/voz_oficial.json → perfis.
+PERFIL_VOZ = "pausas"
 WORD = re.compile(r"[\wÀ-ÿ]+")
 # tempos do modelo (segundos)
 SIG_GAP = 0.45  # o significado começa ~0,4–0,5 s depois do fim da palavra falada (a capa fica só esse tempo depois da fala)
@@ -59,10 +62,10 @@ def narrate(ep, dst):
     if dst.exists() and meta_path.exists():
         meta = json.load(open(meta_path, encoding="utf-8"))
         # o cache vale só se o texto ENVIADO à API (já com a regra de pronúncia) for o mesmo
-        if meta.get("text") == elevenlabs.pronounce(script) and meta.get("voice") == voice_id():
+        if meta.get("text") == elevenlabs.pronounce(script, PERFIL_VOZ) and meta.get("voice") == voice_id():
             print(f"narração já gerada para este texto: {dst.relative_to(ROOT)}")
             return parts, meta
-    text, audio, al = elevenlabs.speak(script)
+    text, audio, al = elevenlabs.speak(script, PERFIL_VOZ)
     dst.parent.mkdir(parents=True, exist_ok=True)
     dst.write_bytes(audio)
     ws = elevenlabs.words(text, al)
@@ -83,7 +86,7 @@ def segments(parts, words):
 
     segs, i = {}, 0
     for key, txt in parts.items():
-        txt = elevenlabs.pronounce(txt)  # conta as palavras como a voz recebeu ("Uai Pértim" = 2)
+        txt = elevenlabs.pronounce(txt, PERFIL_VOZ)  # conta as palavras como a voz recebeu ("Uai Pértim" = 2)
         n = len(WORD.findall(txt))
         ws = words[i:i + n]
         assert len(ws) == n, f"alinhamento não bate com o texto em '{key}'"
