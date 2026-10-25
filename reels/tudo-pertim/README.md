@@ -86,9 +86,9 @@ A prévia (`--previa`) vai para `output/<id>/previa/`, fora do git. A cópia par
    - A **logo oficial grande** entra com mola e **para**: fica visível e parada nos 3 últimos segundos.
    - Assinatura "Tudo pertim de você." e chip coral "Segue @uaipertim" com seta.
    - O confete do fecho termina antes dos 3 últimos segundos. Todo texto do fecho fica ≥ 3 s parado antes do fim.
-9. **Voz oficial** (`audio/voz_oficial.json`; só na etapa final, depois da prévia aprovada).
-   - Victor Pinho, `LuQ9eaWO9yCQrR73VQFa`, `eleven_multilingual_v2`. **Cada capítulo é UMA geração inteira** (endpoint `with-timestamps`). Nunca se emendam palavras ou trechos; se uma frase sair ruim, o capítulo inteiro é gerado de novo com outra seed (`--refaz N`).
-   - **Pronúncia** (só no texto enviado à API, por `audio/elevenlabs.py → pronounce()`): "UaiPertim" → "Uai Pérr-tim", "Pertim"/"pertim" → "Pérr-tim".
+9. **Voz** (só na etapa final, depois da prévia aprovada). Sempre Victor Pinho, `LuQ9eaWO9yCQrR73VQFa`, endpoint `with-timestamps`, seed 42 como ponto de partida. **Cada capítulo é UMA geração inteira.** Nunca se emendam palavras ou trechos; se uma frase sair ruim, o capítulo inteiro é gerado de novo com outra seed (`--refaz N`, até 3 seeds; se as 3 falharem, o script para e ninguém muda o texto sem avisar). Veja "Voz v2 × v4" abaixo.
+   - **ep01–ep04** (sem o campo `"voz"`): `audio/voz_oficial.json`, `eleven_multilingual_v2`. **Pronúncia** (só no texto enviado à API, por `audio/elevenlabs.py → pronounce()`): "UaiPertim" → "Uai Pérr-tim", "Pertim"/"pertim" → "Pérr-tim".
+   - **ep05 em diante: `"voz": "v4"`** no JSON do episódio → `audio/voz_v4.json`, `eleven_v4`. O texto vai como está escrito (sem a troca "Pérr-tim").
    - O `voz.py` recusa "de Glória": é sempre "do Glória"/"no Glória". Se a API recusar a voz, o script **para e avisa**; a voz nunca é trocada.
    - A chave nunca aparece em chat, log, arquivo ou commit.
 10. **Mix.** −14 LUFS, pico real ≤ −1 dBTP, trilha com ducking suave sob a voz.
@@ -133,7 +133,7 @@ Os dois só aparecem quando o JSON pede. Um episódio sem eles (como o ep01) é 
 
 ## Fazer o próximo episódio (só pelo JSON)
 
-1. Copie `episodios/tudo-pertim-01.json` para `episodios/tudo-pertim-02.json` e troque `id`, `titulo` e os `capitulos` (formato abaixo). Não mexa em código.
+1. Copie `episodios/tudo-pertim-01.json` para `episodios/tudo-pertim-02.json` e troque `id`, `titulo` e os `capitulos` (formato abaixo). **Do ep05 em diante, ponha `"voz": "v4"`** (ep01–ep04 não têm o campo). Não mexa em código.
 2. Confira o visual **sem gastar a API** (tempos estimados, sem voz; vai para `output/<id>/previa/`, fora do git):
 
 ```bash
@@ -158,6 +158,21 @@ O comando roda, em ordem:
 6. `qa.py`: o `relatorio-tecnico.txt`, que precisa terminar em `RESULTADO: aprovado`. Na prévia ele nunca sai aprovado, porque falta a voz.
 7. `storyboard.py`.
 
+### Voz v2 × v4 (o campo `"voz"`)
+
+**A partir do ep05, o padrão é `"voz": "v4"`** no JSON do episódio. Sem o campo, o episódio usa a voz antiga (v2), que continua valendo para ep01–ep04: a narração deles já está salva e eles renderizam idênticos.
+
+| | v2 (sem o campo; ep01–ep04) | v4 (`"voz": "v4"`; ep05+) |
+|---|---|---|
+| Configuração | `audio/voz_oficial.json`: `eleven_multilingual_v2`, stability 0,40 · similarity 0,80 · style 0,35 · speaker boost | `audio/voz_v4.json`: `eleven_v4`, stability 0,50 · similarity 0,75 (sem `style` e sem `use_speaker_boost`) |
+| Grafia enviada à API | "UaiPertim" → "Uai Pérr-tim", "Pertim" → "Pérr-tim" | **como está escrito** ("UaiPertim", "pertim"); aprovado no teste `B_v4_sem-troca_Pertim` |
+| Plano B de pronúncia | — | `"pronuncia": "Pértim"` **no capítulo** (desligado por padrão): "UaiPertim" → "Uai Pértim", "Pertim"/"pertim" → "Pértim", só na API |
+| `<break …/>` | funciona | **ignorado pelo v4**: o `voz.py` tira as tags do texto enviado. A pausa entre capítulos vem da linha do tempo; dentro do capítulo, fica a pausa natural da pontuação |
+| Seed | quase repetível | **não é repetível**: a narração aprovada fica salva em `audio/<id>/voz/` e o render sempre usa o arquivo salvo. Nunca regenere a voz só para re-renderizar (o `voz.py` só chama a API para capítulo novo, com texto mudado ou pedido em `--refaz`) |
+| Alinhamento | em ms | em degraus de ~40–80 ms: o `linha.py` atrasa o início de cada palavra 60 ms e o arredonda para o quadro (60 fps), para nenhuma peça entrar antes de a palavra soar |
+
+Vale para as duas: recusar "de Glória" (sempre "do Glória"/"no Glória"), a checagem de chiado final e as 3 seeds por capítulo. A validação do fluxo com o v4 (um capítulo passando por `voz.py` → `linha.py` → render) está em `testes/voz-v4/validacao/` (`valida.sh`, `VALIDACAO.md`); o teste de comparação v2 × v4, em `testes/voz-v4/RELATORIO.md`.
+
 ### A chave da API
 
 A chave do ElevenLabs fica **só em Segredos de rede**: a rede da nuvem põe o cabeçalho `xi-api-key` nas chamadas a `api.elevenlabs.io`. Fora da nuvem, exporte `ELEVENLABS_API_KEY` (ou `XI_API_KEY`) no terminal. Os scripts só leem a variável e nunca a imprimem, salvam ou registram.
@@ -170,6 +185,7 @@ A chave do ElevenLabs fica **só em Segredos de rede**: a rede da nuvem põe o c
   "titulo": "texto livre",
   "marca": "@uaipertim",
   "bpm": 120,
+  "voz": "v4",
   "capitulos": [
     { "rotulo": "TUDO PERTIM · EP. 02", "tom": "amarelo", "titulo": ["Tá chegando", "no Glória 👀"],
       "fala": [{ "texto": "Ô Glória, tem novidade chegando pertim docês!", "apoio": null }],
@@ -187,6 +203,7 @@ A chave do ElevenLabs fica **só em Segredos de rede**: a rede da nuvem põe o c
 
 - **Os capítulos:** o **capítulo 0 é a capa** (cena `capa`), e o seu `rotulo` ("TUDO PERTIM · EP. NN") vira o adesivo da capa. Cada capítulo 1… ganha um segmento na barra de progresso. O último é sempre o `fecho`, com `"min": 7.5`.
 - **`bpm`:** o andamento da trilha e da entrada dos títulos (118–124).
+- **`voz`:** `"v4"` (padrão do ep05 em diante) ou sem o campo (a voz antiga v2 de ep01–ep04). Veja "Voz v2 × v4". No v4, o capítulo aceita `"pronuncia": "Pértim"` (plano B, desligado por padrão).
 - **`fala`:** as frases do capítulo, na ordem. O texto falado é a junção delas e vai **inteiro numa geração só**.
 - **`apoio`:** a linha de apoio que entra com a frase (`null` = nenhuma). Aceita `*marcador amarelo*` e `~coral~`.
 - **`titulo`:** sempre 2 linhas (a 2ª em coral). Na capa, `👀` no fim de uma linha vira os olhinhos desenhados (piscam e olham em volta), `⏰` vira o relógio girando, e `marcador` é a palavra no marcador amarelo.
@@ -237,7 +254,9 @@ A chave do ElevenLabs fica **só em Segredos de rede**: a rede da nuvem põe o c
 ```
 episodios/<id>.json       roteiro (o único arquivo que muda entre episódios)
 scripts/episodio.sh       o comando único (e --previa, sem voz)
-scripts/voz.py            narração: voz oficial, uma geração inteira por capítulo (with-timestamps), pronounce(), conferida e com histórico
+scripts/voz.py            narração: uma geração inteira por capítulo (with-timestamps), conferida e com histórico; v2 ou v4 pelo campo "voz"
+scripts/voz_versao.py     qual voz (voz_oficial.json v2 ou voz_v4.json) e qual grafia vão para a API; tempo das palavras no v4
+testes/voz-v4/            teste v2 × v4 (RELATORIO.md) e validação do fluxo com o v4 (validacao/), fora da produção
 scripts/linha.py          linha do tempo + narração montada sem cortes + mapa de tempos (45–60 s, capítulos 5–7 s, apoios, fecho, logo)
 scripts/audio.py          voz + trilha animada (bpm do episódio) com ducking + efeitos → audio/<id>/mix.wav (−14 LUFS)
 scripts/render.cjs        cues | info | capa | video | stills (Chromium headless, quadro a quadro; servidor na raiz do repo)

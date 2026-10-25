@@ -1,0 +1,179 @@
+{
+ "episodio": "teste-voz-v4-validacao",
+ "titulo": "Validação da voz v4",
+ "marca": "@uaipertim",
+ "bpm": 120,
+ "duracao": 7.5,
+ "tr": 0.75,
+ "ap_entra": 0.34,
+ "ap_leitura": 1.5,
+ "previa": false,
+ "capitulos": [
+  {
+   "n": 0,
+   "rotulo": "TESTE · VOZ V4",
+   "tom": "amarelo",
+   "titulo": [
+    "Ô Glória,",
+    "chegou pertim!"
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "fecho",
+    "logo": {
+     "em": "UaiPertim"
+    },
+    "assinatura": {
+     "t": "Tudo pertim de você.",
+     "em": "pertim"
+    },
+    "chip": {
+     "t": "Segue @uaipertim",
+     "em": "Segue"
+    },
+    "confete": {
+     "em": "+1.2"
+    }
+   },
+   "t0": 0.0,
+   "t1": 7.5,
+   "voz_t0": 0.1,
+   "voz_t1": 4.9,
+   "palavras": [
+    {
+     "w": "Ô",
+     "n": "o",
+     "i0": 0,
+     "t0": 0.1667,
+     "t1": 0.26
+    },
+    {
+     "w": "Glória,",
+     "n": "gloria",
+     "i0": 2,
+     "t0": 0.4,
+     "t1": 0.66
+    },
+    {
+     "w": "o",
+     "n": "o",
+     "i0": 10,
+     "t0": 1.0,
+     "t1": 0.98
+    },
+    {
+     "w": "UaiPertim",
+     "n": "uaipertim",
+     "i0": 12,
+     "t0": 1.0833,
+     "t1": 1.7
+    },
+    {
+     "w": "chegou",
+     "n": "chegou",
+     "i0": 22,
+     "t0": 1.8,
+     "t1": 2.02
+    },
+    {
+     "w": "pertim",
+     "n": "pertim",
+     "i0": 29,
+     "t0": 2.1667,
+     "t1": 2.66
+    },
+    {
+     "w": "docês!",
+     "n": "doces",
+     "i0": 36,
+     "t0": 2.8833,
+     "t1": 3.3
+    },
+    {
+     "w": "Segue",
+     "n": "segue",
+     "i0": 43,
+     "t0": 3.6,
+     "t1": 3.78
+    },
+    {
+     "w": "a",
+     "n": "a",
+     "i0": 49,
+     "t0": 3.8833,
+     "t1": 3.86
+    },
+    {
+     "w": "gente",
+     "n": "gente",
+     "i0": 51,
+     "t0": 4.0,
+     "t1": 4.18
+    },
+    {
+     "w": "pra",
+     "n": "pra",
+     "i0": 57,
+     "t0": 4.3167,
+     "t1": 4.34
+    },
+    {
+     "w": "não",
+     "n": "nao",
+     "i0": 61,
+     "t0": 4.45,
+     "t1": 4.5
+    },
+    {
+     "w": "perder.",
+     "n": "perder",
+     "i0": 65,
+     "t0": 4.6333,
+     "t1": 4.9
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Ô Glória, o UaiPertim chegou pertim docês!",
+     "apoio": null,
+     "t0": 0.1,
+     "t1": 3.3
+    },
+    {
+     "texto": "Segue a gente pra não perder.",
+     "apoio": "Segue a gente *pra não perder*.",
+     "t0": 3.54,
+     "t1": 4.9
+    }
+   ],
+   "apoios": [
+    {
+     "t": 3.42,
+     "texto": "Segue a gente *pra não perder*.",
+     "ate": 7.5
+    }
+   ],
+   "seed": 42
+  }
+ ],
+ "colocacao": [
+  {
+   "cap": 0,
+   "arquivo": "voz/cap-00.wav",
+   "de_s": 0.0,
+   "ate_s": 4.96,
+   "no_video_s": 0.1,
+   "amostras": 238080,
+   "fade_ms": [
+    8,
+    60
+   ]
+  }
+ ],
+ "mapa": {
+  "ok": false,
+  "falhas": [
+   "duração 7.50 s fora de 45–60 s: ajuste `segura`/`min` (ou encurte o roteiro e gere a voz do capítulo inteiro de novo)"
+  ]
+ }
+}

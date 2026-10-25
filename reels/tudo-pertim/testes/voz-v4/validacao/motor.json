@@ -1,0 +1,43 @@
+{
+ "duracao": 7.5,
+ "apoios": [
+  {
+   "cap": 0,
+   "i": 1,
+   "texto": "Segue a gente pra não perder.",
+   "entra": 3.42,
+   "inteira_de": 3.76,
+   "ate": 7.5,
+   "linhas": [
+    "Segue a gente pra não perder."
+   ]
+  }
+ ],
+ "trocas": [],
+ "montagens": [
+  {
+   "n": 0,
+   "t0": 0,
+   "t1": 7.5,
+   "primeira": 1.0833,
+   "ultima": 3.75
+  }
+ ],
+ "fecho": {
+  "ultima_mudanca_de_texto": 4.3,
+  "duracao": 7.5,
+  "logo": {
+   "entra": 1.0833,
+   "parada": 1.9832999999999998
+  },
+  "t0": 0,
+  "t1": 7.5
+ },
+ "capa": {
+  "linhas": [
+   null,
+   null
+  ]
+ },
+ "palavras_sem_peca": []
+}

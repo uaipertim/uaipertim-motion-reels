@@ -1,0 +1,9 @@
+teste-voz-v4-validacao: 1 capítulos, 7.50 s
+  00 TESTE · VOZ V4             0.00–  7.50 s (7.50 s) · voz 0.10–4.90 · 1 apoio(s)
+MAPA DE TEMPOS
+  duração total 7.50 s (alvo 45–60 s)
+  cap 00 apoio 1: 3.74 s inteira · "Segue a gente *pra não perder*."
+  fecho 7.50 s (alvo 6–8 s)
+  logo oficial do fecho parada em 1.98 s · nos últimos 5.52 s (mínimo 3 s)
+FALHA no mapa de tempos:
+  duração 7.50 s fora de 45–60 s: ajuste `segura`/`min` (ou encurte o roteiro e gere a voz do capítulo inteiro de novo)

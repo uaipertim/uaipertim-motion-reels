@@ -17,8 +17,10 @@ Tempo de cada capítulo:
 Linha de apoio: uma por frase (o "apoio" de cada frase no JSON; null = nenhuma), entrando junto com a frase, mas nunca
 antes de a anterior ter ficado 1,5 s inteira na tela (entrada de 0,34 s + 1,5 s + folga = 1,92 s entre trocas). A última
 fica ao menos 1,92 s antes da troca de capítulo.
-Pronúncia: a API recebe o texto com a grafia de pronúncia (audio/elevenlabs.py → pronounce(): "UaiPertim" vira
-"Uai Pérr-tim"); as palavras do alinhamento voltam a ser as da tela aqui, então "em": "UaiPertim" funciona normalmente.
+Pronúncia: a API recebe o texto com a grafia de scripts/voz_versao.py → para_api() (v2: "UaiPertim" vira "Uai Pérr-tim";
+v4: como está escrito, sem <break>, ou o plano B "Pértim" do capítulo); as palavras do alinhamento voltam a ser as da tela
+aqui, então "em": "UaiPertim" funciona normalmente. No v4 ("voz": "v4") o alinhamento vem em degraus de ~40–80 ms: o
+início de cada palavra é atrasado 60 ms e arredondado para o quadro (60 fps), para nenhuma peça entrar antes da palavra.
 Voz: o áudio de cada capítulo entra INTEIRO e contínuo (só se tira o silêncio antes da 1ª letra e depois da última, com
 fades de 8 ms / 60 ms nas pontas). Nada é cortado ou emendado dentro de um capítulo; a colocação de cada um fica
 registrada em linha.json ("colocacao") para a revisão conferir.
@@ -42,7 +44,8 @@ from scipy.signal import resample_poly
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REPO = os.path.dirname(os.path.dirname(ROOT))
 sys.path.insert(0, os.path.join(REPO, 'audio'))
-from elevenlabs import pronounce  # noqa: E402
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from voz_versao import para_api, palavras_faladas, tempo_palavra  # noqa: E402
 
 EP = sys.argv[1] if len(sys.argv) > 1 and not sys.argv[1].startswith('--') else 'tudo-pertim-01'
 PREVIA = '--previa' in sys.argv
@@ -90,17 +93,17 @@ def tokens(al):
     return [w for w in out if norm(w['w'])]
 
 
-def palavras(texto, al, desloc):
+def palavras(texto, al, desloc, cap):
     """as palavras DA TELA no tempo do vídeo: cada palavra do roteiro consome as palavras da grafia de pronúncia
     (ex.: "UaiPertim." -> "Uai" + "Pérr-tim.")"""
     api = tokens(al)
     out, k = [], 0
-    for w in [w for w in texto.split() if norm(w)]:
-        n = len([x for x in pronounce(w).split() if norm(x)])
+    for w in [w for w in palavras_faladas(texto, SCRIPT) if norm(w)]:
+        n = len([x for x in para_api(w, SCRIPT, cap).split() if norm(x)])
         grupo = api[k:k + n]
         assert len(grupo) == n, f'alinhamento não bate com o texto em "{w}"'
         k += n
-        out.append({'w': w, 'n': norm(w), 'i0': grupo[0]['i0'], 't0': round(grupo[0]['t0'] + desloc, 4), 't1': round(grupo[-1]['t1'] + desloc, 4)})
+        out.append({'w': w, 'n': norm(w), 'i0': grupo[0]['i0'], 't0': round(tempo_palavra(grupo[0]['t0'] + desloc, SCRIPT), 4), 't1': round(grupo[-1]['t1'] + desloc, 4)})
     assert k == len(api), 'sobraram palavras no alinhamento'
     return out
 
@@ -126,7 +129,7 @@ def falas():
     F = {}
     for n, c in enumerate(SCRIPT['capitulos']):
         texto = ' '.join(f['texto'] for f in c['fala'])
-        api = pronounce(texto)
+        api = para_api(texto, SCRIPT, c)
         al = estimado(api)
         ws = tokens(al)
         F[f'{n:02d}'] = {'texto': texto, 'texto_api': api, 'alinhamento': al, 'inicio_da_fala': ws[0]['t0'], 'fim_da_fala': ws[-1]['t1'], 'seed': None}
@@ -180,19 +183,19 @@ def main():
         texto = ' '.join(f['texto'] for f in c['fala'])
         assert F['texto'] == texto, f'capítulo {n:02d}: o texto mudou desde a narração; rode scripts/voz.py {EP}'
         api = F.get('texto_api', texto)
-        assert api == pronounce(texto), f'capítulo {n:02d}: a regra de pronúncia mudou desde a narração; rode scripts/voz.py {EP} --refaz {n}'
+        assert api == para_api(texto, SCRIPT, c), f'capítulo {n:02d}: a regra de pronúncia mudou desde a narração; rode scripts/voz.py {EP} --refaz {n}'
         al = F['alinhamento']
         ini, fim = F['inicio_da_fala'], F['fim_da_fala']
         t0 = t
         v0 = t0 + c.get('inicio', 0.10 if n == 0 else 0.25)
         desloc = v0 - ini                               # tempo do arquivo -> tempo do vídeo
         v1 = fim + desloc
-        ws = palavras(texto, al, desloc)
+        ws = palavras(texto, al, desloc, c)
         # as frases: o trecho de caracteres de cada uma no texto falado (já com a grafia de pronúncia)
         frases, pos = [], 0
         L = letras(al)
         for f in c['fala']:
-            fa = pronounce(f['texto'])
+            fa = para_api(f['texto'], SCRIPT, c)
             a, b = pos, pos + len(fa)
             alfa = [x for x in L[a:b] if x[1].isalnum()]
             frases.append({'texto': f['texto'], 'apoio': f.get('apoio'), 't0': round(alfa[0][2] + desloc, 4), 't1': round(alfa[-1][3] + desloc, 4)})

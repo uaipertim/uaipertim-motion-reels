@@ -21,11 +21,17 @@ se as 3 falharem, o script PARA, guarda o histórico e não troca o áudio que j
     de −45 dB com mais de 50% da energia em 4–10 kHz, a não ser que a última palavra termine em s/z/x (ex.: um
     "Glória" que sai "Glórias").
 
-VOZ: a voz oficial da UaiPertim, lida de audio/voz_oficial.json na raiz do repositório (Victor Pinho,
-LuQ9eaWO9yCQrR73VQFa, eleven_multilingual_v2, estabilidade 0,40 · semelhança 0,80 · estilo 0,35 · speaker boost;
-seed 42 como ponto de partida). A pronúncia vem de audio/elevenlabs.py → pronounce(): só o texto enviado à API muda
-("UaiPertim" → "Uai Pérr-tim", "Pertim" → "Pérr-tim"); na tela continua normal. O texto vizinho vai como contexto
-(previous_text / next_text), já com a mesma pronúncia.
+VOZ (scripts/voz_versao.py escolhe pelo campo "voz" do JSON do episódio; sempre Victor Pinho, LuQ9eaWO9yCQrR73VQFa,
+seed 42 como ponto de partida):
+  • sem o campo (ep01–ep04): audio/voz_oficial.json — eleven_multilingual_v2, estabilidade 0,40 · semelhança 0,80 ·
+    estilo 0,35 · speaker boost. Pronúncia de audio/elevenlabs.py → pronounce(): só o texto enviado à API muda
+    ("UaiPertim" → "Uai Pérr-tim", "Pertim" → "Pérr-tim"); na tela continua normal.
+  • "voz": "v4" (padrão do ep05 em diante): audio/voz_v4.json — eleven_v4, estabilidade 0,50 · semelhança 0,75 (sem
+    style nem speaker boost). O texto vai como está escrito (sem "Pérr-tim"); as tags <break …/> saem do texto enviado
+    (o v4 as ignora). Plano B por capítulo, desligado por padrão: "pronuncia": "Pértim" no capítulo.
+    A seed do v4 não é 100% repetível: a narração aprovada fica salva aqui e o render sempre usa o arquivo salvo
+    (este script só chama a API para capítulo novo, com texto mudado ou pedido em --refaz).
+O texto vizinho vai como contexto (previous_text / next_text), já com a mesma grafia.
 Se a API recusar a voz (não encontrada, sem permissão, chave inválida), o script PARA e avisa: nunca troca de voz.
 
 A chave da API NÃO fica no repositório nem é impressa: nesta nuvem a rede a põe no cabeçalho xi-api-key
@@ -47,17 +53,17 @@ from scipy.io import wavfile
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REPO = os.path.dirname(os.path.dirname(ROOT))
 sys.path.insert(0, os.path.join(REPO, 'audio'))
-from elevenlabs import pronounce  # noqa: E402  (a regra fixa de pronúncia da UaiPertim)
+from voz_versao import config, para_api, versao  # noqa: E402  (v2 ou v4 por episódio, e a grafia enviada à API)
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import chiado  # noqa: E402  (a conferência do chiado depois da fala)
 
 EP = sys.argv[1] if len(sys.argv) > 1 and not sys.argv[1].startswith('--') else 'tudo-pertim-01'
 OUT = os.path.join(ROOT, 'audio', EP, 'voz')
 API = 'https://api.elevenlabs.io/v1/text-to-speech/{voice}/with-timestamps?output_format={fmt}'
-VOZ = json.load(open(os.path.join(REPO, 'audio', 'voz_oficial.json'), encoding='utf-8'))
+SCRIPT = json.load(open(os.path.join(ROOT, 'episodios', EP + '.json'), encoding='utf-8'))
+VOZ = config(SCRIPT)                                   # audio/voz_oficial.json (v2) ou audio/voz_v4.json ("voz": "v4")
 VOICE, MODEL, SETTINGS, SEED0 = VOZ['voiceId'], VOZ['model'], VOZ['voiceSettings'], VOZ.get('seed', 42)
 SR = 44100
-SCRIPT = json.load(open(os.path.join(ROOT, 'episodios', EP + '.json'), encoding='utf-8'))
 TENTATIVAS = 3
 PARA = ('voice_not_found', 'invalid_api_key', 'unauthorized', 'missing_permissions', 'needs_authorization', 'voice_access_denied',
         'quota_exceeded', 'detected_unusual_activity')
@@ -157,12 +163,14 @@ def gerar(refaz, seed_fixa=None):
         key = f'{n:02d}'
         texto = texto_cap(c)
         confere_texto(texto)
-        api = pronounce(texto)
+        api = para_api(texto, SCRIPT, c)
+        if MODEL == 'eleven_v4' and '<break' in api:
+            raise SystemExit(f'capítulo {key}: sobrou <break> no texto do v4 (ele ignora a tag)')
         atual = D['capitulos'].get(key)
         if atual and atual['texto'] == texto and atual.get('texto_api') == api and n not in refaz and os.path.exists(os.path.join(OUT, f'cap-{key}.wav')):
             continue
-        prev = pronounce(texto_cap(caps[n - 1])) if n else None
-        nxt = pronounce(texto_cap(caps[n + 1])) if n + 1 < len(caps) else None
+        prev = para_api(texto_cap(caps[n - 1]), SCRIPT, caps[n - 1]) if n else None
+        nxt = para_api(texto_cap(caps[n + 1]), SCRIPT, caps[n + 1]) if n + 1 < len(caps) else None
         hist = atual['historico'] if atual and atual['texto'] == texto else []
         seed = c.get('seed', SEED0) + 1000 * len(hist)
         tentativas = TENTATIVAS
@@ -192,6 +200,9 @@ def gerar(refaz, seed_fixa=None):
                                'alinhamento': al}
         D.update({'voz': VOZ['name'], 'voice_id': VOICE, 'modelo': MODEL, 'ajustes': SETTINGS, 'pronuncia': VOZ.get('pronuncia', {}),
                   'regra': 'uma geração inteira por capítulo; nada emendado'})
+        if versao(SCRIPT) == 'v4':                       # (o v2 grava falas.json exatamente como antes)
+            D['versao_voz'] = 'v4'
+            D['capitulos'][key]['pronuncia_planoB'] = c.get('pronuncia')
         json.dump(D, open(path, 'w'), ensure_ascii=False, indent=1)
 
 
