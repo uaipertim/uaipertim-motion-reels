@@ -238,7 +238,8 @@ def main():
         x = x[: int(round(dur * SR))]
         wavfile.write(os.path.join(AUD, 'voz.wav'), SR, np.round(np.clip(x, -1, 1) * 32767).astype(np.int16))
     falhas, linhas = mapa(caps, dur)
-    json.dump({'episodio': EP, 'titulo': SCRIPT['titulo'], 'marca': SCRIPT.get('marca', '@uaipertim'), 'duracao': round(dur, 4), 'tr': TR,
+    json.dump({'episodio': EP, 'titulo': SCRIPT['titulo'], 'marca': SCRIPT.get('marca', '@uaipertim'), 'legenda': bool(SCRIPT.get('legenda')),
+               'duracao': round(dur, 4), 'tr': TR,
                'ap_entra': AP_ENTRA, 'ap_leitura': AP_LEITURA, 'previa': PREVIA, 'capitulos': caps, 'colocacao': coloc,
                'mapa': {'ok': not falhas, 'falhas': falhas}},
               open(os.path.join(DEST, 'linha.json'), 'w'), ensure_ascii=False, indent=1)

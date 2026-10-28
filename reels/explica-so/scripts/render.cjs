@@ -79,7 +79,7 @@ const grab = async (page, t) => decode(await page.evaluate((t) => window.frameAt
       const page = await openPage(browser, port);
       const dir = path.resolve(ROOT, `${OUTD}/revisao`);
       fs.mkdirSync(dir, { recursive: true });
-      const info = await page.evaluate(() => ({ duracao: EXPLICA.DURATION, apoios: EXPLICA.apoios(), trocas: EXPLICA.trocas(), montagens: EXPLICA.montagens(), fecho: EXPLICA.fecho(), capa: EXPLICA.capa(), palavras_sem_peca: EXPLICA.avisos() }));
+      const info = await page.evaluate(() => ({ duracao: EXPLICA.DURATION, apoios: EXPLICA.apoios(), trocas: EXPLICA.trocas(), montagens: EXPLICA.montagens(), fecho: EXPLICA.fecho(), capa: EXPLICA.capa(), palavras_sem_peca: EXPLICA.avisos(), legendas: EXPLICA.legendas() }));
       fs.writeFileSync(path.join(dir, 'motor.json'), JSON.stringify(info, null, 1));
       const caixas = [];
       for (let t = 0; t < info.duracao; t += 0.25) caixas.push({ t: Math.round(t * 100) / 100, caixas: await page.evaluate((t) => window.caixas(t), t) });

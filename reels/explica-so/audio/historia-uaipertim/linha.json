@@ -2,6 +2,7 @@
  "episodio": "historia-uaipertim",
  "titulo": "Por que UaiPertim? (a nossa história)",
  "marca": "@uaipertim",
+ "legenda": true,
  "duracao": 63.767,
  "tr": 0.9,
  "ap_entra": 0.34,

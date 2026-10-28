@@ -26,8 +26,22 @@ Pronto e aprovado (`output/explica-so-01/revisao/relatorio-tecnico.txt` termina 
 A história do UaiPertim, no mesmo motor e com a mesma identidade. O que muda em relação aos episódios da série:
 
 - **Duração de 60–80 s** (só para este id: `LIMITES` em `scripts/linha.py` e `scripts/qa.py`). O fecho, os apoios e a logo seguem as regras de sempre.
-- **Trilha no padrão animado da série** (desde 2026-10-28): é o padrão de `scripts/audio.py`, sem perfil próprio. São 100 BPM, arpejo a cada 1,5 tempo, shaker, pulso grave 0,28, efeitos a −13 dB e os cômicos ligados, com o ducking sob a voz e a trilha uns 13 dB abaixo dela. O perfil calmo de antes (80 BPM, sem shaker, sem cômicos) ficou frio e saiu.
-  - **Entrada rápida, em todos os episódios:** a trilha entra com um fade de 0,15 s, e o 1º acorde já entra cheio (antes era um fade de 0,6 s com um acorde que subia em 1,2 s).
+- **Trilha do Tudo Pertim** (`"trilha": "animada"` no JSON; desde a 2ª correção de 2026-10-28): é a mesma trilha dos Reels "Tá chegando no Glória" e "Do café à janta" (motor Tudo Pertim, branch `claude/tiktok`), levada para `scripts/audio.py`.
+  - Os instrumentos: bumbo em todos os tempos, palma no 2 e no 4, chimbal, baixo em colcheias, acordes "pluck" no contratempo e o sininho, com Dó → Sol → Lá menor → Fá a 120 BPM.
+  - A batida começa no t = 0, junto do gancho, entra com um fade de 0,15 s e termina num sting depois da última fala (bumbo, palma e o acorde de Dó sustentado até o fim, sem corte seco).
+  - Fica ~10 dB abaixo da voz, com o ducking suave de sempre. Os efeitos sonoros e os cômicos continuam.
+  - Os outros episódios seguem com a trilha da série (`"trilha"` ausente ou `"serie"`), que é pad + baixo + arpejo a 100 BPM.
+  - Para comparar: `revisao/trilha-sozinha.mp3`.
+- **Legenda gravada** (`"legenda": true` no JSON):
+  - **Texto e tempo:** a fala inteira, no tempo das marcas de palavra do alinhamento (`linha.json`), com o texto da tela ("WhatsApp", "UaiFood", "UaiPertim"), nunca a grafia enviada à voz.
+  - **Blocos:** até ~6 palavras e no máximo 2 linhas, quebrando nas pausas naturais. Nenhum bloco fica menos de 0,8 s.
+  - **Estilo:** pílula tinta a 85%, texto creme em Poppins ExtraBold (o repositório não tem o Bold 700) e a palavra falada em amarelo.
+  - **Posição:**
+    - Fica na faixa de baixo (y ~1320–1452). A cena de cada capítulo encolhe para 78%, ancorada no topo dela, para abrir esse espaço.
+    - Na capa, é uma linha menor embaixo do título.
+    - No fecho, sai antes dos 3 últimos segundos, que ficam limpos com a logo.
+  - **Revisão:** o `qa.py` confere a duração dos blocos, as linhas, o texto da tela, a cobertura da fala, a zona segura, a sobreposição com qualquer caixa (`caixas.json`) e os 3 s finais limpos.
+  - Para conferir: `revisao/trecho-legenda.mp4`, com ~8 s do capítulo 02.
 - **Gancho nos 3 primeiros segundos** (`"gancho": true` na cena `capaHistoria`):
   - a lojinha já quica e balança a placa no quadro 0, e o selo dá uma balançada;
   - "Por que" entra com pop até 0,2 s e "UaiPertim?" até 0,5 s, com o marcador amarelo correndo;

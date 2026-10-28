@@ -6,17 +6,18 @@ OK     vídeo h264 High yuv420p
 OK     resolução 1080x1920 (9:16)
 OK     60 fps, 3826 quadros
 OK     duração 63.77 s (alvo 60–80 s)
-OK     áudio aac 48000 Hz, 2 canais, 268 kb/s
+OK     áudio aac 48000 Hz, 2 canais, 271 kb/s
 OK     vídeo e áudio com a mesma duração (Δ 0 ms)
-       arquivo 24.0 MB, 3.0 Mb/s
+       arquivo 23.9 MB, 3.0 Mb/s
        capítulos: 00 2.80 s · 01 9.20 s · 02 9.77 s · 03 8.48 s · 04 12.09 s · 05 8.53 s · 06 7.50 s · trocas de 0.9 s
 
 SOM
 OK     loudness integrado -14.0 LUFS (alvo −14)
-OK     pico real -1.5 dBTP (limite −1)
-       a voz sozinha, na escala da mixagem: -14.2 LUFS
-       a trilha sozinha, na escala da mixagem: -28.1 LUFS
-       os efeitos sozinhos, na escala da mixagem: -25.4 LUFS
+OK     pico real -1.6 dBTP (limite −1)
+       a voz sozinha, na escala da mixagem: -14.1 LUFS
+       a trilha sozinha, na escala da mixagem: -27.4 LUFS
+       os efeitos sozinhos, na escala da mixagem: -25.3 LUFS
+OK     trilha (animada) sozinha em -27.4 LUFS, 13.3 dB abaixo da voz (a voz na frente: 9–16 dB)
 
 VOZ (voz oficial, uma geração inteira por capítulo, nada emendado)
        Victor Pinho (LuQ9eaWO9yCQrR73VQFa) · eleven_multilingual_v2 · ajustes {"stability": 0.4, "similarity_boost": 0.8, "style": 0.35, "use_speaker_boost": true}
@@ -50,23 +51,32 @@ OK     a linha de apoio anterior sai antes de a próxima entrar (nunca duas ao m
 OK     quebras de linha: nunca separam as duas últimas palavras, "pertim de você", "do/no Glória" nem o emoji
 
 ÁREAS SEGURAS E COMPOSIÇÃO
-OK     conteúdo entre x 80–940 e y 265–1456: 1561 caixas em 206 quadros fora das trocas
+OK     conteúdo entre x 80–940 e y 265–1456: 1750 caixas em 206 quadros fora das trocas
 OK     nenhuma caixa na coluna de botões (x ≥ 940, y 1060–1560)
 OK     a linha de apoio nunca fica por cima de card, balão ou peça de cena
-       faixa usada pelo conteúdo: y 305–1425
+
+LEGENDA
+OK     30 blocos de legenda, o mais curto com 0.88 s (mínimo 0,8 s)
+OK     no máximo 2 linhas por bloco (o maior bloco tem 7 palavras)
+OK     o texto da legenda é o da tela (nunca a grafia de pronúncia enviada à voz)
+OK     a legenda cobre toda a fala, na ordem (141 de 141 palavras)
+OK     legenda dentro da zona segura (x 80–940, y 265–1456) em 189 amostras
+OK     a legenda nunca fica por cima de título, apoio, cena, motinha ou logo (caixas.json)
+OK     a legenda sai em 60.72 s: os 3.05 s finais ficam limpos, só com a logo (mínimo 3 s)
+       faixa usada pelo conteúdo: y 305–1452
 OK     sem quadro vazio nas 6 trocas de capítulo (sempre há conteúdo na tela)
 OK     coluna de botões: 0 pixel de conteúdo em 255 quadros amostrados (só o fundo creme passa por ali)
 OK     sem trechos pretos
 OK     sem imagem congelada por 1,5 s ou mais
 
 CAPA E FECHO
-       capa separada: capa.png é a aprovada (usada no "Editar capa"), não o quadro 0 (PSNR 17.8 dB entre os dois)
+       capa separada: capa.png é a aprovada (usada no "Editar capa"), não o quadro 0 (PSNR 16.9 dB entre os dois)
 OK     regra das capas (revisao/capa.txt): dentro da regra das capas
 OK     fecho com 7.50 s (alvo 6–8 s)
-OK     fecho: a última mudança de texto é em 60.29 s; o texto fica parado 3.47 s até o fim (mínimo 3 s)
+OK     fecho: a última mudança de texto é em 60.72 s; o texto fica parado 3.05 s até o fim (mínimo 3 s)
 OK     a logo oficial está na tela em todos os 12 quadros amostrados dos 3 últimos segundos (parada desde 58.33 s)
-OK     gancho: o quadro muda desde o 1º quadro (diferença média entre quadros a cada 0,1 s nos primeiros 0,5 s: 6.1, 4.4, 2.9, 3.6, 3.0)
-OK     fecho: 7 elementos (logo oficial, título, chip, seta, marca) iguais entre 60.77 s e o fim (maior diferença média 1.16 de 255)
-       elementos: rótulo 1.16, título, linha 1 0.59, título, linha 2 0.42, logo oficial 0.43, chip Segue 0.29, seta 0.93, marca 0.85
+OK     gancho: o quadro muda desde o 1º quadro (diferença média entre quadros a cada 0,1 s nos primeiros 0,5 s: 7.5, 5.3, 2.9, 3.7, 3.0)
+OK     fecho: 7 elementos (logo oficial, título, chip, seta, marca) iguais entre 60.77 s e o fim (maior diferença média 1.17 de 255)
+       elementos: rótulo 1.17, título, linha 1 0.57, título, linha 2 0.41, logo oficial 0.49, chip Segue 0.33, seta 1.05, marca 0.87
 
 RESULTADO: aprovado

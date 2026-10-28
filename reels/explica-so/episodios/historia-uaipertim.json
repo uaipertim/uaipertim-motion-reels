@@ -4,6 +4,8 @@
   "marca": "@uaipertim",
   "perfil_voz": "pausas",
   "capa_separada": true,
+  "trilha": "animada",
+  "legenda": true,
   "especial": true,
   "capitulos": [
     {

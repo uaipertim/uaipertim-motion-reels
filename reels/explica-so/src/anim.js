@@ -1672,9 +1672,10 @@
     const d = cap.diagrama, ev = cap.ev, P = d.parceiro, IM = IMGS[P.img];
     const k = 0.72, ax = 140, ay = top + 25;                // o calendário e o mapinha em escala, ancorados em (ax, ay)
     ctx.save(); ctx.translate(ax, ay); ctx.scale(k, k); ctx.translate(-150, -(top + 20));
-    BOXT = (x, y) => [ax + (x - 150) * k, ay + (y - (top + 20)) * k];
+    const fora = BOXT;
+    BOXT = (x, y) => { const q = [ax + (x - 150) * k, ay + (y - (top + 20)) * k]; return fora ? fora(q[0], q[1]) : q; };
     calendarioEMinas(ctx, cap, t, top);
-    BOXT = null; ctx.restore();
+    BOXT = fora; ctx.restore();
     const S = Math.round(0.435 * 1080), cx = 650, cy = top + 40 + S / 2, circ = P.forma === 'circulo';
     const el = p(t, ev.logo, ev.logo + 0.45);
     if (el > 0) {
@@ -1769,6 +1770,7 @@
       ev.seta = ev.chip + 0.15;
       FECHO.logo = { entra: ev.logo, parada: ev.logo + 0.9 };
       FECHO.ultima = Math.max(cap.t0 + 0.7, ev.logo + 0.9, ev.chip + 0.45, ev.seta + 0.55, ...cap.apoios.map((a) => a.t + 0.34));
+      FECHO.cap = cap;
       cue(ev.logo, 'logo'); cue(ev.chip, 'pop', { f: 700 }); cue(ev.seta, 'whoosh');
     },
     draw(ctx, cap, t) {
@@ -1810,13 +1812,112 @@
   };
 
   // =====================================================================
+  // LEGENDA DA NARRAÇÃO (gravada no vídeo; "legenda": true no JSON do episódio)
+  // =====================================================================
+  // O texto é o da TELA (as palavras do roteiro, no tempo das marcas de palavra do alinhamento: linha.json → palavras),
+  // nunca a grafia de pronúncia enviada à voz. Blocos curtos (até ~6 palavras, no máximo 2 linhas), quebrando nas pausas
+  // naturais; nenhum bloco fica menos de 0,8 s. Pílula tinta 85% com o texto creme e a palavra falada em amarelo. Fica na
+  // faixa de baixo (a cena encolhe para 78% e abre espaço); na capa, uma linha menor embaixo do título; no fecho, some
+  // antes dos 3 últimos segundos (que ficam limpos, só com a logo).
+  const LEG = { cena: 0.78, size: 42, lh: 52, padX: 28, padY: 12, maxW: 740, cx: 510, base: 1452, minDur: 0.8, maxPal: 6 };
+  const LEG_CAPA = { size: 32, lh: 40, padY: 8 };
+  const LEG_FUNCAO = new Set(['o', 'a', 'os', 'as', 'do', 'da', 'dos', 'das', 'no', 'na', 'nos', 'nas', 'de', 'em', 'e', 'que', 'pra', 'um', 'uma', 'por', 'com', 'mais', 'o', 'ao']);
+  let LEGS = [];
+  function montaLegendas() {
+    LEGS = [];
+    if (!LN.legenda) return;
+    CAPS.forEach((cap, ci) => {
+      const ws = cap.palavras || [];
+      if (!ws.length) return;
+      const capa = ehCapa(cap);
+      // os blocos: fecham na pontuação (pausa natural), num respiro > 0,3 s ou com ~6 palavras (nunca numa palavra de ligação)
+      const blocos = []; let cur = [];
+      ws.forEach((w, i) => {
+        cur.push(w);
+        const nx = ws[i + 1];
+        const pausa = /[.?!…:;,]["”’)]*$/.test(w.w) || (nx && nx.t0 - w.t1 > 0.3);
+        const ligacao = LEG_FUNCAO.has(norm(w.w));
+        if (!nx || (pausa && cur.length >= 2) || (cur.length >= LEG.maxPal && !ligacao)) { blocos.push(cur); cur = []; }
+      });
+      if (cur.length) blocos.push(cur);
+      const fim = ci === NC - 1 ? DUR - 3.05 : cap.t1 - 0.05;      // no fecho, os 3 últimos segundos ficam limpos
+      let B = blocos.map((p) => ({ palavras: p, t0: Math.max(cap.t0, p[0].t0 - 0.05) }));
+      B.forEach((b, i) => { b.t1 = Math.min(fim, i + 1 < B.length ? B[i + 1].t0 : b.palavras[b.palavras.length - 1].t1 + 0.6); });
+      // nenhum bloco com menos de 0,8 s: junta com o vizinho
+      for (let guard = 0; guard < 50 && B.length > 1; guard++) {
+        const i = B.findIndex((b) => b.t1 - b.t0 < LEG.minDur);
+        if (i < 0) break;
+        const j = i + 1 < B.length ? i : i - 1;
+        B.splice(j, 2, { palavras: B[j].palavras.concat(B[j + 1].palavras), t0: B[j].t0, t1: B[j + 1].t1 });
+      }
+      B.forEach((b) => {
+        const st = capa ? { ...LEG, ...LEG_CAPA } : LEG;
+        let size = st.size, linhas;
+        for (; size >= 26; size -= 2) {
+          const sp = tw(' ', size, 800);
+          const med = b.palavras.map((w) => ({ ...w, larg: tw(w.w, size, 800) }));
+          const larg = (a) => a.reduce((s_, w) => s_ + w.larg, 0) + sp * (a.length - 1);
+          if (larg(med) <= st.maxW) { linhas = [med]; } else if (!capa) {
+            let best = null;
+            for (let k = 1; k < med.length; k++) {                 // 2 linhas: a quebra mais equilibrada, de preferência na vírgula
+              const a = med.slice(0, k), c = med.slice(k);
+              const sc = Math.max(larg(a), larg(c)) - (/[,;:]$/.test(a[a.length - 1].w) ? 60 : 0);
+              if (!best || sc < best.sc) best = { sc, l: [a, c] };
+            }
+            linhas = best.l;
+          }
+          if (linhas && linhas.every((l) => larg(l) <= st.maxW)) break;
+          linhas = null;
+        }
+        Object.assign(b, { cap: ci, size, lh: capa ? st.lh * size / st.size : st.lh * size / LEG.size, padY: st.padY, linhas, sp: tw(' ', size, 800) });
+      });
+      LEGS.push(...B.filter((b) => b.t1 > b.t0));
+    });
+    // no fecho, a legenda sumindo também é uma mudança de texto (a regra dos 3 s parados no fim)
+    const ult = LEGS.filter((b) => b.cap === NC - 1).map((b) => b.t1);
+    if (ult.length) FECHO.ultima = Math.max(FECHO.ultima, ...ult);
+  }
+  function legenda(ctx, t) {
+    const b = LEGS.find((x) => t >= x.t0 && t < x.t1);
+    if (!b) return;
+    const capa = ehCapa(CAPS[b.cap]);
+    const larg = (l) => l.reduce((s_, w) => s_ + w.larg, 0) + b.sp * (l.length - 1);
+    const w = Math.max(...b.linhas.map(larg)) + 2 * LEG.padX, h = b.linhas.length * b.lh + 2 * b.padY;
+    const x0 = LEG.cx - w / 2, y0 = LEG.base - h;
+    const e = clamp((t - b.t0) / 0.08);
+    // a palavra falada agora: a última que já começou (até a próxima começar)
+    const todas = b.linhas.flat(); let atual = -1;
+    todas.forEach((x, i) => { if (t >= x.t0 - 0.02) atual = i; });
+    ctx.save(); ctx.globalAlpha = e;
+    rr(ctx, x0, y0, w, h, Math.min(22, h / 2)); ctx.fillStyle = css(C.tinta, 0.85); ctx.fill();
+    let k = 0;
+    b.linhas.forEach((l, li) => {
+      let x = LEG.cx - larg(l) / 2;
+      const y = y0 + b.padY + li * b.lh + b.lh * 0.74;
+      l.forEach((pw) => {
+        txt(ctx, pw.w, x, y, { size: b.size, weight: 800, color: k === atual ? C.amarelo : C.papel });
+        x += pw.larg + b.sp; k++;
+      });
+    });
+    ctx.restore();
+    BOX('legenda', x0, y0, x0 + w, y0 + h);
+  }
+
+  // =====================================================================
   // O QUADRO
   // =====================================================================
   const ehCapa = (cap) => /^capa/.test(cap.diagrama.tipo);
   function drawChap(ctx, cap, t) {
     const tipo = cap.diagrama.tipo;
     if (!ehCapa(cap)) header(ctx, cap, t);
-    CENAS[tipo].draw(ctx, cap, t);
+    if (LN.legenda && !ehCapa(cap)) {
+      // com legenda, a cena encolhe para 80% (ancorada no topo dela) e a faixa de baixo (y ~1315–1452) fica para a legenda
+      const ay = diaTop(cap), ax = 510, k = LEG.cena;
+      ctx.save(); ctx.translate(ax, ay); ctx.scale(k, k); ctx.translate(-ax, -ay);
+      const fora = BOXT; BOXT = (x, y) => [ax + (x - ax) * k, ay + (y - ay) * k];
+      CENAS[tipo].draw(ctx, cap, t);
+      BOXT = fora; ctx.restore();
+    } else CENAS[tipo].draw(ctx, cap, t);
     drawApoio(ctx, cap, t);
   }
   function frame(ctx, t) {
@@ -1843,6 +1944,7 @@
     drawRail(ctx, t, cam, 'moto');                    // a motinha passa na frente das cenas
     ctx.restore();
     ctx.restore();
+    legenda(ctx, t);
     brand(ctx, t);
   }
   let bufS = null, bufA = null;
@@ -1878,6 +1980,7 @@
       cap.apoios.forEach((a, i) => { if (k > 0 || i > 0) cue(a.t, 'apoio'); });
     });
     RAIL = buildRail();
+    montaLegendas();
     CUES.sort((a, b) => a.t - b.t);
   }
 
@@ -1894,6 +1997,7 @@
     cues: () => ({ duration: DUR, capitulos: CAPS.map((c) => ({ n: c.n, rotulo: c.rotulo, tipo: c.diagrama.tipo, t0: c.t0, t1: c.t1, voz_t0: c.voz_t0, voz_t1: c.voz_t1, ev: c.ev })), cues: CUES.map((c) => ({ ...c, t: Math.round(c.t * 1e4) / 1e4 })) }),
     apoios: () => CAPS.flatMap((c) => c.apoios.map((a, i) => ({ cap: c.n, i: i + 1, texto: plain(a.texto), entra: a.t, inteira_de: a.t + 0.34, ate: c.apoios[i + 1] ? c.apoios[i + 1].t : a.ate,
       linhas: apoioRows(c, a).map((r) => r.words.map((w) => w.s).join(' ')) }))),
+    legendas: () => LEGS.map((b) => ({ cap: b.cap, t0: b.t0, t1: b.t1, texto: b.palavras.map((w) => w.w).join(' '), linhas: b.linhas.map((l) => l.map((w) => w.w).join(' ')), tamanho: b.size })),
     fecho: () => ({ ultima_mudanca_de_texto: FECHO.ultima, duracao: DUR, logo: FECHO.logo, t0: CAPS[NC - 1].t0, t1: CAPS[NC - 1].t1 }),
     trocas: () => CAPS.slice(0, -1).map((c, k) => ({ de: k, para: k + 1, t0: c.t1, t1: CAPS[k + 1].t0 })),
     avisos: () => AVISOS.slice(),

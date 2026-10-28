@@ -48,6 +48,9 @@ rng = np.random.default_rng(2024)
 # ficou frio; desde 2026-10-28 ele usa o padrão da série, como todos os episódios.
 PERFIS = {}
 PERFIL = PERFIS.get(LN.get('episodio', EP), {})
+# a trilha do episódio ("trilha" no JSON): "serie" (padrão: pad + baixo + arpejo) ou "animada" (a do motor Tudo Pertim)
+EPJ = json.load(open(os.path.join(ROOT, 'episodios', EP + '.json'), encoding='utf-8'))
+TRILHA = EPJ.get('trilha', 'serie')
 
 
 # ------------------------------------------------------------------ básicos
@@ -391,6 +394,17 @@ def page():
     return add(flick * 0.7, whoosh(0.28, 900, 3200, 0.3, 1.1) * 0.5, click(0.02, 3200, 0.003) * 0.4)
 
 
+def clap():
+    """palma: três estalos de ruído bem juntos e uma cauda curta (do motor Tudo Pertim)"""
+    d = 0.18
+    out = np.zeros(int(d * SR))
+    for k, t0 in enumerate((0.0, 0.009, 0.019)):
+        s = filt(noise(0.05), [900, 5200], 'band') * np.exp(-tt(0.05) / 0.006)
+        i = int(t0 * SR); out[i:i + len(s)] += s[: len(out) - i] * (0.7 if k < 2 else 1.0)
+    out += filt(noise(d), [1000, 4500], 'band') * np.exp(-tt(d) / 0.05) * 0.5
+    return out
+
+
 def sprout(i=0):
     """a lojinha brotando do chão: sopro que sobe + um pop de mola"""
     return add(riser(0.3, 300, 1800) * 0.6, np.concatenate([np.zeros(int(0.22 * SR)), pop(520 + 90 * i) * 1.0]))
@@ -525,58 +539,133 @@ for c in CUES['cues']:
         raise ValueError('cue desconhecido: ' + ty)
 sfx *= SFX_G
 
-# --- a trilha contínua
-BPM = PERFIL.get('bpm', 100.0)
-BT = 60.0 / BPM
-CHORDS = [[60, 64, 67, 71, 74], [57, 60, 64, 67, 71], [53, 57, 60, 64, 67], [55, 59, 62, 64, 69]]      # Cmaj9, Am9, Fmaj9, G6/9
-music = np.zeros(N)
-t = np.arange(N) / SR
-bars = 2 * BT * 4
-FIM = LN_C[-1]['voz_t1'] + 0.6                                                                         # o último acorde começa aqui e sustenta
-nb = int(FIM / bars) + 1
-for k in range(nb + 1):
-    t0 = k * bars
-    last = k == nb
-    if last:
-        t0 = FIM
-    if t0 >= DUR:
-        break
-    ch = CHORDS[k % 4] if not last else CHORDS[0]
-    d = (bars if not last else DUR - t0) + 1.6
+# --- a trilha contínua: a da série (pad + baixo + arpejo) ou, com "trilha": "animada" no JSON do episódio, a do
+#     motor Tudo Pertim (batida + baixo + pluck + sininho, 120 BPM)
+if TRILHA == 'animada':
+    # a trilha animada do motor Tudo Pertim (branch claude/tiktok, reels/tudo-pertim/scripts/audio.py — a mesma dos Reels
+    # "Tá chegando no Glória" e "Do café à janta"): bumbo em todos os tempos, palma no 2 e no 4, chimbal, baixo em
+    # colcheias, acordes "pluck" no contratempo e o sininho nos tempos fortes (Dó → Sol → Lá menor → Fá, um acorde por
+    # compasso), a 120 BPM. A batida começa no t = 0 (junto do gancho). No fecho, depois da última fala, o sting: bumbo +
+    # palma + o acorde de Dó, que sustenta e some até o fim (sem corte seco)
+    BPM = float(EPJ.get('bpm', 120))
+    BT = 60.0 / BPM
+    BAR = 4 * BT
+    CHORDS = [[60, 64, 67, 72], [55, 59, 62, 67], [57, 60, 64, 69], [53, 57, 60, 65]]      # Dó, Sol, Lá m, Fá
+    music = np.zeros(N)
+    t = np.arange(N) / SR
+    FIM = LN_C[-1]['voz_t1'] + 0.6                                                    # o último acorde começa aqui e sustenta
+
+    def at_(sig, t0, g=1.0):
+        i = int(round(t0 * SR))
+        if i >= N or i < 0:
+            return
+        j = min(N, i + len(sig))
+        music[i:j] += sig[: j - i] * g
+
+    def pluck(notes, d=0.32):
+        tt_ = tt(d)
+        x = np.zeros_like(tt_)
+        for n in notes:
+            f = midi(n)
+            x += (np.sin(2 * np.pi * f * tt_) + 0.5 * np.sin(2 * np.pi * 2 * f * tt_) * np.exp(-tt_ / 0.05) + 0.25 * np.sin(2 * np.pi * 3 * f * tt_) * np.exp(-tt_ / 0.03))
+        return x * np.exp(-tt_ / 0.11) * np.minimum(1, tt_ / 0.003) / len(notes)
+
+    def bassnote(n, d):
+        tt_ = tt(d)
+        ph = (midi(n) * tt_) % 1
+        x = filt(2 * ph - 1, 900, 'low') + 0.6 * np.sin(2 * np.pi * midi(n) * tt_)
+        return x * np.exp(-tt_ / 0.16) * np.minimum(1, tt_ / 0.004) * np.minimum(1, (d - tt_) / 0.01)
+
+    def hat(open_=False):
+        d = 0.12 if open_ else 0.045
+        return filt(noise(d), [7000, 14000], 'band') * np.exp(-tt(d) / (0.04 if open_ else 0.012))
+
+    def bell(n):
+        tt_ = tt(0.8)
+        return (np.sin(2 * np.pi * midi(n) * tt_) + 0.3 * np.sin(2 * np.pi * 2.76 * midi(n) * tt_) * np.exp(-tt_ / 0.08)) * np.exp(-tt_ / 0.3) * np.minimum(1, tt_ / 0.002)
+
+    nb = int(np.ceil(FIM / BAR))
+    for k in range(nb):
+        t0 = k * BAR
+        ch = CHORDS[k % 4]
+        for q in range(4):                                                            # os 4 tempos do compasso
+            tb = t0 + q * BT
+            if tb >= FIM:
+                break
+            at_(thump(0.3, 50, 0.085, 1.0), tb, 0.55)                                 # o bumbo em todos os tempos
+            if q % 2 == 1:
+                at_(clap(), tb, 0.32)                                                 # a palma no 2 e no 4
+            at_(hat(), tb + BT / 2, 0.16)                                            # o chimbal no contratempo
+            at_(hat(), tb, 0.06)
+            for e_ in range(2):                                                       # o baixo em colcheias (fundamental e oitava)
+                at_(bassnote(ch[0] - 24 + (12 if e_ else 0), BT / 2), tb + e_ * BT / 2, 0.32)
+            at_(pluck([n + 12 for n in ch[1:]]), tb + BT / 2, 0.26)                  # o acorde no contratempo
+            if q in (0, 2):
+                at_(bell(ch[(q // 2 + k) % len(ch)] + 24), tb, 0.08)                  # o sininho nos tempos fortes
+    # o sting do fecho: o último acorde, sustentado até o fim (o fade final de 1,2 s fecha sem corte seco)
+    d = DUR - FIM + 1.0
     tt_ = tt(d)
-    # o 1º acorde já entra cheio (ataque de 0,12 s): a trilha começa junto com o gancho
-    env = np.minimum(1, tt_ / (0.12 if k == 0 else 1.2 if not last else 0.4)) * np.exp(-np.maximum(0, tt_ - (bars if not last else d - 1.6)) / 0.6)
     pad = np.zeros_like(tt_)
-    for n in ch:
+    for n in CHORDS[0]:
         f = midi(n)
         for det in (-0.004, 0.0, 0.004):
-            pad += np.sin(2 * np.pi * f * (1 + det) * tt_ + rng.uniform(0, 6)) * 0.5 + 0.22 * np.sin(2 * np.pi * 2 * f * (1 + det) * tt_)
-    pump = 1 - 0.18 * np.exp(-((tt_ % (2 * BT)) / 0.18))                                                # respiração suave a cada 2 tempos
-    pad = filt(pad, 1500, 'low') * env * pump / (len(ch) * 3)
-    bass = np.sin(2 * np.pi * midi(ch[0] - 12) * tt_) * env * 0.45
-    i = int(t0 * SR); j = min(N, i + len(pad))
-    music[i:j] += (pad + bass)[: j - i]
-    if last:
-        break
-    for q in range(8):                                                                                 # pulso grave nos tempos 1 e 3
-        tb = t0 + q * BT
-        if q % 2 == 0 and tb < FIM:
-            s = thump(0.35, 52, 0.12, 0.5) * PERFIL.get('pulso', 0.28); ii = int(tb * SR); jj = min(N, ii + len(s)); music[ii:jj] += s[: jj - ii]
-    for q in range(int(bars / (BT / 2))):                                                              # shaker em colcheias, bem baixo
-        tb = t0 + q * BT / 2
-        if tb >= FIM:
+            pad += np.sin(2 * np.pi * f * (1 + det) * tt_ + rng.uniform(0, 6)) * 0.5 + 0.2 * np.sin(2 * np.pi * 2 * f * (1 + det) * tt_)
+    pad = filt(pad, 1800, 'low') * np.minimum(1, tt_ / 0.05) * np.exp(-tt_ / 2.6) / (len(CHORDS[0]) * 3)
+    at_(pad + np.sin(2 * np.pi * midi(36) * tt_) * np.exp(-tt_ / 1.4) * 0.4, FIM, 1.0)
+    at_(thump(0.5, 48, 0.2, 1.0), FIM, 0.6); at_(clap(), FIM, 0.3); at_(pluck([n + 12 for n in CHORDS[0]], 1.2), FIM, 0.4)
+    at_(bell(CHORDS[0][0] + 24), FIM, 0.12)
+else:
+    BPM = PERFIL.get('bpm', 100.0)
+    BT = 60.0 / BPM
+    CHORDS = [[60, 64, 67, 71, 74], [57, 60, 64, 67, 71], [53, 57, 60, 64, 67], [55, 59, 62, 64, 69]]      # Cmaj9, Am9, Fmaj9, G6/9
+    music = np.zeros(N)
+    t = np.arange(N) / SR
+    bars = 2 * BT * 4
+    FIM = LN_C[-1]['voz_t1'] + 0.6                                                                         # o último acorde começa aqui e sustenta
+    nb = int(FIM / bars) + 1
+    for k in range(nb + 1):
+        t0 = k * bars
+        last = k == nb
+        if last:
+            t0 = FIM
+        if t0 >= DUR:
             break
-        s = filt(noise(0.06), [6000, 12000], 'band') * np.exp(-tt(0.06) / 0.015) * (0.05 if q % 2 else 0.03) * PERFIL.get('shaker', 1.0)
-        ii = int(tb * SR); jj = min(N, ii + len(s)); music[ii:jj] += s[: jj - ii]
-    ARP = PERFIL.get('arpejo', 1.5)
-    for q in range(int(bars / (BT * ARP))):                                                            # o arpejo
-        tn = t0 + q * BT * ARP
-        if tn >= FIM:
+        ch = CHORDS[k % 4] if not last else CHORDS[0]
+        d = (bars if not last else DUR - t0) + 1.6
+        tt_ = tt(d)
+        # o 1º acorde já entra cheio (ataque de 0,12 s): a trilha começa junto com o gancho
+        env = np.minimum(1, tt_ / (0.12 if k == 0 else 1.2 if not last else 0.4)) * np.exp(-np.maximum(0, tt_ - (bars if not last else d - 1.6)) / 0.6)
+        pad = np.zeros_like(tt_)
+        for n in ch:
+            f = midi(n)
+            for det in (-0.004, 0.0, 0.004):
+                pad += np.sin(2 * np.pi * f * (1 + det) * tt_ + rng.uniform(0, 6)) * 0.5 + 0.22 * np.sin(2 * np.pi * 2 * f * (1 + det) * tt_)
+        pump = 1 - 0.18 * np.exp(-((tt_ % (2 * BT)) / 0.18))                                                # respiração suave a cada 2 tempos
+        pad = filt(pad, 1500, 'low') * env * pump / (len(ch) * 3)
+        bass = np.sin(2 * np.pi * midi(ch[0] - 12) * tt_) * env * 0.45
+        i = int(t0 * SR); j = min(N, i + len(pad))
+        music[i:j] += (pad + bass)[: j - i]
+        if last:
             break
-        n = ch[(q * 2 + 1) % len(ch)] + 12
-        nt = tt(0.9)
-        note = (np.sin(2 * np.pi * midi(n) * nt) + 0.3 * np.sin(2 * np.pi * 2 * midi(n) * nt) * np.exp(-nt / 0.1)) * np.exp(-nt / 0.28) * np.minimum(1, nt / 0.004)
-        ii = int(tn * SR); jj = min(N, ii + len(note)); music[ii:jj] += note[: jj - ii] * PERFIL.get('arpejo_g', 0.09)
+        for q in range(8):                                                                                 # pulso grave nos tempos 1 e 3
+            tb = t0 + q * BT
+            if q % 2 == 0 and tb < FIM:
+                s = thump(0.35, 52, 0.12, 0.5) * PERFIL.get('pulso', 0.28); ii = int(tb * SR); jj = min(N, ii + len(s)); music[ii:jj] += s[: jj - ii]
+        for q in range(int(bars / (BT / 2))):                                                              # shaker em colcheias, bem baixo
+            tb = t0 + q * BT / 2
+            if tb >= FIM:
+                break
+            s = filt(noise(0.06), [6000, 12000], 'band') * np.exp(-tt(0.06) / 0.015) * (0.05 if q % 2 else 0.03) * PERFIL.get('shaker', 1.0)
+            ii = int(tb * SR); jj = min(N, ii + len(s)); music[ii:jj] += s[: jj - ii]
+        ARP = PERFIL.get('arpejo', 1.5)
+        for q in range(int(bars / (BT * ARP))):                                                            # o arpejo
+            tn = t0 + q * BT * ARP
+            if tn >= FIM:
+                break
+            n = ch[(q * 2 + 1) % len(ch)] + 12
+            nt = tt(0.9)
+            note = (np.sin(2 * np.pi * midi(n) * nt) + 0.3 * np.sin(2 * np.pi * 2 * midi(n) * nt) * np.exp(-nt / 0.1)) * np.exp(-nt / 0.28) * np.minimum(1, nt / 0.004)
+            ii = int(tn * SR); jj = min(N, ii + len(note)); music[ii:jj] += note[: jj - ii] * PERFIL.get('arpejo_g', 0.09)
 music = filt(music, 50, 'high')
 music *= np.clip(t / 0.15, 0, 1) * np.clip((DUR - t) / 1.2, 0, 1)   # entra sem fade lento (o gancho do 1º segundo)
 # ducking suave
@@ -589,7 +678,8 @@ for i in range(1, N):
     sm[i] = c * sm[i - 1] + (1 - c) * act[i]
 music *= 1 - (1 - 10 ** (-6 / 20)) * sm
 ref = np.sqrt(np.mean(voz[np.abs(voz) > 0.005] ** 2)) if np.any(np.abs(voz) > 0.005) else 0.11   # (prévia sem voz: a voz de referência)
-music *= 10 ** (-11 / 20) / max(1e-9, np.sqrt(np.mean(music ** 2))) * ref * 0.8
+# a trilha da série fica ~11 dB abaixo da voz; a animada, ~10 dB (como no Tudo Pertim): a batida pede 1 dB a mais
+music *= 10 ** ((-10 if TRILHA == 'animada' else -11) / 20) / max(1e-9, np.sqrt(np.mean(music ** 2))) * ref * 0.8
 msc = np.stack([music, np.roll(music, int(0.011 * SR)) * 0.97])
 
 # ------------------------------------------------------------------ a sala + a mixagem + o master

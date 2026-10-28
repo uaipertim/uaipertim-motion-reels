@@ -46,6 +46,7 @@ LN = json.load(open(os.path.join(AUDL, 'linha.json')))
 assert PREVIA or not LN.get('previa'), 'linha.json é de prévia: gere a voz e rode scripts/linha.py de novo'
 MOT = json.load(open(os.path.join(OUT, 'motor.json')))
 CX = json.load(open(os.path.join(OUT, 'caixas.json')))
+EPJ = json.load(open(os.path.join(ROOT, 'episodios', EP + '.json'), encoding='utf-8'))
 FALAS = {} if PREVIA else json.load(open(os.path.join(AUD, 'voz', 'falas.json')))['capitulos']
 FONT = os.path.join(REPO, 'public', 'fonts', 'poppins-latin-800-normal.woff2')
 DUR = LN['duracao']
@@ -102,11 +103,16 @@ I = float(re.search(r'I:\s+(-?[\d.]+) LUFS', summ).group(1))
 TP = float(re.search(r'Peak:\s+(-?[\d.]+) dBFS', summ).group(1))
 ok(-14.5 <= I <= -13.5, f'loudness integrado {I:.1f} LUFS (alvo −14)')
 ok(TP <= -1.0, f'pico real {TP:.1f} dBTP (limite −1)')
+PISTAS = {}
 for nome, rot in (('voz-tratada', 'a voz sozinha'), ('musica', 'a trilha sozinha'), ('sfx', 'os efeitos sozinhos')):
     f = os.path.join(AUDL, nome + '.wav')
     if os.path.exists(f):
         ev = run(['ffmpeg', '-hide_banner', '-nostats', '-i', f, '-af', 'ebur128', '-f', 'null', '-']).stderr
-        info(f'{rot}, na escala da mixagem: {float(re.search(r"I:\s+(-?[\d.]+) LUFS", ev[ev.rindex("Summary:"):]).group(1)):.1f} LUFS')
+        PISTAS[nome] = float(re.search(r"I:\s+(-?[\d.]+) LUFS", ev[ev.rindex("Summary:"):]).group(1))
+        info(f'{rot}, na escala da mixagem: {PISTAS[nome]:.1f} LUFS')
+if 'musica' in PISTAS and 'voz-tratada' in PISTAS and not PREVIA:
+    dv = PISTAS['voz-tratada'] - PISTAS['musica']
+    ok(9.0 <= dv <= 16.0, f'trilha ({EPJ.get("trilha", "serie")}) sozinha em {PISTAS["musica"]:.1f} LUFS, {dv:.1f} dB abaixo da voz (a voz na frente: 9–16 dB)')
 
 # ---------------------------------------------------------------- a voz: uma geração inteira por capítulo, sem emendas
 report += ['', 'VOZ (voz oficial, uma geração inteira por capítulo, nada emendado)']
@@ -192,6 +198,36 @@ for s in CX:
 ok(not fora, f'conteúdo entre x {SAFE["x0"]}–{SAFE["x1"]} e y {SAFE["y0"]}–{SAFE["y1"]}: {n_cx} caixas em {n_t} quadros fora das trocas' + ('' if not fora else ' · fora: ' + '; '.join(f'{t:.2f}s {b["nome"]} x {b["x0"]:.0f}–{b["x1"]:.0f} y {b["y0"]:.0f}–{b["y1"]:.0f}' for t, b in fora[:6])))
 ok(not botao, f'nenhuma caixa na coluna de botões (x ≥ {BTN["x"]}, y {BTN["y0"]}–{BTN["y1"]})' + ('' if not botao else ': ' + '; '.join(f'{t:.2f}s {b["nome"]}' for t, b in botao[:6])))
 ok(not sobre_peca, 'a linha de apoio nunca fica por cima de card, balão ou peça de cena' + ('' if not sobre_peca else ': ' + '; '.join(f'{t:.2f}s {a_} × {b_}' for t, a_, b_ in sobre_peca[:6])))
+# ---------------------------------------------------------------- legenda gravada ("legenda": true no JSON)
+if EPJ.get('legenda'):
+    report.extend(['', 'LEGENDA'])
+    LG = MOT.get('legendas', [])
+    curtas_l = [b for b in LG if b['t1'] - b['t0'] < 0.8 - 1e-3]
+    ok(LG and not curtas_l, f'{len(LG)} blocos de legenda, o mais curto com {min(b["t1"] - b["t0"] for b in LG):.2f} s (mínimo 0,8 s)' if LG else 'legenda: nenhum bloco')
+    ok(all(len(b['linhas']) <= 2 for b in LG), f'no máximo 2 linhas por bloco (o maior bloco tem {max(len(b["texto"].split()) for b in LG)} palavras)')
+    grafia = [b['texto'] for b in LG if re.search(r'Uátsap|fúdi|Pérr|Pértim|Búrguer', b['texto'])]
+    ok(not grafia, 'o texto da legenda é o da tela (nunca a grafia de pronúncia enviada à voz)' + ('' if not grafia else ': ' + '; '.join(grafia)))
+    falado = [w['w'] for c in LN['capitulos'] for w in c['palavras']]
+    legendado = [w for b in LG for w in b['texto'].split()]
+    ok(falado == legendado, f'a legenda cobre toda a fala, na ordem ({len(legendado)} de {len(falado)} palavras)')
+    fora_l, sobre_l, n_l = [], [], 0
+    for s in CX:
+        if em_troca(s['t']):
+            continue
+        for lg in [b for b in s['caixas'] if b['nome'] == 'legenda']:
+            n_l += 1
+            if lg['x0'] < SAFE['x0'] - 0.5 or lg['x1'] > SAFE['x1'] + 0.5 or lg['y0'] < SAFE['y0'] - 0.5 or lg['y1'] > SAFE['y1'] + 0.5:
+                fora_l.append(s['t'])
+            for b in s['caixas']:
+                if b['nome'] in ('legenda', 'marca'):
+                    continue
+                if min(lg['x1'], b['x1']) > max(lg['x0'], b['x0']) and min(lg['y1'], b['y1']) > max(lg['y0'], b['y0']):
+                    sobre_l.append((s['t'], b['nome']))
+    ok(n_l and not fora_l, f'legenda dentro da zona segura (x {SAFE["x0"]}–{SAFE["x1"]}, y {SAFE["y0"]}–{SAFE["y1"]}) em {n_l} amostras' + ('' if not fora_l else ': fora em ' + ', '.join(f'{t:.2f}s' for t in fora_l[:6])))
+    ok(not sobre_l, 'a legenda nunca fica por cima de título, apoio, cena, motinha ou logo (caixas.json)' + ('' if not sobre_l else ': ' + '; '.join(f'{t:.2f}s × {n}' for t, n in sobre_l[:6])))
+    ult_l = max(b['t1'] for b in LG) if LG else 0
+    ok(DUR - ult_l >= 3.0, f'a legenda sai em {ult_l:.2f} s: os {DUR - ult_l:.2f} s finais ficam limpos, só com a logo (mínimo 3 s)')
+
 ys = [b['y0'] for s in CX if not em_troca(s['t']) for b in s['caixas']] + [b['y1'] for s in CX if not em_troca(s['t']) for b in s['caixas']]
 info(f'faixa usada pelo conteúdo: y {min(ys):.0f}–{max(ys):.0f}')
 vazios = []
@@ -229,7 +265,6 @@ report += ['', 'CAPA E FECHO']
 capa = np.asarray(Image.open(os.path.join(OUTD, 'capa.png')).convert('L')).astype(float)
 mse = float(np.mean((capa - f0) ** 2))
 psnr = 99.0 if mse == 0 else 10 * np.log10(255 ** 2 / mse)
-EPJ = json.load(open(os.path.join(ROOT, 'episodios', EP + '.json'), encoding='utf-8'))
 if EPJ.get('capa_separada'):
     # a capa aprovada vai pelo "Editar capa" e o quadro 0 é o gancho: aqui só se confere que o quadro 0 não é uma tela
     # parada (ele já se mexe nos primeiros 0,2 s)
@@ -263,6 +298,14 @@ if EPJ.get('capa_separada'):
     # o gancho: nada de tela parada no começo — o quadro muda a cada 0,1 s nos primeiros 0,5 s
     qs = [frame_at(x) for x in (0.0, 0.1, 0.2, 0.3, 0.4, 0.5)]
     mud = [float(np.abs(a_ - b_).mean()) for a_, b_ in zip(qs, qs[1:])]
+    # o trecho do capítulo 02 (legenda + trilha juntas) e a trilha sozinha, para comparar
+    if EPJ.get('legenda') and len(LN['capitulos']) > 2:
+        c2 = LN['capitulos'][2]
+        subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-ss', f'{c2["t0"] + 0.4:.3f}', '-i', VIDEO, '-t', '8', '-c:v', 'libx264', '-crf', '16', '-pix_fmt', 'yuv420p',
+                        '-c:a', 'aac', '-b:a', '256k', '-movflags', '+faststart', os.path.join(OUT, 'trecho-legenda.mp4')], check=True)
+    if os.path.exists(os.path.join(AUDL, 'musica.wav')):
+        subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', os.path.join(AUDL, 'musica.wav'), '-af', 'loudnorm=I=-16:TP=-1.5:LRA=11',
+                        '-c:a', 'libmp3lame', '-b:a', '192k', os.path.join(OUT, 'trilha-sozinha.mp3')], check=True)
     # os 3 primeiros segundos, para conferir o gancho
     subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', VIDEO, '-t', '3', '-c:v', 'libx264', '-crf', '16', '-pix_fmt', 'yuv420p',
                     '-c:a', 'aac', '-b:a', '256k', '-movflags', '+faststart', os.path.join(OUT, 'inicio-3s.mp4')], check=True)
