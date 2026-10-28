@@ -229,7 +229,13 @@ report += ['', 'CAPA E FECHO']
 capa = np.asarray(Image.open(os.path.join(OUTD, 'capa.png')).convert('L')).astype(float)
 mse = float(np.mean((capa - f0) ** 2))
 psnr = 99.0 if mse == 0 else 10 * np.log10(255 ** 2 / mse)
-ok(psnr > 34, f'a capa é o quadro 0 do vídeo (PSNR {psnr:.1f} dB entre capa.png e o 1º quadro)')
+EPJ = json.load(open(os.path.join(ROOT, 'episodios', EP + '.json'), encoding='utf-8'))
+if EPJ.get('capa_separada'):
+    # a capa aprovada vai pelo "Editar capa" e o quadro 0 é o gancho: aqui só se confere que o quadro 0 não é uma tela
+    # parada (ele já se mexe nos primeiros 0,2 s)
+    info(f'capa separada: capa.png é a aprovada (usada no "Editar capa"), não o quadro 0 (PSNR {psnr:.1f} dB entre os dois)')
+else:
+    ok(psnr > 34, f'a capa é o quadro 0 do vídeo (PSNR {psnr:.1f} dB entre capa.png e o 1º quadro)')
 ct = os.path.join(OUT, 'capa.txt')
 if os.path.exists(ct):
     res = open(ct).read().strip().splitlines()[-1]
@@ -253,6 +259,14 @@ def frame_at(t):
         return np.asarray(Image.open(pth).convert('L')).astype(float)
 
 
+if EPJ.get('capa_separada'):
+    # o gancho: nada de tela parada no começo — o quadro muda a cada 0,1 s nos primeiros 0,5 s
+    qs = [frame_at(x) for x in (0.0, 0.1, 0.2, 0.3, 0.4, 0.5)]
+    mud = [float(np.abs(a_ - b_).mean()) for a_, b_ in zip(qs, qs[1:])]
+    # os 3 primeiros segundos, para conferir o gancho
+    subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', VIDEO, '-t', '3', '-c:v', 'libx264', '-crf', '16', '-pix_fmt', 'yuv420p',
+                    '-c:a', 'aac', '-b:a', '256k', '-movflags', '+faststart', os.path.join(OUT, 'inicio-3s.mp4')], check=True)
+    ok(min(mud) > 0.3, 'gancho: o quadro muda desde o 1º quadro (diferença média entre quadros a cada 0,1 s nos primeiros 0,5 s: ' + ', '.join(f'{m:.1f}' for m in mud) + ')')
 fa, fb = frame_at(DUR - 3.0), frame_at(min(DUR, vd) - 0.15)
 fim = ultimos[-1]['caixas'] if ultimos else []
 difs = []

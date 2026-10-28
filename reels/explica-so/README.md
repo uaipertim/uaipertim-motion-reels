@@ -26,7 +26,17 @@ Pronto e aprovado (`output/explica-so-01/revisao/relatorio-tecnico.txt` termina 
 A história do UaiPertim, no mesmo motor e com a mesma identidade. O que muda em relação aos episódios da série:
 
 - **Duração de 60–80 s** (só para este id: `LIMITES` em `scripts/linha.py` e `scripts/qa.py`). O fecho, os apoios e a logo seguem as regras de sempre.
-- **Trilha mais calma:** perfil `historia-uaipertim` em `scripts/audio.py`. É a mesma família de instrumentos a 80 BPM, com o arpejo mais espaçado, sem shaker, o pulso grave mais leve, os efeitos 2 dB mais baixos e sem os cômicos (o "boing" vira um ping suave).
+- **Trilha no padrão animado da série** (desde 2026-10-28): é o padrão de `scripts/audio.py`, sem perfil próprio. São 100 BPM, arpejo a cada 1,5 tempo, shaker, pulso grave 0,28, efeitos a −13 dB e os cômicos ligados, com o ducking sob a voz e a trilha uns 13 dB abaixo dela. O perfil calmo de antes (80 BPM, sem shaker, sem cômicos) ficou frio e saiu.
+  - **Entrada rápida, em todos os episódios:** a trilha entra com um fade de 0,15 s, e o 1º acorde já entra cheio (antes era um fade de 0,6 s com um acorde que subia em 1,2 s).
+- **Gancho nos 3 primeiros segundos** (`"gancho": true` na cena `capaHistoria`):
+  - a lojinha já quica e balança a placa no quadro 0, e o selo dá uma balançada;
+  - "Por que" entra com pop até 0,2 s e "UaiPertim?" até 0,5 s, com o marcador amarelo correndo;
+  - há um "pop" no quadro 0, então nada de tela parada antes da voz.
+- **Capa separada** (`"capa_separada": true` no JSON):
+  - a capa do Reel é a `capa.png`/`capa-3x4.png` aprovada, subida pelo "Editar capa";
+  - o `episodio.sh` não refaz a `capa.png`;
+  - o `qa.py` deixa de exigir que o quadro 0 seja a capa e passa a conferir que o quadro muda a cada 0,1 s nos primeiros 0,5 s.
+  - A revisão também grava `revisao/inicio-3s.mp4`, com os 3 primeiros segundos.
 - **Capa no padrão das capas novas do Dicionário** (cena `capaHistoria`):
   - selo coral "A NOSSA HISTÓRIA" no topo;
   - a lojinha curiosa grande olhando para o título;

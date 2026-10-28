@@ -21,6 +21,7 @@ OUTD = os.path.join(ROOT, 'output', EP, 'previa') if PREVIA else os.path.join(RO
 VIDEO = os.path.join(OUTD, f'uaipertim-{EP}.mp4')
 LN = json.load(open(os.path.join(ROOT, 'audio', EP, 'previa' if PREVIA else '', 'linha.json')))
 MOT = json.load(open(os.path.join(OUTD, 'revisao', 'motor.json')))
+EPJ = json.load(open(os.path.join(ROOT, 'episodios', EP + '.json'), encoding='utf-8'))
 FONT = os.path.join(ROOT, '..', '..', 'public', 'fonts', 'poppins-latin-800-normal.woff2')
 FONT_M = os.path.join(ROOT, '..', '..', 'public', 'fonts', 'poppins-latin-500-normal.woff2')
 TW, TH, PAD, LAB = 270, 480, 10, 112
@@ -31,9 +32,9 @@ for c, m in zip(caps, MOT['montagens']):
     meio = (m['primeira'] + m['ultima']) / 2 if m['ultima'] > m['primeira'] else (c['t0'] + c['t1']) / 2
     meio = min(max(meio, c['t0'] + 0.6), c['t1'] - 0.6)
     if c['n'] == 0:
-        meio = 0.0                                        # o capítulo 00 é a capa: o quadro 0
+        meio = 0.0 if not EPJ.get('capa_separada') else 0.6   # o capítulo 00: o quadro 0 (a capa) ou, com a capa separada, o gancho já montado
     fala = ' '.join(f['texto'] for f in c['fala']) if 'fala' in c else ' '.join(f['texto'] for f in c['frases'])
-    quadros.append((c, meio, 'montagem' if c['n'] else 'quadro 0 = capa', fala))
+    quadros.append((c, meio, 'montagem' if c['n'] else ('gancho' if EPJ.get('capa_separada') else 'quadro 0 = capa'), fala))
     quadros.append((c, c['t1'] - 0.2, 'pronto', fala))
 rows = (len(quadros) + COLS - 1) // COLS
 font = ImageFont.truetype(FONT, 17)

@@ -3,6 +3,7 @@
   "titulo": "Por que UaiPertim? (a nossa história)",
   "marca": "@uaipertim",
   "perfil_voz": "pausas",
+  "capa_separada": true,
   "especial": true,
   "capitulos": [
     {
@@ -25,7 +26,8 @@
           "em": "existe"
         },
         "loja": "padaria",
-        "marca": false
+        "marca": false,
+        "gancho": true
       },
       "segura": 0.6
     },

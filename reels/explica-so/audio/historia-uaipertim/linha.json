@@ -24,7 +24,8 @@
      "em": "existe"
     },
     "loja": "padaria",
-    "marca": false
+    "marca": false,
+    "gancho": true
    },
    "t0": 0.0,
    "t1": 2.801,

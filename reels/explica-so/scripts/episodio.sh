@@ -27,7 +27,13 @@ python3 scripts/linha.py "$EP"                      # capítulos, frases, apoios
 node scripts/render.cjs cues --ep "$EP"             # os eventos da animação -> audio/$EP/cues.json
 python3 scripts/audio.py "$EP"                      # voz + trilha contínua com ducking + efeitos -> audio/$EP/mix.wav (−14 LUFS)
 node scripts/render.cjs video --ep "$EP"            # -> output/$EP/uaipertim-<id>.mp4
-node scripts/render.cjs capa --ep "$EP"             # -> output/$EP/capa.png (o quadro 0) + revisao/capa-caixas.json
+# a capa: o quadro 0. Com "capa_separada": true no JSON, a capa.png aprovada (usada no "Editar capa") fica como está
+# e o quadro 0 é o gancho animado
+if python3 -c "import json,sys; sys.exit(0 if json.load(open('episodios/$EP.json')).get('capa_separada') else 1)"; then
+  echo "capa separada: output/$EP/capa.png fica como está (o quadro 0 é o gancho)"
+else
+  node scripts/render.cjs capa --ep "$EP"           # -> output/$EP/capa.png (o quadro 0) + revisao/capa-caixas.json
+fi
 python3 scripts/revisao_capa.py . --saida "output/$EP"
 node scripts/render.cjs info --ep "$EP"             # -> revisao/motor.json + caixas.json (dados para a revisão)
 python3 scripts/qa.py "$EP"

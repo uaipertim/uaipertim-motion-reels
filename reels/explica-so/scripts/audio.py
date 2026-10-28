@@ -42,10 +42,11 @@ SR = 48000
 N = int(round(SR * DUR))
 TARGET_LUFS = -14.0
 rng = np.random.default_rng(2024)
-# Perfil da trilha por episódio. A série usa o padrão (alegre, 100 BPM). O especial "Por que UaiPertim?" é uma
-# história: a mesma família de instrumentos, mais devagar (80 BPM), arpejo mais espaçado, sem o shaker, o pulso grave
-# mais leve, os efeitos 2 dB mais baixos e sem os cômicos (o "boing" vira um ping suave).
-PERFIS = {'historia-uaipertim': {'bpm': 80.0, 'arpejo': 2.0, 'arpejo_g': 0.075, 'shaker': 0.0, 'pulso': 0.18, 'sfx_db': -15.0, 'comicos': False}}
+# Perfil da trilha por episódio (chaves: bpm, arpejo, arpejo_g, shaker, pulso, sfx_db, comicos). Sem perfil, vale o
+# padrão animado da série: 100 BPM, arpejo a cada 1,5 tempo (ganho 0,09), shaker 1,0, pulso 0,28, efeitos a −13 dB e os
+# cômicos ligados. O especial "Por que UaiPertim?" chegou a ter um perfil calmo (80 BPM, sem shaker, sem cômicos), mas
+# ficou frio; desde 2026-10-28 ele usa o padrão da série, como todos os episódios.
+PERFIS = {}
 PERFIL = PERFIS.get(LN.get('episodio', EP), {})
 
 
@@ -543,7 +544,8 @@ for k in range(nb + 1):
     ch = CHORDS[k % 4] if not last else CHORDS[0]
     d = (bars if not last else DUR - t0) + 1.6
     tt_ = tt(d)
-    env = np.minimum(1, tt_ / (1.2 if not last else 0.4)) * np.exp(-np.maximum(0, tt_ - (bars if not last else d - 1.6)) / 0.6)
+    # o 1º acorde já entra cheio (ataque de 0,12 s): a trilha começa junto com o gancho
+    env = np.minimum(1, tt_ / (0.12 if k == 0 else 1.2 if not last else 0.4)) * np.exp(-np.maximum(0, tt_ - (bars if not last else d - 1.6)) / 0.6)
     pad = np.zeros_like(tt_)
     for n in ch:
         f = midi(n)
@@ -576,7 +578,7 @@ for k in range(nb + 1):
         note = (np.sin(2 * np.pi * midi(n) * nt) + 0.3 * np.sin(2 * np.pi * 2 * midi(n) * nt) * np.exp(-nt / 0.1)) * np.exp(-nt / 0.28) * np.minimum(1, nt / 0.004)
         ii = int(tn * SR); jj = min(N, ii + len(note)); music[ii:jj] += note[: jj - ii] * PERFIL.get('arpejo_g', 0.09)
 music = filt(music, 50, 'high')
-music *= np.clip(t / 0.6, 0, 1) * np.clip((DUR - t) / 1.2, 0, 1)
+music *= np.clip(t / 0.15, 0, 1) * np.clip((DUR - t) / 1.2, 0, 1)   # entra sem fade lento (o gancho do 1º segundo)
 # ducking suave
 venv = np.sqrt(uniform_filter1d(voz ** 2, int(0.02 * SR)) + 1e-12)
 act = np.clip((venv - 10 ** (-42 / 20)) / (10 ** (-30 / 20) - 10 ** (-42 / 20)), 0, 1)

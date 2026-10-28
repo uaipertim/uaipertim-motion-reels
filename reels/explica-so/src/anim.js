@@ -926,14 +926,20 @@
   // o título grande da capa: a palavra-chave no marcador amarelo e a pontuação final que pula
   function tituloCapa(ctx, cap, t) {
     const d = cap.diagrama, Ly = cap.Ly, S = cap.capaS;
+    // com "gancho": a 1ª linha entra com pop até 0,2 s, a 2ª até 0,5 s, e o marcador corre logo depois (sem tela parada)
+    const G = d.gancho ? [[0, 0.2], [0.22, 0.5]] : null;
     cap.titulo.forEach((ln, i) => {
       const y = i ? Ly.b2 : Ly.b1, col = i ? C.coral : C.tinta, ls = -0.03 * S;
       const w = tw(ln, S, 900, ls), x0 = 540 - w / 2;
+      const eg = G ? p(t, G[i][0], G[i][1]) : 1;
+      if (eg <= 0) return;
+      ctx.save();
+      if (eg < 1) { const k = E.outBack(eg, 2.2); ctx.globalAlpha *= clamp(eg * 3); ctx.translate(540, y - S * 0.3); ctx.scale(k, k); ctx.translate(-540, -(y - S * 0.3)); }
       // o marcador amarelo atrás da palavra-chave
       const mi = d.marcador ? ln.toLowerCase().indexOf(d.marcador.toLowerCase()) : -1;
       if (mi >= 0) {
         const pre = ln.slice(0, mi), mw = tw(ln.slice(mi, mi + d.marcador.length), S, 900, ls);
-        marker(ctx, x0 + (pre ? tw(pre, S, 900, ls) + ls : 0), y, mw, S, 1, C.amarelo);
+        marker(ctx, x0 + (pre ? tw(pre, S, 900, ls) + ls : 0), y, mw, S, G ? E.outCubic(p(t, 0.34, 0.62)) : 1, C.amarelo);
         BOX('palavra-chave', x0 + (pre ? tw(pre, S, 900, ls) + ls : 0), y - S * 0.76, x0 + (pre ? tw(pre, S, 900, ls) + ls : 0) + mw, y + S * 0.22);
       }
       // a pontuação final (o "?") pula na palavra
@@ -949,6 +955,7 @@
         txt(ctx, last, qx, y, { size: S, weight: 900, color: col });
         ctx.restore();
       }
+      ctx.restore();
       BOX(`título, linha ${i + 1}`, x0, y - S * 0.76, x0 + w, y + S * 0.22);
     });
   }
@@ -1275,10 +1282,15 @@
       cap.ev.pulo = at(cap, d.pulo && d.pulo.em, cap.t0 + 0.5);
       cue(cap.ev.pulo, 'jump');
       cue(cap.t1 - 1.0, 'railstart');
+      if (d.gancho) { cue(0, 'pop', { f: 560 }); cue(0.22, 'pop', { f: 760 }); }
     },
     draw(ctx, cap, t) {
       const d = cap.diagrama, Ly = cap.Ly;
+      // gancho: o selo dá uma balançada já no quadro 0
+      const ks = d.gancho ? 1 + 0.1 * Math.exp(-t * 5) * Math.cos(t * 18) : 1;
+      ctx.save(); ctx.translate(540, Ly.chipY); ctx.scale(ks, ks); ctx.translate(-540, -Ly.chipY);
       chip(ctx, cap.rotulo, 540, Ly.chipY, { size: 30, align: 'center', ls: 3, h: Ly.chipH, pad: 34, bg: C.coral, color: C.branco, border: 'none', box: 'selo' });
+      ctx.restore();
       // o brilho atrás da lojinha, a calçada e duas arvorezinhas
       const cx = 540, base = Ly.ilBase - 6, w = 330;
       const g = ctx.createRadialGradient(cx, base - 200, 0, cx, base - 200, 330);
@@ -1288,7 +1300,12 @@
       arvore(ctx, cx - 250, base - 4, 104, t); arvore(ctx, cx + 250, base - 4, 104, t);
       // a lojinha curiosa: os olhos no título (embaixo), espiando de um lado para o outro
       const look = [0.32 * Math.sin(t * 1.1), 0.85 - 0.12 * Math.max(0, Math.sin(t * 0.7))];
-      shop(ctx, d.loja || 'padaria', cx, base, w, { blink: t < 0.6 ? 0 : blinkAt(t, 5), look, swing: 2 * Math.sin(t * 1.6) });
+      // gancho: a lojinha já começa quicando no quadro 0 (estica, pula e assenta) e balança a placa
+      const qq = d.gancho ? Math.exp(-t * 2.4) : 0;
+      const hop = d.gancho ? -34 * Math.abs(Math.sin(t * 6.5)) * qq : 0, sy = d.gancho ? 1 + 0.09 * Math.cos(t * 13) * qq : 1;
+      ctx.save(); ctx.translate(cx, base); ctx.scale(1 / Math.sqrt(sy), sy); ctx.translate(-cx, -base + hop);
+      shop(ctx, d.loja || 'padaria', cx, base, w, { blink: t < 0.6 ? 0 : blinkAt(t, 5), look, swing: 2 * Math.sin(t * 1.6) + (d.gancho ? 9 * Math.sin(t * 9) * qq : 0) });
+      ctx.restore();
       interrog(ctx, cx + 200, Ly.ilTop + 74, 36, 1, t, 0);
       BOX('ilustração', cx - 300, Ly.ilTop, cx + 300, Ly.ilBase + 12);
       tituloCapa(ctx, cap, t);
