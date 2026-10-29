@@ -24,7 +24,8 @@ export const COR = {
 } as const;
 
 export type PertimBase = {
-  v?: Versao; view?: Vista; expr?: Expressao; mouth?: Boca | "auto"; pose?: Pose; crop?: Recorte; layer?: Camada;
+  // mouth: as 5 bocas de fala, "sorriso" (a boca da expressão "sorrindo", para as pausas da fala) ou "auto" (a da expressão)
+  v?: Versao; view?: Vista; expr?: Expressao; mouth?: Boca | "sorriso" | "auto"; pose?: Pose; crop?: Recorte; layer?: Camada;
 };
 
 type Olho = { open: boolean; lid: boolean; happy: boolean; wink: boolean; px: number; py: number; s: number; lidD: string; lineD: string };
@@ -78,7 +79,7 @@ export const pertimVals = (p: PertimBase) => {
   });
   const eL = fin(x[0], 98, 1);
   const eR = fin(x[1], 142, tq ? 0.84 : 1);
-  const boca = p.mouth && p.mouth !== "auto" && BOCAS.includes(p.mouth) ? p.mouth : x[2];
+  const boca = p.mouth === "sorriso" ? "sorriso" : p.mouth && p.mouth !== "auto" && BOCAS.includes(p.mouth) ? p.mouth : x[2];
 
   const d = {
     sombra: all && body, pack: L("mochila") && (tq || layer === "mochila"), alcas: L("mochila"), alcaR: !tq || layer === "mochila",

@@ -3,30 +3,30 @@ REVISÃO TÉCNICA — Reel de teste "Prazer, Pertim" (uaipertim-prazer-pertim.mp
 FORMATO
 OK     vídeo h264 High yuv420p
 OK     resolução 1080x1920 (9:16)
-OK     60 fps, 1466 quadros
-OK     duração 24.43 s (pedido: ~20 s; limite do teste 15–30 s)
-OK     áudio aac 48000 Hz, 2 canais, 268 kb/s
-OK     vídeo e áudio com a mesma duração (Δ 3 ms)
-       arquivo 12.4 MB, 4.1 Mb/s
-       cenas: 1 chegada 0.00–5.03 s · 2 lojinhas 5.93–11.83 s · 3 sacola 12.73–17.03 s · 4 fecho 17.93–24.43 s
+OK     60 fps, 1456 quadros
+OK     duração 24.27 s (pedido: ~20 s; limite do teste 15–30 s)
+OK     áudio aac 48000 Hz, 2 canais, 267 kb/s
+OK     vídeo e áudio com a mesma duração (Δ 0 ms)
+       arquivo 12.8 MB, 4.2 Mb/s
+       cenas: 1 chegada 0.00–5.03 s · 2 lojinhas 5.93–11.83 s · 3 sacola 12.73–16.87 s · 4 fecho 17.77–24.27 s
 
 SOM
 OK     loudness integrado -14.0 LUFS (alvo −14)
-OK     pico real -1.5 dBTP no MP4 (limite −1)
-       na escala da mixagem: a voz -13.3 · a trilha (animada, a do Tudo Pertim) -26.2 · os efeitos -23.6 LUFS
+OK     pico real -1.6 dBTP no MP4 (limite −1)
+       na escala da mixagem: a voz -13.2 · a trilha (animada, a do Tudo Pertim) -26.1 · os efeitos -23.5 LUFS
 OK     a trilha 12.9 dB abaixo da voz (a voz na frente: 9–16 dB)
 
 VOZ (Victor Pinho, perfil "narracao", uma geração inteira por cena, nada emendado)
        Victor Pinho (LuQ9eaWO9yCQrR73VQFa) · eleven_v4 · ajustes {"stability": 0.5, "similarity_boost": 0.75}
-OK     cena 1: 4.64 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000028; 1 geração(ões) inteiras feitas)
+OK     cena 1: 4.64 s contínuos da geração com seed 1042 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000028; 2 geração(ões) inteiras feitas)
 OK     cena 1: o texto do roteiro, exato: "Opa! Prazer, eu sou o UaiPertim… mas pode me chamar de Pertim."
-OK     cena 1: perfil narracao · eleven_v4 · enviado à API: "Opa! Prazer, eu sou o Uai Pértim… mas pode me chamar de Pértim."
+OK     cena 1: perfil narracao · eleven_v4 · enviado à API: "Opa! Prazer, eu sou o UaiPertim… mas pode me chamar de Pertim."
 OK     cena 2: 5.20 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000027; 1 geração(ões) inteiras feitas)
 OK     cena 2: o texto do roteiro, exato: "Eu sei onde fica tudo no Glória: a padaria, o mercadim, a lanchonete…"
 OK     cena 2: perfil narracao · eleven_v4 · enviado à API: "Eu sei onde fica tudo no Glória: a padaria, o mercadim, a lanchonete…"
-OK     cena 3: 3.60 s contínuos da geração com seed 1042 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000026; 2 geração(ões) inteiras feitas)
+OK     cena 3: 3.44 s contínuos da geração com seed 2042 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000031; 3 geração(ões) inteiras feitas)
 OK     cena 3: o texto do roteiro, exato: "E logo, logo, vou levar tudo isso pertim de você."
-OK     cena 3: perfil narracao · eleven_v4 · enviado à API: "E logo, logo, vou levar tudo isso pértim de você."
+OK     cena 3: perfil narracao · eleven_v4 · enviado à API: "E logo, logo, vou levar tudo isso pertim de você."
 OK     cena 4: 2.48 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000025; 1 geração(ões) inteiras feitas)
 OK     cena 4: o texto do roteiro, exato: "Segue a gente pra não perder a estreia!"
 OK     cena 4: perfil narracao · eleven_v4 · enviado à API: "Segue a gente pra não perder a estreia!"
@@ -36,42 +36,60 @@ OK     nenhuma menção a app (nem "não é app"); nenhuma tela de app no vídeo
 MAPA DE TEMPOS
 OK     mapa de tempos de linha.py (total, fecho 6–8 s, logo nos 3 últimos s)
 OK     fecho de 6.50 s (6–8 s)
-OK     a logo oficial entra em 18.33 s e fica parada desde 19.23 s (5.20 s parada)
-OK     o chip "Segue @uaipertim" fica 6.25 s na tela (≥ 1,5 s)
+OK     a logo oficial entra em 18.17 s e fica parada desde 19.07 s (5.20 s parada)
+OK     o chip "Segue @uaipertim" fica 3.06 s na tela (≥ 1,5 s)
        a lojinha padaria brota em 8.62 s, na palavra "padaria,"
        a lojinha mercado brota em 9.46 s, na palavra "mercadim,"
        a lojinha lanchonete brota em 10.38 s, na palavra "lanchonete…"
 OK     as lojinhas brotam uma por palavra: padaria, mercadim, lanchonete
 
 LEGENDA GRAVADA
-OK     7 blocos, o mais curto fica 1.52 s (mínimo 1,5 s)
+OK     8 blocos, o mais curto fica 1.52 s (mínimo 1,5 s)
 OK     no máximo 2 linhas por bloco
 OK     o texto da legenda é o texto da tela, palavra por palavra (nunca a grafia de pronúncia)
 OK     cada palavra falada está na tela enquanto é dita
 OK     nunca dois blocos ao mesmo tempo
-OK     a legenda sai em 21.32 s, antes dos 3 últimos segundos (a logo sozinha com o chip)
-OK     todas as pílulas dentro da zona segura x 80–940, y 265–1456 (a maior: x 125–895, y 1324–1452)
-OK     Pertim (chegada): x 209–871, y 690–1250, dentro da zona segura
-OK     Pertim (lojinhas): x 184–756, y 670–1250, dentro da zona segura
-OK     Pertim (sacola): x 213–867, y 587–1250, dentro da zona segura
-OK     Pertim (fecho): x 274–806, y 630–1170, dentro da zona segura
-OK     lojinha padaria: x 117–313, y 361–612, dentro da zona segura
-OK     lojinha mercado: x 412–608, y 361–612, dentro da zona segura
-OK     lojinha lanchonete: x 707–903, y 361–612, dentro da zona segura
+OK     a legenda sai em 21.16 s, antes dos 3 últimos segundos (a logo sozinha com o chip)
+OK     todas as pílulas dentro da zona segura x 80–940, y 265–1456 (a maior: x 129–891, y 1336–1456)
+       Pertim (chegada): 834 px de largura (77% da tela) e 730 px do capacete à sola
+       Pertim (lojinhas): 502 px de largura (46% da tela) e 522 px do capacete à sola
+       Pertim (sacola): 567 px de largura (52% da tela) e 696 px do capacete à sola
+       Pertim (fecho): 584 px de largura (54% da tela) e 696 px do capacete à sola
+OK     o Pertim pisa no chão (y 1320) em todas as cenas
+       lojinha padaria: 294 px de altura (56% da altura do Pertim na cena), no chão em y 1270
+       lojinha mercado: 314 px de altura (60% da altura do Pertim na cena), no chão em y 1320
+       lojinha lanchonete: 314 px de altura (60% da altura do Pertim na cena), no chão em y 1310
+OK     as lojinhas brotam no chão (no máximo 60 px atrás da linha do Pertim, em leve profundidade)
+OK     Pertim (chegada): x 102–936, y 591–1320, dentro da zona segura
+OK     Pertim (lojinhas): x 388–890, y 798–1320, dentro da zona segura
+OK     Pertim (sacola): x 235–842, y 573–1317, dentro da zona segura
+OK     Pertim (fecho): x 257–841, y 625–1320, dentro da zona segura
+OK     lojinha padaria: x 81–311, y 976–1270, dentro da zona segura
+OK     lojinha mercado: x 218–462, y 1006–1320, dentro da zona segura
+OK     lojinha lanchonete: x 694–938, y 996–1310, dentro da zona segura
 OK     logo oficial: x 395–685, y 307–597, dentro da zona segura
-OK     chip "Segue @uaipertim": x 295–785, y 1204–1295, dentro da zona segura
-OK     a legenda não cobre o personagem, as lojinhas, a logo nem o chip
+OK     chip "Segue @uaipertim": x 295–785, y 1354–1445, dentro da zona segura
+OK     a legenda (abaixo do chão) não cobre o personagem, as lojinhas nem a logo
+OK     o chip entra na faixa da legenda em 21.21 s, depois que a legenda sai (nunca os dois juntos), sem cobrir o Pertim
 
 BOCA (sincronia pela voz) E PISCADAS
-OK     1466 quadros, 82 trocas de boca; a mais curta fica 2 quadros (mínimo 2)
+OK     1456 quadros, 85 trocas de boca; a mais curta fica 2 quadros (mínimo 2)
 OK     fora da fala, a boca é repouso / a da expressão da cena
-OK     as 5 bocas usadas: repouso 602 q · A 175 q · E 358 q · O 241 q · MBP 90 q
-       piscadas em 2.18, 5.46, 9.88, 12.43, 15.47, 19.61, 22.97 s
-OK     intervalos entre piscadas de 2.55 a 4.42 s (2–4 s, aleatório; empurrado quando a boca está aberta)
+OK     as 5 bocas usadas: repouso 631 q · A 183 q · E 347 q · O 216 q · MBP 79 q
+       na fala, as pausas entre palavras (R) usam o sorriso da expressão "sorrindo", não a linha reta
+OK     a boca M/B/P só nos quadros de m/b/p (79 quadros)
+OK     a boca fecha em M no fim de cada "Pertim" (3 de 3: UaiPertim…, Pertim., pertim)
+       piscadas em 2.27, 5.55, 9.88, 12.43, 15.22, 18.70, 22.05 s
+OK     intervalos entre piscadas de 2.55 a 4.33 s (2–4 s, aleatório; empurrado quando a boca está aberta)
 OK     nenhuma piscada com a boca aberta (A/O)
 
+OLHAR NA CÂMERA
+       desvios: padaria 8.62–9.17 s, mercado 9.46–10.01 s, lanchonete 10.38–10.93 s
+OK     cada desvio dura no máximo 0,6 s (o mais longo: 0.55 s) e volta para a câmera
+OK     olhar na câmera em 89.1% do tempo de fala (meta ≥ 85%)
+
 GANCHO E FECHO (pelos pixels do vídeo)
-OK     gancho: o Pertim já chega de motinha desde o quadro 0 (mudança média entre quadros a cada 0,1 s: 7.90–11.62)
+OK     gancho: o Pertim já chega de motinha desde o quadro 0 (mudança média entre quadros a cada 0,1 s: 11.25–14.37)
 OK     a logo oficial PARADA nos 3 últimos segundos (miolo da logo entre 6 quadros: diferença média 0.02/255, p99,9 3/255)
 OK     o chip coral "Segue @uaipertim" na tela no último quadro (58% do miolo coral)
 

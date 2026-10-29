@@ -180,26 +180,36 @@ ok(not fora, f'todas as pílulas dentro da zona segura x {SEG[0]}–{SEG[2]}, y 
 
 # as caixas dos elementos em repouso (as mesmas contas da composição)
 def caixa_pertim(k, escala=1.0):
+    """o desenho VISÍVEL do Pertim (do capacete à sola / às rodas), pelas frações medidas no SVG (layout.json → visivel)"""
     p = LAY['pertim'][k]
-    vb = {'moto': (300, 254)}.get(p['pose'], (280, 284))
+    v = LAY['visivel'][p['pose']]
     h = p['altura'] * escala
-    w = h * vb[0] / vb[1]
-    return [p['cx'] - w / 2, p['base'] - h, p['cx'] + w / 2, p['base']]
+    top = p['base'] - h
+    return [p['cx'] + v['x'][0] * h, top + v['y'][0] * h, p['cx'] + v['x'][1] * h, top + v['y'][1] * h]
 
 
 ELEM = {f'Pertim ({k})': caixa_pertim(k, 1.07 if k == 'sacola' else 1.0) for k in LAY['pertim']}
+for k in LAY['pertim']:
+    cx = caixa_pertim(k)
+    info(f'Pertim ({k}): {cx[2] - cx[0]:.0f} px de largura ({(cx[2] - cx[0]) / 1080 * 100:.0f}% da tela) e {cx[3] - cx[1]:.0f} px do capacete à sola')
+ok(all(abs(caixa_pertim(k)[3] - LAY['chao']) <= 6 for k in LAY['pertim']), f'o Pertim pisa no chão (y {LAY["chao"]}) em todas as cenas')
 Lj = LAY['lojinhas']
+alt_loja = caixa_pertim('lojinhas')[3] - caixa_pertim('lojinhas')[1]
 for i, l in enumerate(EV['lojas']):
-    ELEM[f'lojinha {l["tipo"]}'] = [Lj['cx'][i] - Lj['largura'] / 2, Lj['base'] - Lj['largura'] * 1.28, Lj['cx'][i] + Lj['largura'] / 2, Lj['base']]
+    w = Lj['largura'][i]
+    ELEM[f'lojinha {l["tipo"]}'] = [Lj['cx'][i] - w / 2, Lj['base'][i] - w * 1.28, Lj['cx'][i] + w / 2, Lj['base'][i]]
+    info(f'lojinha {l["tipo"]}: {w * 1.28:.0f} px de altura ({w * 1.28 / alt_loja * 100:.0f}% da altura do Pertim na cena), no chão em y {Lj["base"][i]}')
+ok(all(LAY['chao'] - 60 <= b <= LAY['chao'] for b in Lj['base']), 'as lojinhas brotam no chão (no máximo 60 px atrás da linha do Pertim, em leve profundidade)')
 lg = LAY['logo']
 ELEM['logo oficial'] = [lg['cx'] - lg['d'] / 2, lg['cy'] - lg['d'] / 2, lg['cx'] + lg['d'] / 2, lg['cy'] + lg['d'] / 2]
 chw = FONTE.font_variant(size=LAY['chip']['size']).getlength('Segue @uaipertim') + 14 + 34 + 72
 ch = LAY['chip']
-ELEM['chip "Segue @uaipertim"'] = [ch['cx'] - chw / 2, ch['cy'] - ch['h'] / 2, ch['cx'] + chw / 2, ch['cy'] + ch['h'] / 2 + 7]
-for nome, cx in ELEM.items():
+CHIP = [ch['cx'] - chw / 2, ch['cy'] - ch['h'] / 2, ch['cx'] + chw / 2, ch['cy'] + ch['h'] / 2 + 7]
+for nome, cx in list(ELEM.items()) + [('chip "Segue @uaipertim"', CHIP)]:
     ok(dentro(SEG, cx), f'{nome}: x {cx[0]:.0f}–{cx[2]:.0f}, y {cx[1]:.0f}–{cx[3]:.0f}, dentro da zona segura')
 cob = [(n, round(b['t0'], 2)) for b, p in pilulas for n, cx in ELEM.items() if cruza(p, cx)]
-ok(not cob, 'a legenda não cobre o personagem, as lojinhas, a logo nem o chip' + (f': {cob}' if cob else ''))
+ok(not cob, 'a legenda (abaixo do chão) não cobre o personagem, as lojinhas nem a logo' + (f': {cob}' if cob else ''))
+ok(EV['chip'] >= B[-1]['t1'] and not cruza(CHIP, ELEM['Pertim (fecho)']), f'o chip entra na faixa da legenda em {EV["chip"]:.2f} s, depois que a legenda sai (nunca os dois juntos), sem cobrir o Pertim')
 
 # ---------------------------------------------------------------- boca e piscadas
 report += ['', 'BOCA (sincronia pela voz) E PISCADAS']
@@ -219,12 +229,40 @@ fora_fala = [i for i, x in enumerate(bocas) if x != 'R' and not falando[i]]
 ok(not fora_fala, 'fora da fala, a boca é repouso / a da expressão da cena')
 usadas = {x: bocas.count(x) for x in 'RAEOM'}
 ok(all(usadas.values()), 'as 5 bocas usadas: ' + ' · '.join(f'{VIS["codigos"][k]} {v} q' for k, v in usadas.items()))
+info('na fala, as pausas entre palavras (R) usam o sorriso da expressão "sorrindo", não a linha reta')
+# M/B/P só nos quadros de m/b/p (os caracteres que a voz recebeu) e fechando cada "Pertim"
+mbp = np.zeros(len(bocas), bool)
+for c in LN['capitulos']:
+    F = FALAS['capitulos'][f'{c["n"]:02d}']
+    al = F['alinhamento']
+    desl = c['voz_t0'] - F['inicio_da_fala']
+    for ch_, a0, a1 in zip(al['characters'], al['character_start_times_seconds'], al['character_end_times_seconds']):
+        if ch_.lower() in 'mbp':
+            mbp[max(0, int(round((a0 + desl) * FPS)) - 2):int(round((a1 + desl) * FPS)) + 2] = True
+pertins = [w for c in LN['capitulos'] for w in c['palavras'] if norm(w['w']).endswith('pertim')]
+for w in pertins:
+    mbp[max(0, int(round((w['t1'] - 0.07) * FPS)) - 2):int(round(w['t1'] * FPS)) + 2] = True
+m_fora = [i for i, x in enumerate(bocas) if x == 'M' and not mbp[i]]
+ok(not m_fora, f'a boca M/B/P só nos quadros de m/b/p ({bocas.count("M")} quadros)' + (f': {len(m_fora)} quadros fora' if m_fora else ''))
+fecha = [w['w'] for w in pertins if 'M' in bocas[max(0, int(round(w['t1'] * FPS)) - 5):int(round(w['t1'] * FPS)) + 1]]
+ok(len(fecha) == len(pertins), f'a boca fecha em M no fim de cada "Pertim" ({len(fecha)} de {len(pertins)}: {", ".join(w["w"] for w in pertins)})')
 P = CENA['piscadas']
 gaps = [b - a for a, b in zip([0.0] + P, P)]
 info('piscadas em ' + ', '.join(f'{p:.2f}' for p in P) + ' s')
 ok(all(1.9 <= g <= 4.6 for g in gaps[1:]), f'intervalos entre piscadas de {min(gaps[1:]):.2f} a {max(gaps[1:]):.2f} s (2–4 s, aleatório; empurrado quando a boca está aberta)')
 abertas = [p for p in P if any(bocas[q] in 'AO' for q in range(int(p * FPS), min(len(bocas), int((p + CENA['piscada_dur']) * FPS) + 1)))]
 ok(not abertas, 'nenhuma piscada com a boca aberta (A/O)')
+
+# o olhar: na câmera (pupilas centradas) durante a fala, menos nos olhares curtos para as lojinhas
+report += ['', 'OLHAR NA CÂMERA']
+OL = CENA['olhares']
+desvio = np.zeros(len(bocas), bool)
+for o in OL:
+    desvio[int(round(o['t0'] * FPS)):int(round(o['t1'] * FPS)) + 1] = True
+pct = 100 * float((falando & ~desvio).sum()) / float(falando.sum())
+info('desvios: ' + ', '.join(f'{o["tipo"]} {o["t0"]:.2f}–{o["t1"]:.2f} s' for o in OL))
+ok(all(o['t1'] - o['t0'] <= 0.6 + 1e-6 for o in OL), f'cada desvio dura no máximo 0,6 s (o mais longo: {max(o["t1"] - o["t0"] for o in OL):.2f} s) e volta para a câmera')
+ok(pct >= 85.0, f'olhar na câmera em {pct:.1f}% do tempo de fala (meta ≥ 85%)')
 
 
 # ---------------------------------------------------------------- pixels do vídeo: gancho e logo parada

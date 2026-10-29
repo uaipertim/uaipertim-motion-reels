@@ -9,15 +9,15 @@
   "outputFormat": "mp3_44100_128",
   "perfis": {
     "narracao": {
-      "_doc": "Narração corrida, sem <break>. eleven_v4 com stability 0.50 e similarity_boost 0.75; style e use_speaker_boost NÃO são enviados (padrão do modelo). Pronúncia: 'UaiPertim' -> 'Uai Pértim' e 'Pertim' -> 'Pértim' (sem 'rr' e sem hífen; no v4 o 'Pérr-tim' fechava em 'in'); 'WhatsApp' -> 'Uátsap', 'UaiFood' -> 'Uai fúdi', 'Burguer' -> 'Búrguer'. O alinhamento do v4 vem em degraus de ~40 ms.",
+      "_doc": "Narração corrida, sem <break>. eleven_v4 com stability 0.50 e similarity_boost 0.75; style e use_speaker_boost NÃO são enviados (padrão do modelo). Pronúncia: 'UaiPertim' e 'Pertim' vão SEM TROCA, escritos como na tela (escolha de 2026-10-29, teste em reels/prazer-pertim/teste-pronuncia: com 'Pértim' o final soava 'Pértin', com N; sem troca o v4 já abre o E e fecha em M; antes, 'Pérr-tim' também fechava em 'in'); 'WhatsApp' -> 'Uátsap', 'UaiFood' -> 'Uai fúdi', 'Burguer' -> 'Búrguer'. O alinhamento do v4 vem em degraus de ~40 ms.",
       "model": "eleven_v4",
       "voiceSettings": {
         "stability": 0.5,
         "similarity_boost": 0.75
       },
       "pronuncia": {
-        "UaiPertim": "Uai Pértim",
-        "Pertim": "Pértim",
+        "UaiPertim": "UaiPertim",
+        "Pertim": "Pertim",
         "UaiFood": "Uai fúdi",
         "WhatsApp": "Uátsap",
         "Burguer": "Búrguer"

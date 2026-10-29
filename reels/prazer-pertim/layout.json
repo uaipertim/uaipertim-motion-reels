@@ -1,16 +1,22 @@
 {
-  "_doc": "Layout do Reel 'Prazer, Pertim' (1080×1920, 60 fps). Lido pela composição Remotion (src/prazer-pertim/) e pela revisão (reels/prazer-pertim/scripts/qa.py): as mesmas posições nos dois. Personagem: cx = centro, base = pé (y), altura em px; a largura sai do viewBox da pose (moto 300×254, poses 280×284, parado 240×270). Caixas [x0, y0, x1, y1].",
+  "_doc": "Layout do Reel 'Prazer, Pertim' (1080×1920, 60 fps). Lido pela composição Remotion (src/prazer-pertim/), por scripts/preparar.py e pela revisão (scripts/qa.py): as mesmas posições nos três. Personagem: cx = centro, base = pé da caixa do desenho (y), altura da caixa em px; a largura sai do viewBox da pose (moto 300×254, poses 280×284). 'visivel' = onde o desenho de fato fica dentro da caixa (frações medidas no SVG: x a partir do centro, y a partir do topo), para o chão e as conferências. Lojinhas: cx, base (o chão delas) e largura de cada uma (altura = largura × 1,28), desenhadas atrás do Pertim, as de base mais alta (mais longe) primeiro. Caixas [x0, y0, x1, y1].",
   "W": 1080, "H": 1920, "fps": 60,
   "seguro": [80, 265, 940, 1456],
-  "legenda": { "faixa": [112, 1324, 908, 1452], "cx": 510, "base": 1452, "size": 42, "lh": 52, "padX": 28, "padY": 12, "maxW": 740, "minDur": 1.5, "maxPal": 8 },
-  "chao": 1252,
-  "pertim": {
-    "chegada":  { "cx": 540, "base": 1250, "altura": 560, "pose": "moto" },
-    "lojinhas": { "cx": 470, "base": 1250, "altura": 580, "pose": "apontando", "bracoAng": -38 },
-    "sacola":   { "cx": 540, "base": 1250, "altura": 620, "pose": "sacola" },
-    "fecho":    { "cx": 540, "base": 1170, "altura": 540, "pose": "acenando" }
+  "legenda": { "faixa": [112, 1336, 908, 1456], "cx": 510, "base": 1456, "size": 42, "lh": 50, "padX": 28, "padY": 10, "maxW": 740, "minDur": 1.5, "maxPal": 8 },
+  "chao": 1320,
+  "visivel": {
+    "moto":      { "x": [-0.516, 0.526], "y": [0.032, 0.944] },
+    "apontando": { "x": [-0.329, 0.449], "y": [0.138, 0.947] },
+    "sacola":    { "x": [-0.331, 0.328], "y": [0.138, 0.947] },
+    "acenando":  { "x": [-0.329, 0.350], "y": [0.138, 0.947] }
   },
-  "lojinhas": { "largura": 196, "base": 612, "cx": [215, 510, 805] },
+  "pertim": {
+    "chegada":  { "cx": 515, "base": 1365, "altura": 800, "pose": "moto" },
+    "lojinhas": { "cx": 600, "base": 1354, "altura": 645, "pose": "apontando", "bracoAng": -38 },
+    "sacola":   { "cx": 540, "base": 1366, "altura": 860, "pose": "sacola" },
+    "fecho":    { "cx": 540, "base": 1366, "altura": 860, "pose": "acenando" }
+  },
+  "lojinhas": { "cx": [196, 340, 816], "base": [1270, 1320, 1310], "largura": [230, 245, 245] },
   "logo": { "cx": 540, "cy": 452, "d": 290 },
-  "chip": { "cx": 540, "cy": 1246, "h": 84, "size": 38 }
+  "chip": { "cx": 540, "cy": 1396, "h": 84, "size": 38 }
 }

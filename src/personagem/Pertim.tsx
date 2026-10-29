@@ -10,12 +10,13 @@ import { BOCAS, Boca, COR, OlhoFinal, PertimBase, PertimVals, Pose, pertimVals }
 //   quique   px     deslocamento vertical do personagem (unidades do desenho)
 //   piscada  0..1   pálpebra descendo sobre os olhos abertos (1 = fechado)
 //   olhar    [x, y] -1..1, para onde as pupilas olham
+//   centro   true: o olhar parte da pupila centrada (olhar [0, 0] = olhando para a câmera); sem ele, da pupila da expressão
 //   braco    {de, u} troca de pose dos braços: os braços da pose `de` somem e os da pose atual entram (u: 0..1)
 //   aceno    graus  o braço direito (o que acena ou o que aponta) girando a partir do ombro
 //   capacete graus  o capacete atrasando um pouco no balanço do corpo
 
 export type PertimRig = {
-  respira?: number; quique?: number; piscada?: number; olhar?: [number, number];
+  respira?: number; quique?: number; piscada?: number; olhar?: [number, number]; centro?: boolean;
   braco?: { de: Pose; u: number }; aceno?: number; capacete?: number;
 };
 export type PertimProps = PertimBase & { altura?: number; rig?: PertimRig; style?: React.CSSProperties };
@@ -193,8 +194,8 @@ export const Viseira: React.FC<{ x: PertimVals }> = ({ x }) =>
   ) : null;
 
 // um olho, com a piscada (pálpebra amarela descendo) e o olhar (pupila deslocada) do rig por cima da expressão
-const UmOlho: React.FC<{ e: OlhoFinal; piscada: number; olhar: [number, number] }> = ({ e, piscada, olhar }) => {
-  const px = e.px + olhar[0] * 4, py = e.py + olhar[1] * 4;
+const UmOlho: React.FC<{ e: OlhoFinal; piscada: number; olhar: [number, number]; centro?: boolean }> = ({ e, piscada, olhar, centro }) => {
+  const px = (centro ? 0 : e.px) + olhar[0] * 4, py = (centro ? 0 : e.py) + olhar[1] * 4;
   // a pálpebra do rig: desce de −22 até cobrir o olho inteiro (+18); a da expressão (curioso, apressado) continua
   const yb = -22 + 41 * Math.max(0, Math.min(1, piscada));
   return (
@@ -266,14 +267,14 @@ export const BocaSvg: React.FC<{ k: string }> = ({ k }) => (
   </g>
 );
 
-export const Rosto: React.FC<{ x: PertimVals; piscada?: number; olhar?: [number, number] }> = ({ x, piscada = 0, olhar = [0, 0] }) => (
+export const Rosto: React.FC<{ x: PertimVals; piscada?: number; olhar?: [number, number]; centro?: boolean }> = ({ x, piscada = 0, olhar = [0, 0], centro }) => (
   <g transform={x.faceT}>
     {x.d.olhos && (
       <g>
         <ellipse cx={82} cy={176} rx={9} ry={6.5} fill={T.coral} opacity={x.cheek} />
         <ellipse cx={158} cy={176} rx={9} ry={6.5} fill={T.coral} opacity={x.cheek} />
-        <UmOlho e={x.eL} piscada={piscada} olhar={olhar} />
-        <UmOlho e={x.eR} piscada={piscada} olhar={olhar} />
+        <UmOlho e={x.eL} piscada={piscada} olhar={olhar} centro={centro} />
+        <UmOlho e={x.eR} piscada={piscada} olhar={olhar} centro={centro} />
       </g>
     )}
     {x.d.boca && <BocaSvg k={x.boca} />}
@@ -387,7 +388,7 @@ export const Pertim: React.FC<PertimProps> = ({ altura = 300, rig = {}, style, .
               <Capacete x={x} />
               <Viseira x={x} />
             </g>
-            <Rosto x={x} piscada={rig.piscada} olhar={rig.olhar} />
+            <Rosto x={x} piscada={rig.piscada} olhar={rig.olhar} centro={rig.centro} />
             {de && <g opacity={1 - u}><Bracos x={de} /></g>}
             <g opacity={u}><Bracos x={x} aceno={rig.aceno} /></g>
             <EfeitosRosto x={x} />

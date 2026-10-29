@@ -6,7 +6,7 @@ import { StarShape, Twinkles } from "../components/Particles";
 import { ShopChar, ShopCharKind } from "../components/Town";
 import { Pertim, PertimRig } from "../personagem/Pertim";
 import type { Expressao, Pose } from "../personagem/logica";
-import { bocaNoQuadro, piscadaEm, respiracao, trocaDePose, Visemas } from "../personagem/rig";
+import { bocaNoQuadro, Olhar, olharEm, piscadaEm, respiracao, trocaDePose, Visemas } from "../personagem/rig";
 import LAYOUT from "../../reels/prazer-pertim/layout.json";
 import CENA from "../../reels/prazer-pertim/dados/cena.json";
 import VISEMAS from "../../reels/prazer-pertim/dados/visemas.json";
@@ -16,10 +16,13 @@ import LEGENDA from "../../reels/prazer-pertim/dados/legenda.json";
 // (episodios/prazer-pertim.json); os tempos, a boca, as piscadas e a legenda, de reels/prazer-pertim/dados/
 // (scripts/preparar.py); as posições, de reels/prazer-pertim/layout.json (as mesmas que a revisão confere).
 //   cena 1 (gancho): o Pertim chega na motinha desde o quadro 0, freia e para no meio, olhando para a câmera;
-//   cena 2: ele aponta e as lojinhas (padaria, mercadim, lanchonete) brotam, uma por palavra, e piscam para ele;
+//   cena 2: ele aponta e as lojinhas (padaria, mercadim, lanchonete) brotam do chão, uma por palavra, e piscam para ele;
 //   cena 3: ele pega a sacola, sorrindo; em "pertim" chega mais perto, com coraçõezinhos;
-//   fecho: ele acena com a piscadinha, o chip "Segue @uaipertim" entra e a logo oficial fica parada até o fim.
-// A legenda (texto da tela, a palavra falada em amarelo) fica na faixa de baixo, sem cobrir o personagem.
+//   fecho: ele acena com a piscadinha, a logo oficial entra e fica parada até o fim; o chip "Segue @uaipertim" entra
+//   na faixa da legenda quando ela sai.
+// O olhar fica na câmera (pupilas centradas) o tempo todo; só desvia ~0,55 s para cada lojinha que brota (cena.json).
+// Na fala, as pausas entre palavras usam o sorriso da expressão "sorrindo". A legenda (texto da tela, a palavra falada
+// em amarelo) fica abaixo do chão, sem cobrir o personagem.
 
 const L = LAYOUT as typeof LAYOUT;
 const EV = CENA.eventos;
@@ -29,7 +32,7 @@ const larguraDe = (pose: string, altura: number) => { const [w, h] = VB[pose] ??
 type Estado = { cx: number; base: number; altura: number; pose: Pose; expr: Expressao; bracoAng?: number };
 const ESTADOS: Record<string, Estado> = {
   chegada: { ...(L.pertim.chegada as Omit<Estado, "expr">), expr: "sorrindo" },
-  lojinhas: { ...(L.pertim.lojinhas as Omit<Estado, "expr">), expr: "neutro" },
+  lojinhas: { ...(L.pertim.lojinhas as Omit<Estado, "expr">), expr: "sorrindo" },
   sacola: { ...(L.pertim.sacola as Omit<Estado, "expr">), expr: "sorrindo" },
   fecho: { ...(L.pertim.fecho as Omit<Estado, "expr">), expr: "piscadinha" },
 };
@@ -40,14 +43,6 @@ const ease = Easing.inOut(Easing.cubic);
 const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 const outBack = (x: number, s = 1.9) => (x <= 0 ? 0 : x >= 1 ? 1 : 1 + (s + 1) * Math.pow(x - 1, 3) + s * Math.pow(x - 1, 2));
 
-// para onde os olhos olham em cada cena (−1..1)
-const olharDe = (k: string, t: number): [number, number] => {
-  if (k === "lojinhas") {
-    const ultima = EV.lojas.filter((l) => l.t <= t).length - 1;     // olha para a última lojinha que brotou
-    return ultima < 0 ? [0.5, -0.5] : [[-0.6, -0.7], [0.1, -0.8], [0.7, -0.7]][ultima] as [number, number];
-  }
-  return [0, 0];
-};
 const cenaAtual = (t: number) => CENA.cenas.find((c) => t >= c.t0 - 0.9 && t < c.t1 + 0.01) ?? CENA.cenas[CENA.cenas.length - 1];
 
 const PertimNaCena: React.FC<{ t: number; quadro: number }> = ({ t, quadro }) => {
@@ -79,7 +74,8 @@ const PertimNaCena: React.FC<{ t: number; quadro: number }> = ({ t, quadro }) =>
     ...resp,
     quique,
     piscada: piscadaEm(CENA.piscadas, t, CENA.piscada_dur),
-    olhar: olharDe(k, t),
+    olhar: olharEm(CENA.olhares as unknown as Olhar[], t),
+    centro: true,
     aceno: est.pose === "acenando" ? 12 * Math.sin(t * 9) : est.bracoAng ?? 0,
     braco: poseDe ? trocaDePose(poseDe, t, tt, 0.18) : undefined,
   });
@@ -104,16 +100,18 @@ const Lojinhas: React.FC<{ t: number }> = ({ t }) => {
   const sai = interpolate(t, [EV.sacola, EV.sacola + 0.35], [1, 0], clamp);
   if (sai <= 0) return null;
   const Lj = L.lojinhas;
+  // as mais longe (base mais alta) primeiro; todas atrás do Pertim, brotando do chão delas
+  const ordem = EV.lojas.map((l, i) => ({ l, i })).sort((a, b) => Lj.base[a.i] - Lj.base[b.i]);
   return (
     <>
-      {EV.lojas.map((l, i) => {
+      {ordem.map(({ l, i }) => {
         if (t < l.t) return null;
         const e = outBack(Math.min(1, (t - l.t) / 0.4), 2.2) * sai;
-        const w = Lj.largura, h = w * 1.28, x = Lj.cx[i];
+        const w = Lj.largura[i], h = w * 1.28, x = Lj.cx[i];
         const pisca = interpolate(t, [l.t + 0.45, l.t + 0.53, l.t + 0.61], [0, 1, 0], clamp);
         return (
-          <div key={l.tipo} style={{ position: "absolute", left: x - w / 2, top: Lj.base - h, width: w, height: h, transform: `scale(${0.6 + 0.4 * e}, ${e})`, transformOrigin: "50% 100%" }}>
-            <ShopChar kind={l.tipo as ShopCharKind} width={w} mood="happy" look={[(ESTADOS.lojinhas.cx - x) / 500, 0.7]} blink={pisca} lit={0.9} awning={0.4} />
+          <div key={l.tipo} style={{ position: "absolute", left: x - w / 2, top: Lj.base[i] - h, width: w, height: h, transform: `scale(${0.6 + 0.4 * e}, ${e})`, transformOrigin: "50% 100%" }}>
+            <ShopChar kind={l.tipo as ShopCharKind} width={w} mood="happy" look={[(ESTADOS.lojinhas.cx - x) / 500, -0.2]} blink={pisca} lit={0.9} awning={0.4} />
           </div>
         );
       })}
@@ -166,20 +164,20 @@ export const PrazerPertim: React.FC = () => {
   const coracao = interpolate(t, [EV.pertim, EV.pertim + 1.2], [0, 1], clamp);
   return (
     <AbsoluteFill style={{ background: C.creme }}>
-      <CremeBackground frame={quadro} rays raysCenter={[540, 860]} raysOpacity={0.12} />
+      <CremeBackground frame={quadro} rays raysCenter={[540, 900]} raysOpacity={0.12} />
       <Twinkles frame={quadro} seed="prazer-pertim" points={[[150, 420], [930, 400], [120, 1060], [960, 1000], [200, 1180], [880, 1170]]} size={30} />
       <Chao t={t} />
       <Lojinhas t={t} />
       {/* os coraçõezinhos de "pertim de você" */}
       {coracao > 0 && coracao < 1 && [[-210, 0], [230, -60], [-120, -120]].map(([dx, dy], i) => (
-        <div key={i} style={{ position: "absolute", left: 540 + dx - 22, top: 700 + dy - 220 * coracao, opacity: 1 - coracao, transform: `scale(${0.6 + 0.6 * coracao})` }}>
+        <div key={i} style={{ position: "absolute", left: 540 + dx * 1.35 - 22, top: 600 + dy - 220 * coracao, opacity: 1 - coracao, transform: `scale(${0.6 + 0.6 * coracao})` }}>
           <svg width={44} height={40} viewBox="-50 -50 100 90"><path d="M0 34 C-60 -6 -44 -52 -2 -30 L0 -28 L2 -30 C44 -52 60 -6 0 34 Z" fill={C.coral} /></svg>
         </div>
       ))}
       <PertimNaCena t={t} quadro={quadro} />
       {/* o brilho da piscadinha no aceno */}
       {t > EV.aceno + 0.3 && t < EV.aceno + 1.1 && (
-        <div style={{ position: "absolute", left: 700, top: 640, opacity: interpolate(t, [EV.aceno + 0.3, EV.aceno + 0.5, EV.aceno + 1.1], [0, 1, 0], clamp) }}><StarShape size={54} color={C.amarelo} /></div>
+        <div style={{ position: "absolute", left: 830, top: 700, opacity: interpolate(t, [EV.aceno + 0.3, EV.aceno + 0.5, EV.aceno + 1.1], [0, 1, 0], clamp) }}><StarShape size={54} color={C.amarelo} /></div>
       )}
       {/* a logo oficial (o arquivo): entra com mola e PARA */}
       {eLogo > 0 && (
@@ -232,7 +230,7 @@ export const PertimBocaTeste: React.FC = () => {
   const boca = bocaNoQuadro(VISEMAS as Visemas, quadro, falando);
   return (
     <AbsoluteFill style={{ background: C.creme, alignItems: "center", justifyContent: "center" }}>
-      <Pertim v={1} crop="rosto" expr="sorrindo" mouth={boca ?? "auto"} altura={900} rig={{ ...respiracao(t), piscada: piscadaEm(CENA.piscadas, t, CENA.piscada_dur) }} />
+      <Pertim v={1} crop="rosto" expr="sorrindo" mouth={boca ?? "auto"} altura={900} rig={{ ...respiracao(t), piscada: piscadaEm(CENA.piscadas, t, CENA.piscada_dur), centro: true }} />
       <div style={{ position: "absolute", top: 28, left: 28, padding: "10px 26px", borderRadius: 999, background: "rgba(34,28,25,0.85)", fontFamily: FONT, fontWeight: W.extraBold, fontSize: 38, color: C.papel }}>
         boca: <span style={{ color: C.amarelo }}>{boca ?? "expressão"}</span>
       </div>

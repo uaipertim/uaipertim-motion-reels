@@ -6,11 +6,11 @@ O personagem com o rig (`src/personagem/`), em 9:16, 1080×1920 a 60 fps. Compos
 
 1. **Gancho:** o Pertim chega de motinha desde o quadro 0, freia e para no meio olhando para a câmera.
    "Opa! Prazer, eu sou o UaiPertim… mas pode me chamar de Pertim."
-2. **Lojinhas:** ele aponta e as lojinhas brotam, uma por palavra, piscando para ele.
+2. **Lojinhas:** ele desce da moto, dá um passo para trás e aponta; as lojinhas brotam do chão, uma por palavra, piscando para ele (padaria e mercadim à esquerda, lanchonete à direita, 56–60% da altura dele).
    "Eu sei onde fica tudo no Glória: a padaria, o mercadim, a lanchonete…"
 3. **Sacola:** ele pega a sacola, sorrindo; em "pertim" chega mais perto, com coraçõezinhos.
    "E logo, logo, vou levar tudo isso pertim de você."
-4. **Fecho (6,5 s):** ele acena com a piscadinha, entra o chip "Segue @uaipertim" e a logo oficial fica parada nos últimos 5,2 s.
+4. **Fecho (6,5 s):** ele acena com a piscadinha e a logo oficial fica parada nos últimos 5,2 s; o chip "Segue @uaipertim" entra na faixa da legenda quando ela sai.
    "Segue a gente pra não perder a estreia!"
 
 ## Voz e mixagem
@@ -18,7 +18,7 @@ O personagem com o rig (`src/personagem/`), em 9:16, 1080×1920 a 60 fps. Compos
 A voz e a mixagem vêm do pipeline do Explica, Sô! (`reels/explica-so/episodios/prazer-pertim.json`).
 
 - **Voz:** Victor Pinho, perfil "narracao" (eleven_v4). Cada fala é uma geração inteira.
-- **Pronúncia:** "UaiPertim" vai para a API como "Uai Pértim". O É aberto foi conferido pelo formante F1, entre 603 e 676 Hz, e a fala da cena 1 ficou como no roteiro.
+- **Pronúncia:** "UaiPertim" e "Pertim" vão para a API sem troca (escolha d do teste em `teste-pronuncia/`; com "Pértim" o final soava "Pértin"). A regra está no perfil "narracao" de `audio/voz_oficial.json`.
 - **Trilha:** a animada (Tudo Pertim) com efeitos.
 - **Volume:** −14 LUFS e pico real ≤ −1 dBTP.
 
@@ -40,11 +40,13 @@ npm run reel:prazer-pertim                                # preparar.py → audi
 | `scripts/storyboard.py` | grava `output/storyboard.png`, com os 12 momentos-chave tirados do MP4 |
 | `scripts/quadros.mjs` | renderiza quadros soltos para conferir antes do render inteiro |
 
+Visual: o Pertim pisa no chão em y 1320 e ocupa 52–54% da largura (a motinha, 77%); o olhar fica na câmera, com desvios de 0,55 s para cada lojinha (≥ 85% do tempo de fala, conferido no QA); nas pausas da fala, a boca é o sorriso da expressão "sorrindo", e fecha em M no fim de cada "Pertim".
+
 `layout.json` guarda as posições (personagem por cena, lojinhas, logo, chip, faixa da legenda, zona segura). A composição e o QA leem o mesmo arquivo.
 
 ## Saída (`output/`)
 
-- `uaipertim-prazer-pertim.mp4`: o Reel, com 24,43 s.
+- `uaipertim-prazer-pertim.mp4`: o Reel, com 24,27 s.
 - `capa.png` / `capa.jpg` / `capa-3x4.png`: a capa, com o Pertim acenando, e o recorte 3:4.
 - `storyboard.png`
 - `revisao/relatorio-tecnico.txt`: o QA.

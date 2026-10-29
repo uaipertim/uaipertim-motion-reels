@@ -81,7 +81,8 @@ for c in CAPS:
         a, b = st[i] + desl, en[i] + desl
         for q in range(max(0, int(round(a * FPS))), min(NQ, int(round(b * FPS)))):
             bocas[q] = COD[k]
-# pausas curtas entre letras (< 0,12 s) não fecham a boca: a forma anterior continua
+# pausas curtas entre letras (< 0,12 s) não abrem o sorriso: a forma anterior continua (menos o M/B/P, que fica só
+# nos quadros de m/b/p: depois dele, a pausa curta já pega a forma seguinte)
 q = 0
 while q < NQ:
     if bocas[q] == 'R':
@@ -90,20 +91,34 @@ while q < NQ:
             j += 1
         if 0 < q and j < NQ and (j - q) / FPS < 0.12:
             for k in range(q, j):
-                bocas[k] = bocas[q - 1]
+                bocas[k] = bocas[q - 1] if bocas[q - 1] != 'M' else bocas[j]
         q = j
     else:
         q += 1
-# nenhuma boca com menos de 2 quadros: a troca curta é absorvida pela boca de antes
-for _ in range(4):
+# a boca fecha em M no fim de cada "Pertim" (o "m" final, que a voz às vezes deixa em "n")
+FINAL_M = 0.07
+for c in CAPS:
+    for w in c['palavras']:
+        if norm(w['w']).endswith('pertim'):
+            for k in range(max(0, int(round((w['t1'] - FINAL_M) * FPS))), min(NQ, int(round(w['t1'] * FPS)))):
+                bocas[k] = 'M'
+# nenhuma boca com menos de 2 quadros: um M curto ganha o quadro seguinte; outra troca curta é absorvida pela boca de
+# antes (ou pela de depois, se a de antes for M)
+for _ in range(6):
     q, mudou = 0, False
     while q < NQ:
         j = q
         while j < NQ and bocas[j] == bocas[q]:
             j += 1
-        if j - q < 2 and q > 0:
-            for k in range(q, j):
-                bocas[k] = bocas[q - 1]
+        if j - q < 2:
+            if bocas[q] == 'M' and j < NQ:
+                bocas[j] = 'M'
+            elif q > 0 and bocas[q - 1] != 'M':
+                for k in range(q, j):
+                    bocas[k] = bocas[q - 1]
+            elif j < NQ:
+                for k in range(q, j):
+                    bocas[k] = bocas[j]
             mudou = True
         q = j
     if not mudou:
@@ -120,7 +135,7 @@ ev = {
     'sacola': c2['t0'] - 0.45,
     'pertim': palavra(c2, 'pertim')['t0'],
     'aceno': c3['t0'] - 0.45,
-    'chip': palavra(c3, 'Segue')['t0'],
+    'chip': None,   # o chip entra no lugar da legenda, quando ela sai (abaixo)
     'logo': {'entra': c3['t0'] + 0.4, 'parada': c3['t0'] + 0.4 + 0.9},
 }
 # as piscadas: a cada 2–4 s (aleatório, fixo pela semente), nunca com a boca aberta (A ou O) nem colada nela
@@ -134,10 +149,15 @@ while t < DUR - 0.5:
     if tt < DUR - 0.5:
         piscadas.append(round(tt, 3))
     t = tt + rnd.uniform(2.0, 4.0)
+# o olhar: sempre na câmera; só desvia para cada lojinha quando ela brota (no máximo ~0,6 s, ida e volta)
+OLHAR_DUR = 0.55
+PJ = LAY['pertim']['lojinhas']
+olhares = [{'t0': round(l['t'], 3), 't1': round(l['t'] + OLHAR_DUR, 3), 'tipo': l['tipo'],
+            'alvo': [round(max(-1.5, min(1.5, (LAY['lojinhas']['cx'][i] - PJ['cx']) / 200)), 2), 0.6]}
+           for i, l in enumerate(ev['lojas'])]
 cena = {'duracao': DUR, 'fps': FPS, 'quadros': NQ,
         'cenas': [{'n': c['n'], 'tipo': c['diagrama']['tipo'], 't0': c['t0'], 't1': c['t1'], 'voz_t0': c['voz_t0'], 'voz_t1': c['voz_t1']} for c in CAPS],
-        'eventos': ev, 'piscadas': piscadas, 'piscada_dur': 0.16}
-json.dump(cena, open(os.path.join(SAIDA, 'cena.json'), 'w'), ensure_ascii=False, indent=1)
+        'eventos': ev, 'piscadas': piscadas, 'piscada_dur': 0.16, 'olhares': olhares}
 
 # ---------------------------------------------------------------- legenda
 LG = LAY['legenda']
@@ -177,6 +197,9 @@ for ci, c in enumerate(CAPS):
         blocos_out.append({'cena': ci, 't0': round(b['t0'], 4), 't1': round(b['t1'], 4),
                            'linhas': [[{'w': w['w'], 't0': w['t0'], 't1': w['t1']} for w in l] for l in linhas]})
 json.dump({'estilo': LG, 'blocos': blocos_out}, open(os.path.join(SAIDA, 'legenda.json'), 'w'), ensure_ascii=False, indent=1)
+# o chip "Segue @uaipertim" entra na faixa da legenda quando a última legenda sai (e fica até o fim, com a logo)
+ev['chip'] = round(blocos_out[-1]['t1'] + 0.05, 3)
+json.dump(cena, open(os.path.join(SAIDA, 'cena.json'), 'w'), ensure_ascii=False, indent=1)
 
 # ---------------------------------------------------------------- os efeitos sonoros (scripts/audio.py do Explica, Sô!)
 cues = [{'t': 0.0, 'type': 'moto', 'd': 1.0}, {'t': ev['chegada']['freia'], 'type': 'skid'}, {'t': ev['chegada']['para'] + 0.05, 'type': 'horn'},

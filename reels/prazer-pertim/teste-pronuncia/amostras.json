@@ -1,0 +1,79 @@
+{
+ "frase_da_tela": "Prazer, eu sou o UaiPertim, mas pode me chamar de Pertim.",
+ "voz": "Victor Pinho",
+ "voice_id": "LuQ9eaWO9yCQrR73VQFa",
+ "amostras": [
+  {
+   "nome": "a1",
+   "grafia": "Pértim (a atual)",
+   "texto_api": "Prazer, eu sou o Uai Pértim, mas pode me chamar de Pértim.",
+   "seed": 42,
+   "modelo": "eleven_v4",
+   "ajustes": {
+    "stability": 0.5,
+    "similarity_boost": 0.75
+   },
+   "sha1_mp3": "f414be433c76a8919235cc6b37dd4373b68bf1c4"
+  },
+  {
+   "nome": "a2",
+   "grafia": "Pértim (a atual), outra seed",
+   "texto_api": "Prazer, eu sou o Uai Pértim, mas pode me chamar de Pértim.",
+   "seed": 1042,
+   "modelo": "eleven_v4",
+   "ajustes": {
+    "stability": 0.5,
+    "similarity_boost": 0.75
+   },
+   "sha1_mp3": "e1859ea70b33bdf2a846290702dfeb12e4e666a1"
+  },
+  {
+   "nome": "b",
+   "grafia": "Pértĩ",
+   "texto_api": "Prazer, eu sou o Uai Pértĩ, mas pode me chamar de Pértĩ.",
+   "seed": 42,
+   "modelo": "eleven_v4",
+   "ajustes": {
+    "stability": 0.5,
+    "similarity_boost": 0.75
+   },
+   "sha1_mp3": "b3b10301176fc26fde8e336d8def699f0c00b481"
+  },
+  {
+   "nome": "c",
+   "grafia": "Pértimm",
+   "texto_api": "Prazer, eu sou o Uai Pértimm, mas pode me chamar de Pértimm.",
+   "seed": 42,
+   "modelo": "eleven_v4",
+   "ajustes": {
+    "stability": 0.5,
+    "similarity_boost": 0.75
+   },
+   "sha1_mp3": "29361ad36d7f16efa9d7603b5e8e56b20a892d45"
+  },
+  {
+   "nome": "d",
+   "grafia": "Pertim (sem troca)",
+   "texto_api": "Prazer, eu sou o UaiPertim, mas pode me chamar de Pertim.",
+   "seed": 42,
+   "modelo": "eleven_v4",
+   "ajustes": {
+    "stability": 0.5,
+    "similarity_boost": 0.75
+   },
+   "sha1_mp3": "69f5001f5d1dd5de91c5c8aacec2fff862629483"
+  },
+  {
+   "nome": "e",
+   "grafia": "Pértim com ponto logo depois",
+   "texto_api": "Prazer, eu sou o Uai Pértim. Mas pode me chamar de Pértim.",
+   "seed": 42,
+   "modelo": "eleven_v4",
+   "ajustes": {
+    "stability": 0.5,
+    "similarity_boost": 0.75
+   },
+   "sha1_mp3": "3d800d952edc623c8eceea29cd25625cb3f11fa6"
+  }
+ ]
+}
