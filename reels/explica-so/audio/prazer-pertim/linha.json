@@ -1,0 +1,505 @@
+{
+ "episodio": "prazer-pertim",
+ "titulo": "Prazer, Pertim (Reel de teste do personagem)",
+ "marca": "@uaipertim",
+ "legenda": true,
+ "duracao": 24.43,
+ "tr": 0.9,
+ "ap_entra": 0.34,
+ "ap_leitura": 1.5,
+ "previa": false,
+ "capitulos": [
+  {
+   "n": 0,
+   "rotulo": "CENA 1",
+   "tom": "creme",
+   "titulo": [
+    "",
+    ""
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "chegada"
+   },
+   "t0": 0.0,
+   "t1": 5.03,
+   "voz_t0": 0.1,
+   "voz_t1": 4.58,
+   "palavras": [
+    {
+     "w": "Opa!",
+     "n": "opa",
+     "i0": 0,
+     "t0": 0.1,
+     "t1": 0.5
+    },
+    {
+     "w": "Prazer,",
+     "n": "prazer",
+     "i0": 5,
+     "t0": 0.74,
+     "t1": 1.22
+    },
+    {
+     "w": "eu",
+     "n": "eu",
+     "i0": 13,
+     "t0": 1.54,
+     "t1": 1.62
+    },
+    {
+     "w": "sou",
+     "n": "sou",
+     "i0": 16,
+     "t0": 1.7,
+     "t1": 1.86
+    },
+    {
+     "w": "o",
+     "n": "o",
+     "i0": 20,
+     "t0": 1.887,
+     "t1": 1.913
+    },
+    {
+     "w": "UaiPertim…",
+     "n": "uaipertim",
+     "i0": 22,
+     "t0": 1.94,
+     "t1": 2.74
+    },
+    {
+     "w": "mas",
+     "n": "mas",
+     "i0": 34,
+     "t0": 3.14,
+     "t1": 3.3
+    },
+    {
+     "w": "pode",
+     "n": "pode",
+     "i0": 38,
+     "t0": 3.38,
+     "t1": 3.54
+    },
+    {
+     "w": "me",
+     "n": "me",
+     "i0": 43,
+     "t0": 3.62,
+     "t1": 3.7
+    },
+    {
+     "w": "chamar",
+     "n": "chamar",
+     "i0": 46,
+     "t0": 3.74,
+     "t1": 3.94
+    },
+    {
+     "w": "de",
+     "n": "de",
+     "i0": 53,
+     "t0": 4.02,
+     "t1": 4.1
+    },
+    {
+     "w": "Pertim.",
+     "n": "pertim",
+     "i0": 56,
+     "t0": 4.18,
+     "t1": 4.58
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Opa! Prazer, eu sou o UaiPertim… mas pode me chamar de Pertim.",
+     "apoio": null,
+     "t0": 0.1,
+     "t1": 4.58
+    }
+   ],
+   "apoios": [],
+   "seed": 42
+  },
+  {
+   "n": 1,
+   "rotulo": "CENA 2",
+   "tom": "pessego",
+   "titulo": [
+    "",
+    ""
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "lojinhas",
+    "lojas": [
+     {
+      "tipo": "padaria",
+      "em": "padaria"
+     },
+     {
+      "tipo": "mercado",
+      "em": "mercadim"
+     },
+     {
+      "tipo": "lanchonete",
+      "em": "lanchonete"
+     }
+    ]
+   },
+   "t0": 5.93,
+   "t1": 11.83,
+   "voz_t0": 6.18,
+   "voz_t1": 11.38,
+   "palavras": [
+    {
+     "w": "Eu",
+     "n": "eu",
+     "i0": 0,
+     "t0": 6.18,
+     "t1": 6.34
+    },
+    {
+     "w": "sei",
+     "n": "sei",
+     "i0": 3,
+     "t0": 6.42,
+     "t1": 6.5
+    },
+    {
+     "w": "onde",
+     "n": "onde",
+     "i0": 7,
+     "t0": 6.58,
+     "t1": 6.74
+    },
+    {
+     "w": "fica",
+     "n": "fica",
+     "i0": 12,
+     "t0": 6.82,
+     "t1": 7.22
+    },
+    {
+     "w": "tudo",
+     "n": "tudo",
+     "i0": 17,
+     "t0": 7.3,
+     "t1": 7.54
+    },
+    {
+     "w": "no",
+     "n": "no",
+     "i0": 22,
+     "t0": 7.62,
+     "t1": 7.7
+    },
+    {
+     "w": "Glória:",
+     "n": "gloria",
+     "i0": 25,
+     "t0": 7.78,
+     "t1": 8.42
+    },
+    {
+     "w": "a",
+     "n": "a",
+     "i0": 33,
+     "t0": 8.473,
+     "t1": 8.5
+    },
+    {
+     "w": "padaria,",
+     "n": "padaria",
+     "i0": 35,
+     "t0": 8.62,
+     "t1": 9.3
+    },
+    {
+     "w": "o",
+     "n": "o",
+     "i0": 44,
+     "t0": 9.353,
+     "t1": 9.38
+    },
+    {
+     "w": "mercadim,",
+     "n": "mercadim",
+     "i0": 46,
+     "t0": 9.46,
+     "t1": 10.26
+    },
+    {
+     "w": "a",
+     "n": "a",
+     "i0": 56,
+     "t0": 10.313,
+     "t1": 10.34
+    },
+    {
+     "w": "lanchonete…",
+     "n": "lanchonete",
+     "i0": 58,
+     "t0": 10.38,
+     "t1": 11.38
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Eu sei onde fica tudo no Glória: a padaria, o mercadim, a lanchonete…",
+     "apoio": null,
+     "t0": 6.18,
+     "t1": 11.38
+    }
+   ],
+   "apoios": [],
+   "seed": 42
+  },
+  {
+   "n": 2,
+   "rotulo": "CENA 3",
+   "tom": "amarelo",
+   "titulo": [
+    "",
+    ""
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "sacola"
+   },
+   "t0": 12.73,
+   "t1": 17.03,
+   "voz_t0": 12.98,
+   "voz_t1": 16.58,
+   "palavras": [
+    {
+     "w": "E",
+     "n": "e",
+     "i0": 0,
+     "t0": 12.98,
+     "t1": 13.06
+    },
+    {
+     "w": "logo,",
+     "n": "logo",
+     "i0": 2,
+     "t0": 13.14,
+     "t1": 13.46
+    },
+    {
+     "w": "logo,",
+     "n": "logo",
+     "i0": 8,
+     "t0": 13.54,
+     "t1": 13.86
+    },
+    {
+     "w": "vou",
+     "n": "vou",
+     "i0": 14,
+     "t0": 13.94,
+     "t1": 14.02
+    },
+    {
+     "w": "levar",
+     "n": "levar",
+     "i0": 18,
+     "t0": 14.1,
+     "t1": 14.42
+    },
+    {
+     "w": "tudo",
+     "n": "tudo",
+     "i0": 24,
+     "t0": 14.58,
+     "t1": 14.82
+    },
+    {
+     "w": "isso",
+     "n": "isso",
+     "i0": 29,
+     "t0": 14.9,
+     "t1": 15.3
+    },
+    {
+     "w": "pertim",
+     "n": "pertim",
+     "i0": 34,
+     "t0": 15.38,
+     "t1": 15.7
+    },
+    {
+     "w": "de",
+     "n": "de",
+     "i0": 41,
+     "t0": 15.78,
+     "t1": 15.86
+    },
+    {
+     "w": "você.",
+     "n": "voce",
+     "i0": 44,
+     "t0": 15.9,
+     "t1": 16.58
+    }
+   ],
+   "frases": [
+    {
+     "texto": "E logo, logo, vou levar tudo isso pertim de você.",
+     "apoio": null,
+     "t0": 12.98,
+     "t1": 16.58
+    }
+   ],
+   "apoios": [],
+   "seed": 1042
+  },
+  {
+   "n": 3,
+   "rotulo": "FECHO",
+   "tom": "verde",
+   "titulo": [
+    "",
+    ""
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "fecho",
+    "logo": {
+     "em": "+0.4"
+    },
+    "chip": {
+     "t": "Segue @uaipertim",
+     "em": "Segue"
+    }
+   },
+   "t0": 17.93,
+   "t1": 24.43,
+   "voz_t0": 18.18,
+   "voz_t1": 20.42,
+   "palavras": [
+    {
+     "w": "Segue",
+     "n": "segue",
+     "i0": 0,
+     "t0": 18.18,
+     "t1": 18.5
+    },
+    {
+     "w": "a",
+     "n": "a",
+     "i0": 6,
+     "t0": 18.54,
+     "t1": 18.58
+    },
+    {
+     "w": "gente",
+     "n": "gente",
+     "i0": 8,
+     "t0": 18.66,
+     "t1": 18.98
+    },
+    {
+     "w": "pra",
+     "n": "pra",
+     "i0": 14,
+     "t0": 19.1,
+     "t1": 19.22
+    },
+    {
+     "w": "não",
+     "n": "nao",
+     "i0": 18,
+     "t0": 19.3,
+     "t1": 19.46
+    },
+    {
+     "w": "perder",
+     "n": "perder",
+     "i0": 22,
+     "t0": 19.54,
+     "t1": 19.86
+    },
+    {
+     "w": "a",
+     "n": "a",
+     "i0": 29,
+     "t0": 19.887,
+     "t1": 19.913
+    },
+    {
+     "w": "estreia!",
+     "n": "estreia",
+     "i0": 31,
+     "t0": 19.94,
+     "t1": 20.42
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Segue a gente pra não perder a estreia!",
+     "apoio": null,
+     "t0": 18.18,
+     "t1": 20.42
+    }
+   ],
+   "apoios": [],
+   "seed": 42
+  }
+ ],
+ "colocacao": [
+  {
+   "cap": 0,
+   "arquivo": "voz/cap-00.wav",
+   "de_s": 0.0,
+   "ate_s": 4.64,
+   "no_video_s": 0.1,
+   "amostras": 222720,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 1,
+   "arquivo": "voz/cap-01.wav",
+   "de_s": 0.0,
+   "ate_s": 5.2,
+   "no_video_s": 6.18,
+   "amostras": 249600,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 2,
+   "arquivo": "voz/cap-02.wav",
+   "de_s": 0.0,
+   "ate_s": 3.6,
+   "no_video_s": 12.98,
+   "amostras": 172800,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 3,
+   "arquivo": "voz/cap-03.wav",
+   "de_s": 0.0,
+   "ate_s": 2.48,
+   "no_video_s": 18.18,
+   "amostras": 119040,
+   "fade_ms": [
+    8,
+    60
+   ]
+  }
+ ],
+ "mapa": {
+  "ok": true,
+  "falhas": []
+ }
+}

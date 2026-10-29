@@ -1,0 +1,97 @@
+{
+  "id": "prazer-pertim",
+  "titulo": "Prazer, Pertim (Reel de teste do personagem)",
+  "marca": "@uaipertim",
+  "perfil_voz": "narracao",
+  "trilha": "animada",
+  "legenda": true,
+  "_doc": "Reel de teste do personagem Pertim (src/personagem). A voz, a linha do tempo e a mixagem saem do pipeline do Explica, Sô! (voz.py, linha.py, audio.py); o vídeo é a composição Remotion PrazerPertim (reels/prazer-pertim).",
+  "capitulos": [
+    {
+      "rotulo": "CENA 1",
+      "titulo": [
+        "",
+        ""
+      ],
+      "fala": [
+        {
+          "texto": "Opa! Prazer, eu sou o UaiPertim… mas pode me chamar de Pertim.",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "chegada"
+      }
+    },
+    {
+      "rotulo": "CENA 2",
+      "titulo": [
+        "",
+        ""
+      ],
+      "fala": [
+        {
+          "texto": "Eu sei onde fica tudo no Glória: a padaria, o mercadim, a lanchonete…",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "lojinhas",
+        "lojas": [
+          {
+            "tipo": "padaria",
+            "em": "padaria"
+          },
+          {
+            "tipo": "mercado",
+            "em": "mercadim"
+          },
+          {
+            "tipo": "lanchonete",
+            "em": "lanchonete"
+          }
+        ]
+      }
+    },
+    {
+      "rotulo": "CENA 3",
+      "titulo": [
+        "",
+        ""
+      ],
+      "fala": [
+        {
+          "texto": "E logo, logo, vou levar tudo isso pertim de você.",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "sacola"
+      }
+    },
+    {
+      "rotulo": "FECHO",
+      "titulo": [
+        "",
+        ""
+      ],
+      "min": 6.5,
+      "fala": [
+        {
+          "texto": "Segue a gente pra não perder a estreia!",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "fecho",
+        "logo": {
+          "em": "+0.4"
+        },
+        "chip": {
+          "t": "Segue @uaipertim",
+          "em": "Segue"
+        }
+      }
+    }
+  ]
+}

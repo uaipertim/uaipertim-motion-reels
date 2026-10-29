@@ -100,11 +100,14 @@ def place(buf, sig, t, g=1.0, pan=0.0):
 
 def place_pan(buf, sig, t, g, p0, p1):
     i = int(round(t * SR))
-    if i >= N:
+    if i >= N or i + len(sig) <= 0:
         return
+    pc = np.clip(np.linspace(p0, p1, len(sig)), -1, 1)
+    if i < 0:                       # começa antes do 0: corta o pedaço de antes (a motinha que já vem andando)
+        sig, pc, i = sig[-i:], pc[-i:], 0
     j = min(N, i + len(sig))
     s = sig[: j - i] * g
-    pc = np.clip(np.linspace(p0, p1, len(sig))[: j - i], -1, 1)
+    pc = pc[: j - i]
     buf[0, i:j] += s * np.cos((pc + 1) * np.pi / 4) * 1.414
     buf[1, i:j] += s * np.sin((pc + 1) * np.pi / 4) * 1.414
 
@@ -351,6 +354,15 @@ def horn():
     return out * 0.6
 
 
+def skid(d=0.75):
+    """a motinha freando e derrapando: o chiado do pneu (ruído estreito que desce) + o motor caindo de giro"""
+    t = tt(d)
+    sq = sweep(noise(d), 2400, 1100, 6.0) * 2.2
+    whine = np.sin(2 * np.pi * np.cumsum(1500 - 500 * t / d + 40 * np.sin(2 * np.pi * 23 * t)) / SR) * 0.25
+    env = np.minimum(1, t / 0.02) * np.clip((d - t) / (d * 0.55), 0, 1)
+    return (sq + whine) * env * 0.7 + moto_engine(d)[: len(t)] * 0.5
+
+
 def boing(f0=330, d=0.45):
     """o "?" que pula: mola"""
     t = tt(d)
@@ -438,6 +450,8 @@ for c in CUES['cues']:
         place_pan(sfx, moto_engine(d + 0.15), t - 0.05, 0.5, -0.7, 0.3)
     elif ty == 'horn':
         place(sfx, horn(), t, 0.3, 0.2)
+    elif ty == 'skid':
+        place_pan(sfx, skid(), t, 0.32, -0.2, 0.2)
     elif ty == 'door':
         place(sfx, door(), t, 0.45, 0.3)
     elif ty == 'jump':

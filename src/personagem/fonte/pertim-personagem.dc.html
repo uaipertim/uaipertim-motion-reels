@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Pertim — personagem</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+</style>
+</helmet>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="{{vb}}" width="{{W}}" height="{{H}}" role="img" aria-label="{{label}}" style="display: block">
+
+<g data-layer="sombra" display="{{d.sombra}}">
+  <ellipse cx="{{sh.cx}}" cy="{{sh.cy}}" rx="{{sh.rx}}" ry="{{sh.ry}}" fill="#221C19" opacity="0.13"></ellipse>
+</g>
+
+<g data-layer="personagem" transform="{{charT}}">
+
+  <g data-layer="efeitos-tras" display="{{fx.world}}">
+    <g display="{{fx.speed}}" stroke="#221C19" stroke-opacity="0.22" stroke-width="5" stroke-linecap="round">
+      <path d="M4,122 H28"></path>
+      <path d="M10,146 H34"></path>
+      <path d="M6,240 H30"></path>
+    </g>
+    <g display="{{fx.runfx}}">
+      <g stroke="#221C19" stroke-opacity="0.22" stroke-width="5" stroke-linecap="round">
+        <path d="M-14,128 H18"></path>
+        <path d="M-8,158 H22"></path>
+        <path d="M-16,196 H10"></path>
+      </g>
+      <circle cx="56" cy="262" r="9" fill="#F6EEE2" stroke="#221C19" stroke-opacity="0.18" stroke-width="2"></circle>
+      <circle cx="38" cy="266" r="6" fill="#F6EEE2" stroke="#221C19" stroke-opacity="0.18" stroke-width="2"></circle>
+      <circle cx="26" cy="258" r="4" fill="#F6EEE2" stroke="#221C19" stroke-opacity="0.18" stroke-width="2"></circle>
+    </g>
+  </g>
+
+  <g data-layer="moto-tras" display="{{d.moto}}">
+    <g stroke="#221C19" stroke-opacity="0.22" stroke-width="5" stroke-linecap="round">
+      <path d="M-18,156 H12"></path>
+      <path d="M-22,186 H2"></path>
+      <path d="M-14,214 H14"></path>
+    </g>
+    <circle cx="14" cy="246" r="8" fill="#F6EEE2" stroke="#221C19" stroke-opacity="0.18" stroke-width="2"></circle>
+    <circle cx="0" cy="238" r="5" fill="#F6EEE2" stroke="#221C19" stroke-opacity="0.18" stroke-width="2"></circle>
+    <circle cx="62" cy="256" r="24" fill="#221C19"></circle>
+    <circle cx="62" cy="256" r="10" fill="#F6EEE2"></circle>
+    <circle cx="62" cy="256" r="4" fill="#221C19"></circle>
+    <circle cx="236" cy="256" r="24" fill="#221C19"></circle>
+    <circle cx="236" cy="256" r="10" fill="#F6EEE2"></circle>
+    <circle cx="236" cy="256" r="4" fill="#221C19"></circle>
+    <path d="M70,204 Q70,190 86,190 L148,190 Q160,190 160,204 Z" fill="#221C19"></path>
+  </g>
+
+  <g data-layer="pernas" display="{{d.pernas}}">
+    <g display="{{g.v1}}">
+      <path d="M106,222 L103,258" stroke="#F08A00" stroke-width="12" stroke-linecap="round" fill="none"></path>
+      <path d="M134,222 L137,258" stroke="#F08A00" stroke-width="12" stroke-linecap="round" fill="none"></path>
+      <g transform="translate(100 266) scale(-1 1)">
+        <path d="M-11,4 Q-12,-8 0,-8 Q11,-8 15,1 L15,4 Z" fill="#F2502B"></path>
+        <path d="M-13,3 H17 Q17,9 12,9 H-9 Q-13,9 -13,3 Z" fill="#F6EEE2" stroke="#221C19" stroke-opacity="0.2" stroke-width="1.4"></path>
+        <path d="M1,-5 L6,-0.5" stroke="#3E9E4E" stroke-width="2.6" stroke-linecap="round"></path>
+      </g>
+      <g transform="translate(140 266)">
+        <path d="M-11,4 Q-12,-8 0,-8 Q11,-8 15,1 L15,4 Z" fill="#F2502B"></path>
+        <path d="M-13,3 H17 Q17,9 12,9 H-9 Q-13,9 -13,3 Z" fill="#F6EEE2" stroke="#221C19" stroke-opacity="0.2" stroke-width="1.4"></path>
+        <path d="M1,-5 L6,-0.5" stroke="#3E9E4E" stroke-width="2.6" stroke-linecap="round"></path>
+      </g>
+    </g>
+    <g display="{{g.run}}">
+      <path d="M110,220 Q96,240 82,248" stroke="#F08A00" stroke-width="12" stroke-linecap="round" fill="none"></path>
+      <path d="M130,220 Q150,232 160,250" stroke="#F08A00" stroke-width="12" stroke-linecap="round" fill="none"></path>
+      <g transform="translate(76 252) rotate(-24) scale(-1 1)">
+        <path d="M-11,4 Q-12,-8 0,-8 Q11,-8 15,1 L15,4 Z" fill="#F2502B"></path>
+        <path d="M-13,3 H17 Q17,9 12,9 H-9 Q-13,9 -13,3 Z" fill="#F6EEE2" stroke="#221C19" stroke-opacity="0.2" stroke-width="1.4"></path>
+        <path d="M1,-5 L6,-0.5" stroke="#3E9E4E" stroke-width="2.6" stroke-linecap="round"></path>
+      </g>
+      <g transform="translate(166 258) rotate(10)">
+        <path d="M-11,4 Q-12,-8 0,-8 Q11,-8 15,1 L15,4 Z" fill="#F2502B"></path>
+        <path d="M-13,3 H17 Q17,9 12,9 H-9 Q-13,9 -13,3 Z" fill="#F6EEE2" stroke="#221C19" stroke-opacity="0.2" stroke-width="1.4"></path>
+        <path d="M1,-5 L6,-0.5" stroke="#3E9E4E" stroke-width="2.6" stroke-linecap="round"></path>
+      </g>
+    </g>
+    <g display="{{g.v2}}">
+      <path d="M109,184 L105,250" stroke="#221C19" stroke-width="17" stroke-linecap="round" fill="none"></path>
+      <path d="M131,184 L135,250" stroke="#221C19" stroke-width="17" stroke-linecap="round" fill="none"></path>
+      <g transform="translate(100 260) scale(-1.25 1.25)">
+        <path d="M-11,4 Q-12,-8 0,-8 Q11,-8 15,1 L15,4 Z" fill="#F2502B"></path>
+        <path d="M-13,3 H17 Q17,9 12,9 H-9 Q-13,9 -13,3 Z" fill="#F6EEE2" stroke="#221C19" stroke-opacity="0.2" stroke-width="1.4"></path>
+        <path d="M1,-5 L6,-0.5" stroke="#3E9E4E" stroke-width="2.6" stroke-linecap="round"></path>
+      </g>
+      <g transform="translate(140 260) scale(1.25)">
+        <path d="M-11,4 Q-12,-8 0,-8 Q11,-8 15,1 L15,4 Z" fill="#F2502B"></path>
+        <path d="M-13,3 H17 Q17,9 12,9 H-9 Q-13,9 -13,3 Z" fill="#F6EEE2" stroke="#221C19" stroke-opacity="0.2" stroke-width="1.4"></path>
+        <path d="M1,-5 L6,-0.5" stroke="#3E9E4E" stroke-width="2.6" stroke-linecap="round"></path>
+      </g>
+    </g>
+  </g>
+
+  <g data-layer="pin" transform="{{pinT}}">
+
+    <g data-layer="mochila" display="{{d.pack}}">
+      <path d="M24,82 Q35,68 46,82" stroke="#F2502B" stroke-width="4.5" stroke-linecap="round" fill="none"></path>
+      <rect x="8" y="80" width="88" height="134" rx="14" fill="#F6EEE2"></rect>
+      <path d="M8,94 Q8,80 22,80 H82 Q96,80 96,94 V100 H8 Z" fill="#F2502B"></path>
+      <path d="M8,194 H96 V200 Q96,214 82,214 H22 Q8,214 8,200 Z" fill="#F08A00" fill-opacity="0.25"></path>
+      <g transform="translate(30 146) scale(1.15)">
+        <circle r="10" fill="#F2502B"></circle>
+        <rect x="-6.5" y="-7.5" width="13" height="3" rx="1.5" fill="#F6EEE2"></rect>
+        <path d="M-4.5,-2.5 V1.5 Q-4.5,6 0,6" stroke="#F6EEE2" stroke-width="3" fill="none" stroke-linecap="round"></path>
+        <circle cx="3.2" cy="0.5" r="3.4" fill="#F9B233"></circle>
+      </g>
+    </g>
+
+    <g data-layer="corpo" display="{{d.corpo}}">
+      <path d="M120,252 C108,232 52,190 50,122 A70,70 0 1 1 190,122 C188,190 132,232 120,252 Z" fill="#F9B233" stroke="#F9B233" stroke-width="8" stroke-linejoin="round"></path>
+      <path d="M173.6,77 A70,70 0 0 1 190,122 C188,190 132,232 120,252 C146,214 170,180 172,122 C172.5,104 171,90 173.6,77 Z" fill="#F08A00" stroke="#F08A00" stroke-width="8" stroke-linejoin="round"></path>
+    </g>
+
+    <g data-layer="mochila-alcas" display="{{d.alcas}}">
+      <g data-layer="alca-esquerda" transform="{{strapT}}">
+        <path d="M56,124 Q60,160 68,190" stroke="#F2502B" stroke-width="8" stroke-linecap="round" fill="none"></path>
+        <rect x="62.5" y="188.5" width="13" height="10" rx="3" fill="#F6EEE2" stroke="#E7431C" stroke-width="2.2" transform="rotate(-12 69 193.5)"></rect>
+        <path d="M66,193.5 H72" stroke="#E7431C" stroke-width="2" stroke-linecap="round" transform="rotate(-12 69 193.5)"></path>
+      </g>
+      <g data-layer="alca-direita" display="{{d.alcaR}}">
+        <path d="M184,124 Q180,160 172,190" stroke="#F2502B" stroke-width="8" stroke-linecap="round" fill="none"></path>
+        <rect x="164.5" y="188.5" width="13" height="10" rx="3" fill="#F6EEE2" stroke="#E7431C" stroke-width="2.2" transform="rotate(12 171 193.5)"></rect>
+        <path d="M168,193.5 H174" stroke="#E7431C" stroke-width="2" stroke-linecap="round" transform="rotate(12 171 193.5)"></path>
+      </g>
+    </g>
+
+    <g data-layer="capacete" display="{{d.capacete}}">
+      <path d="M44.3,108 A77,77 0 0 1 195.7,108 Z" fill="#F2502B"></path>
+      <path d="M168,62 A77,77 0 0 1 195.7,108 L178,108 C178,92 175,76 168,62 Z" fill="#E7431C"></path>
+      <path d="M84,60 Q102,52 124,51" stroke="#F87A5D" stroke-width="5" stroke-linecap="round" fill="none"></path>
+      <path d="M46,100 H194 L195.7,108 H44.3 Z" fill="#E7431C"></path>
+      <g data-layer="aba-toldo" transform="{{brimT}}">
+        <g fill="#F08A00" fill-opacity="0.5">
+          <path d="M38,121 H70.8 A16.4,9 0 0 1 38,121 Z"></path>
+          <path d="M70.8,121 H103.6 A16.4,9 0 0 1 70.8,121 Z"></path>
+          <path d="M103.6,121 H136.4 A16.4,9 0 0 1 103.6,121 Z"></path>
+          <path d="M136.4,121 H169.2 A16.4,9 0 0 1 136.4,121 Z"></path>
+          <path d="M169.2,121 H202 A16.4,9 0 0 1 169.2,121 Z"></path>
+        </g>
+        <path d="M46,104 H75.6 L70.8,116 H38 Z" fill="#F08A00"></path>
+        <path d="M38,116 H70.8 A16.4,9 0 0 1 38,116 Z" fill="#F08A00"></path>
+        <path d="M75.6,104 H105.2 L103.6,116 H70.8 Z" fill="#FFFFFF"></path>
+        <path d="M70.8,116 H103.6 A16.4,9 0 0 1 70.8,116 Z" fill="#F6EEE2"></path>
+        <path d="M105.2,104 H134.8 L136.4,116 H103.6 Z" fill="#F08A00"></path>
+        <path d="M103.6,116 H136.4 A16.4,9 0 0 1 103.6,116 Z" fill="#F08A00"></path>
+        <path d="M134.8,104 H164.4 L169.2,116 H136.4 Z" fill="#FFFFFF"></path>
+        <path d="M136.4,116 H169.2 A16.4,9 0 0 1 136.4,116 Z" fill="#F6EEE2"></path>
+        <path d="M164.4,104 H194 L202,116 H169.2 Z" fill="#F08A00"></path>
+        <path d="M169.2,116 H202 A16.4,9 0 0 1 169.2,116 Z" fill="#F08A00"></path>
+      </g>
+    </g>
+
+    <g data-layer="viseira" display="{{d.viseira}}">
+      <g transform="{{visorT}}">
+        <path d="M56,98 Q60,66 120,62 Q180,66 184,98 Q120,84 56,98 Z" fill="#FFFFFF" fill-opacity="0.42" stroke="#FFFFFF" stroke-opacity="0.95" stroke-width="2" stroke-linejoin="round"></path>
+        <path d="M72,86 Q84,73 106,69" stroke="#FFFFFF" stroke-opacity="0.9" stroke-width="3.5" stroke-linecap="round" fill="none"></path>
+        <path d="M116,67.5 Q124,67 131,67.5" stroke="#FFFFFF" stroke-opacity="0.9" stroke-width="3.5" stroke-linecap="round" fill="none"></path>
+        <circle cx="57" cy="98" r="5.5" fill="#E7431C"></circle>
+        <circle cx="57" cy="98" r="2.2" fill="#F6EEE2"></circle>
+        <circle cx="183" cy="98" r="5.5" fill="#E7431C"></circle>
+        <circle cx="183" cy="98" r="2.2" fill="#F6EEE2"></circle>
+      </g>
+    </g>
+
+    <g data-layer="rosto" transform="{{faceT}}">
+      <g data-layer="bochechas" display="{{d.olhos}}">
+        <ellipse cx="82" cy="176" rx="9" ry="6.5" fill="#F2502B" opacity="{{cheek}}"></ellipse>
+        <ellipse cx="158" cy="176" rx="9" ry="6.5" fill="#F2502B" opacity="{{cheek}}"></ellipse>
+      </g>
+
+      <g data-layer="olhos" display="{{d.olhos}}">
+        <g data-layer="olho-esquerdo" transform="{{eL.t}}">
+          <g display="{{eL.open}}">
+            <ellipse rx="15" ry="18" fill="#FFFFFF" stroke="#221C19" stroke-width="3.5"></ellipse>
+            <ellipse cx="{{eL.px}}" cy="{{eL.py}}" rx="8.5" ry="10" fill="#221C19"></ellipse>
+            <circle cx="{{eL.g1x}}" cy="{{eL.g1y}}" r="3.4" fill="#FFFFFF"></circle>
+            <circle cx="{{eL.g2x}}" cy="{{eL.g2y}}" r="1.5" fill="#FFFFFF"></circle>
+            <g display="{{eL.lid}}">
+              <path d="{{eL.lidD}}" fill="#F9B233"></path>
+              <path d="{{eL.lineD}}" stroke="#221C19" stroke-width="3.5" stroke-linecap="round" fill="none"></path>
+            </g>
+          </g>
+          <path display="{{eL.happy}}" d="M-12,4 Q0,-13 12,4" stroke="#221C19" stroke-width="4.5" stroke-linecap="round" fill="none"></path>
+          <path display="{{eL.wink}}" d="M-12,-1 Q0,8 12,-1" stroke="#221C19" stroke-width="4.5" stroke-linecap="round" fill="none"></path>
+        </g>
+        <g data-layer="olho-direito" transform="{{eR.t}}">
+          <g display="{{eR.open}}">
+            <ellipse rx="15" ry="18" fill="#FFFFFF" stroke="#221C19" stroke-width="3.5"></ellipse>
+            <ellipse cx="{{eR.px}}" cy="{{eR.py}}" rx="8.5" ry="10" fill="#221C19"></ellipse>
+            <circle cx="{{eR.g1x}}" cy="{{eR.g1y}}" r="3.4" fill="#FFFFFF"></circle>
+            <circle cx="{{eR.g2x}}" cy="{{eR.g2y}}" r="1.5" fill="#FFFFFF"></circle>
+            <g display="{{eR.lid}}">
+              <path d="{{eR.lidD}}" fill="#F9B233"></path>
+              <path d="{{eR.lineD}}" stroke="#221C19" stroke-width="3.5" stroke-linecap="round" fill="none"></path>
+            </g>
+          </g>
+          <path display="{{eR.happy}}" d="M-12,4 Q0,-13 12,4" stroke="#221C19" stroke-width="4.5" stroke-linecap="round" fill="none"></path>
+          <path display="{{eR.wink}}" d="M-12,-1 Q0,8 12,-1" stroke="#221C19" stroke-width="4.5" stroke-linecap="round" fill="none"></path>
+        </g>
+      </g>
+
+      <g data-layer="boca" display="{{d.boca}}" stroke-linejoin="round">
+        <path display="{{m.repouso}}" d="M108,186 Q120,195 132,186" stroke="#221C19" stroke-width="4.5" stroke-linecap="round" fill="none"></path>
+        <g display="{{m.sorriso}}">
+          <path d="M103,182 Q120,184 137,182 Q135,204 120,204 Q105,204 103,182 Z" fill="#221C19" stroke="#221C19" stroke-width="2"></path>
+          <path d="M110,197 Q120,190 130,197 Q126,204 120,204 Q114,204 110,197 Z" fill="#F2502B"></path>
+        </g>
+        <g display="{{m.A}}">
+          <path d="M106,180 Q120,177 134,180 Q137,208 120,209 Q103,208 106,180 Z" fill="#221C19" stroke="#221C19" stroke-width="2"></path>
+          <path d="M110,201 Q120,195 130,201 Q126,209 120,209 Q114,209 110,201 Z" fill="#F2502B"></path>
+        </g>
+        <g display="{{m.E}}">
+          <path d="M101,183 Q120,180 139,183 Q136,198 120,198 Q104,198 101,183 Z" fill="#221C19" stroke="#221C19" stroke-width="2"></path>
+          <path d="M104,183.5 Q120,181 136,183.5 L135,188 Q120,186 105,188 Z" fill="#FFFFFF"></path>
+        </g>
+        <g display="{{m.O}}">
+          <ellipse cx="120" cy="190" rx="9" ry="11" fill="#221C19"></ellipse>
+          <ellipse cx="120" cy="196" rx="5" ry="3.5" fill="#F2502B"></ellipse>
+        </g>
+        <path display="{{m.MBP}}" d="M106,189 Q120,186 134,189" stroke="#221C19" stroke-width="5" stroke-linecap="round" fill="none"></path>
+        <ellipse display="{{m.curioso}}" cx="124" cy="189" rx="5" ry="6" fill="#221C19"></ellipse>
+        <path display="{{m.hmm}}" d="M108,190 Q114,186 120,189 Q126,192 132,187" stroke="#221C19" stroke-width="4.5" stroke-linecap="round" fill="none"></path>
+        <g display="{{m.grit}}">
+          <path d="M103,182 H137 Q137,198 120,198 Q103,198 103,182 Z" fill="#221C19" stroke="#221C19" stroke-width="2"></path>
+          <path d="M104.5,183 H135.5 V187.5 H104.5 Z" fill="#FFFFFF"></path>
+        </g>
+        <path display="{{m.smirk}}" d="M107,188 Q122,196 134,183" stroke="#221C19" stroke-width="4.5" stroke-linecap="round" fill="none"></path>
+      </g>
+    </g>
+
+    <g data-layer="bracos" display="{{d.bracos}}">
+      <g display="{{a.l1}}">
+        <path d="M60,176 Q45,186 41,199" stroke="#F08A00" stroke-width="11" stroke-linecap="round" fill="none"></path>
+        <g transform="translate(39 207) rotate(18)">
+          <circle r="10.5" fill="#F2502B"></circle><circle cx="-8.5" cy="-1" r="4.6" fill="#F2502B"></circle>
+          <path d="M7,-7 A10.5,10.5 0 0 1 -4,9.7 A13,13 0 0 0 7,-7 Z" fill="#E7431C"></path>
+          <rect x="-8" y="-15.5" width="16" height="7" rx="3.5" fill="#F6EEE2"></rect>
+        </g>
+      </g>
+      <g display="{{a.lBag}}">
+        <path d="M38,228 Q46,198 58,228" stroke="#E7431C" stroke-width="3.5" stroke-linecap="round" fill="none"></path>
+        <path d="M26,226 H70 L66,268 Q66,272 62,272 H34 Q30,272 30,268 Z" fill="#F2502B"></path>
+        <path d="M56,226 H70 L66,268 Q66,272 62,272 H54 Z" fill="#E7431C"></path>
+        <rect x="26" y="223" width="44" height="7" rx="3.5" fill="#E7431C"></rect>
+        <path d="M58,224 Q54,210 64,205 Q66,217 61,224 Z" fill="#3E9E4E"></path>
+        <circle cx="46" cy="250" r="11" fill="#F6EEE2"></circle>
+        <g transform="translate(46 250) scale(0.8)">
+          <circle r="10" fill="#F2502B"></circle>
+          <rect x="-6.5" y="-7.5" width="13" height="3" rx="1.5" fill="#F6EEE2"></rect>
+          <path d="M-4.5,-2.5 V1.5 Q-4.5,6 0,6" stroke="#F6EEE2" stroke-width="3" fill="none" stroke-linecap="round"></path>
+          <circle cx="3.2" cy="0.5" r="3.4" fill="#F9B233"></circle>
+        </g>
+        <path d="M60,176 Q50,190 48,204" stroke="#F08A00" stroke-width="11" stroke-linecap="round" fill="none"></path>
+        <g transform="translate(47 212) rotate(6)">
+          <circle r="10.5" fill="#F2502B"></circle><circle cx="-8.5" cy="-1" r="4.6" fill="#F2502B"></circle>
+          <path d="M7,-7 A10.5,10.5 0 0 1 -4,9.7 A13,13 0 0 0 7,-7 Z" fill="#E7431C"></path>
+          <rect x="-8" y="-15.5" width="16" height="7" rx="3.5" fill="#F6EEE2"></rect>
+        </g>
+      </g>
+      <g display="{{a.lUp}}">
+        <path d="M60,166 Q42,142 38,118" stroke="#F08A00" stroke-width="11" stroke-linecap="round" fill="none"></path>
+        <g transform="translate(37 109) rotate(172)">
+          <circle r="10.5" fill="#F2502B"></circle><circle cx="-8.5" cy="-1" r="4.6" fill="#F2502B"></circle>
+          <path d="M7,-7 A10.5,10.5 0 0 1 -4,9.7 A13,13 0 0 0 7,-7 Z" fill="#E7431C"></path>
+          <rect x="-8" y="-15.5" width="16" height="7" rx="3.5" fill="#F6EEE2"></rect>
+        </g>
+      </g>
+      <g display="{{a.lBack}}">
+        <path d="M60,176 Q44,184 34,176" stroke="#F08A00" stroke-width="11" stroke-linecap="round" fill="none"></path>
+        <g transform="translate(27 170) rotate(128)">
+          <circle r="10.5" fill="#F2502B"></circle><circle cx="-8.5" cy="-1" r="4.6" fill="#F2502B"></circle>
+          <path d="M7,-7 A10.5,10.5 0 0 1 -4,9.7 A13,13 0 0 0 7,-7 Z" fill="#E7431C"></path>
+          <rect x="-8" y="-15.5" width="16" height="7" rx="3.5" fill="#F6EEE2"></rect>
+        </g>
+      </g>
+
+      <g display="{{a.r1}}">
+        <path d="M180,176 Q195,186 199,199" stroke="#F08A00" stroke-width="11" stroke-linecap="round" fill="none"></path>
+        <g transform="translate(201 207) scale(-1 1) rotate(18)">
+          <circle r="10.5" fill="#F2502B"></circle><circle cx="-8.5" cy="-1" r="4.6" fill="#F2502B"></circle>
+          <path d="M7,-7 A10.5,10.5 0 0 1 -4,9.7 A13,13 0 0 0 7,-7 Z" fill="#E7431C"></path>
+          <rect x="-8" y="-15.5" width="16" height="7" rx="3.5" fill="#F6EEE2"></rect>
+        </g>
+      </g>
+      <g display="{{a.rWave}}">
+        <path d="M180,168 Q201,152 205,128" stroke="#F08A00" stroke-width="11" stroke-linecap="round" fill="none"></path>
+        <g transform="translate(207 118) rotate(-166)">
+          <circle r="10.5" fill="#F2502B"></circle><circle cx="-8.5" cy="-1" r="4.6" fill="#F2502B"></circle>
+          <path d="M7,-7 A10.5,10.5 0 0 1 -4,9.7 A13,13 0 0 0 7,-7 Z" fill="#E7431C"></path>
+          <rect x="-8" y="-15.5" width="16" height="7" rx="3.5" fill="#F6EEE2"></rect>
+        </g>
+        <g stroke="#221C19" stroke-opacity="0.3" stroke-width="3.5" stroke-linecap="round" fill="none">
+          <path d="M224,102 Q231,114 226,126"></path>
+          <path d="M234,96 Q243,114 236,132"></path>
+        </g>
+      </g>
+      <g display="{{a.rPoint}}">
+        <path d="M180,172 Q203,171 218,165" stroke="#F08A00" stroke-width="11" stroke-linecap="round" fill="none"></path>
+        <g transform="translate(227 162) rotate(-100)">
+          <rect x="-3.2" y="4" width="6.4" height="17" rx="3.2" fill="#F2502B"></rect>
+          <circle r="10.5" fill="#F2502B"></circle><circle cx="-8.5" cy="-1" r="4.6" fill="#F2502B"></circle>
+          <path d="M7,-7 A10.5,10.5 0 0 1 -4,9.7 A13,13 0 0 0 7,-7 Z" fill="#E7431C"></path>
+          <rect x="-8" y="-15.5" width="16" height="7" rx="3.5" fill="#F6EEE2"></rect>
+        </g>
+      </g>
+      <g display="{{a.rUp}}">
+        <path d="M180,166 Q198,142 202,118" stroke="#F08A00" stroke-width="11" stroke-linecap="round" fill="none"></path>
+        <g transform="translate(203 109) scale(-1 1) rotate(172)">
+          <circle r="10.5" fill="#F2502B"></circle><circle cx="-8.5" cy="-1" r="4.6" fill="#F2502B"></circle>
+          <path d="M7,-7 A10.5,10.5 0 0 1 -4,9.7 A13,13 0 0 0 7,-7 Z" fill="#E7431C"></path>
+          <rect x="-8" y="-15.5" width="16" height="7" rx="3.5" fill="#F6EEE2"></rect>
+        </g>
+      </g>
+      <g display="{{a.rFwd}}">
+        <path d="M180,172 Q198,174 207,161" stroke="#F08A00" stroke-width="11" stroke-linecap="round" fill="none"></path>
+        <g transform="translate(212 153) rotate(-146)">
+          <circle r="10.5" fill="#F2502B"></circle><circle cx="-8.5" cy="-1" r="4.6" fill="#F2502B"></circle>
+          <path d="M7,-7 A10.5,10.5 0 0 1 -4,9.7 A13,13 0 0 0 7,-7 Z" fill="#E7431C"></path>
+          <rect x="-8" y="-15.5" width="16" height="7" rx="3.5" fill="#F6EEE2"></rect>
+        </g>
+      </g>
+
+      <g display="{{a.v2}}">
+        <path d="M62,176 Q34,206 42,244" stroke="#F08A00" stroke-width="14" stroke-linecap="round" fill="none"></path>
+        <g transform="translate(44 254) rotate(-4) scale(1.15)">
+          <circle r="10.5" fill="#F2502B"></circle><circle cx="-8.5" cy="-1" r="4.6" fill="#F2502B"></circle>
+          <path d="M7,-7 A10.5,10.5 0 0 1 -4,9.7 A13,13 0 0 0 7,-7 Z" fill="#E7431C"></path>
+          <rect x="-8" y="-15.5" width="16" height="7" rx="3.5" fill="#F6EEE2"></rect>
+        </g>
+        <path d="M178,174 Q214,204 176,212" stroke="#F08A00" stroke-width="14" stroke-linecap="round" fill="none"></path>
+        <g transform="translate(166 212) rotate(90) scale(1.15)">
+          <circle r="10.5" fill="#F2502B"></circle><circle cx="-8.5" cy="-1" r="4.6" fill="#F2502B"></circle>
+          <path d="M7,-7 A10.5,10.5 0 0 1 -4,9.7 A13,13 0 0 0 7,-7 Z" fill="#E7431C"></path>
+          <rect x="-8" y="-15.5" width="16" height="7" rx="3.5" fill="#F6EEE2"></rect>
+        </g>
+      </g>
+
+      <g display="{{a.v3}}">
+        <g transform="translate(28 186) rotate(72)">
+          <circle r="10.5" fill="#F2502B"></circle><circle cx="-8.5" cy="-1" r="4.6" fill="#F2502B"></circle>
+          <path d="M7,-7 A10.5,10.5 0 0 1 -4,9.7 A13,13 0 0 0 7,-7 Z" fill="#E7431C"></path>
+          <rect x="-8" y="-15.5" width="16" height="7" rx="3.5" fill="#F6EEE2"></rect>
+        </g>
+        <g transform="translate(212 186) scale(-1 1) rotate(72)">
+          <circle r="10.5" fill="#F2502B"></circle><circle cx="-8.5" cy="-1" r="4.6" fill="#F2502B"></circle>
+          <path d="M7,-7 A10.5,10.5 0 0 1 -4,9.7 A13,13 0 0 0 7,-7 Z" fill="#E7431C"></path>
+          <rect x="-8" y="-15.5" width="16" height="7" rx="3.5" fill="#F6EEE2"></rect>
+        </g>
+      </g>
+    </g>
+
+    <g data-layer="efeitos-rosto" display="{{fx.local}}">
+      <g display="{{fx.dots}}" fill="#221C19" fill-opacity="0.22">
+        <circle cx="46" cy="66" r="3.5"></circle>
+        <circle cx="35" cy="51" r="5.5"></circle>
+        <circle cx="26" cy="32" r="8"></circle>
+      </g>
+      <path display="{{fx.sweat}}" d="M200,130 Q209,142 205,149 Q200,154 195,149 Q191,142 200,130 Z" fill="#FFFFFF" stroke="#221C19" stroke-width="2.5" stroke-linejoin="round"></path>
+      <path display="{{fx.spark}}" d="M206,140 Q208,150 218,152 Q208,154 206,164 Q204,154 194,152 Q204,150 206,140 Z" fill="#F2502B"></path>
+    </g>
+  </g>
+
+  <g data-layer="moto-frente" display="{{d.moto}}">
+    <path d="M26,234 Q24,206 60,202 L150,202 Q168,202 174,218 L180,236 L196,236 L196,248 L40,248 Q26,248 26,234 Z" fill="#F2502B"></path>
+    <path d="M27,240 H196 V248 H40 Q30,248 27,240 Z" fill="#E7431C"></path>
+    <path d="M60,214 H140" stroke="#F6EEE2" stroke-opacity="0.6" stroke-width="4" stroke-linecap="round"></path>
+    <rect x="23" y="210" width="9" height="12" rx="3" fill="#F9B233"></rect>
+    <path d="M134,192 Q164,194 178,228" stroke="#F08A00" stroke-width="12" stroke-linecap="round" fill="none"></path>
+    <g transform="translate(184 234)">
+      <path d="M-11,4 Q-12,-8 0,-8 Q11,-8 15,1 L15,4 Z" fill="#F2502B"></path>
+      <path d="M-13,3 H17 Q17,9 12,9 H-9 Q-13,9 -13,3 Z" fill="#F6EEE2" stroke="#221C19" stroke-opacity="0.2" stroke-width="1.4"></path>
+      <path d="M1,-5 L6,-0.5" stroke="#3E9E4E" stroke-width="2.6" stroke-linecap="round"></path>
+    </g>
+    <path d="M188,248 L194,190 Q196,162 214,158 L222,158 Q232,192 248,230 Q252,248 236,248 Z" fill="#F2502B"></path>
+    <path d="M222,158 Q232,192 248,230 Q252,248 236,248 L230,248 Q240,238 236,224 Q224,192 216,160 Z" fill="#E7431C"></path>
+    <ellipse cx="226" cy="188" rx="5" ry="8" fill="#F9B233"></ellipse>
+    <path d="M214,160 L208,140" stroke="#221C19" stroke-width="6" stroke-linecap="round"></path>
+    <path d="M194,136 L222,140" stroke="#221C19" stroke-width="7" stroke-linecap="round"></path>
+    <path d="M154,150 Q178,162 192,144" stroke="#F08A00" stroke-width="11" stroke-linecap="round" fill="none"></path>
+    <g transform="translate(197 137) rotate(-143)">
+      <circle r="10.5" fill="#F2502B"></circle><circle cx="-8.5" cy="-1" r="4.6" fill="#F2502B"></circle>
+      <path d="M7,-7 A10.5,10.5 0 0 1 -4,9.7 A13,13 0 0 0 7,-7 Z" fill="#E7431C"></path>
+      <rect x="-8" y="-15.5" width="16" height="7" rx="3.5" fill="#F6EEE2"></rect>
+    </g>
+  </g>
+</g>
+
+<g data-layer="confete" display="{{fx.world}}">
+  <g display="{{fx.confetti}}">
+    <rect x="14" y="44" width="8" height="15" rx="2.5" fill="#F2502B" transform="rotate(-25 18 51)"></rect>
+    <rect x="214" y="38" width="8" height="15" rx="2.5" fill="#3E9E4E" transform="rotate(28 218 45)"></rect>
+    <rect x="56" y="18" width="7" height="13" rx="2.5" fill="#F08A00" transform="rotate(14 59 24)"></rect>
+    <rect x="176" y="12" width="7" height="13" rx="2.5" fill="#F2502B" transform="rotate(-18 179 18)"></rect>
+    <circle cx="0" cy="96" r="4.5" fill="#3E9E4E"></circle>
+    <circle cx="240" cy="92" r="5" fill="#F08A00"></circle>
+    <circle cx="120" cy="12" r="4" fill="#3E9E4E"></circle>
+  </g>
+</g>
+</svg>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"v":{"editor":"enum","options":["1","3"],"default":"1"},"view":{"editor":"enum","options":["frente","tq"],"default":"frente"},"expr":{"editor":"enum","options":["neutro","sorrindo","alegre","curioso","surpreso","pensativo","apressado","piscadinha"],"default":"neutro"},"mouth":{"editor":"enum","options":["auto","repouso","A","E","O","MBP"],"default":"auto"},"pose":{"editor":"enum","options":["parado","acenando","apontando","sacola","comemorando","correndo","moto"],"default":"parado"},"crop":{"editor":"enum","options":["corpo","rosto"],"default":"corpo"},"layer":{"editor":"enum","options":["todas","mochila","pernas","corpo","capacete","viseira","olhos","boca","bracos"],"default":"todas"},"h":{"editor":"int","min":24,"max":1200,"default":300},"$preview":{"width":267,"height":300}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const p = this.props;
+    const v = Math.min(3, Math.max(1, Number(p.v ?? 1) || 1));
+    const v1 = v === 1;
+    const pose = v1 ? (p.pose ?? 'parado') : 'parado';
+    const moto = pose === 'moto';
+    const expr = p.expr ?? 'neutro';
+    const crop = p.crop ?? 'corpo';
+    const layer = p.layer ?? 'todas';
+    const H = Number(p.h ?? 300) || 300;
+    const tq = (p.view ?? 'frente') === 'tq' || pose === 'correndo' || moto;
+    const S = (b) => (b ? 'inline' : 'none');
+    const all = layer === 'todas';
+    const L = (k) => all || layer === k;
+    const body = crop !== 'rosto';
+
+    let vb = [0, 18, 240, 270];
+    if (!body) vb = v === 1 ? [28, 36, 184, 184] : v === 2 ? [46, 26, 148, 148] : [41, 42, 158, 158];
+    else if (moto) vb = [-24, 40, 300, 254];
+    else if (pose !== 'parado') vb = [-20, 6, 280, 284];
+    const W = Math.round(H * vb[2] / vb[3]);
+
+    const base = moto ? 'translate(110 108) scale(0.8) translate(-120 -120)'
+      : v === 2 ? 'translate(120 96) scale(0.8) translate(-120 -120)'
+      : v === 3 ? 'translate(120 116) scale(0.86) translate(-120 -120)' : '';
+    let tilt = '';
+    if (pose === 'correndo') tilt = 'rotate(8 120 240)';
+    else if (!moto && expr === 'curioso') tilt = 'rotate(-7 120 220)';
+    else if (!moto && expr === 'apressado') tilt = 'rotate(5 120 230)';
+    const pinT = (base + ' ' + tilt).trim();
+    const charT = pose === 'comemorando' ? 'translate(0 -14)' : '';
+
+    const LF = { lid: 'inline', lidD: 'M-20,-22 H20 V-3 H-20 Z', lineD: 'M-14.8,-3 H14.8' };
+    const LAL = { lid: 'inline', lidD: 'M-20,-22 H20 V-1 L-20,-13 Z', lineD: 'M-12,-10.6 L14.6,-2.6' };
+    const LAR = { lid: 'inline', lidD: 'M-20,-22 H20 V-13 L-20,-1 Z', lineD: 'M-14.6,-2.6 L12,-10.6' };
+    const E = (o) => Object.assign({ open: 'inline', lid: 'none', happy: 'none', wink: 'none', px: 2, py: 2, s: 1, lidD: 'M0,0', lineD: 'M0,0' }, o || {});
+    const X = {
+      neutro: [E(), E(), 'repouso', 0.32],
+      sorrindo: [E({ px: 2, py: 1 }), E({ px: 2, py: 1 }), 'sorriso', 0.45],
+      alegre: [E({ open: 'none', happy: 'inline' }), E({ open: 'none', happy: 'inline' }), 'sorriso', 0.5],
+      curioso: [E({ px: 4, py: -2, s: 1.1 }), E(Object.assign({ px: 4, py: -1 }, LF)), 'curioso', 0.32],
+      surpreso: [E({ px: 0, py: 0, s: 1.16 }), E({ px: 0, py: 0, s: 1.16 }), 'O', 0.28],
+      pensativo: [E({ px: -4, py: -6 }), E({ px: -4, py: -6 }), 'hmm', 0.28],
+      apressado: [E(Object.assign({ px: 5, py: 1 }, LAL)), E(Object.assign({ px: 5, py: 1 }, LAR)), 'grit', 0.4],
+      piscadinha: [E({ px: 2, py: 1 }), E({ open: 'none', wink: 'inline' }), 'smirk', 0.42],
+    };
+    const x = X[expr] || X.neutro;
+    const fin = (e, cx, sx) => Object.assign({}, e, {
+      t: 'translate(' + cx + ' 152) scale(' + (e.s * sx) + ' ' + e.s + ')',
+      g1x: e.px + 3.5, g1y: e.py - 4.2, g2x: e.px - 3, g2y: e.py + 4.5,
+    });
+    const eL = fin(x[0], 98, 1);
+    const eR = fin(x[1], 142, tq ? 0.84 : 1);
+
+    const MOUTHS = ['repouso', 'A', 'E', 'O', 'MBP'];
+    const mk = (p.mouth && p.mouth !== 'auto' && MOUTHS.indexOf(p.mouth) > -1) ? p.mouth : x[2];
+    const m = {};
+    ['repouso', 'sorriso', 'A', 'E', 'O', 'MBP', 'curioso', 'hmm', 'grit', 'smirk'].forEach((k) => { m[k] = S(mk === k); });
+
+    const d = {
+      sombra: S(all && body),
+      pack: S(L('mochila') && (tq || layer === 'mochila')),
+      alcas: S(L('mochila')),
+      alcaR: S(!tq || layer === 'mochila'),
+      corpo: S(L('corpo')),
+      capacete: S(L('capacete')),
+      viseira: S(L('viseira')),
+      olhos: S(L('olhos')),
+      boca: S(L('boca')),
+      bracos: S(L('bracos') && body && !moto),
+      pernas: S(L('pernas') && body),
+      moto: S(all && moto && body),
+    };
+    const a = {
+      l1: S(v1 && ['parado', 'acenando', 'apontando'].indexOf(pose) > -1),
+      lBag: S(v1 && pose === 'sacola'),
+      lUp: S(v1 && pose === 'comemorando'),
+      lBack: S(v1 && pose === 'correndo'),
+      r1: S(v1 && ['parado', 'sacola'].indexOf(pose) > -1),
+      rWave: S(v1 && pose === 'acenando'),
+      rPoint: S(v1 && pose === 'apontando'),
+      rUp: S(v1 && pose === 'comemorando'),
+      rFwd: S(v1 && pose === 'correndo'),
+      v2: S(v === 2),
+      v3: S(v === 3),
+    };
+    const g = {
+      v1: S(v1 && pose !== 'correndo' && !moto),
+      run: S(v1 && pose === 'correndo'),
+      v2: S(v === 2),
+    };
+    const fx = {
+      local: S(all),
+      dots: S(expr === 'pensativo'),
+      sweat: S(expr === 'apressado'),
+      spark: S(expr === 'piscadinha'),
+      world: S(all && body),
+      speed: S(expr === 'apressado' && !moto && pose !== 'correndo'),
+      runfx: S(pose === 'correndo'),
+      confetti: S(pose === 'comemorando'),
+    };
+
+    let sh = { cx: 120, cy: 276, rx: 50, ry: 7 };
+    if (v === 2) sh = { cx: 120, cy: 272, rx: 54, ry: 7 };
+    if (v === 3) sh = { cx: 120, cy: 276, rx: 32, ry: 5 };
+    if (pose === 'comemorando') sh = { cx: 120, cy: 276, rx: 36, ry: 5 };
+    if (pose === 'correndo') sh = { cx: 122, cy: 273, rx: 60, ry: 7 };
+    if (moto) sh = { cx: 150, cy: 284, rx: 130, ry: 7 };
+
+    return {
+      vb: vb.join(' '), W, H, label: 'UaiPertim, versão ' + v,
+      pinT, charT, eL, eR, m, d, a, g, fx, sh, cheek: x[3],
+      faceT: tq ? 'translate(15 1)' : '',
+      brimT: tq ? 'translate(7 0)' : '',
+      visorT: tq ? 'translate(6 0)' : '',
+      strapT: tq ? 'translate(6 0)' : '',
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -39,6 +39,7 @@ import { DESTAQUES, DESTAQUE_IDS, DestaqueCard, DestaqueNome } from "./story/des
 import { CAPA_FACIM, CapaFacim, CapaFacimProps, measureCapaFacim } from "./carrossel/CapaFacim";
 import { CapaReel, CapaReelProps, measureCapaReel } from "./covers/CapaReel";
 import { CAPAS_REELS } from "./covers/capasReels";
+import { PRAZER, PertimBocaTeste, PrazerPertim, PrazerPertimCapa } from "./prazer-pertim/PrazerPertim";
 import facim02 from "../carrosseis/facim/02-como-vai-funcionar.json";
 import facim03 from "../carrosseis/facim/03-o-que-vai-ter.json";
 import facim05 from "../carrosseis/facim/05-tem-comercio.json";
@@ -231,6 +232,10 @@ export const RemotionRoot: React.FC = () => (
     {CAPAS_REELS.map((c) => (
       <Composition key={c.id} id={`CapaReel-${c.id}`} component={CapaReel} durationInFrames={1} fps={30} width={1080} height={1920} defaultProps={c} calculateMetadata={capaReelMetadata} />
     ))}
+    {/* Reel de teste "Prazer, Pertim" (o personagem com rig): o vídeo, a capa e o teste da boca (reels/prazer-pertim) */}
+    <Composition id="PrazerPertim" component={PrazerPertim} durationInFrames={PRAZER.duracao} fps={PRAZER.fps} width={1080} height={1920} calculateMetadata={async () => { await fontsReady; return {}; }} />
+    <Still id="PrazerPertim-Capa" component={PrazerPertimCapa} width={1080} height={1920} calculateMetadata={async () => { await fontsReady; return {}; }} />
+    <Composition id="PertimBocaTeste" component={PertimBocaTeste} durationInFrames={PRAZER.bocaTeste} fps={PRAZER.fps} width={1080} height={1080} />
     <Still id="Destaque-Capa" component={DestaqueCapa} width={1080} height={1920} defaultProps={{ icone: "conheca" as const }} />
   </>
 );

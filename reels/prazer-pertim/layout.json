@@ -1,0 +1,16 @@
+{
+  "_doc": "Layout do Reel 'Prazer, Pertim' (1080×1920, 60 fps). Lido pela composição Remotion (src/prazer-pertim/) e pela revisão (reels/prazer-pertim/scripts/qa.py): as mesmas posições nos dois. Personagem: cx = centro, base = pé (y), altura em px; a largura sai do viewBox da pose (moto 300×254, poses 280×284, parado 240×270). Caixas [x0, y0, x1, y1].",
+  "W": 1080, "H": 1920, "fps": 60,
+  "seguro": [80, 265, 940, 1456],
+  "legenda": { "faixa": [112, 1324, 908, 1452], "cx": 510, "base": 1452, "size": 42, "lh": 52, "padX": 28, "padY": 12, "maxW": 740, "minDur": 1.5, "maxPal": 8 },
+  "chao": 1252,
+  "pertim": {
+    "chegada":  { "cx": 540, "base": 1250, "altura": 560, "pose": "moto" },
+    "lojinhas": { "cx": 470, "base": 1250, "altura": 580, "pose": "apontando", "bracoAng": -38 },
+    "sacola":   { "cx": 540, "base": 1250, "altura": 620, "pose": "sacola" },
+    "fecho":    { "cx": 540, "base": 1170, "altura": 540, "pose": "acenando" }
+  },
+  "lojinhas": { "largura": 196, "base": 612, "cx": [215, 510, 805] },
+  "logo": { "cx": 540, "cy": 452, "d": 290 },
+  "chip": { "cx": 540, "cy": 1246, "h": 84, "size": 38 }
+}

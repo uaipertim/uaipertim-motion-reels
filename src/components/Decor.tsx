@@ -38,16 +38,19 @@ export const Sunburst: React.FC<{ frame: number; cx: number; cy: number; color?:
 // Fundo creme padrão com bolinhas e anel decorativo (como nas referências).
 export const CremeBackground: React.FC<{
   frame: number; children?: React.ReactNode; rays?: boolean; raysColor?: string; raysCenter?: [number, number]; raysOpacity?: number;
-}> = ({ frame, children, rays = false, raysColor = C.amarelo, raysCenter = [540, 700], raysOpacity = 0.14 }) => (
+  enfeites?: boolean;   // false: sem as bolinhas e o anel do canto (capas, onde o canto do play fica livre)
+}> = ({ frame, children, rays = false, raysColor = C.amarelo, raysCenter = [540, 700], raysOpacity = 0.14, enfeites = true }) => (
   <AbsoluteFill style={{ background: `radial-gradient(circle at 50% 38%, #FFF8EE 0%, ${C.creme} 55%, #F1E3D0 100%)`, overflow: "hidden" }}>
     {rays && <Sunburst frame={frame} cx={raysCenter[0]} cy={raysCenter[1]} color={raysColor} opacity={raysOpacity} />}
-    <DotGrid cols={5} rows={3} style={{ left: 60, top: 70 }} frame={frame} />
-    <div
-      style={{
-        position: "absolute", right: -170, top: -150, width: 420, height: 420, borderRadius: "50%",
-        border: `5px solid ${C.coral}`, opacity: 0.85,
-      }}
-    />
+    {enfeites && <DotGrid cols={5} rows={3} style={{ left: 60, top: 70 }} frame={frame} />}
+    {enfeites && (
+      <div
+        style={{
+          position: "absolute", right: -170, top: -150, width: 420, height: 420, borderRadius: "50%",
+          border: `5px solid ${C.coral}`, opacity: 0.85,
+        }}
+      />
+    )}
     {children}
   </AbsoluteFill>
 );
