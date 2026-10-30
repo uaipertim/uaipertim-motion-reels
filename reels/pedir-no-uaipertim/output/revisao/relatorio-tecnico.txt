@@ -3,12 +3,12 @@ REVISÃO TÉCNICA — Reel "Pedir no UaiPertim é assim" (uaipertim-pedir-no-uai
 FORMATO
 OK     vídeo h264 High yuv420p
 OK     resolução 1080x1920 (9:16)
-OK     60 fps, 2376 quadros
-OK     duração 39.60 s (pedido: 35–40 s)
-OK     áudio aac 48000 Hz, 2 canais, 271 kb/s
+OK     60 fps, 2382 quadros
+OK     duração 39.70 s (pedido: 35–40 s)
+OK     áudio aac 48000 Hz, 2 canais, 270 kb/s
 OK     vídeo e áudio com a mesma duração (Δ 0 ms)
        arquivo 25.0 MB, 5.0 Mb/s
-       cenas: 1 gancho 0.00–3.91 · 2 inicio 4.81–7.81 · 3 produto 8.71–13.02 · 4 checkout 13.92–19.80 · 5 acompanhar 20.70–28.68 · 6 pontos 29.58–34.30 · 7 fecho 35.20–39.60
+       cenas: 1 gancho 0.00–4.01 · 2 inicio 4.91–7.91 · 3 produto 8.81–13.12 · 4 checkout 14.02–19.90 · 5 acompanhar 20.80–28.78 · 6 pontos 29.68–34.40 · 7 fecho 35.30–39.70
 
 SOM
 OK     loudness integrado -14.1 LUFS (alvo −14)
@@ -18,38 +18,40 @@ OK     a trilha 12.8 dB abaixo da voz (a voz na frente: 9–16 dB)
 
 VOZ (Victor Pinho, perfil "narracao", uma geração inteira por cena, nada emendado)
        Victor Pinho (LuQ9eaWO9yCQrR73VQFa) · eleven_v4 · ajustes {"stability": 0.5, "similarity_boost": 0.75}
-OK     cena 1: "Bateu aquela fome? Ó, pedir no UaiPertim é assim:" · 3.66 s contínuos da geração com seed 42 (íntegra: sim; dif. 0.000029) · narracao eleven_v4
+OK     cena 1: "Bateu aquela fome? Ó, pedir no UaiPertim é assim:" · 3.76 s contínuos da geração com seed 42 (íntegra: sim; dif. 0.000027) · narracao eleven_v4
 OK     cena 2: "Abre, escolhe o que quer..." · 2.00 s contínuos da geração com seed 42 (íntegra: sim; dif. 0.000031) · narracao eleven_v4
 OK     cena 3: "...monta o lanche do seu jeito. Com bacon, claro." · 3.36 s contínuos da geração com seed 42 (íntegra: sim; dif. 0.000028) · narracao eleven_v4
 OK     cena 4: "Paga pelo app, no Pix ou no cartão, ou na entrega, do jeito que preferir." · 5.18 s contínuos da geração com seed 42 (íntegra: sim; dif. 0.000029) · narracao eleven_v4
 OK     cena 5: "Aí é só acompanhar: a loja aceita, prepara e sai pra entrega. Sem ficar esperando resposta no WhatsApp." · 7.28 s contínuos da geração com seed 42 (íntegra: sim; dif. 0.000028) · narracao eleven_v4
 OK     cena 6: "E cada pedido ainda rende pão de queijo... em pontos!" · 3.92 s contínuos da geração com seed 42 (íntegra: sim; dif. 0.000029) · narracao eleven_v4
-OK     cena 7: "UaiPertim. Tá chegando no Glória!" · 2.64 s contínuos da geração com seed 42 (íntegra: sim; dif. 0.000028) · narracao eleven_v4
+OK     cena 7: "UaiPertim. Tá chegando no Glória!" · 2.72 s contínuos da geração com seed 42 (íntegra: sim; dif. 0.000031) · narracao eleven_v4
+OK     fala 1: é o take aprovado f1-E-uaipertim-acento-no-e-junto.mp3 (hash do MP3 confere; cap-00.wav igual ao MP3 decodificado: sim; envelope no MP4 final: 97% com o take aprovado × 57% com a geração anterior)
+OK     fala 7: é o take aprovado f7-E-uaipertim-acento-no-e-junto.mp3 (hash do MP3 confere; cap-06.wav igual ao MP3 decodificado: sim; envelope no MP4 final: 97% com o take aprovado × 36% com a geração anterior)
 OK     "UaiPertim" (na tela e na legenda) enviado à voz como "UaiPértim" nas falas 1 e 7 (a grafia E, aprovada no teste A/B)
 OK     "no Glória" (nunca "de Glória")
 
 PAGAMENTO HÍBRIDO (Pix, cartão, na entrega)
-OK     "opcao-pix" salta do Checkout-pix em 15.75 s, na palavra "pix" (15.75 s)
-OK     "opcao-cartao" salta do Checkout-pix em 16.55 s, na palavra "cartao" (16.55 s)
-OK     "opcao-pagar-na-entrega" salta do Checkout-pix em 17.43 s, na palavra "entrega" (17.43 s)
+OK     "opcao-pix" salta do Checkout-pix em 15.85 s, na palavra "pix" (15.85 s)
+OK     "opcao-cartao" salta do Checkout-pix em 16.65 s, na palavra "cartao" (16.65 s)
+OK     "opcao-pagar-na-entrega" salta do Checkout-pix em 17.53 s, na palavra "entrega" (17.53 s)
 OK     a ordem: Pix → cartão → na entrega → o Pix marcado → "Fazer pedido"
-OK     a nota e a maquininha entram em "na entrega" (17.63 e 17.88 s)
+OK     a nota e a maquininha entram em "na entrega" (17.73 e 17.98 s)
 OK     o celular mostra o Checkout-pix com as três opções na tela (rolagem 300 px de CSS: y 366–678 visível)
-       17.05 s: na tela pix, cartao · marcada(s): pix
-       17.93 s: na tela pix, cartao, entrega · marcada(s): pix
-       18.38 s: na tela pix, cartao, entrega · marcada(s): pix
-       18.98 s: na tela pix, cartao, entrega · marcada(s): nenhuma
-       19.53 s: na tela pix · marcada(s): pix
-       19.65 s: na tela pix · marcada(s): pix
-OK     nunca duas opções marcadas: nas 6 amostras, só o Pix aparece marcado (o "Pagar na entrega" do pacote anterior vem marcado e aparece desmarcado, como no Checkout-pix; em 18.98 s a luva do toque cobre o rádio do Pix)
+       17.15 s: na tela pix, cartao · marcada(s): pix
+       18.03 s: na tela pix, cartao, entrega · marcada(s): pix
+       18.48 s: na tela pix, cartao, entrega · marcada(s): pix
+       19.08 s: na tela pix, cartao, entrega · marcada(s): nenhuma
+       19.63 s: na tela pix · marcada(s): pix
+       19.75 s: na tela pix · marcada(s): pix
+OK     nunca duas opções marcadas: nas 6 amostras, só o Pix aparece marcado (o "Pagar na entrega" do pacote anterior vem marcado e aparece desmarcado, como no Checkout-pix; em 19.08 s a luva do toque cobre o rádio do Pix)
 OK     o Pix termina marcado (depois do toque em "preferir", até o "Fazer pedido")
 OK     a camada que desmarca o "Pagar na entrega" está na composição
 
 O PERTIM (olhar na câmera, boca e piscadas)
-OK     olhar na câmera (pupilas centradas) em 100% dos 1654 quadros de fala, sem nenhum desvio (o rig de todos os Pertins da composição usa olhar [0, 0] com "centro")
-OK     boca pelos visemas: 2376 quadros, 172 trocas, a mais curta com 2 quadros (mínimo 2)
+OK     olhar na câmera (pupilas centradas) em 100% dos 1660 quadros de fala, sem nenhum desvio (o rig de todos os Pertins da composição usa olhar [0, 0] com "centro")
+OK     boca pelos visemas: 2382 quadros, 171 trocas, a mais curta com 2 quadros (mínimo 2)
 OK     fora da fala, a boca é a da expressão
-OK     a boca M/B/P só nos quadros de m/b/p (147 quadros; entre dois m/b/p seguidos, numa pausa curta, os lábios seguem fechados)
+OK     a boca M/B/P só nos quadros de m/b/p (143 quadros; entre dois m/b/p seguidos, numa pausa curta, os lábios seguem fechados)
 OK     a boca fecha em M no fim de cada "UaiPertim" (2 de 2)
 OK     12 piscadas, nenhuma com a boca aberta (A/O)
 
@@ -62,20 +64,20 @@ OK     nunca dois blocos ao mesmo tempo
 OK     as pílulas da legenda dentro da área segura (x 115–905, y 1336–1456)
 OK     a legenda não cobre o Pertim (os pés em y 1320; a pílula começa em y 1336)
 OK     o chip "Segue @uaipertim" (x 295–785, y 768–859) nunca sobreposto à legenda (y ≥ 1336)
-OK     o chip dentro da área segura, 2.74 s na tela (≥ 1,5 s)
+OK     o chip dentro da área segura, 2.68 s na tela (≥ 1,5 s)
 OK     o selo "Imagens ilustrativas" em x 100–376, y 292–330: dentro da área segura e fora da coluna dos botões (x > 860)
 OK     o selo é a última camada da composição (nada o cobre)
 OK     o selo aparece em todos os 9 quadros amostrados do vídeo (texto escuro: 16–17% da caixa)
-OK     "BATEU A FOME?" fica 3.39 s na tela (≥ 1,5 s)
+OK     "BATEU A FOME?" fica 3.56 s na tela (≥ 1,5 s)
 OK     "CHEGA ATÉ 20h35" fica 2.85 s na tela (≥ 1,5 s)
 OK     "TOTAL R$ 70,80" fica 5.23 s na tela (≥ 1,5 s)
 OK     "+20" fica 2.97 s na tela (≥ 1,5 s)
-OK     "Tá chegando no Glória" fica 2.99 s na tela (≥ 1,5 s)
+OK     "Tá chegando no Glória" fica 2.93 s na tela (≥ 1,5 s)
 
 TROCAS, GANCHO E FECHO
 OK     trocas de cena todas diferentes: giro > zoom > chicote > faixa > empurra > iris
-OK     gancho: a motinha já entra desde o quadro 0 (mudança média a cada 0,1 s: 11.38–13.40)
-OK     a logo (selo) parada desde 36.40 s, nos 3 últimos segundos (8 amostras: centro e bordas da área coral variam no máximo 0.04 px, a área 0.03%)
+OK     gancho: a motinha já entra desde o quadro 0 (mudança média a cada 0,1 s: 11.38–13.27)
+OK     a logo (selo) parada desde 36.50 s, nos 3 últimos segundos (8 amostras: centro e bordas da área coral variam no máximo 0.06 px, a área 0.03%)
 OK     mapa de tempos de linha.py (35–40 s, fecho 4–6 s, logo nos 3 últimos s)
 
 RESULTADO: aprovado

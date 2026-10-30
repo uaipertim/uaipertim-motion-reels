@@ -9,7 +9,8 @@ dados/{cena,visemas,legenda}.json, fonte/pontos.json) e escreve output/revisao/r
   • formato: h264 yuv420p 1080×1920 a 60 fps, 35–40 s, AAC 48 kHz estéreo, vídeo e áudio com a mesma duração;
   • som: −14 LUFS integrados (±0,5), pico real ≤ −1 dBTP, a voz na frente da trilha animada;
   • voz: o roteiro exato, perfil "narracao" (eleven_v4), "UaiPertim" enviado como "UaiPértim" (a grafia aprovada no teste
-    A/B), cada cena UMA geração inteira colocada sem cortes, "no Glória";
+    A/B), cada cena UMA geração inteira colocada sem cortes, "no Glória"; a fala 1 e a fala 7 são EXATAMENTE os takes
+    aprovados de ouvido (hash do MP3, o WAV igual ao MP3 decodificado e o envelope no MP4 final);
   • pagamento híbrido: as três opções (Pix, cartão, na entrega) saltam do Checkout-pix cada uma na sua palavra, e nunca há
     duas opções marcadas ao mesmo tempo (pelos pixels do vídeo: o rádio de cada recorte, a cada amostra);
   • o Pertim fala sempre olhando para a câmera (pupilas centradas em todos os quadros de fala); boca pelos visemas
@@ -147,6 +148,41 @@ for c in LN['colocacao']:
     ok(sha_ok and dif < 2e-4 and F['texto'] == ROTEIRO[c['cap']] and F.get('perfil') == 'narracao' and F.get('modelo') == 'eleven_v4',
        f'cena {c["cap"] + 1}: "{F["texto"]}" · {c["ate_s"] - c["de_s"]:.2f} s contínuos da geração com seed {F["seed"]} '
        f'(íntegra: {"sim" if sha_ok else "NÃO"}; dif. {dif:.6f}) · {F.get("perfil")} {F.get("modelo")}')
+# os takes APROVADOS de ouvido (teste A/B): a fala 1 e a fala 7 do vídeo são exatamente esses arquivos
+TESTE = os.path.join(REEL, 'teste-pronuncia')
+AMOS = {a_['arquivo']: a_ for a_ in json.load(open(os.path.join(TESTE, 'amostras.json')))['amostras']}
+mix = np.frombuffer(subprocess.run(['ffmpeg', '-v', 'error', '-i', VIDEO, '-f', 's16le', '-ac', '1', '-ar', '44100', '-'], capture_output=True).stdout,
+                    np.int16).astype(np.float64) / 32768
+
+
+def envelope(x, sr=44100):
+    from scipy.signal import butter, sosfilt
+    x = sosfilt(butter(4, [300, 3400], 'band', fs=sr, output='sos'), x)
+    h = int(0.02 * sr)
+    return np.array([np.sqrt(np.mean(x[i:i + h] ** 2)) for i in range(0, len(x) - h, h)])
+
+
+for key, arq in (('00', 'f1-E-uaipertim-acento-no-e-junto.mp3'), ('06', 'f7-E-uaipertim-acento-no-e-junto.mp3')):
+    F = FALAS['capitulos'][key]
+    mp3 = open(os.path.join(TESTE, arq), 'rb').read()
+    hash_ok = hashlib.sha1(mp3).hexdigest() == AMOS[arq]['sha1_mp3'] == F.get('origem', {}).get('sha1_mp3')
+    dec = np.frombuffer(subprocess.run(['ffmpeg', '-v', 'error', '-i', os.path.join(TESTE, arq), '-f', 's16le', '-ac', '1', '-ar', '44100', '-'], capture_output=True).stdout, np.int16)
+    _, cap = wavfile.read(os.path.join(AUD, 'voz', f'cap-{key}.wav'))
+    igual = len(dec) == len(cap) and int(np.abs(dec.astype(int) - cap.astype(int)).max()) == 0
+    c = next(x for x in LN['colocacao'] if x['cap'] == int(key))
+    i0 = int(round(c['no_video_s'] * 44100))
+    take = dec[int(round(c['de_s'] * 44100)):int(round(c['ate_s'] * 44100))].astype(np.float64) / 32768
+    no_video = mix[i0:i0 + len(take)]
+    ea, eb = envelope(take), envelope(no_video)
+    n_ = min(len(ea), len(eb))
+    r_ap = float(np.corrcoef(ea[:n_], eb[:n_])[0, 1])
+    _, ref = wavfile.read(os.path.join(AUD, 'voz', f'ref-alinhamento-cap-{key}.wav'))
+    er = envelope(ref.astype(np.float64)[int(round(c['de_s'] * 44100)):int(round(c['ate_s'] * 44100))] / 32768)
+    n2 = min(len(er), len(eb))
+    r_ref = float(np.corrcoef(er[:n2], eb[:n2])[0, 1])
+    ok(F.get('aprovado') and hash_ok and igual and r_ap >= 0.85 and r_ap > r_ref + 0.1,
+       f'fala {int(key) + 1}: é o take aprovado {arq} (hash do MP3 {"confere" if hash_ok else "NÃO confere"}; cap-{key}.wav igual ao MP3 decodificado: '
+       f'{"sim" if igual else "NÃO"}; envelope no MP4 final: {r_ap * 100:.0f}% com o take aprovado × {r_ref * 100:.0f}% com a geração anterior)')
 todos = ' '.join(ROTEIRO)
 api = ' '.join(FALAS['capitulos'][f'{n:02d}']['texto_api'] for n in range(len(ROTEIRO)))
 ok(api.count('UaiPértim') == 2 and 'UaiPertim' not in api and all('UaiPertim' in ROTEIRO[n] for n in (0, 6)),

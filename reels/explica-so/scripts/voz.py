@@ -165,6 +165,14 @@ def gerar(refaz):
         avisa_break(texto, PERFIL, f'(capítulo {key})')
         api = pron(c, texto)
         atual = D['capitulos'].get(key)
+        # uma fala APROVADA de ouvido (o take exato que o cliente ouviu, "aprovado": true em falas.json) nunca é gerada de
+        # novo, nem com --refaz: o vídeo usa o arquivo aprovado. Se o texto dela mudou, para e pede outra aprovação
+        if atual and atual.get('aprovado'):
+            if atual['texto'] != texto or atual.get('texto_api') != api:
+                raise SystemExit(f'capítulo {key}: a fala aprovada ("{atual["texto_api"]}") não bate com o roteiro ("{api}"); '
+                                 'não gero de novo um áudio aprovado: confirme com o cliente')
+            print(f'  cap {key}: aprovado de ouvido ({atual["origem"]["arquivo"]}): fica como está')
+            continue
         # o capítulo já gerado vale se o texto, a grafia enviada e o perfil forem os mesmos (sem "perfil" = gerado antes
         # dos perfis, com a configuração que hoje é a do "pausas")
         if (atual and atual['texto'] == texto and atual.get('texto_api') == api and atual.get('perfil', 'pausas') == PERFIL

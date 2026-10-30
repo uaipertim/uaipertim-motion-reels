@@ -1,6 +1,6 @@
 # Reel "Pedir no UaiPertim é assim" (Instagram @uaipertim)
 
-Primeiro Reel com o app por dentro, narrado pelo Pertim. Formato 9:16, 1080×1920 a 60 fps, com 39,60 s. Composição Remotion: `src/pedir-no-uaipertim/PedirNoUaiPertim.tsx` (efeitos em `efeitos.tsx`).
+Primeiro Reel com o app por dentro, narrado pelo Pertim. Formato 9:16, 1080×1920 a 60 fps, com 39,70 s. Composição Remotion: `src/pedir-no-uaipertim/PedirNoUaiPertim.tsx` (efeitos em `efeitos.tsx`).
 
 As telas, os recortes, as fotos e a logo vêm do pacote `telas-reel-uaipertim.zip` e do complemento `complemento-pagamento.zip` (Checkout-pix, Acompanhar-pix, opcao-pix, opcao-cartao, acompanhar-etapas-pix). As que o Reel usa estão em `public/pedir-no-uaipertim/`. Os LEIA-ME e os pontos (posição de cada recorte, em px de CSS × 3) estão em `fonte/`: `pontos.json` e `pontos-pagamento.json`, que vale por cima e traz também o "Pagar na entrega" e o "Fazer pedido" medidos no Checkout-pix.
 
@@ -36,6 +36,8 @@ A voz e a mixagem vêm do pipeline do Explica, Sô! (`reels/explica-so/episodios
 
 - **Voz:** Victor Pinho, perfil "narracao" (eleven_v4). Cada fala é uma geração inteira.
 - **Pronúncia:** "UaiPertim" vai para a voz como "UaiPértim" nas falas 1 e 7 (opção E do teste A/B em `teste-pronuncia/`, aprovada; campo `pronuncia` das falas no JSON do episódio). Na tela continua "UaiPertim".
+- **Takes aprovados de ouvido:** a fala 1 e a fala 7 do vídeo são EXATAMENTE os arquivos aprovados no teste (`teste-pronuncia/f1-E-…mp3` e `f7-E-…mp3`), convertidos por `scripts/usar_aprovados.py` sem gerar a voz de novo. O alinhamento por letra vem por DTW (MFCC + energia) da geração anterior da mesma fala, guardada em `voz/ref-alinhamento-cap-XX.wav`. Em `falas.json` elas ficam com `"aprovado": true`, e `voz.py` nunca gera de novo uma fala aprovada, nem com `--refaz`. O QA confere o hash, o WAV igual ao MP3 decodificado e o envelope no MP4 final.
+- **Regra:** depois que um áudio é aprovado de ouvido, ele não é gerado de novo. O vídeo usa o arquivo aprovado.
 - **Trilha:** a animada (Tudo Pertim) com os efeitos de `cues.json`.
 - **Volume:** −14 LUFS e pico real ≤ −1 dBTP.
 
@@ -44,7 +46,8 @@ A chave do ElevenLabs nunca fica no repositório.
 ## Como refazer
 
 ```bash
-python3 reels/explica-so/scripts/voz.py pedir-no-uaipertim     # a voz (só as falas que faltam; usa a API)
+python3 reels/explica-so/scripts/voz.py pedir-no-uaipertim     # a voz (só as falas que faltam; usa a API; nunca as aprovadas)
+python3 reels/pedir-no-uaipertim/scripts/usar_aprovados.py     # as falas 1 e 7 = os takes aprovados no teste (sem API)
 python3 reels/explica-so/scripts/linha.py pedir-no-uaipertim   # as cenas e as palavras no tempo do vídeo
 python3 reels/pedir-no-uaipertim/scripts/preparar.py           # dados/ (cena, visemas, legenda) + cues.json
 python3 reels/explica-so/scripts/audio.py pedir-no-uaipertim   # mix.wav
