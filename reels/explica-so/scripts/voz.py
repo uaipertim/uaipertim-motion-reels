@@ -173,11 +173,13 @@ def gerar(refaz):
         prev = pron(caps[n - 1], texto_cap(caps[n - 1])) if n else None
         nxt = pron(caps[n + 1], texto_cap(caps[n + 1])) if n + 1 < len(caps) else None
         hist = atual['historico'] if atual and atual['texto'] == texto else []
-        seed = c.get('seed', SEED0) + 1000 * len(hist)
+        # a seed conta só as tentativas com ESTA grafia enviada: uma grafia nova (escolhida num teste com a seed 42)
+        # recomeça da seed de partida; o histórico das grafias anteriores fica registrado
+        seed = c.get('seed', SEED0) + 1000 * sum(1 for h in hist if h.get('texto_api') == api)
         for k in range(TENTATIVAS):
             x, al, fmt = tts(api, prev, nxt, seed)
             ok, motivo, num = confere(x, al, api)
-            hist.append({'seed': seed, 'formato': fmt, 'resultado': motivo, **num, 'quando': time.strftime('%Y-%m-%d %H:%M')})
+            hist.append({'seed': seed, 'texto_api': api, 'formato': fmt, 'resultado': motivo, **num, 'quando': time.strftime('%Y-%m-%d %H:%M')})
             print(f'  cap {key}: seed {seed} · {motivo} · {num["fala_s"]} s · {num["ritmo_letras_s"]} letras/s · maior pausa {num["maior_pausa_s"]} s')
             if ok:
                 break

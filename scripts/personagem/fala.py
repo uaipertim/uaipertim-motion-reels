@@ -84,7 +84,9 @@ def visemas(caps, falas, fps, nq):
                 j += 1
             if j - q < 2:
                 if bocas[q] == 'M' and j < nq:
-                    bocas[j] = 'M'
+                    bocas[j] = 'M'                # o M ganha o quadro seguinte e a corrida segue DEPOIS dele (sem
+                    q, mudou = j + 1, True        # reavaliar o quadro ganho, que alastraria o M quadro a quadro)
+                    continue
                 elif q > 0 and bocas[q - 1] != 'M':
                     for k in range(q, j):
                         bocas[k] = bocas[q - 1]

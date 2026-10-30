@@ -1,5 +1,5 @@
 {
-  "_doc": "Layout do Reel 'Pedir no UaiPertim é assim' (1080×1920, 60 fps). Lido pela composição Remotion (src/pedir-no-uaipertim/), por scripts/preparar.py e pela revisão (scripts/qa.py). Pertim: cx, base (pé da caixa do desenho, y) e altura da caixa; 'visivel' = frações medidas no SVG (x a partir do centro, y a partir do topo da caixa). Celular: caixa externa; a tela tem 390 px de CSS de largura (as PNGs são 3×) e o 'escala' é px da tela por px de CSS. 'proibido' = faixas de cada tela (px de CSS) que NUNCA aparecem (Pix e cartão on-line no Checkout).",
+  "_doc": "Layout do Reel 'Pedir no UaiPertim é assim' (1080×1920, 60 fps). Lido pela composição Remotion (src/pedir-no-uaipertim/), por scripts/preparar.py e pela revisão (scripts/qa.py). Pertim: cx, base (pé da caixa do desenho, y) e altura da caixa; 'visivel' = frações medidas no SVG (x a partir do centro, y a partir do topo da caixa). Celular: caixa externa; a tela tem 390 px de CSS de largura (as PNGs são 3×) e o 'escala' é px da tela por px de CSS. 'pagamento' = onde as três opções do Checkout-pix (Pix, cartão, na entrega) param quando saltam, uma por vez.",
   "W": 1080, "H": 1920, "fps": 60,
   "seguro": [80, 265, 940, 1456],
   "legenda": { "faixa": [112, 1336, 908, 1456], "cx": 510, "base": 1456, "size": 42, "lh": 50, "padX": 28, "padY": 10, "maxW": 740, "minDur": 1.5, "maxPal": 8 },
@@ -18,7 +18,7 @@
     "fecho":    { "cx": 540, "base": 1352, "altura": 600, "pose": "acenando" }
   },
   "celular": { "x": 430, "y": 288, "w": 500, "h": 1030, "telaCss": 390 },
-  "proibido": { "Checkout": [[363, 527]] },
+  "pagamento": { "pix": { "x": 400, "y": 285, "w": 540 }, "cartao": { "x": 400, "y": 520, "w": 540 }, "entrega": { "x": 400, "y": 652, "w": 540 }, "notas": [[520, 860], [745, 860]] },
   "selo": { "_doc": "canto superior esquerdo da pílula; dentro da área segura e fora da coluna dos botões do Instagram (à direita)", "x": 100, "y": 292, "size": 22 },
   "fome": { "cx": 540, "cy": 440 },
   "sacola": { "cx": 250, "cy": 700, "w": 270 },

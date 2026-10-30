@@ -1,0 +1,136 @@
+{
+ "voz": "Victor Pinho",
+ "voice_id": "LuQ9eaWO9yCQrR73VQFa",
+ "amostras": [
+  {
+   "arquivo": "f1-A-uaipertim-atual.mp3",
+   "fala": "f1",
+   "grafia": "UaiPertim",
+   "texto_api": "Bateu aquela fome? Ó, pedir no UaiPertim é assim:",
+   "seed": 42,
+   "modelo": "eleven_v4",
+   "ajustes": {
+    "stability": 0.5,
+    "similarity_boost": 0.75
+   },
+   "sha1_mp3": "5dc253f781bacfc983f734a856764b1b16639515"
+  },
+  {
+   "arquivo": "f1-B-uai-pertim-acento-no-e.mp3",
+   "fala": "f1",
+   "grafia": "Uai Pértim",
+   "texto_api": "Bateu aquela fome? Ó, pedir no Uai Pértim é assim:",
+   "seed": 42,
+   "modelo": "eleven_v4",
+   "ajustes": {
+    "stability": 0.5,
+    "similarity_boost": 0.75
+   },
+   "sha1_mp3": "378d38e995e66f64ba30c8e56af0a78016232434"
+  },
+  {
+   "arquivo": "f1-C-uai-pertim-acento-no-i.mp3",
+   "fala": "f1",
+   "grafia": "Uai pertím",
+   "texto_api": "Bateu aquela fome? Ó, pedir no Uai pertím é assim:",
+   "seed": 42,
+   "modelo": "eleven_v4",
+   "ajustes": {
+    "stability": 0.5,
+    "similarity_boost": 0.75
+   },
+   "sha1_mp3": "f568ff6741b8fcec2304b679257a062d7268f14c"
+  },
+  {
+   "arquivo": "f1-D-uai-pertim-separado.mp3",
+   "fala": "f1",
+   "grafia": "Uai Pertim",
+   "texto_api": "Bateu aquela fome? Ó, pedir no Uai Pertim é assim:",
+   "seed": 42,
+   "modelo": "eleven_v4",
+   "ajustes": {
+    "stability": 0.5,
+    "similarity_boost": 0.75
+   },
+   "sha1_mp3": "06bc44048e40f04f0c1262b27e0232903807b79b"
+  },
+  {
+   "arquivo": "f1-E-uaipertim-acento-no-e-junto.mp3",
+   "fala": "f1",
+   "grafia": "UaiPértim",
+   "texto_api": "Bateu aquela fome? Ó, pedir no UaiPértim é assim:",
+   "seed": 42,
+   "modelo": "eleven_v4",
+   "ajustes": {
+    "stability": 0.5,
+    "similarity_boost": 0.75
+   },
+   "sha1_mp3": "3323e88ac7091c7bda961faacb7b3956488023d0"
+  },
+  {
+   "arquivo": "f7-A-uaipertim-atual.mp3",
+   "fala": "f7",
+   "grafia": "UaiPertim",
+   "texto_api": "UaiPertim. Tá chegando no Glória!",
+   "seed": 42,
+   "modelo": "eleven_v4",
+   "ajustes": {
+    "stability": 0.5,
+    "similarity_boost": 0.75
+   },
+   "sha1_mp3": "cbbb73fdebe20ee27eac1771aacb812bdbc653da"
+  },
+  {
+   "arquivo": "f7-B-uai-pertim-acento-no-e.mp3",
+   "fala": "f7",
+   "grafia": "Uai Pértim",
+   "texto_api": "Uai Pértim. Tá chegando no Glória!",
+   "seed": 42,
+   "modelo": "eleven_v4",
+   "ajustes": {
+    "stability": 0.5,
+    "similarity_boost": 0.75
+   },
+   "sha1_mp3": "a30530188c603676c489a5d74a3d63cc40c7172b"
+  },
+  {
+   "arquivo": "f7-C-uai-pertim-acento-no-i.mp3",
+   "fala": "f7",
+   "grafia": "Uai pertím",
+   "texto_api": "Uai pertím. Tá chegando no Glória!",
+   "seed": 42,
+   "modelo": "eleven_v4",
+   "ajustes": {
+    "stability": 0.5,
+    "similarity_boost": 0.75
+   },
+   "sha1_mp3": "3b8242a95f39cc7fa6483cc67e53a7794e75aa35"
+  },
+  {
+   "arquivo": "f7-D-uai-pertim-separado.mp3",
+   "fala": "f7",
+   "grafia": "Uai Pertim",
+   "texto_api": "Uai Pertim. Tá chegando no Glória!",
+   "seed": 42,
+   "modelo": "eleven_v4",
+   "ajustes": {
+    "stability": 0.5,
+    "similarity_boost": 0.75
+   },
+   "sha1_mp3": "817d14443c676948a301ec6411427b449ba8b664"
+  },
+  {
+   "arquivo": "f7-E-uaipertim-acento-no-e-junto.mp3",
+   "fala": "f7",
+   "grafia": "UaiPértim",
+   "texto_api": "UaiPértim. Tá chegando no Glória!",
+   "seed": 42,
+   "modelo": "eleven_v4",
+   "ajustes": {
+    "stability": 0.5,
+    "similarity_boost": 0.75
+   },
+   "sha1_mp3": "a25d2576d299fd3702c3c8a40de26b857cb9897b"
+  }
+ ]
+}

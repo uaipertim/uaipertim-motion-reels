@@ -1,0 +1,39 @@
+{
+ "opcao-pix": {
+  "tela": "Checkout-pix",
+  "x": 20,
+  "y": 366,
+  "w": 350,
+  "h": 142
+ },
+ "opcao-cartao": {
+  "tela": "Checkout-pix",
+  "x": 20,
+  "y": 518,
+  "w": 350,
+  "h": 74
+ },
+ "acompanhar-etapas-pix": {
+  "tela": "Acompanhar-pix",
+  "x": 20,
+  "y": 354,
+  "w": 350,
+  "h": 228
+ },
+ "opcao-pagar-na-entrega": {
+  "tela": "Checkout-pix",
+  "x": 20,
+  "y": 602,
+  "w": 350,
+  "h": 76,
+  "_medido": "medido na PNG do Checkout-pix (borda do card em y 1806 da imagem); o recorte é o do pacote anterior"
+ },
+ "botao-fazer-pedido": {
+  "tela": "Checkout-pix",
+  "x": 16,
+  "y": 1344,
+  "w": 358,
+  "h": 56,
+  "_medido": "o rodapé do Checkout-pix é igual ao do Checkout (pixel a pixel)"
+ }
+}

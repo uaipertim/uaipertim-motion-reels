@@ -17,6 +17,7 @@ import CENA from "../../reels/pedir-no-uaipertim/dados/cena.json";
 import VISEMAS from "../../reels/pedir-no-uaipertim/dados/visemas.json";
 import LEGENDA from "../../reels/pedir-no-uaipertim/dados/legenda.json";
 import PONTOS from "../../reels/pedir-no-uaipertim/fonte/pontos.json";
+import PONTOS_PAG from "../../reels/pedir-no-uaipertim/fonte/pontos-pagamento.json";
 
 // REEL "PEDIR NO UAIPERTIM É ASSIM" (1080×1920, 60 fps): o app por dentro, narrado pelo Pertim (que fala sempre olhando
 // para a câmera, com a boca pelos visemas da voz). A voz e a mixagem vêm do pipeline do Explica, Sô!
@@ -27,9 +28,11 @@ import PONTOS from "../../reels/pedir-no-uaipertim/fonte/pontos.json";
 //   2 início: o celular entra girando (Main); as fotos das categorias saem voando como adesivos; toque em Lanches;
 //   3 loja e produto: a capa do Burger do Glória dá zoom; a foto do Smash Duplo salta; o bacon marca com um pop;
 //     o "Adicionar" voa para dentro da sacola;
-//   4 sacola e checkout: os 3 itens caem na sacola quicando, o total sobe até R$ 70,80; toque em "Pagar na entrega"
-//     (ripple) e em "Fazer pedido" (confete). Pix e cartão on-line NUNCA aparecem (layout.json → proibido);
-//   5 acompanhar: as etapas marcam uma por vez ("plim"); o Pertim cruza a tela de moto; carimbo "CHEGA ATÉ 20h35";
+//   4 sacola e checkout (pagamento híbrido): os 3 itens caem na sacola quicando, o total sobe até R$ 70,80; as três
+//     opções saltam do Checkout-pix uma por vez (Pix → cartão → na entrega, com a nota e a maquininha); o Pix termina
+//     marcado (toque com ripple) e vem o toque em "Fazer pedido" (confete);
+//   5 acompanhar (Acompanhar-pix): as etapas marcam uma por vez ("plim": pagamento confirmado → loja aceitou e
+//     preparou → saiu para entrega); o Pertim cruza a tela de moto; carimbo "CHEGA ATÉ 20h35";
 //   6 Pão de Queijo Points: chuva de pão de queijo; o saldo sobe de 130 para 150 com o "+20"; o cupom desliza;
 //   7 fecho: a logo (selo) + "Tá chegando no Glória" + chip "Segue @uaipertim"; o Pertim acena.
 // As trocas de cena são todas diferentes: giro, zoom, chicote, faixa, empurra e íris (cena.json → trocas).
@@ -39,7 +42,8 @@ const EV = CENA.eventos;
 const FPS = CENA.fps;
 const T = CENA.cenas.map((c) => c.t0);
 const TR = CENA.tr;
-const PT = PONTOS as Record<string, { tela: string; x: number; y: number; w: number; h: number }>;
+// os pontos do pacote de telas + os do complemento de pagamento (Checkout-pix, Acompanhar-pix), que valem por cima
+const PT = { ...PONTOS, ...PONTOS_PAG } as Record<string, { tela: string; x: number; y: number; w: number; h: number }>;
 const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 const tri = (t: number, a: number, b: number, c: number) => interpolate(t, [a, b, c], [0, 1, 0], clamp);
 const entre = (t: number, a: number, b: number) => clamp01((t - a) / (b - a));
@@ -305,25 +309,54 @@ const Nota: React.FC<{ e: number; cx: number; cy: number; tipo: "dinheiro" | "ma
     </div>
   );
 
+// o pagamento híbrido: as três opções saltam do Checkout-pix uma por vez, na palavra de cada uma (Pix → cartão → na
+// entrega, com a nota e a maquininha); em "preferir" o toque marca o Pix, as outras duas voltam para o celular e vem o
+// "Fazer pedido" com confete. O recorte "Pagar na entrega" (do pacote anterior) vem marcado: aqui ele aparece como está
+// no Checkout-pix, desmarcado (contorno claro e rádio vazio por cima)
+const PG = L.pagamento;
+const OPCOES: Array<{ nome: string; t: number; para: { x: number; y: number; w: number }; altura: number; rot: number }> = [
+  { nome: "opcao-pix", t: CK.pix, para: PG.pix, altura: 426, rot: -2 },
+  { nome: "opcao-cartao", t: CK.cartao, para: PG.cartao, altura: 225, rot: 1.5 },
+  { nome: "opcao-pagar-na-entrega", t: CK.entrega, para: PG.entrega, altura: 228, rot: -1 },
+];
 const CenaCheckout: React.FC<{ t: number; quadro: number }> = ({ t, quadro }) => {
   if (t < TRK[2].t0 + TR * 0.5 || t > TRK[3].t0 + TR * 0.5) return null;
-  const pe = caixaDe("opcao-pagar-na-entrega", 531);
-  const pp = entre(t, CK.toque_entrega + 0.05, CK.toque_entrega + 0.45);
-  const radio = tri(t, CK.toque_entrega + 0.1, CK.toque_entrega + 0.25, CK.toque_entrega + 0.7);
+  const volta = entre(t, CK.marca_pix + 0.1, CK.marca_pix + 0.45);
+  const marca = mola(t, CK.marca_pix + 0.05, 0.3, 3);
+  const anel = entre(t, CK.marca_pix, CK.marca_pix + 0.6);
+  const pix = OPCOES[0];
+  const pixRadio: [number, number] = [pix.para.x + (968 * pix.para.w) / 1050, pix.para.y + (114 * pix.para.w) / 1050];
   const fp = centro(caixaDe("botao-fazer-pedido", 578));
   const pulsoBotao = tri(t, CK.toque_pedido, CK.toque_pedido + 0.08, CK.toque_pedido + 0.3);
   return (
     <>
-      <Recorte src="opcao-pagar-na-entrega" de={pe} para={{ x: 290, y: 280, w: 640, h: (640 * 228) / 1050 }} p={pp} rot={2}>
-        {radio > 0 && (
-          <svg viewBox="0 0 1050 228" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", overflow: "visible" }}>
-            <circle cx={975} cy={114} r={40 + 60 * radio} fill="none" stroke={C.amarelo} strokeWidth={10} opacity={radio} />
-          </svg>
-        )}
-      </Recorte>
-      <Nota e={mola(t, CK.dinheiro, 0.35, 2.2)} cx={560} cy={560} tipo="dinheiro" />
-      <Nota e={mola(t, CK.maquininha, 0.35, 2.2)} cx={780} cy={560} tipo="maquininha" />
-      <Toque t={t} t0={CK.toque_entrega} x={centro(pe)[0] + 120} y={centro(pe)[1]} />
+      {OPCOES.map((o, i) => {
+        const p = entre(t, o.t - 0.05, o.t + 0.4);
+        const sai = i === 0 ? 0 : volta;
+        return (
+          <Recorte key={o.nome} src={o.nome} de={caixaDe(o.nome, 300)} para={{ ...o.para, h: (o.para.w * o.altura) / 1050 }} p={p * (1 - 0.7 * sai)} rot={o.rot} opacidade={1 - sai}>
+            {o.nome === "opcao-pagar-na-entrega" && (
+              <svg viewBox="0 0 1050 228" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
+                <rect x={3} y={3} width={1044} height={222} rx={42} fill="none" stroke="#ECE7E1" strokeWidth={7} />
+                <circle cx={971} cy={114} r={40} fill={C.branco} />
+                <circle cx={971} cy={114} r={30} fill="none" stroke="#7B7B7B" strokeWidth={5} />
+              </svg>
+            )}
+            {i === 0 && marca > 0 && (
+              <svg viewBox="0 0 1050 426" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", overflow: "visible" }}>
+                <circle cx={968} cy={114} r={44 + 90 * anel} fill="none" stroke={C.amarelo} strokeWidth={12 * (1 - anel)} opacity={1 - anel} />
+                <g transform={`translate(890 40) scale(${0.5 + 0.5 * marca})`}>
+                  <circle r={34} fill={C.verde} stroke={C.branco} strokeWidth={6} />
+                  <path d="M-14 1 L-4 11 L15 -10" stroke={C.branco} strokeWidth={8} strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                </g>
+              </svg>
+            )}
+          </Recorte>
+        );
+      })}
+      <Nota e={mola(t, CK.dinheiro, 0.35, 2.2) * (1 - volta)} cx={PG.notas[0][0]} cy={PG.notas[0][1]} tipo="dinheiro" />
+      <Nota e={mola(t, CK.maquininha, 0.35, 2.2) * (1 - volta)} cx={PG.notas[1][0]} cy={PG.notas[1][1]} tipo="maquininha" />
+      <Toque t={t} t0={CK.marca_pix} x={pixRadio[0]} y={pixRadio[1]} />
       <Toque t={t} t0={CK.toque_pedido} x={fp[0]} y={fp[1]} />
       {pulsoBotao > 0 && (
         <div style={{ position: "absolute", left: fp[0] - 179 * K * (1 + 0.1 * pulsoBotao), top: fp[1] - 28 * K * (1 + 0.1 * pulsoBotao), width: 358 * K * (1 + 0.1 * pulsoBotao) }}>
@@ -338,13 +371,13 @@ const CenaCheckout: React.FC<{ t: number; quadro: number }> = ({ t, quadro }) =>
 const ETAPAS_Y = [96, 258, 421];
 const CenaAcompanhar: React.FC<{ t: number }> = ({ t }) => {
   if (t < TRK[3].t0 + TR * 0.5 || t > TRK[4].t0 + TR * 0.5) return null;
-  const de = caixaDe("acompanhar-etapas", 0);
+  const de = caixaDe("acompanhar-etapas-pix", 0);
   const para: Caixa = { x: 140, y: 330, w: 680, h: (680 * 687) / 1050 };
   const p = entre(t, AC.etapas, AC.etapas + 0.45);
   const balao = mola(t, AC.balao, 0.35, 2.4) * (1 - entre(t, AC.puf - 0.05, AC.puf));
   return (
     <>
-      <Recorte src="acompanhar-etapas" de={de} para={para} p={p} rot={-2}>
+      <Recorte src="acompanhar-etapas-pix" de={de} para={para} p={p} rot={-2}>
         <svg viewBox="0 0 1050 687" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", overflow: "visible" }}>
           {AC.marcas.map((tm, i) => {
             const m = mola(t, tm, 0.35, 3);

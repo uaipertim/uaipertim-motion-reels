@@ -23,7 +23,10 @@
         "tipo": "gancho"
       },
       "inicio": 0.1,
-      "min": 3.1
+      "min": 3.1,
+      "pronuncia": {
+        "UaiPertim": "UaiPértim"
+      }
     },
     {
       "rotulo": "CENA 2 · início",
@@ -40,7 +43,7 @@
       "diagrama": {
         "tipo": "inicio"
       },
-      "min": 3.6,
+      "min": 3.0,
       "inicio": 0.6
     },
     {
@@ -58,7 +61,7 @@
       "diagrama": {
         "tipo": "produto"
       },
-      "min": 4.6,
+      "min": 4.3,
       "inicio": 0.5
     },
     {
@@ -69,15 +72,14 @@
       ],
       "fala": [
         {
-          "texto": "Paga na entrega, no dinheiro ou na maquininha.",
+          "texto": "Paga pelo app, no Pix ou no cartão, ou na entrega, do jeito que preferir.",
           "apoio": null
         }
       ],
       "diagrama": {
         "tipo": "checkout"
       },
-      "min": 4.6,
-      "inicio": 1.2
+      "inicio": 0.55
     },
     {
       "rotulo": "CENA 5 · acompanhar",
@@ -131,7 +133,11 @@
           "em": "+0.3"
         }
       },
-      "min": 4.4
+      "min": 4.4,
+      "pronuncia": {
+        "UaiPertim": "UaiPértim"
+      }
     }
-  ]
+  ],
+  "_doc_pronuncia": "Grafia escolhida no teste A/B (reels/pedir-no-uaipertim/teste-pronuncia, opção E): 'UaiPertim' vai para a voz como 'UaiPértim' (só o texto enviado; na tela continua 'UaiPertim'). Vale para as falas com 'UaiPertim' deste Reel (1 e 7)."
 }

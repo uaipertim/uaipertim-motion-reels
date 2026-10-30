@@ -8,10 +8,10 @@ Confere o MP4 final (output/uaipertim-pedir-no-uaipertim.mp4) contra os mesmos d
 dados/{cena,visemas,legenda}.json, fonte/pontos.json) e escreve output/revisao/relatorio-tecnico.txt:
   • formato: h264 yuv420p 1080×1920 a 60 fps, 35–40 s, AAC 48 kHz estéreo, vídeo e áudio com a mesma duração;
   • som: −14 LUFS integrados (±0,5), pico real ≤ −1 dBTP, a voz na frente da trilha animada;
-  • voz: o roteiro exato, perfil "narracao" (eleven_v4), "UaiPertim"/"Pertim" sem troca de grafia, cada cena UMA geração
-    inteira colocada sem cortes, "no Glória", nada de Pix nem cartão on-line no texto;
-  • Pix e cartão on-line: a faixa do Checkout com Pix e Cartão (y 1090–1580 da imagem) nunca entra na tela do celular,
-    quadro a quadro (a rolagem da composição), e nenhum recorte usado vem dela;
+  • voz: o roteiro exato, perfil "narracao" (eleven_v4), "UaiPertim" enviado como "UaiPértim" (a grafia aprovada no teste
+    A/B), cada cena UMA geração inteira colocada sem cortes, "no Glória";
+  • pagamento híbrido: as três opções (Pix, cartão, na entrega) saltam do Checkout-pix cada uma na sua palavra, e nunca há
+    duas opções marcadas ao mesmo tempo (pelos pixels do vídeo: o rádio de cada recorte, a cada amostra);
   • o Pertim fala sempre olhando para a câmera (pupilas centradas em todos os quadros de fala); boca pelos visemas
     (≥ 2 quadros, M no fim de cada "Pertim"), piscadas nunca com a boca aberta;
   • legenda: só o texto da tela, até 2 linhas, ≥ 1,5 s, cobre a fala, dentro da área segura, sem cobrir o Pertim, e
@@ -57,7 +57,7 @@ ROTEIRO = [
     'Bateu aquela fome? Ó, pedir no UaiPertim é assim:',
     'Abre, escolhe o que quer...',
     '...monta o lanche do seu jeito. Com bacon, claro.',
-    'Paga na entrega, no dinheiro ou na maquininha.',
+    'Paga pelo app, no Pix ou no cartão, ou na entrega, do jeito que preferir.',
     'Aí é só acompanhar: a loja aceita, prepara e sai pra entrega. Sem ficar esperando resposta no WhatsApp.',
     'E cada pedido ainda rende pão de queijo... em pontos!',
     'UaiPertim. Tá chegando no Glória!',
@@ -149,57 +149,57 @@ for c in LN['colocacao']:
        f'(íntegra: {"sim" if sha_ok else "NÃO"}; dif. {dif:.6f}) · {F.get("perfil")} {F.get("modelo")}')
 todos = ' '.join(ROTEIRO)
 api = ' '.join(FALAS['capitulos'][f'{n:02d}']['texto_api'] for n in range(len(ROTEIRO)))
-ok('UaiPertim' in api and 'Pértim' not in api and 'Uai Pértim' not in api, '"UaiPertim" enviado à voz sem troca de grafia')
+ok(api.count('UaiPértim') == 2 and 'UaiPertim' not in api and all('UaiPertim' in ROTEIRO[n] for n in (0, 6)),
+   '"UaiPertim" (na tela e na legenda) enviado à voz como "UaiPértim" nas falas 1 e 7 (a grafia E, aprovada no teste A/B)')
 ok(not re.search(r'\bde\s+Glória\b', todos, re.I) and re.search(r'\b(no|do)\s+Glória\b', todos), '"no Glória" (nunca "de Glória")')
-ok(not re.search(r'\bpix\b|cart[aã]o de cr[eé]dito|cart[aã]o on-?line|pagamento on-?line', todos, re.I), 'nenhuma menção a Pix nem a cartão on-line na fala (só "Pagar na entrega": dinheiro ou maquininha)')
 
-# ---------------------------------------------------------------- Pix e cartão on-line nunca na tela
-report += ['', 'PIX E CARTÃO ON-LINE (NUNCA EM QUADRO)']
+# ---------------------------------------------------------------- pagamento híbrido (pelo app ou na entrega)
+report += ['', 'PAGAMENTO HÍBRIDO (Pix, cartão, na entrega)']
+CK = EV['checkout']
+PALAVRA = {p_['n']: p_['t0'] for p_ in LN['capitulos'][3]['palavras']}
+for chave, palavra, rec in (('pix', 'pix', 'opcao-pix'), ('cartao', 'cartao', 'opcao-cartao'), ('entrega', 'entrega', 'opcao-pagar-na-entrega')):
+    ok(abs(CK[chave] - PALAVRA[palavra]) < 0.02 and f'nome: "{rec}"' in TSX,
+       f'"{rec}" salta do Checkout-pix em {CK[chave]:.2f} s, na palavra "{palavra}" ({PALAVRA[palavra]:.2f} s)')
+ok(CK['pix'] < CK['cartao'] < CK['entrega'] < CK['marca_pix'] < CK['toque_pedido'], 'a ordem: Pix → cartão → na entrega → o Pix marcado → "Fazer pedido"')
+ok(CK['entrega'] < CK['dinheiro'] < CK['maquininha'] < CK['entrega'] + 1.0, f'a nota e a maquininha entram em "na entrega" ({CK["dinheiro"]:.2f} e {CK["maquininha"]:.2f} s)')
+PASSOS = CENA['celular']
+ck = [p_ for p_ in PASSOS if p_['tela'] == 'Checkout-pix']
 CEL = LAY['celular']
 BZ = CEL['w'] * 0.042
 K = (CEL['w'] - 2 * BZ) / CEL['telaCss']
-VIEW = (CEL['h'] - 2 * BZ) / K                      # a altura da tela do celular, em px de CSS
-PROIB = {nome: [(a_ * 3, b_ * 3) for a_, b_ in faixas] for nome, faixas in LAY['proibido'].items()}
-PROIB_IMG = (1090, 1580)                             # a faixa medida na PNG do Checkout (Pix e Cartão de crédito)
-ok(all(a_ <= PROIB_IMG[0] and b_ >= PROIB_IMG[1] for a_, b_ in PROIB['Checkout']), f'a faixa proibida do layout cobre y {PROIB_IMG[0]}–{PROIB_IMG[1]} da imagem do Checkout ({PROIB["Checkout"]})')
-PASSOS = CENA['celular']
+VIEW = (CEL['h'] - 2 * BZ) / K
+ok(len(ck) == 1 and ck[0]['rola'][0][1] <= 366 and ck[0]['rola'][0][1] + VIEW >= 678, f'o celular mostra o Checkout-pix com as três opções na tela (rolagem {ck[0]["rola"][0][1]} px de CSS: y 366–678 visível)')
+# nunca duas marcadas: o rádio de cada recorte (marcado = o miolo coral), quadro a quadro nas amostras em que eles estão fora
+PG = LAY['pagamento']
+ROT = {'pix': -2, 'cartao': 1.5, 'entrega': -1}
+RADIO = {'pix': (968, 114, 426), 'cartao': (971.5, 113.5, 225), 'entrega': (971, 114, 228)}
 
 
-def inout(x):
-    u = min(1.0, max(0.0, x))
-    return 4 * u ** 3 if u < 0.5 else 1 - (-2 * u + 2) ** 3 / 2
+def radio_marcado(img, k):
+    b = PG[k]; rx, ry, hh = RADIO[k]
+    w_, h_ = b['w'], b['w'] * hh / 1050
+    cx, cy = b['x'] + w_ / 2, b['y'] + h_ / 2
+    dx, dy = (rx - 525) * w_ / 1050, (ry - hh / 2) * w_ / 1050
+    a_ = np.radians(ROT[k])
+    x_, y_ = cx + dx * np.cos(a_) - dy * np.sin(a_), cy + dx * np.sin(a_) + dy * np.cos(a_)
+    jan = img[int(y_) - 5:int(y_) + 6, int(x_) - 5:int(x_) + 6]
+    return float((np.abs(jan - np.array([196, 69, 44])).sum(axis=2) < 90).mean()) > 0.5
 
 
-def rola_em(p, t):
-    r = p['rola']
-    if t <= r[0][0]:
-        return r[0][1]
-    for i in range(1, len(r)):
-        if t <= r[i][0]:
-            return r[i - 1][1] + (r[i][1] - r[i - 1][1]) * inout((t - r[i - 1][0]) / max(1e-6, r[i][0] - r[i - 1][0]))
-    return r[-1][1]
-
-
-vistos, menor, ruins = 0, 1e9, []
-for q in range(CENA['quadros']):
-    t = q / FPS
-    k = max([i for i, p in enumerate(PASSOS) if t >= p['t']], default=0)
-    telas = [(PASSOS[k], rola_em(PASSOS[k], t))]
-    if k > 0 and t < PASSOS[k]['t'] + 0.32:            # na troca de tela, a anterior ainda aparece
-        telas.append((PASSOS[k - 1], rola_em(PASSOS[k - 1], t)))
-    for p, r in telas:
-        if p['tela'] not in PROIB:
-            continue
-        vistos += 1
-        y0, y1 = r * 3, (r + VIEW) * 3                 # o que a tela mostra, em px da imagem
-        menor = min(menor, y0)
-        if any(y0 < b_ and a_ < y1 for a_, b_ in PROIB[p['tela']]):
-            ruins.append(round(t, 2))
-info(f'o Checkout aparece em {vistos} quadros; o topo da tela nunca sobe acima de y {menor:.0f} da imagem (a faixa de Pix e Cartão termina em {PROIB_IMG[1]})')
-ok(vistos > 0 and not ruins, 'a faixa de Pix e Cartão do Checkout nunca entra na tela, quadro a quadro' + (f': aparece em {ruins[:5]}' if ruins else ''))
-REC_USADOS = sorted(set(re.findall(r'src="([a-z0-9-]+)"', TSX)) | set(re.findall(r'recortes/([a-z0-9-]+)\.png', TSX)))
-chk = [r for r in REC_USADOS if r in PONTOS and PONTOS[r]['tela'] == 'Checkout']
-ok(all(PONTOS[r]['y'] * 3 >= PROIB_IMG[1] for r in chk), f'os recortes do Checkout usados ({", ".join(chk)}) ficam abaixo da faixa (Pagar na entrega em y {PONTOS["opcao-pagar-na-entrega"]["y"] * 3})')
+amostras = [(CK['cartao'] + 0.5, ('pix', 'cartao')), (CK['entrega'] + 0.5, ('pix', 'cartao', 'entrega')), (CK['maquininha'] + 0.5, ('pix', 'cartao', 'entrega')),
+            (CK['marca_pix'] - 0.05, ('pix', 'cartao', 'entrega')), (CK['marca_pix'] + 0.5, ('pix',)), (CK['toque_pedido'] + 0.2, ('pix',))]
+duas, fim_pix = [], []
+for t_, quais in amostras:
+    img = quadro(t_)
+    marc = [k for k in quais if radio_marcado(img, k)]
+    info(f'{t_:5.2f} s: na tela {", ".join(quais)} · marcada(s): {", ".join(marc) or "nenhuma"}')
+    if len(marc) > 1 or any(k != 'pix' for k in marc):
+        duas.append(t_)
+    if t_ > CK['marca_pix']:
+        fim_pix.append('pix' in marc)
+ok(not duas, f'nunca duas opções marcadas: nas {len(amostras)} amostras, só o Pix aparece marcado (o "Pagar na entrega" do pacote anterior vem marcado e aparece desmarcado, como no Checkout-pix; em {CK["marca_pix"] - 0.05:.2f} s a luva do toque cobre o rádio do Pix)' + (f': falha em {duas}' if duas else ''))
+ok(fim_pix and all(fim_pix), 'o Pix termina marcado (depois do toque em "preferir", até o "Fazer pedido")')
+ok('opcao-pagar-na-entrega" && (' in TSX and 'stroke="#7B7B7B"' in TSX, 'a camada que desmarca o "Pagar na entrega" está na composição')
 
 # ---------------------------------------------------------------- o Pertim: olhar, boca e piscadas
 report += ['', 'O PERTIM (olhar na câmera, boca e piscadas)']
@@ -221,7 +221,32 @@ while q < len(bocas):
     corridas.append((bocas[q], q, j - q)); q = j
 ok(len(bocas) == CENA['quadros'] and min(c[2] for c in corridas) >= 2, f'boca pelos visemas: {len(bocas)} quadros, {len(corridas) - 1} trocas, a mais curta com {min(c[2] for c in corridas)} quadros (mínimo 2)')
 ok(not [i for i, x in enumerate(bocas) if x != 'R' and not falando[i]], 'fora da fala, a boca é a da expressão')
+# M/B/P só nos quadros de m/b/p (os caracteres que a voz recebeu) e no fim de cada "UaiPertim"
+mbp = np.zeros(len(bocas), bool)
+for c in LN['capitulos']:
+    F = FALAS['capitulos'][f'{c["n"]:02d}']
+    al = F['alinhamento']
+    desl = c['voz_t0'] - F['inicio_da_fala']
+    for ch_, a0, a1 in zip(al['characters'], al['character_start_times_seconds'], al['character_end_times_seconds']):
+        if ch_.lower() in 'mbp':
+            mbp[max(0, int(round((a0 + desl) * FPS)) - 2):int(round((a1 + desl) * FPS)) + 2] = True
 pertins = [w for c in LN['capitulos'] for w in c['palavras'] if fala.norm(w['w']).endswith('pertim')]
+for w in pertins:
+    mbp[max(0, int(round((w['t1'] - fala.FINAL_M) * FPS)) - 2):int(round(w['t1'] * FPS)) + 2] = True
+# os lábios ficam fechados numa pausa curta (< 0,12 s) entre dois m/b/p seguidos ("Com bacon": do m ao b)
+q = 0
+while q < len(mbp):
+    if not mbp[q] and q > 0 and mbp[q - 1]:
+        j = q
+        while j < len(mbp) and not mbp[j]:
+            j += 1
+        if j < len(mbp) and (j - q) / FPS < 0.12:
+            mbp[q:j] = True
+        q = j
+    else:
+        q += 1
+m_fora = [i for i, x in enumerate(bocas) if x == 'M' and not mbp[i]]
+ok(not m_fora, f'a boca M/B/P só nos quadros de m/b/p ({bocas.count("M")} quadros; entre dois m/b/p seguidos, numa pausa curta, os lábios seguem fechados)' + (f': {len(m_fora)} quadros fora' if m_fora else ''))
 fecha = [w['w'] for w in pertins if 'M' in bocas[max(0, int(round(w['t1'] * FPS)) - 5):int(round(w['t1'] * FPS)) + 1]]
 ok(len(fecha) == len(pertins), f'a boca fecha em M no fim de cada "UaiPertim" ({len(fecha)} de {len(pertins)})')
 P = CENA['piscadas']

@@ -1,8 +1,8 @@
 # Reel "Pedir no UaiPertim é assim" (Instagram @uaipertim)
 
-Primeiro Reel com o app por dentro, narrado pelo Pertim. Formato 9:16, 1080×1920 a 60 fps, com 39,37 s. Composição Remotion: `src/pedir-no-uaipertim/PedirNoUaiPertim.tsx` (efeitos em `efeitos.tsx`).
+Primeiro Reel com o app por dentro, narrado pelo Pertim. Formato 9:16, 1080×1920 a 60 fps, com 39,60 s. Composição Remotion: `src/pedir-no-uaipertim/PedirNoUaiPertim.tsx` (efeitos em `efeitos.tsx`).
 
-As telas, os recortes, as fotos e a logo vêm do pacote `telas-reel-uaipertim.zip`. As que o Reel usa estão em `public/pedir-no-uaipertim/`. O LEIA-ME e o `pontos.json` (posição de cada recorte, em px de CSS × 3) estão em `fonte/`.
+As telas, os recortes, as fotos e a logo vêm do pacote `telas-reel-uaipertim.zip` e do complemento `complemento-pagamento.zip` (Checkout-pix, Acompanhar-pix, opcao-pix, opcao-cartao, acompanhar-etapas-pix). As que o Reel usa estão em `public/pedir-no-uaipertim/`. Os LEIA-ME e os pontos (posição de cada recorte, em px de CSS × 3) estão em `fonte/`: `pontos.json` e `pontos-pagamento.json`, que vale por cima e traz também o "Pagar na entrega" e o "Fazer pedido" medidos no Checkout-pix.
 
 ## Roteiro (texto da tela e da legenda)
 
@@ -12,9 +12,9 @@ As telas, os recortes, as fotos e a logo vêm do pacote `telas-reel-uaipertim.zi
    "Abre, escolhe o que quer..."
 3. **Loja e produto:** a capa do Burger do Glória dá zoom; a foto do Smash Duplo salta; o bacon marca com um pop; o "Adicionar" voa para dentro da sacola.
    "...monta o lanche do seu jeito. Com bacon, claro."
-4. **Sacola e checkout:** os 3 itens caem na sacola quicando e o total sobe até R$ 70,80; toque com ripple em "Pagar na entrega" (com a nota e a maquininha); toque em "Fazer pedido" com confete.
-   "Paga na entrega, no dinheiro ou na maquininha."
-5. **Acompanhar:** as etapas marcam uma por vez ("plim"); o Pertim cruza a tela de moto; carimbo "CHEGA ATÉ 20h35"; um balão "digitando…" some num puf.
+4. **Sacola e checkout (pagamento híbrido):** os 3 itens caem na sacola quicando e o total sobe até R$ 70,80. As três opções saltam do Checkout-pix uma por vez, cada uma na sua palavra (Pix → cartão → na entrega, com a nota e a maquininha). Em "preferir", um toque com ripple deixa o Pix marcado e as outras duas voltam. Depois vem o toque em "Fazer pedido" com confete.
+   "Paga pelo app, no Pix ou no cartão, ou na entrega, do jeito que preferir."
+5. **Acompanhar (Acompanhar-pix):** as etapas marcam uma por vez com "plim" (pagamento confirmado → loja aceitou e preparou → saiu para entrega); o Pertim cruza a tela de moto; carimbo "CHEGA ATÉ 20h35"; um balão "digitando…" some num puf.
    "Aí é só acompanhar: a loja aceita, prepara e sai pra entrega. Sem ficar esperando resposta no WhatsApp."
 6. **Pão de Queijo Points:** chuva de pão de queijo; o saldo sobe de 130 para 150 com o "+20"; o cupom desliza.
    "E cada pedido ainda rende pão de queijo... em pontos!"
@@ -25,7 +25,7 @@ As trocas de cena são todas diferentes: giro, zoom, chicote, faixa, empurra e �
 
 ## Regras do Reel
 
-- **Pagamento só "Pagar na entrega".** A PNG do Checkout tem Pix e Cartão de crédito em y 1090–1580. A tela do celular nunca mostra essa faixa: a rolagem do Checkout começa em 531 px de CSS (`layout.json` → `proibido`). O QA confere isso quadro a quadro.
+- **Pagamento híbrido (pelo app ou na entrega):** aparecem as três formas, e nunca duas marcadas ao mesmo tempo. O recorte "Pagar na entrega" do pacote anterior vem marcado, então a composição põe por cima o contorno claro e o rádio vazio do Checkout-pix. O QA confere isso pelos pixels do vídeo.
 - **Olhar na câmera:** o Pertim fala sempre olhando para a câmera, com as pupilas centradas em todos os quadros.
 - **Boca:** sai dos visemas da voz (`scripts/personagem/fala.py`, a mesma do "Prazer, Pertim").
 - **Selo "Imagens ilustrativas":** discreto, no vídeo todo. Fica no alto à esquerda, dentro da área segura e fora da coluna dos botões do Instagram.
@@ -34,7 +34,8 @@ As trocas de cena são todas diferentes: giro, zoom, chicote, faixa, empurra e �
 
 A voz e a mixagem vêm do pipeline do Explica, Sô! (`reels/explica-so/episodios/pedir-no-uaipertim.json`).
 
-- **Voz:** Victor Pinho, perfil "narracao" (eleven_v4). Cada fala é uma geração inteira, e "UaiPertim"/"Pertim" vão sem troca de grafia.
+- **Voz:** Victor Pinho, perfil "narracao" (eleven_v4). Cada fala é uma geração inteira.
+- **Pronúncia:** "UaiPertim" vai para a voz como "UaiPértim" nas falas 1 e 7 (opção E do teste A/B em `teste-pronuncia/`, aprovada; campo `pronuncia` das falas no JSON do episódio). Na tela continua "UaiPertim".
 - **Trilha:** a animada (Tudo Pertim) com os efeitos de `cues.json`.
 - **Volume:** −14 LUFS e pico real ≤ −1 dBTP.
 

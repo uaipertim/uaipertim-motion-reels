@@ -54,9 +54,12 @@ ev = {
     'inicio': {'adesivos': w(1, 'Abre,'), 'toque': w(1, 'escolhe'), 'quer': w(1, 'quer...')},
     'produto': {'loja': T[2], 'produto': w(2, 'lanche'), 'foto': w(2, 'jeito.'), 'bacon': w(2, 'bacon,'), 'adicionar': w(2, 'claro.'),
                 'sacola': round(w(2, 'bacon,') - 0.3, 3)},
+    # o pagamento híbrido: as três opções saltam do Checkout-pix uma por vez, na palavra de cada uma; a nota e a
+    # maquininha entram em "entrega"; em "preferir" o toque marca o Pix (as outras duas voltam) e vem o "Fazer pedido"
     'checkout': {'itens': [round(T[3] + 0.10 + 0.22 * k, 3) for k in range(3)], 'contador': [round(T[3] + 0.25, 3), round(T[3] + 1.05, 3)],
-                 'tela': round(w(3, 'Paga') - 0.30, 3), 'toque_entrega': w(3, 'entrega,'), 'dinheiro': w(3, 'dinheiro'),
-                 'maquininha': w(3, 'maquininha.'), 'toque_pedido': round(w(3, 'maquininha.', campo='t1') + 0.10, 3)},
+                 'tela': round(w(3, 'app,') - 0.25, 3), 'pix': w(3, 'Pix'), 'cartao': w(3, 'cartão,'), 'entrega': w(3, 'entrega,'),
+                 'dinheiro': round(w(3, 'entrega,') + 0.2, 3), 'maquininha': round(w(3, 'entrega,') + 0.45, 3), 'marca_pix': w(3, 'preferir.'),
+                 'toque_pedido': round(w(3, 'preferir.', campo='t1') + 0.10, 3)},
     'acompanhar': {'etapas': round(T[4] + 0.15, 3), 'marcas': [w(4, 'acompanhar:'), w(4, 'aceita,'), w(4, 'entrega.')],
                    'prepara': w(4, 'prepara'), 'moto': [w(4, 'sai'), round(w(4, 'sai') + 1.15, 3)], 'carimbo': w(4, 'Sem'),
                    'balao': w(4, 'esperando'), 'puf': w(4, 'WhatsApp.', campo='t1')},
@@ -76,9 +79,9 @@ celular = [
     {'t': ev['produto']['produto'], 'tela': 'Produto', 'rola': [[0, 0], [ev['produto']['bacon'] + 0.15 - ev['produto']['produto'], 0],
                                                               [ev['produto']['adicionar'] - 0.1 - ev['produto']['bacon'] - 0.15, 278]]},
     {'t': T[3] - TR * 0.5, 'tela': 'Sacola', 'rola': [[0, 0]]},
-    # o Checkout: Pix e cartão on-line vão até y 527 (CSS) e NUNCA aparecem; a tela começa em 531 ("Pagar na entrega")
-    {'t': CK['tela'], 'tela': 'Checkout', 'rola': [[0, 531], [CK['toque_pedido'] - 0.5 - CK['tela'], 531], [0.4, 578]]},
-    {'t': T[4] - TR * 0.5, 'tela': 'Acompanhar', 'rola': [[0, 0]]},
+    # o Checkout-pix: a parte "Como você quer pagar?" (as três opções, o Pix marcado); depois desce até o "Fazer pedido"
+    {'t': CK['tela'], 'tela': 'Checkout-pix', 'rola': [[0, 300], [CK['marca_pix'] + 0.05 - CK['tela'], 300], [0.35, 578]]},
+    {'t': T[4] - TR * 0.5, 'tela': 'Acompanhar-pix', 'rola': [[0, 0]]},
     {'t': T[5] - TR * 0.5, 'tela': 'Fidelidade', 'rola': [[0, 0], [2.4, 0], [0.6, 328]]},   # 328 = o fim da página (o cupom)
 ]
 for s in celular:                            # a rolagem é cumulativa no tempo: [duração desde o passo anterior, y]
@@ -111,8 +114,9 @@ cues += [{'t': pr['produto'] - 0.05, 'type': 'slide'}, {'t': pr['foto'], 'type':
 cues += [{'t': trocas[2]['t0'] + 0.15, 'type': 'trans', 'd': 0.4}]
 cues += [{'t': t + 0.32, 'type': 'plop'} for t in ck['itens']]
 cues += [{'t': ck['contador'][0], 'type': 'count', 'd': ck['contador'][1] - ck['contador'][0]}, {'t': ck['contador'][1], 'type': 'coin'},
-         {'t': ck['tela'], 'type': 'slide'}, {'t': ck['toque_entrega'], 'type': 'tick'}, {'t': ck['toque_entrega'] + 0.1, 'type': 'check'},
-         {'t': ck['dinheiro'], 'type': 'pop', 'f': 620}, {'t': ck['maquininha'], 'type': 'pop', 'f': 700},
+         {'t': ck['tela'], 'type': 'slide'}, {'t': ck['pix'], 'type': 'pop', 'f': 600}, {'t': ck['cartao'], 'type': 'pop', 'f': 680},
+         {'t': ck['entrega'], 'type': 'pop', 'f': 760}, {'t': ck['dinheiro'], 'type': 'coin'}, {'t': ck['maquininha'], 'type': 'pop', 'f': 840},
+         {'t': ck['marca_pix'], 'type': 'tick'}, {'t': ck['marca_pix'] + 0.08, 'type': 'check'}, {'t': ck['marca_pix'] + 0.15, 'type': 'drop'},
          {'t': ck['toque_pedido'], 'type': 'tick'}, {'t': ck['toque_pedido'] + 0.08, 'type': 'big'}]
 cues += [{'t': trocas[3]['t0'] + 0.1, 'type': 'whoosh'}]
 cues += [{'t': ac['etapas'], 'type': 'plop'}] + [{'t': t, 'type': 'node', 'k': 2 + 2 * i} for i, t in enumerate(ac['marcas'])]
