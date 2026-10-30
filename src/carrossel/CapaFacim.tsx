@@ -7,6 +7,7 @@ import { ShopChar } from "../components/Town";
 import { fitWrap, Wrapped } from "../dicionario/fit";
 import { Mao } from "../dicionario/CapaDicionario";
 import { Carrossel, Text, glue, measureSlide } from "./CarrosselFacim";
+import { Pertim } from "../personagem/Pertim";
 
 // CAPAS NOVAS DOS CARROSSÉIS "FACIM FACIM" (só o slide-1; os slides 2–6 não mudam), no modelo das capas novas do
 // Dicionário (src/dicionario/CapaDicionario.tsx), em 1080×1350:
@@ -17,7 +18,7 @@ import { Carrossel, Text, glue, measureSlide } from "./CarrosselFacim";
 
 export type CapaNova = { ilustracao: Ilustracao; fundo: "creme" | "pessego"; cor: "coral" | "verde" | "amarelo" };
 export type CapaFacimProps = Carrossel & { capaNova: CapaNova; layout?: { titulo: Wrapped; fonte: string } };
-type Ilustracao = "mao-vez" | "passos" | "sacola" | "loja-aberto" | "sino" | "moeda-coracao" | "geladeira";
+type Ilustracao = "mao-vez" | "passos" | "sacola" | "loja-aberto" | "sino" | "moeda-coracao" | "geladeira" | "pertim" | "restaurante-balao";
 
 const H = 1350;
 const SAFE = { x0: 130, x1: 950, y0: 90, y1: 1260 };
@@ -308,8 +309,50 @@ const Geladeira: React.FC = () => (
   </Svg>
 );
 
+// C4 · o Pertim (src/personagem, V1) acenando com a piscadinha, grande, de pé no chão da ilustração
+const PertimAcenando: React.FC = () => {
+  const altura = 500, w = (altura * 280) / 284;
+  return (
+    <div style={{ position: "relative", width: ILU.w, height: ILU.h }}>
+      <Svg abs><Sombra rx={170} /></Svg>
+      <div style={{ position: "absolute", left: ILU.w / 2 - w / 2, top: 452 - altura * 0.947 }}>
+        <Pertim v={1} pose="acenando" expr="piscadinha" altura={altura} rig={{ aceno: 8 }} />
+      </div>
+    </div>
+  );
+};
+
+// C6 · a lojinha restaurante com olhinhos e o balão "O que tem hoje?", com a resposta "digitando" (sem tela de app)
+const RestauranteBalao: React.FC = () => {
+  const lw = 300;
+  return (
+    <div style={{ position: "relative", width: ILU.w, height: ILU.h }}>
+      <Svg abs>
+        <Sombra cx={190} rx={170} />
+        {/* o balão da pergunta */}
+        <g filter="drop-shadow(0 8px 10px rgba(34,28,25,0.15))">
+          <path d="M370 30 H690 Q714 30 714 54 V150 Q714 174 690 174 H460 L420 210 L428 174 H370 Q346 174 346 150 V54 Q346 30 370 30 Z" fill="#fff" />
+        </g>
+        <text x="530" y="92" textAnchor="middle" fontFamily={FONT} fontWeight={900} fontSize="40" fill={C.tinta}>O que tem</text>
+        <text x="530" y="142" textAnchor="middle" fontFamily={FONT} fontWeight={900} fontSize="44" fill={C.coral}>hoje?</text>
+        {/* a resposta "digitando…" */}
+        <g filter="drop-shadow(0 8px 10px rgba(34,28,25,0.15))">
+          <path d="M460 236 H640 Q662 236 662 258 V306 Q662 328 640 328 H600 L612 360 L572 328 H460 Q438 328 438 306 V258 Q438 236 460 236 Z" fill={C.cremeDark} />
+        </g>
+        {[0, 1, 2].map((i) => <circle key={i} cx={510 + i * 40} cy={282} r="13" fill="#9C8F86" opacity={0.55 + 0.2 * i} />)}
+        <Brilho x={330} y={60} s={34} />
+        <Brilho x={700} y={400} s={26} c={C.coral} />
+      </Svg>
+      <div style={{ position: "absolute", left: 190 - lw / 2, top: 448 - lw * 1.28 }}>
+        <ShopChar kind="restaurante" width={lw} mood="happy" look={[0.8, -0.6]} lit={0.9} awning={0.4} />
+      </div>
+    </div>
+  );
+};
+
 const ILUSTRACOES: Record<Ilustracao, React.FC> = {
   "mao-vez": MaoVez, passos: Passos, sacola: Sacola, "loja-aberto": LojaAberto, sino: Sino, "moeda-coracao": MoedaCoracao, geladeira: Geladeira,
+  pertim: PertimAcenando, "restaurante-balao": RestauranteBalao,
 };
 
 // ---------------------------------------------------------------- a capa

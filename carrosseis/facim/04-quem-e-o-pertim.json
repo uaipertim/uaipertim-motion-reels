@@ -1,0 +1,63 @@
+{
+  "numero": 4,
+  "chip": "FACIM FACIM",
+  "capa": "creme",
+  "capaNova": {
+    "ilustracao": "pertim",
+    "fundo": "creme",
+    "cor": "verde"
+  },
+  "slides": [
+    {
+      "tipo": "capa",
+      "titulo": "Quem é o *Pertim*? 🛵",
+      "texto": ""
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "O pin que ganhou vida",
+      "texto": "O Pertim nasceu do marcador da nossa logo.",
+      "pertim": {
+        "pose": "parado",
+        "expr": "sorrindo"
+      }
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Conhece o Glória inteirinho",
+      "texto": "Padaria, mercadim, lanchonete… ele sabe onde fica tudo.",
+      "pertim": {
+        "pose": "apontando",
+        "expr": "sorrindo",
+        "lojinhas": [
+          "padaria",
+          "mercado",
+          "lanchonete"
+        ]
+      }
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "O entregador mais rápido da cidade",
+      "texto": "De capacete e motinha, sempre pronto pra sair.",
+      "pertim": {
+        "pose": "moto",
+        "expr": "sorrindo"
+      }
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Pode chamar de Pertim",
+      "texto": "O nome completo é UaiPertim, mas ele não liga pra formalidade.",
+      "pertim": {
+        "pose": "sacola",
+        "expr": "piscadinha"
+      }
+    },
+    {
+      "tipo": "final",
+      "titulo": "Dá um oi pro Pertim nos comentários 👋",
+      "texto": "Segue a gente pra saber quando abrir"
+    }
+  ]
+}

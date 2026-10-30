@@ -1,0 +1,50 @@
+{
+  "numero": 6,
+  "chip": "FACIM FACIM",
+  "capa": "creme",
+  "capaNova": {
+    "ilustracao": "restaurante-balao",
+    "fundo": "pessego",
+    "cor": "verde"
+  },
+  "slides": [
+    {
+      "tipo": "capa",
+      "titulo": "O que tem *hoje*? 🍲",
+      "texto": ""
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Ocê manda: 'o que tem hoje?'",
+      "texto": "E fica de olho no celular, esperando a resposta.",
+      "icone": "mensagem",
+      "quebra": [
+        "Ocê manda:",
+        "'o que tem hoje?'"
+      ]
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Do outro lado do balcão…",
+      "texto": "…o comerciante responde a mesma pergunta o dia inteiro.",
+      "icone": "loja"
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "No UaiPertim, o cardápio tá lá",
+      "texto": "Do próprio comércio, na hora que ocê abrir.",
+      "icone": "cardapio"
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Escolheu, pediu",
+      "texto": "Sem esperar ninguém responder.",
+      "icone": "check"
+    },
+    {
+      "tipo": "final",
+      "titulo": "Manda pra quem vive perguntando 'o que tem hoje?' 😅",
+      "texto": "Segue a gente pra saber quando abrir"
+    }
+  ]
+}

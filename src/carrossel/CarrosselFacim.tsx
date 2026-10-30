@@ -4,6 +4,9 @@ import { C, FONT, W } from "../config/theme";
 import { CremeBackground, DotGrid, Sunburst } from "../components/Decor";
 import { Twinkles } from "../components/Particles";
 import { GridIcon, PinIcon, ScooterIcon, StoreIcon } from "../components/AppIcons";
+import { ShopChar, ShopCharKind } from "../components/Town";
+import { Pertim } from "../personagem/Pertim";
+import type { Expressao, Pose } from "../personagem/logica";
 import { fitWrap, Wrapped } from "../dicionario/fit";
 
 // CARROSSEL "FACIM, FACIM" — modelo fixo, estático (1080×1350, 4:5). Cada carrossel é só um JSON
@@ -18,9 +21,11 @@ import { fitWrap, Wrapped } from "../dicionario/fit";
 
 export type Icone =
   | "navegador" | "gratis" | "cadastro" | "cidade" | "categoria" | "loja" | "entrega" | "calendario"
-  | "seguir" | "sino" | "check" | "dinheiro" | "lanche" | "sofa" | "duvida" | "mensagem";
-// quebra (opcional, só na capa): as linhas do título já definidas; o corpo diminui até todas caberem na margem
-export type Slide = { tipo: "capa" | "conteudo" | "final"; titulo: string; texto?: string; icone?: Icone; quebra?: string[] };
+  | "seguir" | "sino" | "check" | "dinheiro" | "lanche" | "sofa" | "duvida" | "mensagem" | "cardapio";
+// no lugar do ícone, o Pertim (src/personagem, V1) numa pose da página aprovada, com lojinhas opcionais ao lado
+export type PertimNoSlide = { pose: Pose; expr: Expressao; lojinhas?: ShopCharKind[] };
+// quebra (opcional, na capa e no conteúdo): as linhas do título já definidas; o corpo diminui até todas caberem na margem
+export type Slide = { tipo: "capa" | "conteudo" | "final"; titulo: string; texto?: string; icone?: Icone; pertim?: PertimNoSlide; quebra?: string[] };
 export type Carrossel = { numero: number; chip: string; capa?: "coral" | "creme"; slides: Slide[] };
 export type CarrosselProps = Carrossel & { slide: number; layout?: { titulo: Wrapped; texto?: Wrapped } };
 
@@ -61,6 +66,13 @@ export const measureSlide = (c: Carrossel, i: number) => {
       texto: fitWrap(s.texto ?? "", W.extraBold, SLIDE.width - 2 * M, [46, 42, 38], 2),
     };
   const inner = CARD.right - CARD.left - 2 * CARD.pad;
+  // quebra (opcional) também no título do slide de conteúdo: as linhas definidas, no maior tamanho em que todas cabem
+  if (s.quebra?.length) {
+    const lines = s.quebra.map((l) => glue(plain(l)));
+    if (lines.join(" ").replace(/\u00A0/g, " ") !== plain(s.titulo).replace(/\u00A0/g, " ")) throw new Error(`slide ${i + 1}: a quebra não bate com o título`);
+    const size = [78, 70, 64, 58].find((z) => lines.every((l) => fitWrap(l, W.black, inner, [z], 1).ok)) ?? 58;
+    return { titulo: { size, lines, ok: true }, texto: fitWrap(s.texto ?? "", W.medium, inner, [50, 46, 42, 38], 6) };
+  }
   return {
     titulo: fitWrap(plain(s.titulo), W.black, inner, [78, 70, 64, 58], 3),
     texto: fitWrap(s.texto ?? "", W.medium, inner, [50, 46, 42, 38], 6),
@@ -142,6 +154,19 @@ const Svg: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <svg width={ICON} height={ICON} viewBox="0 0 100 100">{children}</svg>
 );
 export const ICONS: Record<Icone, React.ReactNode> = {
+  cardapio: (
+    <Svg>
+      <rect x="20" y="10" width="60" height="80" rx="10" fill={C.coral} />
+      <rect x="27" y="17" width="46" height="66" rx="6" fill="#fff" />
+      <rect x="35" y="25" width="30" height="9" rx="4.5" fill={C.amarelo} />
+      {[44, 56, 68].map((y) => (
+        <g key={y}>
+          <circle cx="36" cy={y} r="3.5" fill={C.coral} />
+          <rect x="43" y={y - 3} width="22" height="6" rx="3" fill={C.cremeDeep} />
+        </g>
+      ))}
+    </Svg>
+  ),
   navegador: (
     <Svg>
       <rect x="26" y="8" width="48" height="84" rx="10" fill={C.coral} />
@@ -264,6 +289,33 @@ const Logo: React.FC<{ size: number }> = ({ size }) => (
   </div>
 );
 
+// o Pertim no cartão (no lugar do ícone): de pé no chãozinho creme, com as lojinhas atrás quando a pose pede
+const PERTIM_BOX = 390;
+const PertimCena: React.FC<{ p: PertimNoSlide; largura: number }> = ({ p, largura }) => {
+  const moto = p.pose === "moto";
+  const vb = moto ? [300, 254] : p.pose === "parado" ? [240, 270] : [280, 284];
+  const altura = moto ? 360 : 400;
+  const w = (altura * vb[0]) / vb[1];
+  const lojas = p.lojinhas ?? [];
+  const cx = lojas.length ? largura * 0.36 : largura / 2;
+  return (
+    <div style={{ position: "relative", width: largura, height: PERTIM_BOX }}>
+      <div style={{ position: "absolute", left: "12%", right: "12%", bottom: 6, height: 26, borderRadius: "50%", background: "#F3E4CC" }} />
+      {lojas.map((k, i) => {
+        const lw = 170, lx = largura * 0.6 + i * 128 - (lojas.length - 1) * 30, base = PERTIM_BOX - 14 - (i % 2) * 12;
+        return (
+          <div key={k} style={{ position: "absolute", left: lx - lw / 2, top: base - lw * 1.28 }}>
+            <ShopChar kind={k} width={lw} mood="happy" look={[-0.6, 0.2]} lit={0.9} awning={0.3} />
+          </div>
+        );
+      })}
+      <div style={{ position: "absolute", left: cx - w / 2, top: PERTIM_BOX - altura * (moto ? 0.944 : p.pose === "parado" ? 0.951 : 0.947) - 18 }}>
+        <Pertim v={1} pose={p.pose} expr={p.expr} altura={altura} rig={{ centro: true }} />
+      </div>
+    </div>
+  );
+};
+
 const TWINKLES: Array<[number, number]> = [[50, 520], [1030, 420], [48, 1180], [1032, 1010]];
 
 export const CarrosselFacim: React.FC<CarrosselProps> = ({ numero, chip, capa, slides, slide, layout }) => {
@@ -310,7 +362,7 @@ export const CarrosselFacim: React.FC<CarrosselProps> = ({ numero, chip, capa, s
       {s.tipo === "conteudo" && (() => {
         const t = layout.titulo;
         const x = layout.texto!;
-        const iconBox = 168;
+        const iconBox = s.pertim ? PERTIM_BOX : 168;
         const cardH = CARD.pad + iconBox + 44 + t.lines.length * t.size * 1.1 + 20 + 14 + 28 + x.lines.length * x.size * 1.32 + CARD.pad;
         const top = (SLIDE.height - cardH) / 2 + 40;
         return (
@@ -332,14 +384,16 @@ export const CarrosselFacim: React.FC<CarrosselProps> = ({ numero, chip, capa, s
                 boxShadow: `0 12px 0 ${C.cremeDeep}, 0 24px 44px rgba(34,28,25,0.10)`, padding: CARD.pad, boxSizing: "border-box",
               }}
             >
-              <div
-                style={{
-                  width: iconBox, height: iconBox, borderRadius: iconBox / 2, background: "#FFF1D6", display: "flex",
-                  alignItems: "center", justifyContent: "center", border: `6px solid ${C.amarelo}`, boxSizing: "border-box",
-                }}
-              >
-                <div style={{ transform: "scale(0.95)" }}>{s.icone ? ICONS[s.icone] : null}</div>
-              </div>
+              {s.pertim ? <PertimCena p={s.pertim} largura={CARD.right - CARD.left - 2 * CARD.pad} /> : (
+                <div
+                  style={{
+                    width: iconBox, height: iconBox, borderRadius: iconBox / 2, background: "#FFF1D6", display: "flex",
+                    alignItems: "center", justifyContent: "center", border: `6px solid ${C.amarelo}`, boxSizing: "border-box",
+                  }}
+                >
+                  <div style={{ transform: "scale(0.95)" }}>{s.icone ? ICONS[s.icone] : null}</div>
+                </div>
+              )}
               <div style={{ height: 44 }} />
               <Text source={s.titulo} wrapped={t} weight={W.black} align="left" lineHeight={1.1} />
               <div style={{ width: 110, height: 14, borderRadius: 7, background: C.amarelo, margin: "20px 0 28px" }} />

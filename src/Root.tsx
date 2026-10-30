@@ -43,7 +43,9 @@ import { PRAZER, PertimBocaTeste, PrazerPertim, PrazerPertimCapa } from "./praze
 import { PEDIR, PedirNoUaiPertim } from "./pedir-no-uaipertim/PedirNoUaiPertim";
 import facim02 from "../carrosseis/facim/02-como-vai-funcionar.json";
 import facim03 from "../carrosseis/facim/03-o-que-vai-ter.json";
+import facim04 from "../carrosseis/facim/04-quem-e-o-pertim.json";
 import facim05 from "../carrosseis/facim/05-tem-comercio.json";
+import facim06 from "../carrosseis/facim/06-o-que-tem-hoje.json";
 import facim07 from "../carrosseis/facim/07-saber-primeiro.json";
 import facim08 from "../carrosseis/facim/08-por-que-comprar-pertim.json";
 import facim09 from "../carrosseis/facim/09-domingo-a-noite.json";
@@ -59,7 +61,7 @@ const capaReelMetadata = async ({ props }: { props: CapaReelProps }) => {
   await fontsReady;
   return { props: { ...props, layout: measureCapaReel(props) } };
 };
-const CAPAS_FACIM = [facim01, facim02, facim03, facim05, facim07, facim08, facim09] as unknown as CapaFacimProps[];
+const CAPAS_FACIM = [facim01, facim02, facim03, facim04, facim05, facim06, facim07, facim08, facim09] as unknown as CapaFacimProps[];
 
 // Cortes curtos: duração = trecho do original + fecho; textos medidos com as fontes carregadas.
 const corteMetadata = async ({ props }: { props: CorteProps }) => {
