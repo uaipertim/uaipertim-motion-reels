@@ -1,0 +1,70 @@
+REVISÃO TÉCNICA — Reel "Pedir no UaiPertim é assim" (uaipertim-pedir-no-uaipertim.mp4)
+
+FORMATO
+OK     vídeo h264 High yuv420p
+OK     resolução 1080x1920 (9:16)
+OK     60 fps, 2362 quadros
+OK     duração 39.37 s (pedido: 35–40 s)
+OK     áudio aac 48000 Hz, 2 canais, 271 kb/s
+OK     vídeo e áudio com a mesma duração (Δ 0 ms)
+       arquivo 24.8 MB, 5.0 Mb/s
+       cenas: 1 gancho 0.00–4.07 · 2 inicio 4.97–8.57 · 3 produto 9.47–14.07 · 4 checkout 14.97–19.57 · 5 acompanhar 20.47–28.45 · 6 pontos 29.35–34.07 · 7 fecho 34.97–39.37
+
+SOM
+OK     loudness integrado -14.0 LUFS (alvo −14)
+OK     pico real -1.8 dBTP no MP4 (limite −1)
+       na escala da mixagem: a voz -13.6 · a trilha (animada, a do Tudo Pertim) -26.5 · os efeitos -23.7 LUFS
+OK     a trilha 12.9 dB abaixo da voz (a voz na frente: 9–16 dB)
+
+VOZ (Victor Pinho, perfil "narracao", uma geração inteira por cena, nada emendado)
+       Victor Pinho (LuQ9eaWO9yCQrR73VQFa) · eleven_v4 · ajustes {"stability": 0.5, "similarity_boost": 0.75}
+OK     cena 1: "Bateu aquela fome? Ó, pedir no UaiPertim é assim:" · 3.76 s contínuos da geração com seed 42 (íntegra: sim; dif. 0.000029) · narracao eleven_v4
+OK     cena 2: "Abre, escolhe o que quer..." · 2.00 s contínuos da geração com seed 42 (íntegra: sim; dif. 0.000031) · narracao eleven_v4
+OK     cena 3: "...monta o lanche do seu jeito. Com bacon, claro." · 3.36 s contínuos da geração com seed 42 (íntegra: sim; dif. 0.000028) · narracao eleven_v4
+OK     cena 4: "Paga na entrega, no dinheiro ou na maquininha." · 3.18 s contínuos da geração com seed 42 (íntegra: sim; dif. 0.000026) · narracao eleven_v4
+OK     cena 5: "Aí é só acompanhar: a loja aceita, prepara e sai pra entrega. Sem ficar esperando resposta no WhatsApp." · 7.28 s contínuos da geração com seed 42 (íntegra: sim; dif. 0.000028) · narracao eleven_v4
+OK     cena 6: "E cada pedido ainda rende pão de queijo... em pontos!" · 3.92 s contínuos da geração com seed 42 (íntegra: sim; dif. 0.000029) · narracao eleven_v4
+OK     cena 7: "UaiPertim. Tá chegando no Glória!" · 2.64 s contínuos da geração com seed 42 (íntegra: sim; dif. 0.000028) · narracao eleven_v4
+OK     "UaiPertim" enviado à voz sem troca de grafia
+OK     "no Glória" (nunca "de Glória")
+OK     nenhuma menção a Pix nem a cartão on-line na fala (só "Pagar na entrega": dinheiro ou maquininha)
+
+PIX E CARTÃO ON-LINE (NUNCA EM QUADRO)
+OK     a faixa proibida do layout cobre y 1090–1580 da imagem do Checkout ([(1089, 1581)])
+       o Checkout aparece em 268 quadros; o topo da tela nunca sobe acima de y 1593 da imagem (a faixa de Pix e Cartão termina em 1580)
+OK     a faixa de Pix e Cartão do Checkout nunca entra na tela, quadro a quadro
+OK     os recortes do Checkout usados (botao-fazer-pedido, opcao-pagar-na-entrega) ficam abaixo da faixa (Pagar na entrega em y 1602)
+
+O PERTIM (olhar na câmera, boca e piscadas)
+OK     olhar na câmera (pupilas centradas) em 100% dos 1543 quadros de fala, sem nenhum desvio (o rig de todos os Pertins da composição usa olhar [0, 0] com "centro")
+OK     boca pelos visemas: 2362 quadros, 149 trocas, a mais curta com 2 quadros (mínimo 2)
+OK     fora da fala, a boca é a da expressão
+OK     a boca fecha em M no fim de cada "UaiPertim" (2 de 2)
+OK     12 piscadas, nenhuma com a boca aberta (A/O)
+
+LEGENDA, CHIP E SELO
+OK     11 blocos, o mais curto fica 1.57 s (mínimo 1,5 s)
+OK     no máximo 2 linhas por bloco
+OK     o texto da legenda é o texto da tela, palavra por palavra (nunca a grafia de pronúncia)
+OK     cada palavra falada está na tela enquanto é dita
+OK     nunca dois blocos ao mesmo tempo
+OK     as pílulas da legenda dentro da área segura (x 115–905, y 1336–1456)
+OK     a legenda não cobre o Pertim (os pés em y 1320; a pílula começa em y 1336)
+OK     o chip "Segue @uaipertim" (x 295–785, y 768–859) nunca sobreposto à legenda (y ≥ 1336)
+OK     o chip dentro da área segura, 2.74 s na tela (≥ 1,5 s)
+OK     o selo "Imagens ilustrativas" em x 100–376, y 292–330: dentro da área segura e fora da coluna dos botões (x > 860)
+OK     o selo é a última camada da composição (nada o cobre)
+OK     o selo aparece em todos os 9 quadros amostrados do vídeo (texto escuro: 16–17% da caixa)
+OK     "BATEU A FOME?" fica 3.55 s na tela (≥ 1,5 s)
+OK     "CHEGA ATÉ 20h35" fica 2.85 s na tela (≥ 1,5 s)
+OK     "TOTAL R$ 70,80" fica 3.95 s na tela (≥ 1,5 s)
+OK     "+20" fica 2.97 s na tela (≥ 1,5 s)
+OK     "Tá chegando no Glória" fica 2.99 s na tela (≥ 1,5 s)
+
+TROCAS, GANCHO E FECHO
+OK     trocas de cena todas diferentes: giro > zoom > chicote > faixa > empurra > iris
+OK     gancho: a motinha já entra desde o quadro 0 (mudança média a cada 0,1 s: 11.38–13.40)
+OK     a logo (selo) parada desde 36.17 s, nos 3 últimos segundos (8 amostras: centro e bordas da área coral variam no máximo 0.08 px, a área 0.06%)
+OK     mapa de tempos de linha.py (35–40 s, fecho 4–6 s, logo nos 3 últimos s)
+
+RESULTADO: aprovado

@@ -17,14 +17,15 @@ e reels/explica-so/audio/prazer-pertim/cues.json (os efeitos sonoros para script
 """
 import json
 import os
-import random
 import re
+import sys
 import unicodedata
-from PIL import ImageFont
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 REEL = os.path.dirname(AQUI)
 REPO = os.path.dirname(os.path.dirname(REEL))
+sys.path.insert(0, os.path.join(REPO, 'scripts', 'personagem'))
+import fala  # noqa: E402  (visemas, piscadas e legenda, comuns aos Reels do Pertim)
 AUD = os.path.join(REPO, 'reels', 'explica-so', 'audio', 'prazer-pertim')
 LN = json.load(open(os.path.join(AUD, 'linha.json')))
 FALAS = json.load(open(os.path.join(AUD, 'voz', 'falas.json')))['capitulos']
@@ -53,76 +54,7 @@ def palavra(cap, alvo, k=1):
 
 
 # ---------------------------------------------------------------- visemas (a boca quadro a quadro)
-VOG = {**{c: 'A' for c in 'aáàâã'}, **{c: 'E' for c in 'eéêiíy'}, **{c: 'O' for c in 'oóôõuú'}}
-LAB = set('mbp')
-COD = {'repouso': 'R', 'A': 'A', 'E': 'E', 'O': 'O', 'MBP': 'M'}
-bocas = ['R'] * NQ
-for c in CAPS:
-    F = FALAS[f'{c["n"]:02d}']
-    al = F['alinhamento']
-    desl = c['voz_t0'] - F['inicio_da_fala']
-    ch = al['characters']; st = al['character_start_times_seconds']; en = al['character_end_times_seconds']
-    # a classe de cada letra (consoantes sem forma própria: a vogal seguinte da mesma palavra, senão a anterior)
-    cls = []
-    for i, x in enumerate(ch):
-        xl = x.lower()
-        cls.append(VOG.get(xl) or ('MBP' if xl in LAB else ('?' if xl.isalpha() else None)))
-    for i, k in enumerate(cls):
-        if k == '?':
-            j = i + 1
-            while j < len(cls) and cls[j] == '?':
-                j += 1
-            nxt = cls[j] if j < len(cls) and cls[j] not in (None, 'MBP') else None
-            prv = next((cls[q] for q in range(i - 1, -1, -1) if cls[q] not in ('?', None, 'MBP')), None)
-            cls[i] = nxt or prv or 'E'
-    for i, k in enumerate(cls):
-        if not k:
-            continue
-        a, b = st[i] + desl, en[i] + desl
-        for q in range(max(0, int(round(a * FPS))), min(NQ, int(round(b * FPS)))):
-            bocas[q] = COD[k]
-# pausas curtas entre letras (< 0,12 s) não abrem o sorriso: a forma anterior continua (menos o M/B/P, que fica só
-# nos quadros de m/b/p: depois dele, a pausa curta já pega a forma seguinte)
-q = 0
-while q < NQ:
-    if bocas[q] == 'R':
-        j = q
-        while j < NQ and bocas[j] == 'R':
-            j += 1
-        if 0 < q and j < NQ and (j - q) / FPS < 0.12:
-            for k in range(q, j):
-                bocas[k] = bocas[q - 1] if bocas[q - 1] != 'M' else bocas[j]
-        q = j
-    else:
-        q += 1
-# a boca fecha em M no fim de cada "Pertim" (o "m" final, que a voz às vezes deixa em "n")
-FINAL_M = 0.07
-for c in CAPS:
-    for w in c['palavras']:
-        if norm(w['w']).endswith('pertim'):
-            for k in range(max(0, int(round((w['t1'] - FINAL_M) * FPS))), min(NQ, int(round(w['t1'] * FPS)))):
-                bocas[k] = 'M'
-# nenhuma boca com menos de 2 quadros: um M curto ganha o quadro seguinte; outra troca curta é absorvida pela boca de
-# antes (ou pela de depois, se a de antes for M)
-for _ in range(6):
-    q, mudou = 0, False
-    while q < NQ:
-        j = q
-        while j < NQ and bocas[j] == bocas[q]:
-            j += 1
-        if j - q < 2:
-            if bocas[q] == 'M' and j < NQ:
-                bocas[j] = 'M'
-            elif q > 0 and bocas[q - 1] != 'M':
-                for k in range(q, j):
-                    bocas[k] = bocas[q - 1]
-            elif j < NQ:
-                for k in range(q, j):
-                    bocas[k] = bocas[j]
-            mudou = True
-        q = j
-    if not mudou:
-        break
+bocas = fala.visemas(CAPS, FALAS, FPS, NQ)
 json.dump({'fps': FPS, 'codigos': {'R': 'repouso', 'A': 'A', 'E': 'E', 'O': 'O', 'M': 'MBP'}, 'bocas': ''.join(bocas)},
           open(os.path.join(SAIDA, 'visemas.json'), 'w'))
 
@@ -139,16 +71,7 @@ ev = {
     'logo': {'entra': c3['t0'] + 0.4, 'parada': c3['t0'] + 0.4 + 0.9},
 }
 # as piscadas: a cada 2–4 s (aleatório, fixo pela semente), nunca com a boca aberta (A ou O) nem colada nela
-rnd = random.Random(42)
-piscadas, t = [], 1.6
-aberta = lambda a, b: any(bocas[q] in 'AO' for q in range(max(0, int(a * FPS)), min(NQ, int(b * FPS) + 1)))
-while t < DUR - 0.5:
-    tt = t
-    while tt < DUR - 0.5 and aberta(tt - 0.08, tt + 0.24):
-        tt += 1 / FPS
-    if tt < DUR - 0.5:
-        piscadas.append(round(tt, 3))
-    t = tt + rnd.uniform(2.0, 4.0)
+piscadas = fala.piscadas(bocas, FPS, DUR)
 # o olhar: sempre na câmera; só desvia para cada lojinha quando ela brota (no máximo ~0,6 s, ida e volta)
 OLHAR_DUR = 0.55
 PJ = LAY['pertim']['lojinhas']
@@ -161,41 +84,7 @@ cena = {'duracao': DUR, 'fps': FPS, 'quadros': NQ,
 
 # ---------------------------------------------------------------- legenda
 LG = LAY['legenda']
-FONTE = ImageFont.truetype(os.path.join(REPO, 'public', 'fonts', 'poppins-latin-800-normal.woff2'), LG['size'])
-larg = lambda ws: FONTE.getlength(' '.join(w['w'] for w in ws))
-LIGA = {'o', 'a', 'os', 'as', 'do', 'da', 'no', 'na', 'de', 'em', 'e', 'que', 'pra', 'um', 'uma', 'por', 'com', 'mais', 'eu', 'me', 'vou', 'isso'}
-blocos_out = []
-for ci, c in enumerate(CAPS):
-    ws = c['palavras']
-    blocos, cur = [], []
-    for i, w in enumerate(ws):
-        cur.append(w)
-        nx = ws[i + 1] if i + 1 < len(ws) else None
-        pausa = bool(re.search(r'[.?!…:;,]["”’)]*$', w['w'])) or (nx and nx['t0'] - w['t1'] > 0.3)
-        if not nx or (pausa and len(cur) >= 2) or (len(cur) >= LG['maxPal'] and norm(w['w']) not in LIGA):
-            blocos.append(cur); cur = []
-    if cur:
-        blocos.append(cur)
-    fim = DUR - 3.05 if ci == len(CAPS) - 1 else c['t1'] - 0.05
-    B = [{'palavras': p, 't0': max(c['t0'], p[0]['t0'] - 0.05)} for p in blocos]
-    for i, b in enumerate(B):
-        b['t1'] = min(fim, B[i + 1]['t0'] if i + 1 < len(B) else b['palavras'][-1]['t1'] + 0.9)
-    # todo bloco ≥ 1,5 s: junta com o vizinho (desde que caiba em 2 linhas)
-    for _ in range(40):
-        i = next((k for k, b in enumerate(B) if b['t1'] - b['t0'] < LG['minDur']), None)
-        if i is None or len(B) < 2:
-            break
-        j = i if i + 1 < len(B) else i - 1
-        B[j:j + 2] = [{'palavras': B[j]['palavras'] + B[j + 1]['palavras'], 't0': B[j]['t0'], 't1': B[j + 1]['t1']}]
-    for b in B:
-        p = b['palavras']
-        if larg(p) <= LG['maxW']:
-            linhas = [p]
-        else:
-            best = min(((max(larg(p[:k]), larg(p[k:])) - (60 if re.search(r'[,;:]$', p[k - 1]['w']) else 0), k) for k in range(1, len(p))))
-            linhas = [p[:best[1]], p[best[1]:]]
-        blocos_out.append({'cena': ci, 't0': round(b['t0'], 4), 't1': round(b['t1'], 4),
-                           'linhas': [[{'w': w['w'], 't0': w['t0'], 't1': w['t1']} for w in l] for l in linhas]})
+blocos_out = fala.legenda(CAPS, DUR, LG)
 json.dump({'estilo': LG, 'blocos': blocos_out}, open(os.path.join(SAIDA, 'legenda.json'), 'w'), ensure_ascii=False, indent=1)
 # o chip "Segue @uaipertim" entra na faixa da legenda quando a última legenda sai (e fica até o fim, com a logo)
 ev['chip'] = round(blocos_out[-1]['t1'] + 0.05, 3)

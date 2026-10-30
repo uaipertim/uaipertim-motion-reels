@@ -1,0 +1,128 @@
+{
+ "banner-pao-de-queijo": {
+  "tela": "Main",
+  "x": 20,
+  "y": 327,
+  "w": 350,
+  "h": 125
+ },
+ "botao-ver-sacola": {
+  "tela": "Loja",
+  "x": 16,
+  "y": 1564,
+  "w": 358,
+  "h": 60
+ },
+ "botao-adicionar": {
+  "tela": "Produto",
+  "x": 152,
+  "y": 1047,
+  "w": 222,
+  "h": 52
+ },
+ "botao-continuar": {
+  "tela": "Sacola",
+  "x": 16,
+  "y": 984,
+  "w": 358,
+  "h": 56
+ },
+ "opcao-pagar-na-entrega": {
+  "tela": "Checkout",
+  "x": 20,
+  "y": 534,
+  "w": 350,
+  "h": 76
+ },
+ "botao-fazer-pedido": {
+  "tela": "Checkout",
+  "x": 16,
+  "y": 1344,
+  "w": 358,
+  "h": 56
+ },
+ "acompanhar-destaque": {
+  "tela": "Acompanhar",
+  "x": 20,
+  "y": 76,
+  "w": 350,
+  "h": 258
+ },
+ "acompanhar-etapas": {
+  "tela": "Acompanhar",
+  "x": 20,
+  "y": 354,
+  "w": 350,
+  "h": 228
+ },
+ "card-conversar": {
+  "tela": "Acompanhar",
+  "x": 20,
+  "y": 596,
+  "w": 350,
+  "h": 83
+ },
+ "pdq-saldo": {
+  "tela": "Fidelidade",
+  "x": 20,
+  "y": 76,
+  "w": 350,
+  "h": 195
+ },
+ "pdq-cupom": {
+  "tela": "Fidelidade",
+  "x": 20,
+  "y": 852,
+  "w": 350,
+  "h": 72
+ },
+ "pdq-premio-5": {
+  "tela": "Fidelidade",
+  "x": 20,
+  "y": 437,
+  "w": 350,
+  "h": 82
+ },
+ "pdq-card-conta": {
+  "tela": "Conta",
+  "x": 20,
+  "y": 155,
+  "w": 350,
+  "h": 174
+ },
+ "busca": {
+  "tela": "Main",
+  "x": 20,
+  "y": 152,
+  "w": 350,
+  "h": 50
+ },
+ "loja-burger-do-gloria-item": {
+  "tela": "Main",
+  "x": 20,
+  "y": 750,
+  "w": 350,
+  "h": 77
+ },
+ "opcao-bacon": {
+  "tela": "Produto",
+  "x": 20,
+  "y": 715,
+  "w": 350,
+  "h": 57
+ },
+ "avaliar-estrelas": {
+  "tela": "Avaliar",
+  "x": 59,
+  "y": 359,
+  "w": 272,
+  "h": 48
+ },
+ "categoria-lanches": {
+  "tela": "Main",
+  "x": 96,
+  "y": 226,
+  "w": 64,
+  "h": 77
+ }
+}

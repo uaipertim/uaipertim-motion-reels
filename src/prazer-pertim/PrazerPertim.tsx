@@ -1,10 +1,11 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { AbsoluteFill, Easing, Img, interpolate, staticFile, useCurrentFrame } from "remotion";
 import { C, FONT, W } from "../config/theme";
 import { CremeBackground } from "../components/Decor";
 import { StarShape, Twinkles } from "../components/Particles";
 import { ShopChar, ShopCharKind } from "../components/Town";
 import { Pertim, PertimRig } from "../personagem/Pertim";
+import { Legenda, LegendaDados } from "../personagem/Legenda";
 import type { Expressao, Pose } from "../personagem/logica";
 import { bocaNoQuadro, Olhar, olharEm, piscadaEm, respiracao, trocaDePose, Visemas } from "../personagem/rig";
 import LAYOUT from "../../reels/prazer-pertim/layout.json";
@@ -119,33 +120,6 @@ const Lojinhas: React.FC<{ t: number }> = ({ t }) => {
   );
 };
 
-// a legenda gravada: pílula tinta 85% com o texto creme; a palavra falada em amarelo
-const Legenda: React.FC<{ t: number }> = ({ t }) => {
-  const b = LEGENDA.blocos.find((x) => t >= x.t0 && t < x.t1);
-  const st = LEGENDA.estilo;
-  const medir = useMemo(() => {
-    const c = document.createElement("canvas").getContext("2d")!;
-    c.font = `800 ${st.size}px ${FONT}`;
-    return (s: string) => c.measureText(s).width;
-  }, [st.size]);
-  if (!b) return null;
-  const todas = b.linhas.flat();
-  let atual = -1;
-  todas.forEach((w, i) => { if (t >= w.t0 - 0.02) atual = i; });
-  const larg = Math.max(...b.linhas.map((l) => medir(l.map((w) => w.w).join(" "))));
-  const wPill = larg + 2 * st.padX, hPill = b.linhas.length * st.lh + 2 * st.padY;
-  let k = -1;
-  return (
-    <div style={{ position: "absolute", left: st.cx - wPill / 2, top: st.base - hPill, width: wPill, height: hPill, borderRadius: Math.min(22, hPill / 2), background: "rgba(34,28,25,0.85)", opacity: Math.min(1, (t - b.t0) / 0.08), display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-      {b.linhas.map((l, li) => (
-        <div key={li} style={{ fontFamily: FONT, fontWeight: W.extraBold, fontSize: st.size, lineHeight: `${st.lh}px`, whiteSpace: "nowrap" }}>
-          {l.map((w, wi) => { k++; return <span key={wi} style={{ color: k === atual ? C.amarelo : C.papel }}>{wi ? " " : ""}{w.w}</span>; })}
-        </div>
-      ))}
-    </div>
-  );
-};
-
 const Chao: React.FC<{ t: number }> = ({ t }) => (
   <div style={{ position: "absolute", left: 0, top: L.chao - 4, width: 1080, height: 46, background: C.cremeDeep }}>
     <svg width={1080} height={46} style={{ position: "absolute", left: 0, top: 0 }}>
@@ -194,7 +168,7 @@ export const PrazerPertim: React.FC = () => {
           </div>
         </div>
       )}
-      <Legenda t={t} />
+      <Legenda t={t} dados={LEGENDA as LegendaDados} />
     </AbsoluteFill>
   );
 };

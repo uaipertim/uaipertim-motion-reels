@@ -1,0 +1,137 @@
+{
+  "id": "pedir-no-uaipertim",
+  "titulo": "Pedir no UaiPertim é assim",
+  "marca": "@uaipertim",
+  "perfil_voz": "narracao",
+  "trilha": "animada",
+  "legenda": true,
+  "_doc": "Reel 'Pedir no UaiPertim é assim' (Instagram @uaipertim): o app por dentro, narrado pelo Pertim. A voz e a mixagem saem do pipeline do Explica, Sô! (voz.py, linha.py, audio.py); o vídeo é a composição Remotion PedirNoUaiPertim (reels/pedir-no-uaipertim). 'min' de cada cena = a janela do roteiro menos a troca de 0,9 s.",
+  "capitulos": [
+    {
+      "rotulo": "CENA 1 · gancho",
+      "titulo": [
+        "",
+        ""
+      ],
+      "fala": [
+        {
+          "texto": "Bateu aquela fome? Ó, pedir no UaiPertim é assim:",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "gancho"
+      },
+      "inicio": 0.1,
+      "min": 3.1
+    },
+    {
+      "rotulo": "CENA 2 · início",
+      "titulo": [
+        "",
+        ""
+      ],
+      "fala": [
+        {
+          "texto": "Abre, escolhe o que quer...",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "inicio"
+      },
+      "min": 3.6,
+      "inicio": 0.6
+    },
+    {
+      "rotulo": "CENA 3 · loja e produto",
+      "titulo": [
+        "",
+        ""
+      ],
+      "fala": [
+        {
+          "texto": "...monta o lanche do seu jeito. Com bacon, claro.",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "produto"
+      },
+      "min": 4.6,
+      "inicio": 0.5
+    },
+    {
+      "rotulo": "CENA 4 · sacola e checkout",
+      "titulo": [
+        "",
+        ""
+      ],
+      "fala": [
+        {
+          "texto": "Paga na entrega, no dinheiro ou na maquininha.",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "checkout"
+      },
+      "min": 4.6,
+      "inicio": 1.2
+    },
+    {
+      "rotulo": "CENA 5 · acompanhar",
+      "titulo": [
+        "",
+        ""
+      ],
+      "fala": [
+        {
+          "texto": "Aí é só acompanhar: a loja aceita, prepara e sai pra entrega. Sem ficar esperando resposta no WhatsApp.",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "acompanhar"
+      }
+    },
+    {
+      "rotulo": "CENA 6 · Pão de Queijo Points",
+      "titulo": [
+        "",
+        ""
+      ],
+      "fala": [
+        {
+          "texto": "E cada pedido ainda rende pão de queijo... em pontos!",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "pontos"
+      },
+      "min": 4.6,
+      "inicio": 0.35
+    },
+    {
+      "rotulo": "FECHO",
+      "titulo": [
+        "",
+        ""
+      ],
+      "fala": [
+        {
+          "texto": "UaiPertim. Tá chegando no Glória!",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "fecho",
+        "logo": {
+          "em": "+0.3"
+        }
+      },
+      "min": 4.4
+    }
+  ]
+}

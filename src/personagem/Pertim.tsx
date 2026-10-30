@@ -41,7 +41,7 @@ const Luva: React.FC<{ transform: string; dedo?: boolean }> = ({ transform, dedo
   </g>
 );
 const Braco: React.FC<{ d: string; w?: number }> = ({ d, w = 11 }) => <path d={d} stroke={T.laranja} strokeWidth={w} strokeLinecap="round" fill="none" />;
-const MarcaPin: React.FC<{ transform: string }> = ({ transform }) => (
+export const MarcaPin: React.FC<{ transform: string }> = ({ transform }) => (
   // o pin da logo, pequeno (mochila e sacola)
   <g transform={transform}>
     <circle r={10} fill={T.coral} />
