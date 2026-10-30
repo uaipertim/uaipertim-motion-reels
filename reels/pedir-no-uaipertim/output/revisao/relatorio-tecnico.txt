@@ -77,7 +77,9 @@ OK     "Tá chegando no Glória" fica 2.93 s na tela (≥ 1,5 s)
 TROCAS, GANCHO E FECHO
 OK     trocas de cena todas diferentes: giro > zoom > chicote > faixa > empurra > iris
 OK     gancho: a motinha já entra desde o quadro 0 (mudança média a cada 0,1 s: 11.38–13.27)
-OK     a logo (selo) parada desde 36.50 s, nos 3 últimos segundos (8 amostras: centro e bordas da área coral variam no máximo 0.06 px, a área 0.03%)
+OK     a logo (selo) parada desde 36.50 s, nos 3 últimos segundos (8 amostras: centro e bordas da área coral variam no máximo 0.04 px, a área 0.09%)
+OK     a logo do fecho sem fundo branco: 0 pixels brancos (> 240) no anel em volta do círculo (0 de 19232); o canto da caixa da logo mostra o fundo creme (máx. 231)
+OK     a composição usa só a logo transparente (logo-selo-transparente.png)
 OK     mapa de tempos de linha.py (35–40 s, fecho 4–6 s, logo nos 3 últimos s)
 
 RESULTADO: aprovado

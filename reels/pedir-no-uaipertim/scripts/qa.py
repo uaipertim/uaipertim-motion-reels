@@ -357,6 +357,19 @@ desvio = float(np.abs(geo[:, :6] - geo[0, :6]).max())
 area = float(np.abs(geo[:, 6] / geo[0, 6] - 1).max())
 ok(EV['fecho']['logo']['parada'] <= DUR - 3.0 and desvio <= 1.0 and area <= 0.01,
    f'a logo (selo) parada desde {EV["fecho"]["logo"]["parada"]:.2f} s, nos 3 últimos segundos ({len(geo)} amostras: centro e bordas da área coral variam no máximo {desvio:.2f} px, a área {area * 100:.2f}%)')
+# a logo do fecho sem fundo: no anel logo em volta do círculo (de +4 a +24 px do raio), nenhum pixel branco/claro que não
+# seja o fundo creme com raios (o quadrado branco da logo antiga apareceria aqui como pixels quase brancos)
+LG_ = LAY['fecho']['logo']
+fr = quadro(DUR - 1.0)
+yy, xx = np.mgrid[0:1920, 0:1080]
+rr = np.hypot(xx - LG_['cx'], yy - LG_['cy'])
+R_ = LG_['d'] / 2 * 235.25 / 237.0
+anel = (rr > R_ + 4) & (rr < R_ + 24)
+px = fr[anel]
+brancos = int(((px.min(axis=1) > 240)).sum())
+cantos = fr[int(LG_['cy'] - LG_['d'] / 2) + 2:int(LG_['cy'] - LG_['d'] / 2) + 14, int(LG_['cx'] - LG_['d'] / 2) + 2:int(LG_['cx'] - LG_['d'] / 2) + 14]
+ok(brancos == 0 and cantos.min(axis=2).max() <= 240, f'a logo do fecho sem fundo branco: 0 pixels brancos (> 240) no anel em volta do círculo ({brancos} de {len(px)}); o canto da caixa da logo mostra o fundo creme (máx. {cantos.min(axis=2).max():.0f})')
+ok('logo-selo-transparente.png' in TSX and 'logo-selo.png"' not in TSX, 'a composição usa só a logo transparente (logo-selo-transparente.png)')
 mp = LN.get('mapa', {})
 ok(mp.get('ok', False), 'mapa de tempos de linha.py (35–40 s, fecho 4–6 s, logo nos 3 últimos s)')
 

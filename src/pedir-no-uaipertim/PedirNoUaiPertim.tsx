@@ -528,8 +528,9 @@ const Fecho: React.FC<{ t: number; quadro: number }> = ({ t, quadro }) => {
     <AbsoluteFill style={{ clipPath: raio < 1500 ? `circle(${raio}px at ${F.logo.cx}px ${F.logo.cy}px)` : undefined }}>
       <CremeBackground frame={quadro / 2} rays raysCenter={[540, 560]} raysOpacity={0.16} enfeites={false} />
       {eLogo > 0 && (
-        <div style={{ position: "absolute", left: F.logo.cx - F.logo.d / 2, top: F.logo.cy - F.logo.d / 2, width: F.logo.d, height: F.logo.d, transform: `scale(${kLogo})`, opacity: Math.min(1, eLogo * 4), filter: "drop-shadow(0 14px 24px rgba(198,58,23,0.3))" }}>
-          <Img src={asset("logo/logo-selo.png")} style={{ width: "100%", height: "100%" }} />
+        // a logo redonda com fundo transparente: sem cartão nem moldura; a sombra (drop-shadow) segue o alfa, então é redonda
+        <div style={{ position: "absolute", left: F.logo.cx - F.logo.d / 2, top: F.logo.cy - F.logo.d / 2, width: F.logo.d, height: F.logo.d, transform: `scale(${kLogo})`, opacity: Math.min(1, eLogo * 4), filter: "drop-shadow(0 10px 18px rgba(198,58,23,0.28))" }}>
+          <Img src={asset("logo/logo-selo-transparente.png")} style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }} />
         </div>
       )}
       {eTxt > 0 && (

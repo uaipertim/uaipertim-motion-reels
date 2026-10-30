@@ -18,7 +18,7 @@ As telas, os recortes, as fotos e a logo vêm do pacote `telas-reel-uaipertim.zi
    "Aí é só acompanhar: a loja aceita, prepara e sai pra entrega. Sem ficar esperando resposta no WhatsApp."
 6. **Pão de Queijo Points:** chuva de pão de queijo; o saldo sobe de 130 para 150 com o "+20"; o cupom desliza.
    "E cada pedido ainda rende pão de queijo... em pontos!"
-7. **Fecho:** a logo (selo) + "Tá chegando no Glória" + chip "Segue @uaipertim"; o Pertim acena.
+7. **Fecho:** a logo redonda com fundo transparente (`logo/logo-selo-transparente.png`, sombra redonda) + "Tá chegando no Glória" + chip "Segue @uaipertim"; o Pertim acena.
    "UaiPertim. Tá chegando no Glória!"
 
 As trocas de cena são todas diferentes: giro, zoom, chicote, faixa, empurra e íris.
