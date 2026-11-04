@@ -204,7 +204,7 @@
       ],
       "fala": [
         {
-          "texto": "Comenta aí: sexta é dia de lanche, pizza ou pastel?",
+          "texto": "Comenta aí: sexta é dia de quê? Lanche? Pizza? Ou pastel?",
           "apoio": "E aí, *qual é o seu*?"
         }
       ],
@@ -213,11 +213,11 @@
         "opcoes": [
           {
             "t": "lanche",
-            "em": "lanche"
+            "em": "Lanche"
           },
           {
             "t": "pizza",
-            "em": "pizza"
+            "em": "+3.62"
           },
           {
             "t": "pastel",
@@ -225,7 +225,7 @@
           },
           {
             "t": "espetinho",
-            "em": "fim"
+            "em": "pastel"
           }
         ]
       },

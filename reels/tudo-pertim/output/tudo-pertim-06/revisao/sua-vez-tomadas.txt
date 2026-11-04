@@ -1,0 +1,16 @@
+Tomadas do capítulo 06 de tudo-pertim-06 — 1ª rodada (seeds 42, 1042, 2042; com previous_text e next_text): REPROVADAS
+
+As 3 tomadas reprovaram na conferência ("fala cortada no fim"): a fala termina limpa (o nível cai a −85 dB), mas nos últimos
+40–50 ms do arquivo aparece um "s" inventado (98% da energia em 4–10 kHz, subindo até o fim): a voz começa o "Sexta" do
+capítulo seguinte, que ia como contexto (next_text = "Sexta sem cozinhar? …"). O texto não mudou; a 2ª rodada foi gerada sem
+o next_text (o previous_text continua). Os mp3 a/b/c desta pasta são os da 2ª rodada.
+
+2ª rodada (as tomadas que valem):
+Tomadas do capítulo 06 de tudo-pertim-06 (voz Victor Pinho, eleven_v4; texto enviado: "Comenta aí: sexta é dia de quê? Lanche? Pizza? Ou pastel?"; contexto: previous_text sim, next_text não) — 2026-11-04 20:04
+
+sua-vez-a.mp3 · seed 42 · 5.04 s · conferência: ok · F0 mediano 216 Hz · quê: sobe -3.4 st, termina -10.5 st, Lanche: sobe +8.1 st, termina +5.5 st, Pizza: sobe +3.2 st, termina +5.1 st, pastel: sobe -3.0 st, termina -9.0 st
+sua-vez-b.mp3 · seed 1042 · 4.96 s · conferência: ok · F0 mediano 214 Hz · quê: sobe +19.1 st, termina +11.7 st, Lanche: sobe +17.1 st, termina +6.1 st, Pizza: sobe +8.4 st, termina +3.9 st, pastel: sobe -2.7 st, termina +5.2 st
+sua-vez-c.mp3 · seed 2042 · 4.96 s · conferência: ok · F0 mediano 198 Hz · quê: sobe -2.7 st, termina -9.6 st, Lanche: sobe +10.7 st, termina +8.3 st, Pizza: sobe +11.8 st, termina +4.9 st, pastel: sobe -1.7 st, termina -7.5 st
+
+MELHOR: sua-vez-b.mp3 (seed 1042): a pior palavra termina +3.9 st da mediana (pergunta: acima); subida média +10.5 st
+
