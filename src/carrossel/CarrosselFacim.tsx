@@ -375,7 +375,16 @@ export const CarrosselFacim: React.FC<CarrosselProps> = ({ numero, chip, capa, s
           <div style={{ position: "absolute", right: -170, top: -150, width: 420, height: 420, borderRadius: "50%", border: `5px solid ${C.creme}`, opacity: 0.35 }} />
         </AbsoluteFill>
       ) : (
-        <CremeBackground frame={0} rays raysCenter={[540, 600]} raysOpacity={0.1} />
+        <>
+          {/* os enfeites do fundo creme, com o pontilhado no lugar certo de cada slide: nos de conteúdo ele fica INTEIRO
+              acima da etiqueta (a última linha termina em y 84, 26 px antes do topo do chip em y 110; o 1º ponto começa
+              na borda esquerda do chip, x 80); no final e na capa antiga, onde não há etiqueta no canto, fica como era */}
+          <CremeBackground frame={0} rays raysCenter={[540, 600]} raysOpacity={0.1} enfeites={false} />
+          {s.tipo === "conteudo"
+            ? <DotGrid cols={5} rows={3} gap={26} r={6} style={{ left: 74, top: 13 }} frame={0} />
+            : <DotGrid cols={5} rows={3} style={{ left: 60, top: 70 }} frame={0} />}
+          <div style={{ position: "absolute", right: -170, top: -150, width: 420, height: 420, borderRadius: "50%", border: `5px solid ${C.coral}`, opacity: 0.85 }} />
+        </>
       )}
       <Twinkles frame={14} seed="facim" points={TWINKLES} size={30} color={coral ? C.creme : undefined} />
 
