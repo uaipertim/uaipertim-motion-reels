@@ -21,9 +21,10 @@ import { fitWrap, Wrapped } from "../dicionario/fit";
 
 export type Icone =
   | "navegador" | "gratis" | "cadastro" | "cidade" | "categoria" | "loja" | "entrega" | "calendario"
-  | "seguir" | "sino" | "check" | "dinheiro" | "lanche" | "sofa" | "duvida" | "mensagem" | "cardapio";
+  | "seguir" | "sino" | "check" | "dinheiro" | "lanche" | "sofa" | "duvida" | "mensagem" | "cardapio" | "chuva" | "despensa" | "mercadim";
 // no lugar do ícone, o Pertim (src/personagem, V1) numa pose da página aprovada, com lojinhas opcionais ao lado
-export type PertimNoSlide = { pose: Pose; expr: Expressao; lojinhas?: ShopCharKind[] };
+// chuva: gotas caindo e um guarda-chuva amarelo preso na garupa da motinha (o desenho do Pertim não muda)
+export type PertimNoSlide = { pose: Pose; expr: Expressao; lojinhas?: ShopCharKind[]; chuva?: boolean };
 // quebra (opcional, na capa e no conteúdo): as linhas do título já definidas; o corpo diminui até todas caberem na margem
 export type Slide = { tipo: "capa" | "conteudo" | "final"; titulo: string; texto?: string; icone?: Icone; pertim?: PertimNoSlide; quebra?: string[] };
 export type Carrossel = { numero: number; chip: string; capa?: "coral" | "creme"; slides: Slide[] };
@@ -154,6 +155,32 @@ const Svg: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <svg width={ICON} height={ICON} viewBox="0 0 100 100">{children}</svg>
 );
 export const ICONS: Record<Icone, React.ReactNode> = {
+  chuva: (
+    <Svg>
+      <path d="M26 58 Q12 58 12 45 Q12 32 26 32 Q28 16 46 16 Q62 16 66 30 Q86 28 88 45 Q88 58 74 58 Z" fill="#8FA3B8" />
+      <path d="M26 58 Q12 58 12 45 Q14 52 28 52 H72 Q86 52 88 45 Q88 58 74 58 Z" fill="#7189A3" />
+      {[[28, 66], [46, 70], [64, 66], [37, 82], [55, 84]].map(([x, y], i) => (
+        <path key={i} d={`M${x} ${y} q-3 6 0 9 q3 -3 0 -9 Z`} fill="#5BA7E0" stroke="#5BA7E0" strokeWidth="3" strokeLinejoin="round" />
+      ))}
+    </Svg>
+  ),
+  despensa: (
+    <Svg>
+      <rect x="18" y="10" width="64" height="82" rx="8" fill="#D9A066" />
+      <rect x="25" y="17" width="50" height="68" rx="4" fill="#F6E7CF" />
+      <rect x="25" y="44" width="50" height="5" fill="#D9A066" />
+      <rect x="31" y="31" width="12" height="13" rx="2" fill={C.amarelo} />
+      <rect x="31" y="31" width="12" height="4" rx="2" fill={C.coral} />
+      <path d="M60 64 h10 v15 h-10 Z" fill="#fff" stroke="#B97D45" strokeWidth="2" />
+      <rect x="59" y="61" width="12" height="4" rx="2" fill="#7A5233" />
+      <path d="M66 18 L75 18 M75 18 L75 27 M68 18 Q73 23 75 25" stroke="#BDB2A6" strokeWidth="1.5" fill="none" />
+    </Svg>
+  ),
+  mercadim: (
+    <div style={{ width: 92, height: 118, marginTop: -6 }}>
+      <ShopChar kind="mercado" width={92} mood="happy" look={[0, 0.2]} lit={0.9} awning={0.3} />
+    </div>
+  ),
   cardapio: (
     <Svg>
       <rect x="20" y="10" width="60" height="80" rx="10" fill={C.coral} />
@@ -309,6 +336,21 @@ const PertimCena: React.FC<{ p: PertimNoSlide; largura: number }> = ({ p, largur
           </div>
         );
       })}
+      {p.chuva && (
+        // o guarda-chuva amarelo aberto, preso na garupa (atrás do Pertim), e as gotas caindo
+        <svg width={largura} height={PERTIM_BOX} style={{ position: "absolute", left: 0, top: 0, overflow: "visible" }}>
+          {Array.from({ length: 22 }).map((_, i) => {
+            const x = ((i * 137) % 100) / 100 * largura, y = ((i * 61) % 100) / 100 * (PERTIM_BOX - 60);
+            return <line key={i} x1={x} y1={y} x2={x - 8} y2={y + 26} stroke="#7FB8E6" strokeWidth={6} strokeLinecap="round" opacity={0.8} />;
+          })}
+          <g transform={`translate(${cx - w * 0.36} ${PERTIM_BOX - altura * 0.62})`}>
+            <line x1={0} y1={-150} x2={24} y2={70} stroke="#7A5233" strokeWidth={7} strokeLinecap="round" />
+            <path d="M-95 -150 Q-90 -240 0 -246 Q90 -240 95 -150 Q72 -170 48 -150 Q24 -170 0 -150 Q-24 -170 -48 -150 Q-72 -170 -95 -150 Z" fill={C.amarelo} stroke={C.amareloDark} strokeWidth={5} strokeLinejoin="round" />
+            <path d="M0 -246 Q-30 -200 -48 -150 M0 -246 Q30 -200 48 -150" stroke={C.amareloDark} strokeWidth={4} fill="none" />
+            <circle cx={0} cy={-250} r={7} fill={C.coral} />
+          </g>
+        </svg>
+      )}
       <div style={{ position: "absolute", left: cx - w / 2, top: PERTIM_BOX - altura * (moto ? 0.944 : p.pose === "parado" ? 0.951 : 0.947) - 18 }}>
         <Pertim v={1} pose={p.pose} expr={p.expr} altura={altura} rig={{ centro: true }} />
       </div>

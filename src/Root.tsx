@@ -49,6 +49,7 @@ import facim06 from "../carrosseis/facim/06-o-que-tem-hoje.json";
 import facim07 from "../carrosseis/facim/07-saber-primeiro.json";
 import facim08 from "../carrosseis/facim/08-por-que-comprar-pertim.json";
 import facim09 from "../carrosseis/facim/09-domingo-a-noite.json";
+import facim10 from "../carrosseis/facim/10-choveu-despensa-vazia.json";
 
 // Capas novas dos carrosséis "Facim Facim" (só o slide-1, no modelo das capas do Dicionário): o título é medido com
 // as fontes carregadas. Um carrossel entra aqui quando o JSON dele tem o campo "capaNova".
@@ -61,7 +62,7 @@ const capaReelMetadata = async ({ props }: { props: CapaReelProps }) => {
   await fontsReady;
   return { props: { ...props, layout: measureCapaReel(props) } };
 };
-const CAPAS_FACIM = [facim01, facim02, facim03, facim04, facim05, facim06, facim07, facim08, facim09] as unknown as CapaFacimProps[];
+const CAPAS_FACIM = [facim01, facim02, facim03, facim04, facim05, facim06, facim07, facim08, facim09, facim10] as unknown as CapaFacimProps[];
 
 // Cortes curtos: duração = trecho do original + fecho; textos medidos com as fontes carregadas.
 const corteMetadata = async ({ props }: { props: CorteProps }) => {

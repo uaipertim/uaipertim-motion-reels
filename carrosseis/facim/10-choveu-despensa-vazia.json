@@ -1,0 +1,50 @@
+{
+  "numero": 10,
+  "chip": "FACIM FACIM",
+  "capa": "creme",
+  "capaNova": {
+    "ilustracao": "chuva-despensa",
+    "fundo": "pessego",
+    "cor": "amarelo"
+  },
+  "slides": [
+    {
+      "tipo": "capa",
+      "titulo": "Choveu e a despensa *vazia*? 🌧️",
+      "texto": ""
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Começou a chover…",
+      "texto": "E ninguém quer sair de casa nem pra ir na esquina.",
+      "icone": "chuva"
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Abriu o armário…",
+      "texto": "Só um pacote de macarrão e meio pote de café.",
+      "icone": "despensa"
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "O mercadim do Glória tem",
+      "texto": "Arroz, feijão, café e o pão pro lanche da tarde.",
+      "icone": "mercadim"
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "E chega sem ocê molhar o pé",
+      "texto": "O UaiPertim leva até a sua porta.",
+      "pertim": {
+        "pose": "moto",
+        "expr": "sorrindo",
+        "chuva": true
+      }
+    },
+    {
+      "tipo": "final",
+      "titulo": "Manda pra quem odeia sair na chuva ☔",
+      "texto": "Segue a gente pra saber quando abrir"
+    }
+  ]
+}

@@ -18,7 +18,7 @@ import { Pertim } from "../personagem/Pertim";
 
 export type CapaNova = { ilustracao: Ilustracao; fundo: "creme" | "pessego"; cor: "coral" | "verde" | "amarelo" };
 export type CapaFacimProps = Carrossel & { capaNova: CapaNova; layout?: { titulo: Wrapped; fonte: string } };
-type Ilustracao = "mao-vez" | "passos" | "sacola" | "loja-aberto" | "sino" | "moeda-coracao" | "geladeira" | "pertim" | "restaurante-balao";
+type Ilustracao = "mao-vez" | "passos" | "sacola" | "loja-aberto" | "sino" | "moeda-coracao" | "geladeira" | "pertim" | "restaurante-balao" | "chuva-despensa";
 
 const H = 1350;
 const SAFE = { x0: 130, x1: 950, y0: 90, y1: 1260 };
@@ -350,9 +350,49 @@ const RestauranteBalao: React.FC = () => {
   );
 };
 
+// C10 · a janela com chuva (nuvem emburrada) e, ao lado, a despensa aberta e vazia: um pacotinho só e uma teia discreta
+const ChuvaDespensa: React.FC = () => (
+  <Svg>
+    <Sombra cx={520} rx={200} />
+    {/* a janela: moldura, vidro de dia nublado, a nuvem emburrada e a chuva */}
+    <rect x="10" y="40" width="300" height="300" rx="26" fill="#fff" />
+    <rect x="28" y="58" width="264" height="264" rx="14" fill="#9DB4CB" />
+    {Array.from({ length: 16 }).map((_, i) => {
+      const x = 40 + ((i * 53) % 240), y = 150 + ((i * 37) % 150);
+      return <line key={i} x1={x} y1={y} x2={x - 10} y2={y + 28} stroke="#E6F1FA" strokeWidth="6" strokeLinecap="round" />;
+    })}
+    <g transform="translate(160 118)">
+      <path d="M-82 34 Q-112 34 -112 8 Q-112 -18 -84 -18 Q-80 -52 -40 -52 Q-8 -52 2 -26 Q12 -48 46 -46 Q84 -42 86 -6 Q112 -4 112 18 Q112 34 92 34 Z" fill="#6E7F93" />
+      <path d="M-44 -2 L-22 6 M44 -2 L22 6" stroke="#2E3742" strokeWidth="7" strokeLinecap="round" />
+      <circle cx="-30" cy="12" r="6" fill="#2E3742" /><circle cx="30" cy="12" r="6" fill="#2E3742" />
+      <path d="M-16 28 Q0 18 16 28" stroke="#2E3742" strokeWidth="6" strokeLinecap="round" fill="none" />
+    </g>
+    <rect x="28" y="236" width="264" height="12" fill="#fff" />
+    <rect x="0" y="334" width="320" height="22" rx="11" fill={C.cremeDeep} />
+    {/* a despensa: o armário de madeira aberto, vazio */}
+    <rect x="370" y="20" width="300" height="432" rx="22" fill="#D9A066" />
+    <rect x="392" y="42" width="256" height="388" rx="10" fill="#F6E7CF" />
+    {[160, 290].map((y) => <rect key={y} x="392" y={y} width="256" height="14" fill="#C88E55" />)}
+    {/* as portas abertas, em perspectiva */}
+    <path d="M370 26 L330 52 V424 L370 448 Z" fill="#E7B47C" stroke="#B97D45" strokeWidth="4" strokeLinejoin="round" />
+    <path d="M670 26 L712 52 V424 L670 448 Z" fill="#E7B47C" stroke="#B97D45" strokeWidth="4" strokeLinejoin="round" />
+    <circle cx="350" cy="238" r="7" fill="#7A5233" /><circle cx="692" cy="238" r="7" fill="#7A5233" />
+    {/* o pacotinho solitário */}
+    <path d="M484 236 H534 L530 290 H488 Z" fill={C.amarelo} stroke={C.amareloDark} strokeWidth="4" strokeLinejoin="round" />
+    <rect x="482" y="228" width="54" height="12" rx="4" fill={C.coral} />
+    <rect x="496" y="252" width="26" height="16" rx="4" fill="#fff" opacity="0.85" />
+    {/* a teia, discreta, no canto de cima */}
+    <g stroke="#B8AEA3" strokeWidth="2" fill="none" opacity="0.8">
+      <path d="M648 42 L590 42 M648 42 L648 100 M648 42 L600 90" />
+      <path d="M626 42 Q630 60 648 64 M606 42 Q614 78 648 84 M634 42 Q636 52 648 52" />
+    </g>
+    <Brilho x={340} y={12} s={26} />
+  </Svg>
+);
+
 const ILUSTRACOES: Record<Ilustracao, React.FC> = {
   "mao-vez": MaoVez, passos: Passos, sacola: Sacola, "loja-aberto": LojaAberto, sino: Sino, "moeda-coracao": MoedaCoracao, geladeira: Geladeira,
-  pertim: PertimAcenando, "restaurante-balao": RestauranteBalao,
+  pertim: PertimAcenando, "restaurante-balao": RestauranteBalao, "chuva-despensa": ChuvaDespensa,
 };
 
 // ---------------------------------------------------------------- a capa
