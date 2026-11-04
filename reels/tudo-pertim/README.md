@@ -40,6 +40,7 @@ A cara é **mais jovem, animada e viva**, com a marca em destaque. A pasta `reel
 | **tudo-pertim-03** | "Visita sem avisar" (transição da galinha) | 00 capa · 01 o desespero · 02 a cozinha · 03 socorro · 04 o capricho · 05 chegou · 06 sua vez · 07 fecho | final com voz, 50,75 s, revisão aprovada: [`exports/tiktok/tudo-pertim/ep03/`](../../exports/tiktok/tudo-pertim/ep03) |
 | **tudo-pertim-04** | "Segunda sem coragem" (transição da sacola; 1º episódio com a voz v4) | 00 capa · 01 a geladeira · 02 a preguiça · 03 a solução · 04 a lista · 05 chegou · 06 sua vez · 07 fecho | final com voz v4, 54,5 s, revisão aprovada: [`exports/tiktok/tudo-pertim/ep04/`](../../exports/tiktok/tudo-pertim/ep04) |
 | **tudo-pertim-05** | "Churrasco de domingo" (transição do vira-lata; voz v4) | 00 capa · 01 o causo · 02 o açougue · 03 o mercadim · 04 geladim · 05 chegou · 06 sua vez · 07 fecho | final com voz v4, 49,25 s, revisão aprovada: [`exports/tiktok/tudo-pertim/ep05/`](../../exports/tiktok/tudo-pertim/ep05) |
+| **tudo-pertim-06** | "Sexta sem cozinhar?" (transição da caixa de pizza; com o **Pertim**, o personagem oficial; voz v4) | 00 capa · 01 o causo · 02 a lanchonete · 03 a pizzaria · 04 geladim · 05 chegou · 06 sua vez · 07 fecho | final com voz v4, 52,25 s, revisão aprovada: [`exports/tiktok/tudo-pertim/ep06/`](../../exports/tiktok/tudo-pertim/ep06) |
 
 O "Segunda sem coragem" e o "Churrasco de domingo" trocaram de número (o Segunda é o EP. 04 e o Churrasco, o EP. 05): JSON, pastas de áudio e de saída, exports e o adesivo da capa acompanham. O Churrasco foi para a voz v4 (no v2, o "Domingo" do começo da capa saía "DÓmingo").
 
@@ -112,15 +113,25 @@ A troca de capítulo é escolhida no JSON do episódio, em `"transicao"`. Sem o 
 | *(sem o campo)* / `"moto"` | A motinha com a sacola da marca, com poeira e confete na borda | Sentido alterna; altura, pulinho e empinada mudam (`VARIA`) | Motor + vento, andando de um lado ao outro |
 | `"viralata"` | Um vira-lata caramelo correndo com uma linguiça na boca (tamanho de protagonista, ≈ 400 px, contorno tinta); **o rastro de poeira e fumacinha** ao longo da borda varre o capítulo | Em ciclo de 4: correndo feliz, aos pulinhos, a linguiça balançando; derrapa no meio e volta um passo; com o tio da churrasqueira (avental e pegador) correndo atrás; para no meio, olha para a câmera e sai em disparada. O sentido alterna e a altura muda (`VARIA_V`) | Patinhas em galope + latidinho abafado, andando de um lado ao outro |
 | `"sacola"` | A sacola comilona da UaiPertim (papel creme, faixa coral, a **logo oficial** de `public/img` — nunca redesenhada, deformada, espelhada nem coberta —, olhinhos no estilo das lojinhas, contorno tinta, ≈ 400 px com as alças) pula na tela um pulo a cada meio tempo, abre uma **boca abaixo da logo** e "engole" o capítulo com um **NHAC!** no tempo cheio; atrás dela já está o próximo ("ploc"); **as migalhas** varrem a borda | Em ciclo de 4: pulo e nhac direto; bochechas cheias, mastigando; palitando os dentes; para no meio e suspira satisfeita ("ahh…") com coraçõezinhos. O sentido alterna e a altura muda (`VARIA_S`). Boca, migalhas, "NHAC!" e figurinhas nunca ficam por cima da logo; ao pular, só o papel amassa | Pulinhos de papel + mordida crocante (NHAC!) + "ploc"; mastigando, o tique do palito ou o "ahh" |
+| `"pizza"` | A **tampa de uma caixa de pizza** gigante (papelão, selo da fatia, "QUENTINHA", sem marca) desce do alto e **fecha** sobre o capítulo (a borda dela limpa a tela de cima para baixo), dá um "plof" com fumacinha e **abre** de novo, subindo, com o próximo capítulo embaixo. Fica na área do conteúdo (x 70–938, y 378–1490): nunca cobre a marca do topo nem passa pela coluna de botões | Em ciclo de 4: a figurinha do canto da tampa (estrela, coração, brilho, "UAI!") e o balancinho do plof | Vento grave da tampa descendo + "plof" de papelão + a tampa abrindo |
 | `"galinha"` | Uma galinha caipira em disparada, batendo as asas; **as penas** que voam ao longo da borda varrem o capítulo | Em ciclo de 4: tropeça no meio; com o pintinho correndo atrás; freia no meio e olha para a câmera; dá um pulão. O sentido alterna e a altura muda (`VARIA_G`) | Cacarejo ("có-có-có-CÓÓ") + bater de asas, andando de um lado ao outro |
 
 - A duração é a mesma para todas: 1,5 tempo da batida (0,75 s a 120 bpm), começando num meio tempo.
 - Quem atravessa fica sempre com a base acima de y 1060, fora da coluna de botões.
 - Com a galinha, a motinha não faz as trocas; ela só aparece dentro das cenas que a usam (ex.: `chegou`).
 - No `fecho`, `"cachorro": {"em": "+1.6"}` faz o vira-lata cruzar ao fundo, do mesmo jeito.
+- No `fecho`, `"pertim": {"em": "UaiPertim", "pisca": "pertim"}` põe o **Pertim** acenando ao lado da logo (a logo vai um pouco para a esquerda), com a piscadinha na palavra de `pisca`; ele para de acenar 3 s antes do fim e fica parado.
 - No `fecho`, `"sacola": {"em": "+1.6"}` faz a sacola comilona passar ao fundo aos pulos, com um nhac (atrás da logo e do texto; termina antes dos 3 s finais).
 - No `fecho`, `"galinha": {"em": "+1.6"}` faz a galinha cruzar ao fundo uma última vez, atrás da logo e do texto. Ela termina antes dos 3 s finais, então nada se mexe sobre a logo parada.
 - **Transição nova:** é uma função `travessiaX(k, u)` (posição, borda da varredura, sentido e jeito) mais `drawWipeX(ctx, t, k, u)` em `src/anim.js`. Ela é ligada em `travessia()`/`drawWipe()` pelo valor de `TRANS`, com o som próprio em `scripts/audio.py`.
+
+## O Pertim, personagem oficial (desde o ep06)
+
+O desenho é o do personagem oficial, em `src/personagem/` na raiz do repositório (trazido da branch do Instagram com `git checkout origin/claude/explica-so -- src/personagem`, sem merge; ver o README de lá). O motor do Tudo Pertim desenha em canvas, então os quadros saem do **próprio componente `<Pertim>` (V1)** com o rig dele (`piscada`, `olhar` na câmera, `aceno`): `node scripts/pertim_sprites.mjs` grava `src/pertim/<nome>.svg` e `manifest.json` (o viewBox e o ponto do pé de cada quadro). Nada é redesenhado: o motor só posiciona pelo pé, escala por igual e anima (quique por translação, piscada e aceno por troca de quadro).
+
+- Quadros: pilotando a moto (`moto-p0/5/10`, piscada), em pé com a sacola (`sacola-p*`), acenando (`acena-a<graus>-p*`, aceno −24…24°), acenando com a piscadinha (`pisca-a*`), alegre (`alegre-a*`) e a moto estacionada (`moto-estacionada`: os mesmos caminhos e cores da moto do arquivo, só sem as pernas, o tênis e a luva do piloto e sem o rastro de velocidade).
+- A pose da moto do arquivo não tem braços; por isso, no `entrega`, ele chega pilotando, desce, entrega e só então acena.
+- A página (`src/index.html`) só carrega esses quadros quando o episódio usa o Pertim (`entrega` ou `"pertim"` no fecho); os outros episódios desenham exatamente como antes.
 
 ## Céu do dia e relógio (opcionais, desde o ep02)
 
@@ -224,6 +235,7 @@ A chave do ElevenLabs fica **só em Segredos de rede**: a rede da nuvem põe o c
 
 | `tipo` | Visual | Campos |
 |---|---|---|
+| `capa` com `"cena": "fogao"` | O adesivo, o título e, no lugar da motinha, o fogão com cara de cansado (pálpebras pesadas e olheiras no vidro do forno, suspirando a fumacinha do 😮‍💨) e a panela vazia com a tampa encostada | `cena: "fogao"`, `marcador`, `fogao: {em}`, `panela: {em}` |
 | `capa` com `"cena": "segunda"` | O adesivo, o título e, no lugar da motinha, o calendário com o "SEG" caindo (preso num aro só), o bonequinho bocejando enrolado no cobertor xadrez e a geladeira entreaberta com a luzinha escapando | `cena: "segunda"`, `marcador`, `calendario: {em}`, `geladeira: {em}`, `bocejo: {em}` |
 | `capa` com `"cena": "churrasco"` | O adesivo, o título e, no lugar da motinha, a churrasqueira apagada com uma fumacinha triste, o saco de carvão vazio virado e o vira-lata sentado com cara de pidão (choraminga na palavra) | `cena: "churrasco"`, `marcador`, `cao: {em}` |
 | `capa` com `"cena": "porta"` | O adesivo, o título e, no lugar da motinha, a porta tremendo com o "TOC TOC" (batidas a cada 1,5 s) e a lata de biscoito vazia com a mosquinha rodando | `cena: "porta"`, `marcador`, `lata: {em}` |
@@ -254,7 +266,12 @@ A chave do ElevenLabs fica **só em Segredos de rede**: a rede da nuvem põe o c
 | `solucao` | 3 lojinhas brotam apagadas e acendem em sequência (brilho, sorriso, bracinho acenando), com estrela e coração | `lojas: [{tipo, em}]` (3; `hortifruti`, `mercado`, `acougue`…), `brota: {em}` |
 | `lista` | Os itens da compra (sem marca) caem um a um do alto na sacola da marca e ficam aparecendo pela boca; check, confete e figurinhas atrás da sacola | `itens: [{tipo, em}]` (até 5: `arroz`, `feijao`, `ovos`, `verdura`, `cafe`, `limao`, …) |
 | `leve` | A motinha chega; a geladeira abre cheia e iluminada; o bonequinho se espreguiça feliz; a nuvem cinza vira sol sorrindo | `moto: {em}`, `geladeira: {em}`, `espreguica: {em}`, `sol: {em}` |
-| `fecho` | Título do capítulo, a logo oficial grande e fixa, a assinatura "Tudo pertim de você.", chip "Segue @uaipertim" com seta e confete final | `logo: {em}`, `assinatura: {t, em}`, `chip: {t, em}`, `confete: {em}`; opcionais, cruzando ao fundo antes dos 3 s finais: `galinha`, `cachorro` ou `sacola: {em}` |
+| `semana` | A família cansada largada no sofá (afunda e fecha os olhos no "cansado", com suspiros) e a geladeira que abre com luz: só a garrafa d'água e um limão; o "?" | `familia: {em}`, `cansado: {em}`, `geladeira: {em}`, `agua: {em}`, `limao: {em}` |
+| `lanchonete` | A lanchonete (lojinha com olhinhos) olhando o lanche caprichado e a batata, que brotam na bandeja na palavra; no "faz", ela pula de alegria, com check, confete e figurinhas | `lanche: {em}`, `batata: {em}`, `loja: {em}`, `faz: {em}` |
+| `pizzaria` | A pizzaria (lojinha) e a caixa de pizza que abre (a tampa gira na dobradiça de trás) e mostra a pizza meio a meio (calabresa e mussarela, a divisão brilhando), com fumacinha; corações no fim da briga | `caixa: {em}`, `meio: {em}`, `briga: {em}` |
+| `sobremesa` | A sorveteria olhando; os refris (sem marca) subindo, o "gelado" com brilhos e cubos de gelo; a tigela de açaí com banana e granola | `refri: {em}`, `gelado: {em}`, `acai: {em}`, `sobremesa: {em}` |
+| `entrega` | **O Pertim** (personagem oficial) chega pilotando a motinha, grande e olhando para a câmera; desce num pulinho com a sacola, entrega na mesa (a sacola da marca aparece lá, com a logo oficial) e acena; a família comemora com coraçõezinhos; no "prato", o prato limpinho brilha | `moto: {em}`, `mesa: {em}`, `louca: {em}`, `prato: {em}` |
+| `fecho` | Título do capítulo, a logo oficial grande e fixa, a assinatura "Tudo pertim de você.", chip "Segue @uaipertim" com seta e confete final | `logo: {em}`, `assinatura: {t, em}`, `chip: {t, em}`, `confete: {em}`; opcionais, cruzando ao fundo antes dos 3 s finais: `galinha`, `cachorro` ou `sacola: {em}`; `pertim: {em, pisca}` (o Pertim acenando ao lado da logo) |
 
 **Cena nova:** é um bloco `CENAS.<nome> = { setup(cap), draw(ctx, cap, t) }` em `src/anim.js`.
 
@@ -270,6 +287,8 @@ episodios/<id>.json       roteiro (o único arquivo que muda entre episódios)
 scripts/episodio.sh       o comando único (e --previa, sem voz)
 scripts/voz.py            narração: uma geração inteira por capítulo (with-timestamps), conferida e com histórico; v2 ou v4 pelo campo "voz"
 scripts/voz_versao.py     qual voz (voz_oficial.json v2 ou voz_v4.json) e qual grafia vão para a API; tempo das palavras no v4
+scripts/pertim_sprites.mjs  os quadros do Pertim (personagem oficial, src/personagem — V1) gerados do próprio componente <Pertim> com o rig → src/pertim/*.svg + manifest.json
+src/pertim/               os quadros do Pertim que o motor desenha (só posicionados pelo pé, escalados e animados: quique, piscada, aceno)
 testes/voz-v4/            teste v2 × v4 (RELATORIO.md) e validação do fluxo com o v4 (validacao/), fora da produção
 scripts/linha.py          linha do tempo + narração montada sem cortes + mapa de tempos (45–60 s, capítulos 5–7 s, apoios, fecho, logo)
 scripts/audio.py          voz + trilha animada (bpm do episódio) com ducking + efeitos → audio/<id>/mix.wav (−14 LUFS)

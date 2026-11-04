@@ -1,0 +1,272 @@
+{
+  "id": "tudo-pertim-06",
+  "titulo": "Sexta sem cozinhar?",
+  "marca": "@uaipertim",
+  "bpm": 120,
+  "voz": "v4",
+  "transicao": "pizza",
+  "capitulos": [
+    {
+      "rotulo": "TUDO PERTIM · EP. 06",
+      "tom": "pessego",
+      "titulo": [
+        "Sexta sem",
+        "cozinhar? 😮‍💨"
+      ],
+      "fala": [
+        {
+          "texto": "Sexta-feira à noite… e ninguém quer nem chegar perto do fogão?",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "capa",
+        "cena": "fogao",
+        "marcador": "cozinhar",
+        "panela": {
+          "em": "ninguém"
+        },
+        "fogao": {
+          "em": "fogão"
+        }
+      }
+    },
+    {
+      "rotulo": "O CAUSO",
+      "tom": "pessego",
+      "titulo": [
+        "A semana foi",
+        "puxada."
+      ],
+      "fala": [
+        {
+          "texto": "A semana foi puxada, o povo chegou cansado…",
+          "apoio": null
+        },
+        {
+          "texto": "e a geladeira só tem água e um limão.",
+          "apoio": "Só *água e um limão*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "semana",
+        "familia": {
+          "em": "povo"
+        },
+        "cansado": {
+          "em": "cansado"
+        },
+        "geladeira": {
+          "em": "geladeira"
+        },
+        "agua": {
+          "em": "água"
+        },
+        "limao": {
+          "em": "limão"
+        }
+      },
+      "segura": 0.6
+    },
+    {
+      "rotulo": "A LANCHONETE",
+      "tom": "amarelo",
+      "titulo": [
+        "Bateu fome",
+        "de lanche?"
+      ],
+      "fala": [
+        {
+          "texto": "Um lanche caprichado, com batata e tudo?",
+          "apoio": null
+        },
+        {
+          "texto": "A lanchonete do Glória faz.",
+          "apoio": "A lanchonete do Glória *faz*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "lanchonete",
+        "lanche": {
+          "em": "lanche"
+        },
+        "batata": {
+          "em": "batata"
+        },
+        "loja": {
+          "em": "lanchonete"
+        },
+        "faz": {
+          "em": "faz"
+        }
+      },
+      "segura": 0.6
+    },
+    {
+      "rotulo": "A PIZZARIA",
+      "tom": "pessego",
+      "titulo": [
+        "Ou uma pizza",
+        "meio a meio?"
+      ],
+      "fala": [
+        {
+          "texto": "Ou aquela pizza meio a meio, que acaba com a briga.",
+          "apoio": "Pizza *meio a meio*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "pizzaria",
+        "caixa": {
+          "em": "pizza"
+        },
+        "meio": {
+          "em": "meio"
+        },
+        "briga": {
+          "em": "briga"
+        }
+      },
+      "segura": 0.6,
+      "min": 5.5
+    },
+    {
+      "rotulo": "GELADIM",
+      "tom": "verde",
+      "titulo": [
+        "Refri e",
+        "sobremesa!"
+      ],
+      "fala": [
+        {
+          "texto": "E pra fechar: refri gelado e um açaí de sobremesa.",
+          "apoio": "Refri gelado e *açaí*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "sobremesa",
+        "refri": {
+          "em": "refri"
+        },
+        "gelado": {
+          "em": "gelado"
+        },
+        "acai": {
+          "em": "açaí"
+        },
+        "sobremesa": {
+          "em": "sobremesa"
+        }
+      },
+      "segura": 0.6,
+      "min": 5.5
+    },
+    {
+      "rotulo": "CHEGOU",
+      "tom": "amarelo",
+      "titulo": [
+        "Chegou",
+        "quentinho!"
+      ],
+      "fala": [
+        {
+          "texto": "Chegou quentinho, direto pra mesa.",
+          "apoio": null
+        },
+        {
+          "texto": "E a louça? Nem um prato sujo.",
+          "apoio": "*Nenhum prato* pra lavar."
+        }
+      ],
+      "diagrama": {
+        "tipo": "entrega",
+        "moto": {
+          "em": "Chegou"
+        },
+        "mesa": {
+          "em": "mesa"
+        },
+        "louca": {
+          "em": "louça"
+        },
+        "prato": {
+          "em": "prato"
+        }
+      },
+      "segura": 0.7
+    },
+    {
+      "rotulo": "SUA VEZ",
+      "tom": "amarelo",
+      "titulo": [
+        "Sexta é dia",
+        "de quê?"
+      ],
+      "fala": [
+        {
+          "texto": "Comenta aí: sexta é dia de lanche, pizza ou pastel?",
+          "apoio": "E aí, *qual é o seu*?"
+        }
+      ],
+      "diagrama": {
+        "tipo": "enquete",
+        "opcoes": [
+          {
+            "t": "lanche",
+            "em": "lanche"
+          },
+          {
+            "t": "pizza",
+            "em": "pizza"
+          },
+          {
+            "t": "pastel",
+            "em": "pastel"
+          },
+          {
+            "t": "espetinho",
+            "em": "fim"
+          }
+        ]
+      },
+      "segura": 0.8,
+      "min": 5.5
+    },
+    {
+      "rotulo": "PRA NÃO PERDER",
+      "tom": "amarelo",
+      "titulo": [
+        "Em breve",
+        "no Glória."
+      ],
+      "min": 7.5,
+      "fala": [
+        {
+          "texto": "Sexta sem cozinhar? Relaxa, tem UaiPertim. Tudo pertim de você. Segue a gente!",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "fecho",
+        "logo": {
+          "em": "UaiPertim"
+        },
+        "assinatura": {
+          "t": "Tudo pertim de você.",
+          "em": "Tudo"
+        },
+        "chip": {
+          "t": "Segue @uaipertim",
+          "em": "Segue"
+        },
+        "confete": {
+          "em": "+1.2"
+        },
+        "pertim": {
+          "em": "UaiPertim",
+          "pisca": "pertim"
+        }
+      }
+    }
+  ]
+}

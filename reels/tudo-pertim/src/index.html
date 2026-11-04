@@ -47,7 +47,14 @@
       fetch(LINHA).then((r) => r.json()), ...fonts]);
     await img.decode();
     await document.fonts.ready;
-    TUDO.init(img, ep); // layout tipográfico + linha do tempo + cues (precisa das fontes carregadas)
+    // o Pertim (personagem oficial, src/personagem): os quadros gerados por scripts/pertim_sprites.mjs — só no episódio que usa
+    let pertim = null;
+    if (ep.capitulos.some((c) => c.diagrama.pertim || c.diagrama.tipo === 'entrega')) {
+      const man = await fetch('pertim/manifest.json').then((r) => r.json());
+      pertim = {};
+      await Promise.all(Object.entries(man.quadros).map(async ([nome, q]) => { const im = await loadImg(`pertim/${nome}.svg`); await im.decode(); pertim[nome] = { img: im, vb: q.vb, chao: q.chao }; }));
+    }
+    TUDO.init(img, ep, pertim); // layout tipográfico + linha do tempo + cues (precisa das fontes carregadas)
     document.title = `UaiPertim — Tudo Pertim ${EPID}`;
   })();
 

@@ -626,6 +626,14 @@ for c in CUES['cues']:
             v = np.sin(2 * np.pi * np.cumsum(f) / SR) * 0.5 + filt(noise(da), [500, 2200], 'band') * 0.5
             v = filt(v, 1800, 'low') * np.minimum(1, tq / 0.08) * np.clip((da - tq) / 0.3, 0, 1)
             place(sfx, v, t + tn + 0.2, 0.3, 0.0); place(sfx, sparkle(), t + tn + 0.3, 0.14)
+    elif ty == 'pizza':
+        # a caixa de pizza (ep06): a tampa de papelão descendo (um vento grave), o "plof" quando fecha e a tampa abrindo
+        dd = max(0.3, d)
+        place(sfx, whoosh(dd * 0.42, 180, 900, 0.5, 1.0), t, 0.2, -0.2)
+        plof = add(thump(0.22, 95, 0.05, 1.0) * 0.8, filt(noise(0.12), [300, 2400], 'band') * np.exp(-tt(0.12) / 0.03) * 0.6)
+        place(sfx, plof, t + dd * 0.42, 0.5, 0.0); place(send, plof, t + dd * 0.42, 0.06)
+        place(sfx, whoosh(dd * 0.42, 900, 2600, 0.5, 1.1), t + dd * 0.58, 0.18, 0.2)
+        place(sfx, pop(880), t + dd * 0.95, 0.16, 0.2)
     elif ty == 'grilo':
         # o grilinho da geladeira vazia: "cri-cri" (dois trinados agudos, baixinho)
         for q in range(2):

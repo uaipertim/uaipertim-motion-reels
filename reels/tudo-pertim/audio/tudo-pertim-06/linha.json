@@ -1,0 +1,1178 @@
+{
+ "episodio": "tudo-pertim-06",
+ "titulo": "Sexta sem cozinhar?",
+ "marca": "@uaipertim",
+ "bpm": 120,
+ "transicao": "pizza",
+ "duracao": 52.25,
+ "tr": 0.75,
+ "ap_entra": 0.34,
+ "ap_leitura": 1.5,
+ "previa": false,
+ "capitulos": [
+  {
+   "n": 0,
+   "rotulo": "TUDO PERTIM · EP. 06",
+   "tom": "pessego",
+   "titulo": [
+    "Sexta sem",
+    "cozinhar? 😮‍💨"
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "capa",
+    "cena": "fogao",
+    "marcador": "cozinhar",
+    "panela": {
+     "em": "ninguém"
+    },
+    "fogao": {
+     "em": "fogão"
+    }
+   },
+   "t0": 0.0,
+   "t1": 4.75,
+   "voz_t0": 0.1,
+   "voz_t1": 4.1,
+   "palavras": [
+    {
+     "w": "Sexta-feira",
+     "n": "sextafeira",
+     "i0": 0,
+     "t0": 0.1667,
+     "t1": 0.74
+    },
+    {
+     "w": "à",
+     "n": "a",
+     "i0": 12,
+     "t0": 0.8333,
+     "t1": 0.82
+    },
+    {
+     "w": "noite…",
+     "n": "noite",
+     "i0": 14,
+     "t0": 0.9667,
+     "t1": 1.38
+    },
+    {
+     "w": "e",
+     "n": "e",
+     "i0": 21,
+     "t0": 1.8,
+     "t1": 1.78
+    },
+    {
+     "w": "ninguém",
+     "n": "ninguem",
+     "i0": 23,
+     "t0": 1.9167,
+     "t1": 2.26
+    },
+    {
+     "w": "quer",
+     "n": "quer",
+     "i0": 31,
+     "t0": 2.4,
+     "t1": 2.58
+    },
+    {
+     "w": "nem",
+     "n": "nem",
+     "i0": 36,
+     "t0": 2.7167,
+     "t1": 2.82
+    },
+    {
+     "w": "chegar",
+     "n": "chegar",
+     "i0": 40,
+     "t0": 2.9667,
+     "t1": 3.22
+    },
+    {
+     "w": "perto",
+     "n": "perto",
+     "i0": 47,
+     "t0": 3.3667,
+     "t1": 3.54
+    },
+    {
+     "w": "do",
+     "n": "do",
+     "i0": 53,
+     "t0": 3.6833,
+     "t1": 3.7
+    },
+    {
+     "w": "fogão?",
+     "n": "fogao",
+     "i0": 56,
+     "t0": 3.8,
+     "t1": 4.1
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Sexta-feira à noite… e ninguém quer nem chegar perto do fogão?",
+     "apoio": null,
+     "t0": 0.1,
+     "t1": 4.1
+    }
+   ],
+   "apoios": [],
+   "seed": 42
+  },
+  {
+   "n": 1,
+   "rotulo": "O CAUSO",
+   "tom": "pessego",
+   "titulo": [
+    "A semana foi",
+    "puxada."
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "semana",
+    "familia": {
+     "em": "povo"
+    },
+    "cansado": {
+     "em": "cansado"
+    },
+    "geladeira": {
+     "em": "geladeira"
+    },
+    "agua": {
+     "em": "água"
+    },
+    "limao": {
+     "em": "limão"
+    }
+   },
+   "t0": 5.5,
+   "t1": 12.25,
+   "voz_t0": 5.75,
+   "voz_t1": 11.63,
+   "palavras": [
+    {
+     "w": "A",
+     "n": "a",
+     "i0": 0,
+     "t0": 5.8167,
+     "t1": 5.83
+    },
+    {
+     "w": "semana",
+     "n": "semana",
+     "i0": 2,
+     "t0": 5.9667,
+     "t1": 6.23
+    },
+    {
+     "w": "foi",
+     "n": "foi",
+     "i0": 9,
+     "t0": 6.3667,
+     "t1": 6.47
+    },
+    {
+     "w": "puxada,",
+     "n": "puxada",
+     "i0": 13,
+     "t0": 6.6833,
+     "t1": 7.43
+    },
+    {
+     "w": "o",
+     "n": "o",
+     "i0": 21,
+     "t0": 7.6,
+     "t1": 7.59
+    },
+    {
+     "w": "povo",
+     "n": "povo",
+     "i0": 23,
+     "t0": 7.6833,
+     "t1": 7.83
+    },
+    {
+     "w": "chegou",
+     "n": "chegou",
+     "i0": 28,
+     "t0": 7.9667,
+     "t1": 8.15
+    },
+    {
+     "w": "cansado…",
+     "n": "cansado",
+     "i0": 35,
+     "t0": 8.2833,
+     "t1": 9.27
+    },
+    {
+     "w": "e",
+     "n": "e",
+     "i0": 44,
+     "t0": 9.3667,
+     "t1": 9.33
+    },
+    {
+     "w": "a",
+     "n": "a",
+     "i0": 46,
+     "t0": 9.4167,
+     "t1": 9.43
+    },
+    {
+     "w": "geladeira",
+     "n": "geladeira",
+     "i0": 48,
+     "t0": 9.6167,
+     "t1": 9.99
+    },
+    {
+     "w": "só",
+     "n": "so",
+     "i0": 58,
+     "t0": 10.1333,
+     "t1": 10.23
+    },
+    {
+     "w": "tem",
+     "n": "tem",
+     "i0": 61,
+     "t0": 10.4167,
+     "t1": 10.47
+    },
+    {
+     "w": "água",
+     "n": "agua",
+     "i0": 65,
+     "t0": 10.6833,
+     "t1": 10.95
+    },
+    {
+     "w": "e",
+     "n": "e",
+     "i0": 70,
+     "t0": 11.0833,
+     "t1": 11.11
+    },
+    {
+     "w": "um",
+     "n": "um",
+     "i0": 72,
+     "t0": 11.2167,
+     "t1": 11.19
+    },
+    {
+     "w": "limão.",
+     "n": "limao",
+     "i0": 75,
+     "t0": 11.3333,
+     "t1": 11.99
+    }
+   ],
+   "frases": [
+    {
+     "texto": "A semana foi puxada, o povo chegou cansado…",
+     "apoio": null,
+     "t0": 5.75,
+     "t1": 9.27
+    },
+    {
+     "texto": "e a geladeira só tem água e um limão.",
+     "apoio": "Só *água e um limão*.",
+     "t0": 9.31,
+     "t1": 11.99
+    }
+   ],
+   "apoios": [
+    {
+     "t": 9.19,
+     "texto": "Só *água e um limão*.",
+     "ate": 13.0
+    }
+   ],
+   "seed": 42
+  },
+  {
+   "n": 2,
+   "rotulo": "A LANCHONETE",
+   "tom": "amarelo",
+   "titulo": [
+    "Bateu fome",
+    "de lanche?"
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "lanchonete",
+    "lanche": {
+     "em": "lanche"
+    },
+    "batata": {
+     "em": "batata"
+    },
+    "loja": {
+     "em": "lanchonete"
+    },
+    "faz": {
+     "em": "faz"
+    }
+   },
+   "t0": 13.0,
+   "t1": 18.5,
+   "voz_t0": 13.25,
+   "voz_t1": 17.78,
+   "palavras": [
+    {
+     "w": "Um",
+     "n": "um",
+     "i0": 0,
+     "t0": 13.3167,
+     "t1": 13.41
+    },
+    {
+     "w": "lanche",
+     "n": "lanche",
+     "i0": 3,
+     "t0": 13.55,
+     "t1": 13.73
+    },
+    {
+     "w": "caprichado,",
+     "n": "caprichado",
+     "i0": 10,
+     "t0": 13.8667,
+     "t1": 14.69
+    },
+    {
+     "w": "com",
+     "n": "com",
+     "i0": 22,
+     "t0": 14.9833,
+     "t1": 15.01
+    },
+    {
+     "w": "batata",
+     "n": "batata",
+     "i0": 26,
+     "t0": 15.2333,
+     "t1": 15.49
+    },
+    {
+     "w": "e",
+     "n": "e",
+     "i0": 33,
+     "t0": 15.6333,
+     "t1": 15.65
+    },
+    {
+     "w": "tudo?",
+     "n": "tudo",
+     "i0": 35,
+     "t0": 15.7833,
+     "t1": 16.29
+    },
+    {
+     "w": "A",
+     "n": "a",
+     "i0": 41,
+     "t0": 16.4333,
+     "t1": 16.41
+    },
+    {
+     "w": "lanchonete",
+     "n": "lanchonete",
+     "i0": 43,
+     "t0": 16.5167,
+     "t1": 16.93
+    },
+    {
+     "w": "do",
+     "n": "do",
+     "i0": 54,
+     "t0": 17.0667,
+     "t1": 17.09
+    },
+    {
+     "w": "Glória",
+     "n": "gloria",
+     "i0": 57,
+     "t0": 17.2333,
+     "t1": 17.49
+    },
+    {
+     "w": "faz.",
+     "n": "faz",
+     "i0": 64,
+     "t0": 17.6333,
+     "t1": 18.21
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Um lanche caprichado, com batata e tudo?",
+     "apoio": null,
+     "t0": 13.25,
+     "t1": 16.29
+    },
+    {
+     "texto": "A lanchonete do Glória faz.",
+     "apoio": "A lanchonete do Glória *faz*.",
+     "t0": 16.37,
+     "t1": 18.21
+    }
+   ],
+   "apoios": [
+    {
+     "t": 16.25,
+     "texto": "A lanchonete do Glória *faz*.",
+     "ate": 19.25
+    }
+   ],
+   "seed": 42
+  },
+  {
+   "n": 3,
+   "rotulo": "A PIZZARIA",
+   "tom": "pessego",
+   "titulo": [
+    "Ou uma pizza",
+    "meio a meio?"
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "pizzaria",
+    "caixa": {
+     "em": "pizza"
+    },
+    "meio": {
+     "em": "meio"
+    },
+    "briga": {
+     "em": "briga"
+    }
+   },
+   "t0": 19.25,
+   "t1": 24.75,
+   "voz_t0": 19.5,
+   "voz_t1": 22.68,
+   "palavras": [
+    {
+     "w": "Ou",
+     "n": "ou",
+     "i0": 0,
+     "t0": 19.5667,
+     "t1": 19.62
+    },
+    {
+     "w": "aquela",
+     "n": "aquela",
+     "i0": 3,
+     "t0": 19.7167,
+     "t1": 20.06
+    },
+    {
+     "w": "pizza",
+     "n": "pizza",
+     "i0": 10,
+     "t0": 20.3167,
+     "t1": 20.46
+    },
+    {
+     "w": "meio",
+     "n": "meio",
+     "i0": 16,
+     "t0": 20.6,
+     "t1": 20.78
+    },
+    {
+     "w": "a",
+     "n": "a",
+     "i0": 21,
+     "t0": 20.9167,
+     "t1": 20.94
+    },
+    {
+     "w": "meio,",
+     "n": "meio",
+     "i0": 23,
+     "t0": 21.1167,
+     "t1": 21.34
+    },
+    {
+     "w": "que",
+     "n": "que",
+     "i0": 29,
+     "t0": 21.5167,
+     "t1": 21.5
+    },
+    {
+     "w": "acaba",
+     "n": "acaba",
+     "i0": 33,
+     "t0": 21.7667,
+     "t1": 22.06
+    },
+    {
+     "w": "com",
+     "n": "com",
+     "i0": 39,
+     "t0": 22.1667,
+     "t1": 22.14
+    },
+    {
+     "w": "a",
+     "n": "a",
+     "i0": 43,
+     "t0": 22.2833,
+     "t1": 22.3
+    },
+    {
+     "w": "briga.",
+     "n": "briga",
+     "i0": 45,
+     "t0": 22.4333,
+     "t1": 23.02
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Ou aquela pizza meio a meio, que acaba com a briga.",
+     "apoio": "Pizza *meio a meio*.",
+     "t0": 19.5,
+     "t1": 23.02
+    }
+   ],
+   "apoios": [
+    {
+     "t": 19.55,
+     "texto": "Pizza *meio a meio*.",
+     "ate": 25.5
+    }
+   ],
+   "seed": 42
+  },
+  {
+   "n": 4,
+   "rotulo": "GELADIM",
+   "tom": "verde",
+   "titulo": [
+    "Refri e",
+    "sobremesa!"
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "sobremesa",
+    "refri": {
+     "em": "refri"
+    },
+    "gelado": {
+     "em": "gelado"
+    },
+    "acai": {
+     "em": "açaí"
+    },
+    "sobremesa": {
+     "em": "sobremesa"
+    }
+   },
+   "t0": 25.5,
+   "t1": 31.0,
+   "voz_t0": 25.75,
+   "voz_t1": 29.4,
+   "palavras": [
+    {
+     "w": "E",
+     "n": "e",
+     "i0": 0,
+     "t0": 25.8167,
+     "t1": 25.83
+    },
+    {
+     "w": "pra",
+     "n": "pra",
+     "i0": 2,
+     "t0": 25.9667,
+     "t1": 25.99
+    },
+    {
+     "w": "fechar:",
+     "n": "fechar",
+     "i0": 6,
+     "t0": 26.1333,
+     "t1": 26.47
+    },
+    {
+     "w": "refri",
+     "n": "refri",
+     "i0": 14,
+     "t0": 26.85,
+     "t1": 27.19
+    },
+    {
+     "w": "gelado",
+     "n": "gelado",
+     "i0": 20,
+     "t0": 27.4167,
+     "t1": 27.75
+    },
+    {
+     "w": "e",
+     "n": "e",
+     "i0": 27,
+     "t0": 27.8833,
+     "t1": 27.91
+    },
+    {
+     "w": "um",
+     "n": "um",
+     "i0": 29,
+     "t0": 28.0167,
+     "t1": 27.99
+    },
+    {
+     "w": "açaí",
+     "n": "acai",
+     "i0": 32,
+     "t0": 28.1333,
+     "t1": 28.55
+    },
+    {
+     "w": "de",
+     "n": "de",
+     "i0": 37,
+     "t0": 28.6833,
+     "t1": 28.71
+    },
+    {
+     "w": "sobremesa.",
+     "n": "sobremesa",
+     "i0": 40,
+     "t0": 28.8167,
+     "t1": 29.59
+    }
+   ],
+   "frases": [
+    {
+     "texto": "E pra fechar: refri gelado e um açaí de sobremesa.",
+     "apoio": "Refri gelado e *açaí*.",
+     "t0": 25.75,
+     "t1": 29.59
+    }
+   ],
+   "apoios": [
+    {
+     "t": 25.8,
+     "texto": "Refri gelado e *açaí*.",
+     "ate": 31.75
+    }
+   ],
+   "seed": 42
+  },
+  {
+   "n": 5,
+   "rotulo": "CHEGOU",
+   "tom": "amarelo",
+   "titulo": [
+    "Chegou",
+    "quentinho!"
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "entrega",
+    "moto": {
+     "em": "Chegou"
+    },
+    "mesa": {
+     "em": "mesa"
+    },
+    "louca": {
+     "em": "louça"
+    },
+    "prato": {
+     "em": "prato"
+    }
+   },
+   "t0": 31.75,
+   "t1": 37.75,
+   "voz_t0": 32.0,
+   "voz_t1": 36.96,
+   "palavras": [
+    {
+     "w": "Chegou",
+     "n": "chegou",
+     "i0": 0,
+     "t0": 32.0667,
+     "t1": 32.32
+    },
+    {
+     "w": "quentinho,",
+     "n": "quentinho",
+     "i0": 7,
+     "t0": 32.4667,
+     "t1": 33.12
+    },
+    {
+     "w": "direto",
+     "n": "direto",
+     "i0": 18,
+     "t0": 33.5333,
+     "t1": 33.84
+    },
+    {
+     "w": "pra",
+     "n": "pra",
+     "i0": 25,
+     "t0": 33.9833,
+     "t1": 34.0
+    },
+    {
+     "w": "mesa.",
+     "n": "mesa",
+     "i0": 29,
+     "t0": 34.1333,
+     "t1": 34.4
+    },
+    {
+     "w": "E",
+     "n": "e",
+     "i0": 35,
+     "t0": 34.8167,
+     "t1": 34.8
+    },
+    {
+     "w": "a",
+     "n": "a",
+     "i0": 37,
+     "t0": 34.9,
+     "t1": 34.88
+    },
+    {
+     "w": "louça?",
+     "n": "louca",
+     "i0": 39,
+     "t0": 35.0167,
+     "t1": 35.36
+    },
+    {
+     "w": "Nem",
+     "n": "nem",
+     "i0": 46,
+     "t0": 35.8167,
+     "t1": 36.0
+    },
+    {
+     "w": "um",
+     "n": "um",
+     "i0": 50,
+     "t0": 36.1333,
+     "t1": 36.16
+    },
+    {
+     "w": "prato",
+     "n": "prato",
+     "i0": 53,
+     "t0": 36.2667,
+     "t1": 36.48
+    },
+    {
+     "w": "sujo.",
+     "n": "sujo",
+     "i0": 59,
+     "t0": 36.6167,
+     "t1": 36.96
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Chegou quentinho, direto pra mesa.",
+     "apoio": null,
+     "t0": 32.0,
+     "t1": 34.4
+    },
+    {
+     "texto": "E a louça? Nem um prato sujo.",
+     "apoio": "*Nenhum prato* pra lavar.",
+     "t0": 34.76,
+     "t1": 36.96
+    }
+   ],
+   "apoios": [
+    {
+     "t": 34.64,
+     "texto": "*Nenhum prato* pra lavar.",
+     "ate": 38.5
+    }
+   ],
+   "seed": 42
+  },
+  {
+   "n": 6,
+   "rotulo": "SUA VEZ",
+   "tom": "amarelo",
+   "titulo": [
+    "Sexta é dia",
+    "de quê?"
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "enquete",
+    "opcoes": [
+     {
+      "t": "lanche",
+      "em": "lanche"
+     },
+     {
+      "t": "pizza",
+      "em": "pizza"
+     },
+     {
+      "t": "pastel",
+      "em": "pastel"
+     },
+     {
+      "t": "espetinho",
+      "em": "fim"
+     }
+    ]
+   },
+   "t0": 38.5,
+   "t1": 44.0,
+   "voz_t0": 38.75,
+   "voz_t1": 42.51,
+   "palavras": [
+    {
+     "w": "Comenta",
+     "n": "comenta",
+     "i0": 0,
+     "t0": 38.8167,
+     "t1": 39.15
+    },
+    {
+     "w": "aí:",
+     "n": "ai",
+     "i0": 8,
+     "t0": 39.2833,
+     "t1": 39.47
+    },
+    {
+     "w": "sexta",
+     "n": "sexta",
+     "i0": 12,
+     "t0": 39.7667,
+     "t1": 40.11
+    },
+    {
+     "w": "é",
+     "n": "e",
+     "i0": 18,
+     "t0": 40.25,
+     "t1": 40.27
+    },
+    {
+     "w": "dia",
+     "n": "dia",
+     "i0": 20,
+     "t0": 40.45,
+     "t1": 40.51
+    },
+    {
+     "w": "de",
+     "n": "de",
+     "i0": 24,
+     "t0": 40.6167,
+     "t1": 40.59
+    },
+    {
+     "w": "lanche,",
+     "n": "lanche",
+     "i0": 27,
+     "t0": 40.7333,
+     "t1": 41.07
+    },
+    {
+     "w": "pizza",
+     "n": "pizza",
+     "i0": 35,
+     "t0": 41.65,
+     "t1": 41.87
+    },
+    {
+     "w": "ou",
+     "n": "ou",
+     "i0": 41,
+     "t0": 42.0167,
+     "t1": 42.03
+    },
+    {
+     "w": "pastel?",
+     "n": "pastel",
+     "i0": 44,
+     "t0": 42.25,
+     "t1": 42.51
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Comenta aí: sexta é dia de lanche, pizza ou pastel?",
+     "apoio": "E aí, *qual é o seu*?",
+     "t0": 38.75,
+     "t1": 42.51
+    }
+   ],
+   "apoios": [
+    {
+     "t": 38.8,
+     "texto": "E aí, *qual é o seu*?",
+     "ate": 44.75
+    }
+   ],
+   "seed": 42
+  },
+  {
+   "n": 7,
+   "rotulo": "PRA NÃO PERDER",
+   "tom": "amarelo",
+   "titulo": [
+    "Em breve",
+    "no Glória."
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "fecho",
+    "logo": {
+     "em": "UaiPertim"
+    },
+    "assinatura": {
+     "t": "Tudo pertim de você.",
+     "em": "Tudo"
+    },
+    "chip": {
+     "t": "Segue @uaipertim",
+     "em": "Segue"
+    },
+    "confete": {
+     "em": "+1.2"
+    },
+    "pertim": {
+     "em": "UaiPertim",
+     "pisca": "pertim"
+    }
+   },
+   "t0": 44.75,
+   "t1": 52.25,
+   "voz_t0": 45.0,
+   "voz_t1": 51.15,
+   "palavras": [
+    {
+     "w": "Sexta",
+     "n": "sexta",
+     "i0": 0,
+     "t0": 45.0667,
+     "t1": 45.4
+    },
+    {
+     "w": "sem",
+     "n": "sem",
+     "i0": 6,
+     "t0": 45.5333,
+     "t1": 45.64
+    },
+    {
+     "w": "cozinhar?",
+     "n": "cozinhar",
+     "i0": 10,
+     "t0": 45.7833,
+     "t1": 46.28
+    },
+    {
+     "w": "Relaxa,",
+     "n": "relaxa",
+     "i0": 20,
+     "t0": 46.7833,
+     "t1": 47.32
+    },
+    {
+     "w": "tem",
+     "n": "tem",
+     "i0": 28,
+     "t0": 47.5833,
+     "t1": 47.64
+    },
+    {
+     "w": "UaiPertim.",
+     "n": "uaipertim",
+     "i0": 32,
+     "t0": 47.7833,
+     "t1": 48.76
+    },
+    {
+     "w": "Tudo",
+     "n": "tudo",
+     "i0": 44,
+     "t0": 48.8667,
+     "t1": 49.08
+    },
+    {
+     "w": "pertim",
+     "n": "pertim",
+     "i0": 49,
+     "t0": 49.3,
+     "t1": 49.48
+    },
+    {
+     "w": "de",
+     "n": "de",
+     "i0": 56,
+     "t0": 49.6167,
+     "t1": 49.64
+    },
+    {
+     "w": "você.",
+     "n": "voce",
+     "i0": 59,
+     "t0": 49.7333,
+     "t1": 50.36
+    },
+    {
+     "w": "Segue",
+     "n": "segue",
+     "i0": 65,
+     "t0": 50.5,
+     "t1": 50.6
+    },
+    {
+     "w": "a",
+     "n": "a",
+     "i0": 71,
+     "t0": 50.7,
+     "t1": 50.68
+    },
+    {
+     "w": "gente!",
+     "n": "gente",
+     "i0": 73,
+     "t0": 50.8167,
+     "t1": 51.4
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Sexta sem cozinhar? Relaxa, tem UaiPertim. Tudo pertim de você. Segue a gente!",
+     "apoio": null,
+     "t0": 45.0,
+     "t1": 51.4
+    }
+   ],
+   "apoios": [],
+   "seed": 42
+  }
+ ],
+ "colocacao": [
+  {
+   "cap": 0,
+   "arquivo": "voz/cap-00.wav",
+   "de_s": 0.0,
+   "ate_s": 4.24,
+   "no_video_s": 0.1,
+   "amostras": 203520,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 1,
+   "arquivo": "voz/cap-01.wav",
+   "de_s": 0.0,
+   "ate_s": 6.18,
+   "no_video_s": 5.75,
+   "amostras": 296640,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 2,
+   "arquivo": "voz/cap-02.wav",
+   "de_s": 0.0,
+   "ate_s": 4.83,
+   "no_video_s": 13.25,
+   "amostras": 231840,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 3,
+   "arquivo": "voz/cap-03.wav",
+   "de_s": 0.0,
+   "ate_s": 3.48,
+   "no_video_s": 19.5,
+   "amostras": 167040,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 4,
+   "arquivo": "voz/cap-04.wav",
+   "de_s": 0.0,
+   "ate_s": 3.84,
+   "no_video_s": 25.75,
+   "amostras": 184320,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 5,
+   "arquivo": "voz/cap-05.wav",
+   "de_s": 0.0,
+   "ate_s": 5.26,
+   "no_video_s": 32.0,
+   "amostras": 252480,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 6,
+   "arquivo": "voz/cap-06.wav",
+   "de_s": 0.0,
+   "ate_s": 4.06,
+   "no_video_s": 38.75,
+   "amostras": 194880,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 7,
+   "arquivo": "voz/cap-07.wav",
+   "de_s": 0.0,
+   "ate_s": 6.4,
+   "no_video_s": 45.0,
+   "amostras": 307200,
+   "fade_ms": [
+    8,
+    60
+   ]
+  }
+ ],
+ "mapa": {
+  "ok": true,
+  "falhas": []
+ }
+}

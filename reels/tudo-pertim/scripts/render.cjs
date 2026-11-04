@@ -39,7 +39,7 @@ const PREVIA = flag('previa');
 const OUTD = PREVIA ? `output/${EP}/previa` : `output/${EP}`;
 if (!fs.existsSync(path.join(ROOT, 'episodios', EP + '.json'))) { console.error(`episodios/${EP}.json não existe`); process.exit(1); }
 
-const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.json': 'application/json', '.otf': 'font/otf', '.ttf': 'font/ttf', '.woff2': 'font/woff2', '.wav': 'audio/wav', '.png': 'image/png' };
+const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.json': 'application/json', '.otf': 'font/otf', '.ttf': 'font/ttf', '.woff2': 'font/woff2', '.wav': 'audio/wav', '.png': 'image/png', '.svg': 'image/svg+xml' };
 function serve() {
   return new Promise((resolve) => {
     const srv = http.createServer((req, res) => {

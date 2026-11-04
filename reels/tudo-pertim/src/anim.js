@@ -324,6 +324,7 @@
     misterio: { wall: '#F4A98A', wallDark: '#D9876A', a: C.coral, b: C.amarelo, door: '#7A3A18' },
     sorveteria: { wall: '#FBD9CB', wallDark: '#E9A890', a: C.coral, b: '#FFFFFF', door: C.coralDark },
     acougue: { wall: '#FBF6EE', wallDark: '#E2D6C2', a: '#D8402A', b: '#FFFFFF', door: C.coralDark },
+    pizzaria: { wall: '#F6C48A', wallDark: '#D9964A', a: C.verde, b: '#FFFFFF', door: C.coralDark },
     hortifruti: { wall: '#A9D48C', wallDark: '#7DB35E', a: C.coral, b: '#FFFFFF', door: C.verdeDark },
   };
   function face(ctx, blink, look, smile = 0) {        // os olhinhos do celular-personagem (Phone.tsx → PhoneFace, humor "happy"), viewBox 300×150
@@ -366,6 +367,10 @@
       ctx.fillStyle = '#B8473A'; ctx.beginPath(); ctx.ellipse(-4, 2, 26, 17, -0.2, 0, TAU); ctx.fill();
       ctx.fillStyle = C.papel; ctx.beginPath(); ctx.ellipse(-8, 0, 9, 7, 0, 0, TAU); ctx.fill();
       ctx.fillStyle = C.papel; rr(ctx, 16, -6, 18, 8, 4); ctx.fill(); ctx.beginPath(); ctx.arc(34, -6, 5, 0, TAU); ctx.arc(34, 2, 5, 0, TAU); ctx.fill();
+    } else if (kind === 'pizzaria') {                  // a fatia de pizza
+      ctx.fillStyle = '#F6D77A'; ctx.beginPath(); ctx.moveTo(-22, -14); ctx.quadraticCurveTo(0, -24, 22, -14); ctx.lineTo(0, 22); ctx.closePath(); ctx.fill();
+      ctx.strokeStyle = '#E8B04F'; ctx.lineWidth = 6; ctx.beginPath(); ctx.moveTo(-23, -15); ctx.quadraticCurveTo(0, -25, 23, -15); ctx.stroke();
+      ctx.fillStyle = '#B8473A'; for (const [px, py] of [[-8, -8], [8, -6], [0, 6]]) { ctx.beginPath(); ctx.arc(px, py, 3.6, 0, TAU); ctx.fill(); }
     } else if (kind === 'hortifruti') {                // a maçã com a folhinha e a cenoura
       ctx.fillStyle = C.coral; ctx.beginPath(); ctx.arc(-11, 3, 15, 0, TAU); ctx.fill();
       ctx.fillStyle = C.verde; ctx.beginPath(); ctx.ellipse(-6, -15, 8, 4, -0.6, 0, TAU); ctx.fill();
@@ -1292,6 +1297,7 @@
     if (TRANS === 'galinha') return travessiaGalinha(k, u);
     if (TRANS === 'viralata') return travessiaViralata(k, u);
     if (TRANS === 'sacola') return travessiaSacola(k, u);
+    if (TRANS === 'pizza') return travessiaPizza(k, u);
     const v = VARIA[k % VARIA.length], dir = k % 2 === 0 ? -1 : 1;
     const e = 0.75 * u + 0.25 * E.inOutSine(u);
     const x = lerp(dir > 0 ? -260 : W + 260, dir > 0 ? W + 260 : -260, e);
@@ -1475,10 +1481,60 @@
       }
     }
   }
+  // ---- a transição da caixa de pizza (episódio com "transicao": "pizza"; desde o ep06): a tampa de uma caixa de pizza
+  //      gigante desce do alto e FECHA sobre o capítulo (a borda dela limpa a tela de cima para baixo), dá um "plof" com
+  //      fumacinha e ABRE de novo, subindo, já com o próximo capítulo embaixo. A tampa fica na área do conteúdo
+  //      (x 70–938, y 378–1490: cobre tudo do capítulo, nunca a marca do topo nem a coluna de botões). Cada troca muda a
+  //      figurinha do canto da tampa (ciclo de 4) e o balancinho do plof.
+  const PIZ = { x0: 70, x1: 938, y0: 378, y1: 1490 };
+  function travessiaPizza(k, u) {
+    const fecha = E.inOutCubic(clamp(u / 0.42)), abre = E.inOutCubic(clamp((u - 0.58) / 0.42));
+    const cobre = u < 0.5 ? fecha : 1 - abre;
+    return { dir: 1, x: W / 2, base: PIZ.y1, borda: lerp(PIZ.y0, PIZ.y1, cobre), cobre, lado: u < 0.5 ? 0 : 1, jeito: k % 4 };
+  }
+  function drawWipePizza(ctx, t, k, u) {
+    const T = travessiaPizza(k, u), yb = T.borda, w = PIZ.x1 - PIZ.x0;
+    if (yb <= PIZ.y0 + 2) return;
+    // a sombra da tampa sobre o capítulo, logo abaixo da borda
+    const gs = ctx.createLinearGradient(0, yb, 0, yb + 46);
+    gs.addColorStop(0, 'rgba(80,40,20,0.22)'); gs.addColorStop(1, 'rgba(80,40,20,0)');
+    ctx.fillStyle = gs; ctx.fillRect(PIZ.x0 + 10, yb, w - 20, 46);
+    // o plof: quando fecha, a tampa assenta com um balancinho
+    const pl = Math.sin(Math.PI * p(u, 0.4, 0.62)), bal = [0.012, -0.01, 0.008, -0.012][T.jeito] * pl;
+    ctx.save();
+    ctx.translate(W / 2, PIZ.y0); ctx.rotate(bal); ctx.scale(1 + 0.012 * pl, 1 + 0.012 * pl); ctx.translate(-W / 2, -PIZ.y0);
+    ctx.save(); rr(ctx, PIZ.x0, PIZ.y0, w, yb - PIZ.y0, 28); ctx.clip();
+    ctx.fillStyle = PAPELAO; ctx.fillRect(PIZ.x0, PIZ.y0, w, yb - PIZ.y0);
+    // as fibras do papelão e o friso tracejado
+    ctx.strokeStyle = css(PAPELAO_ESC, 0.18); ctx.lineWidth = 3;
+    for (let i = 0; i < 14; i++) { const y = PIZ.y0 + 60 + i * 76; ctx.beginPath(); ctx.moveTo(PIZ.x0, y); ctx.lineTo(PIZ.x1, y + 8 * Math.sin(i)); ctx.stroke(); }
+    ctx.setLineDash([22, 14]); ctx.strokeStyle = css(PAPELAO_ESC, 0.7); ctx.lineWidth = 5;
+    rr(ctx, PIZ.x0 + 34, PIZ.y0 + 34, w - 68, PIZ.y1 - PIZ.y0 - 68, 20); ctx.stroke(); ctx.setLineDash([]);
+    // o selo da pizza com a fumacinha, e a figurinha do canto
+    const cx = W / 2 - 5, cy = (PIZ.y0 + PIZ.y1) / 2 - 20;
+    ctx.strokeStyle = css(C.papel, 0.8); ctx.lineWidth = 9; ctx.lineCap = 'round';
+    for (let i = 0; i < 3; i++) { const sx = cx - 60 + i * 60, y0 = cy - 200 - 14 * Math.sin(t * 5 + i); ctx.beginPath(); ctx.moveTo(sx, y0); ctx.bezierCurveTo(sx - 20, y0 - 28, sx + 20, y0 - 48, sx, y0 - 76); ctx.stroke(); }
+    seloPizza(ctx, cx, cy, 160);
+    txt(ctx, 'QUENTINHA', cx, cy + 250, { size: 64, weight: 900, align: 'center', color: C.coral, ls: 4 });
+    sticker(ctx, ['estrela', 'coracao', 'brilho', 'uai'][T.jeito], PIZ.x1 - 120, PIZ.y0 + 130, 96, 1, t);
+    ctx.restore();
+    // a borda da frente da tampa (o lábio do papelão), por cima
+    ctx.fillStyle = PAPELAO_ESC; rr(ctx, PIZ.x0, yb - 24, w, 24, 10); ctx.fill();
+    ctx.fillStyle = css(C.papel, 0.25); rr(ctx, PIZ.x0 + 16, yb - 20, w - 32, 6, 3); ctx.fill();
+    ctx.restore();
+    BOX('caixa de pizza', PIZ.x0 + 10, PIZ.y0, PIZ.x1, Math.max(PIZ.y0 + 30, yb));
+    // a fumacinha do plof, saindo pela borda de baixo quando fecha
+    const fu = p(u, 0.4, 0.75);
+    if (fu > 0 && fu < 1) for (let i = 0; i < 8; i++) {
+      const x = PIZ.x0 + 70 + i * (w - 140) / 7 + 14 * Math.sin(i * 2.1), r = 34 + 40 * fu + 8 * hash(i, 5);
+      ctx.fillStyle = css('#F3EADF', 0.7 * (1 - fu)); ctx.beginPath(); ctx.arc(x, Math.min(yb, PIZ.y1) - 10 - 60 * fu - 14 * hash(i, 9), r, 0, TAU); ctx.fill();
+    }
+  }
   function drawWipe(ctx, t, k, u) {
     if (TRANS === 'galinha') return drawWipeGalinha(ctx, t, k, u);
     if (TRANS === 'viralata') return drawWipeViralata(ctx, t, k, u);
     if (TRANS === 'sacola') return drawWipeSacola(ctx, t, k, u);
+    if (TRANS === 'pizza') return drawWipePizza(ctx, t, k, u);
     const T = travessia(k, u);
     // a cortina: uma faixa creme macia ao longo da borda da varredura
     const g = ctx.createLinearGradient(T.borda - 80, 0, T.borda + 80, 0);
@@ -1789,7 +1845,7 @@
       const MS = 320;                                       // a motinha da capa
       // a altura do adesivo inclinado (a mesma conta de adesivo(): h 64, −4°, mais a folga da borda)
       const aw = 2 * 26 + tw(cap.rotulo, 26, 900, 3), rot = 4 * DEG;
-      const chipH = 2 * (32 * Math.cos(rot) + (aw / 2) * Math.sin(rot) + 5), ilH = d.cena === 'porta' || d.cena === 'churrasco' || d.cena === 'segunda' ? 330 : MS * 1.0;
+      const chipH = 2 * (32 * Math.cos(rot) + (aw / 2) * Math.sin(rot) + 5), ilH = d.cena === 'porta' || d.cena === 'churrasco' || d.cena === 'segunda' || d.cena === 'fogao' ? 330 : MS * 1.0;
       const titleH = 0.78 * S + 1.0 * S + 0.2 * S;
       const total = chipH + 44 + titleH + 56 + ilH;
       const top = 960 - total / 2;                          // o bloco centrado no recorte 3:4 (y 240–1680)
@@ -1804,6 +1860,16 @@
       cap.ev.confete = at(cap, d.confete && d.confete.em, cap.t0 + 1.2);
       cap.ev.buzina = Math.min(at(cap, d.buzina && d.buzina.em, cap.t1 - 1.4), cap.t1 - 0.95);
       cap.ev.sai = cap.t1 - 0.5;                            // a motinha arranca e sai pela esquerda
+      if (d.cena === 'fogao') {
+        // o fogão com cara de cansado (suspira na palavra e de tempos em tempos) e a panela vazia (pula na palavra)
+        cap.ev.fogao = at(cap, d.fogao && d.fogao.em, cap.t0 + 2.0);
+        cap.ev.panela = at(cap, d.panela && d.panela.em, cap.t0 + 1.0);
+        cap.ev.suspiros = [];
+        for (let tb = 0.6; tb < cap.t1 - 0.8; tb += 2.4) if (Math.abs(tb - cap.ev.fogao) > 1.2) cap.ev.suspiros.push(tb);
+        cap.ev.confete = null;
+        cue(cap.ev.panela, 'jump'); cue(cap.ev.fogao, 'zzz'); cap.ev.suspiros.forEach((x) => cue(x, 'zzz'));
+        return;
+      }
       if (d.cena === 'segunda') {
         // o calendário com o "SEG" caindo, o bonequinho bocejando no cobertor e a geladeira entreaberta
         cap.ev.cal = at(cap, d.calendario && d.calendario.em, cap.t0 + 0.2);
@@ -1867,6 +1933,7 @@
       if (d.cena === 'porta') return CENAS.capa.porta(ctx, cap, t);
       if (d.cena === 'churrasco') return CENAS.capa.churrasco(ctx, cap, t);
       if (d.cena === 'segunda') return CENAS.capa.segunda(ctx, cap, t);
+      if (d.cena === 'fogao') return CENAS.capa.fogao(ctx, cap, t);
       // a motinha (o mascote) chegando da direita: no quadro 0 está freando, inclinada, com fumaça e a marca do pneu
       const M = Ly.moto, MS = cap.motoS, u = p(t, 0, 0.75), us = p(t, ev.sai, cap.t1);
       const x = M.x + 34 * (1 - E.outCubic(u)) - 1000 * E.inCubic(us);
@@ -3063,6 +3130,14 @@
         FECHO.ultima = Math.max(FECHO.ultima, ev.cachorro + 1.15);
         cue(ev.cachorro, 'cachorro', { d: 1.1, dir: 1 });
       }
+      if (d.pertim) {
+        // o Pertim acenando ao lado da logo, com a piscadinha; para de acenar antes dos 3 s finais (aí fica parado)
+        ev.pertim = Math.min(at(cap, d.pertim.em, cap.t0 + 0.4), DUR - 3.0 - 1.5);
+        ev.pisca = Math.min(Math.max(at(cap, d.pertim.pisca, ev.pertim + 1.2), ev.pertim + 0.8), DUR - 3.0 - 1.0);
+        ev.pertimFim = DUR - 3.05;
+        FECHO.ultima = Math.max(FECHO.ultima, ev.pertimFim);
+        cue(ev.pertim, 'pop', { f: 760 }); cue(ev.pisca, 'blink'); cue(ev.pisca + 0.05, 'shine');
+      }
       if (d.sacola) {
         ev.sacola = Math.min(at(cap, d.sacola.em, cap.t0 + 1.6), DUR - 3.0 - 1.3);   // termina antes dos 3 s finais
         FECHO.ultima = Math.max(FECHO.ultima, ev.sacola + 1.15);
@@ -3072,8 +3147,8 @@
     },
     draw(ctx, cap, t) {
       const d = cap.diagrama, ev = cap.ev, T = cap.cenaTop;
-      const D = 400, ly = T + 20 + D / 2;
-      confete(ctx, t, ev.confete, L.cx, ly - 40, 23, { n: 64, v: 1150, dur: 2.0, spread: 3.2 });
+      const D = 400, ly = T + 20 + D / 2, LX = d.pertim ? 395 : L.cx;   // com o Pertim do lado, a logo vai um pouco para a esquerda
+      confete(ctx, t, ev.confete, LX, ly - 40, 23, { n: 64, v: 1150, dur: 2.0, spread: 3.2 });
       if (ev.galinha !== undefined) {
         // a galinha cruzando ao fundo (atrás da logo e do texto), com penas
         const ug = p(t, ev.galinha, ev.galinha + 1.1);
@@ -3105,12 +3180,19 @@
       if (e > 0) {
         const k = e >= 1 ? 1 : E.outBack(clamp(e / 0.75), 1.8);
         ctx.save(); ctx.globalAlpha *= clamp(e * 4);
-        ctx.translate(L.cx, ly); ctx.scale(k, k);
+        ctx.translate(LX, ly); ctx.scale(k, k);
         ctx.shadowColor = 'rgba(200,70,30,0.28)'; ctx.shadowBlur = 40; ctx.shadowOffsetY = 14;
         ctx.beginPath(); ctx.arc(0, 0, D / 2 - 2, 0, TAU); ctx.fillStyle = C.coral; ctx.fill(); ctx.shadowColor = 'transparent';
         logo(ctx, 0, 0, D);
         ctx.restore();
-        if (e >= 1) BOX('logo oficial', L.cx - D / 2, ly - D / 2, L.cx + D / 2, ly + D / 2);
+        if (e >= 1) BOX('logo oficial', LX - D / 2, ly - D / 2, LX + D / 2, ly + D / 2);
+      }
+      if (ev.pertim !== undefined && t >= ev.pertim) {
+        // o Pertim (personagem oficial) ao lado da logo: entra com mola, acena e dá a piscadinha; nos 3 s finais, parado
+        const PX = 765, PB = ly + D / 2, PH = 340, ep = p(t, ev.pertim, ev.pertim + 0.45);
+        const acenando = t < ev.pertimFim, a = acenando ? acenoQ(22 * Math.sin((t - ev.pertim) * 9)) : 0;
+        const nome = acenando && t >= ev.pisca && t < ev.pisca + 0.9 ? `pisca-a${a}` : `acena-a${a}-p${acenando ? piscaQ(blinkAt(t, 88)) : 0}`;
+        pop(ctx, ep, PX, PB, () => pertimQ(ctx, nome, PX, PB - (acenando ? 4 * hop(t) : 0), PH, { box: ep >= 1 ? 'Pertim' : null, mx0: 0.06, mx1: 0.02 }), 2.2);
       }
       const ea = E.outCubic(p(t, ev.ass, ev.ass + 0.45));
       const ay = ly + D / 2 + 80;
@@ -3780,6 +3862,402 @@
     },
   };
 
+  // ===================== peças do ep06 ("Sexta sem cozinhar?")
+
+  // ---- o PERTIM, personagem oficial (src/personagem, V1). Os quadros saem do próprio componente <Pertim> com o rig dele
+  //      (scripts/pertim_sprites.mjs → src/pertim/*.svg + manifest.json); aqui eles só são posicionados pelo pé,
+  //      escalados (escala uniforme) e animados: quique (translação), piscada e aceno (troca de quadro). Nunca redesenhado.
+  let PERTIM = null;                                     // { nome: { img, vb, chao } } — só nos episódios que carregam
+  const ACENOS = [-24, -12, 0, 12, 24];
+  const acenoQ = (a) => ACENOS.reduce((b, v) => (Math.abs(v - a) < Math.abs(b - a) ? v : b), 0);
+  const piscaQ = (b) => (b > 0.7 ? 10 : b > 0.25 ? 5 : 0);
+  // (x, base) = o pé (o centro da sombra do desenho); h = a altura do quadro inteiro (o viewBox) na tela
+  function pertimQ(ctx, nome, x, base, h, o = {}) {
+    const q = PERTIM && PERTIM[nome];
+    if (!q) return;
+    const [vx, vy, vw, vh] = q.vb, s = h / vh;
+    ctx.save(); ctx.globalAlpha *= o.alpha ?? 1;
+    ctx.drawImage(q.img, x - (q.chao[0] - vx) * s, base - (q.chao[1] - vy) * s, vw * s, vh * s);
+    ctx.restore();
+    if (o.box) {
+      const x0 = x - (q.chao[0] - vx) * s, y0 = base - (q.chao[1] - vy) * s;
+      BOX(o.box, x0 + vw * s * (o.mx0 ?? 0), y0 + vh * s * (o.my0 ?? 0), x0 + vw * s * (1 - (o.mx1 ?? 0)), base);
+    }
+  }
+
+  // ---- o fogão com cara de cansado (capa do ep06): (x, base) = o chão no meio; w = largura. o: suspiro 0..1 (a
+  //      fumacinha do 😮‍💨 saindo da boca), pisca 0..1
+  function fogao(ctx, x, base, w, t, o = {}) {
+    const k = w / 100, h = 104;
+    ctx.save(); ctx.translate(x, base); ctx.scale(k, k);
+    shadow(ctx, 0, 0, 56, 5, 0.15);
+    ctx.fillStyle = C.tinta2; rr(ctx, -44, -6, 12, 6, 2); ctx.fill(); rr(ctx, 32, -6, 12, 6, 2); ctx.fill();   // os pés
+    ctx.fillStyle = C.branco; rr(ctx, -50, -h, 100, h - 4, 8); ctx.fill(); ctx.lineWidth = 2.5; ctx.strokeStyle = C.cremeDeep; ctx.stroke();
+    // a mesa com as bocas apagadas
+    ctx.fillStyle = '#4A3F39'; rr(ctx, -50, -h - 6, 100, 10, 4); ctx.fill();
+    ctx.fillStyle = '#6E5B52'; for (const bx of [-26, 26]) { ctx.beginPath(); ctx.ellipse(bx, -h - 6, 16, 4.5, 0, 0, TAU); ctx.fill(); }
+    ctx.strokeStyle = '#8A7A6E'; ctx.lineWidth = 2; for (const bx of [-26, 26]) { ctx.beginPath(); ctx.ellipse(bx, -h - 7, 10, 2.6, 0, 0, TAU); ctx.stroke(); }
+    // o painel dos botões
+    ctx.fillStyle = '#F1E9DE'; rr(ctx, -46, -h + 4, 92, 16, 5); ctx.fill();
+    ctx.fillStyle = '#8A7A6E'; for (let i = 0; i < 4; i++) { ctx.beginPath(); ctx.arc(-30 + i * 20, -h + 12, 4.2, 0, TAU); ctx.fill(); }
+    // a porta do forno (o rosto cansado fica no vidro)
+    ctx.fillStyle = '#E9E1D5'; rr(ctx, -44, -h + 26, 88, 66, 7); ctx.fill();
+    ctx.fillStyle = '#5E534C'; rr(ctx, -36, -h + 36, 72, 46, 8); ctx.fill();
+    ctx.fillStyle = '#B9B0A6'; rr(ctx, -30, -h + 22, 60, 5, 2.5); ctx.fill();                                     // o puxador
+    // o rosto: pálpebras pesadas, olheiras, a boca de lado soltando o ar
+    const ey = -h + 54, pc = clamp(o.pisca || 0);
+    for (const ex of [-15, 15]) {
+      ctx.fillStyle = C.branco; ctx.beginPath(); ctx.ellipse(ex, ey, 9, 7, 0, 0, TAU); ctx.fill();
+      ctx.fillStyle = C.tinta; ctx.beginPath(); ctx.arc(ex, ey + 2, 3.6, 0, TAU); ctx.fill();
+      ctx.fillStyle = '#5E534C'; ctx.beginPath(); ctx.rect(ex - 10, ey - 8, 20, 7.5 + 6 * pc); ctx.fill();   // a pálpebra caída
+      ctx.strokeStyle = C.tinta; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(ex - 9, ey - 0.5 + 6 * pc); ctx.lineTo(ex + 9, ey - 0.5 + 6 * pc); ctx.stroke();
+      ctx.strokeStyle = css('#C9A3B6', 0.8); ctx.lineWidth = 1.6; ctx.beginPath(); ctx.arc(ex, ey + 4, 8, 0.25 * Math.PI, 0.75 * Math.PI); ctx.stroke();   // a olheira
+    }
+    ctx.strokeStyle = C.branco; ctx.lineWidth = 2.6; ctx.beginPath(); ctx.moveTo(-8, ey + 15); ctx.quadraticCurveTo(0, ey + 12, 9, ey + 15); ctx.stroke();
+    ctx.restore();
+    // o suspiro: a fumacinha saindo de lado da boca
+    const su = clamp(o.suspiro || 0);
+    if (su > 0.01) for (let i = 0; i < 3; i++) {
+      const ph = clamp(su * 1.3 - i * 0.15);
+      if (ph <= 0) continue;
+      ctx.fillStyle = css('#CFC6BC', 0.85 * (1 - ph * 0.6)); ctx.beginPath(); ctx.arc(x + (14 + 22 * i + 30 * ph) * k, base + (-h + 66 - 8 * i - 10 * ph) * k, (5 + 3 * i) * k * (0.6 + ph * 0.6), 0, TAU); ctx.fill();
+    }
+  }
+  // a panela vazia (com a tampa encostada do lado): (x, base) = o chão no meio
+  function panelaVazia(ctx, x, base, s, t) {
+    const k = s / 100;
+    ctx.save(); ctx.translate(x, base); ctx.scale(k, k);
+    shadow(ctx, 0, 0, 50, 5, 0.15);
+    // a tampa encostada (atrás, à direita)
+    ctx.save(); ctx.translate(44, -24); ctx.rotate(0.35);
+    ctx.fillStyle = '#B9B0A6'; ctx.beginPath(); ctx.ellipse(0, 0, 10, 36, 0, 0, TAU); ctx.fill(); ctx.fillStyle = '#8A7A6E'; rr(ctx, -16, -5, 8, 10, 3); ctx.fill();
+    ctx.restore();
+    ctx.fillStyle = C.tinta2; rr(ctx, -62, -46, 14, 8, 4); ctx.fill(); rr(ctx, 48, -46, 14, 8, 4); ctx.fill();   // as alças
+    ctx.fillStyle = '#C9C1B8'; ctx.beginPath(); ctx.moveTo(-48, -54); ctx.lineTo(48, -54); ctx.lineTo(44, -4); ctx.quadraticCurveTo(44, 0, 38, 0); ctx.lineTo(-38, 0); ctx.quadraticCurveTo(-44, 0, -44, -4); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = css(C.branco, 0.45); rr(ctx, -36, -46, 10, 36, 5); ctx.fill();
+    ctx.fillStyle = '#A9A097'; ctx.beginPath(); ctx.ellipse(0, -54, 48, 10, 0, 0, TAU); ctx.fill();
+    ctx.fillStyle = '#5E534C'; ctx.beginPath(); ctx.ellipse(0, -53, 42, 7, 0, 0, TAU); ctx.fill();                   // o fundo vazio
+    ctx.restore();
+  }
+
+  // ---- a caixa de pizza (papelão, sem marca), de frente e um pouco de cima: (x, base) = o chão no meio; w = largura.
+  //      o: abre 0..1 (a tampa gira na dobradiça de trás e mostra a pizza meio a meio), meio 0..1 (destaca a divisão)
+  const PAPELAO = '#D9A066', PAPELAO_ESC = '#B07A40', PAPELAO_CLARO = '#EAC48E';
+  function seloPizza(ctx, x, y, r) {                        // o selo da tampa: a fatia de pizza num círculo coral
+    ctx.save(); ctx.translate(x, y);
+    ctx.beginPath(); ctx.arc(0, 0, r, 0, TAU); ctx.fillStyle = C.coral; ctx.fill(); ctx.lineWidth = r * 0.1; ctx.strokeStyle = C.papel; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(-r * 0.46, -r * 0.34); ctx.quadraticCurveTo(0, -r * 0.6, r * 0.46, -r * 0.34); ctx.lineTo(0, r * 0.55); ctx.closePath(); ctx.fillStyle = '#F6D77A'; ctx.fill();
+    ctx.beginPath(); ctx.moveTo(-r * 0.48, -r * 0.36); ctx.quadraticCurveTo(0, -r * 0.62, r * 0.48, -r * 0.36); ctx.lineWidth = r * 0.12; ctx.strokeStyle = '#E8B04F'; ctx.stroke();
+    ctx.fillStyle = '#B8473A'; for (const [px, py] of [[-0.18, -0.22], [0.16, -0.18], [0, 0.12]]) { ctx.beginPath(); ctx.arc(px * r, py * r, r * 0.09, 0, TAU); ctx.fill(); }
+    ctx.restore();
+  }
+  function pizzaMeia(ctx, x, y, rx, ry, meio, t) {         // a pizza meio a meio: calabresa | mussarela com manjericão
+    ctx.save();
+    ctx.fillStyle = '#E8B04F'; ctx.beginPath(); ctx.ellipse(x, y, rx, ry, 0, 0, TAU); ctx.fill();               // a borda
+    ctx.save(); ctx.beginPath(); ctx.ellipse(x, y, rx * 0.88, ry * 0.86, 0, 0, TAU); ctx.clip();
+    ctx.fillStyle = '#E8743B'; ctx.fillRect(x - rx, y - ry, rx, 2 * ry);                                        // calabresa
+    ctx.fillStyle = '#F6D77A'; ctx.fillRect(x, y - ry, rx, 2 * ry);                                             // mussarela
+    ctx.fillStyle = '#B8473A'; for (let i = 0; i < 7; i++) { const a = hash(i, 3) * Math.PI + Math.PI / 2, r = 0.25 + 0.55 * hash(i, 5); ctx.beginPath(); ctx.ellipse(x + Math.cos(a) * rx * r * 0.85, y + Math.sin(a) * ry * r * 0.85, rx * 0.08, ry * 0.08, 0, 0, TAU); ctx.fill(); }
+    ctx.fillStyle = C.verde; for (let i = 0; i < 5; i++) { const a = hash(i, 7) * Math.PI - Math.PI / 2, r = 0.25 + 0.55 * hash(i, 9); ctx.beginPath(); ctx.ellipse(x + Math.cos(a) * rx * r * 0.85, y + Math.sin(a) * ry * r * 0.85, rx * 0.06, ry * 0.04, a, 0, TAU); ctx.fill(); }
+    ctx.fillStyle = css(C.branco, 0.7); for (let i = 0; i < 4; i++) { const a = hash(i, 11) * Math.PI - Math.PI / 2, r = 0.3 + 0.5 * hash(i, 13); ctx.beginPath(); ctx.ellipse(x + Math.cos(a) * rx * r * 0.8, y + Math.sin(a) * ry * r * 0.8, rx * 0.07, ry * 0.06, 0, 0, TAU); ctx.fill(); }
+    ctx.restore();
+    // a divisão do meio a meio (brilha quando meio > 0)
+    if (meio > 0) {
+      ctx.strokeStyle = css(C.branco, 0.9 * meio); ctx.lineWidth = 5; ctx.setLineDash([10, 8]); ctx.lineDashOffset = -t * 30;
+      ctx.beginPath(); ctx.moveTo(x, y - ry * 0.9); ctx.lineTo(x, y + ry * 0.9); ctx.stroke(); ctx.setLineDash([]);
+    }
+    ctx.restore();
+  }
+  function caixaPizza(ctx, x, base, w, t, o = {}) {
+    const ab = clamp(o.abre || 0), d = w * 0.42, hb = w * 0.11, kq = w * 0.07;
+    const x0 = x - w / 2, x1 = x + w / 2, yt = base - hb, yh = yt - d;                                       // yh = a dobradiça (borda de trás)
+    const th = ab * 105 * DEG, frente = yh + d * Math.cos(th) - (d / 0.45) * 0.9 * Math.sin(th), fx = kq * Math.sin(th) * 0.6;
+    const tampa = () => {
+      const dentro = th > Math.PI / 2;
+      ctx.beginPath(); ctx.moveTo(x0 + kq, yh); ctx.lineTo(x1 - kq, yh); ctx.lineTo(x1 - fx, frente); ctx.lineTo(x0 + fx, frente); ctx.closePath();
+      ctx.fillStyle = dentro ? PAPELAO_CLARO : PAPELAO; ctx.fill(); ctx.lineJoin = 'round'; ctx.lineWidth = 4; ctx.strokeStyle = PAPELAO_ESC; ctx.stroke();
+      if (!dentro && Math.abs(frente - yh) > 20) {                                                            // o selo, achatado com a perspectiva
+        const cy = (yh + frente) / 2, sy = Math.abs(frente - yh) / d;
+        ctx.save(); ctx.translate(x, cy); ctx.scale(1, Math.min(1, sy * 0.95)); seloPizza(ctx, 0, 0, d * 0.32); ctx.restore();
+      }
+    };
+    ctx.save();
+    shadow(ctx, x, base, w * 0.56, 8, 0.15);
+    if (th > Math.PI / 2) tampa();                                                                            // aberta: a tampa fica atrás
+    // o fundo (dentro) e a pizza
+    ctx.beginPath(); ctx.moveTo(x0, yt); ctx.lineTo(x1, yt); ctx.lineTo(x1 - kq, yh); ctx.lineTo(x0 + kq, yh); ctx.closePath(); ctx.fillStyle = PAPELAO_CLARO; ctx.fill();
+    if (ab > 0.05) pizzaMeia(ctx, x, yt - d * 0.5, w * 0.4, d * 0.42, clamp(o.meio || 0), t);
+    // a lateral da frente
+    ctx.fillStyle = PAPELAO; rr(ctx, x0, yt, w, hb, 6); ctx.fill(); ctx.lineWidth = 4; ctx.strokeStyle = PAPELAO_ESC; ctx.stroke();
+    ctx.strokeStyle = css(PAPELAO_ESC, 0.5); ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(x0 + 14, yt + hb / 2); ctx.lineTo(x1 - 14, yt + hb / 2); ctx.stroke();
+    if (th <= Math.PI / 2) tampa();
+    ctx.restore();
+    if (o.box) BOX(o.box, x0, Math.min(frente, yh) - 6, x1, base);
+  }
+
+  // ---- os itens do ep06 (sem marca)
+  function itemAgua(ctx, x, y, s) {                         // a garrafa d'água
+    const k = s / 100;
+    ctx.save(); ctx.translate(x, y); ctx.scale(k, k);
+    ctx.fillStyle = css('#BFE3F2', 0.95); ctx.beginPath(); ctx.moveTo(-16, -40); ctx.quadraticCurveTo(-18, -54, -8, -60); ctx.lineTo(8, -60); ctx.quadraticCurveTo(18, -54, 16, -40); ctx.lineTo(18, 44); ctx.quadraticCurveTo(18, 50, 12, 50); ctx.lineTo(-12, 50); ctx.quadraticCurveTo(-18, 50, -18, 44); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle = '#8CC4DB'; ctx.lineWidth = 2.5; ctx.stroke();
+    ctx.fillStyle = '#2E86C1'; rr(ctx, -9, -72, 18, 13, 4); ctx.fill();
+    ctx.fillStyle = C.branco; rr(ctx, -18, -6, 36, 22, 3); ctx.fill(); ctx.fillStyle = '#7FC6E4'; ctx.beginPath(); ctx.moveTo(-10, 10); ctx.quadraticCurveTo(0, -2, 10, 10); ctx.fill();
+    ctx.fillStyle = css(C.branco, 0.55); rr(ctx, -12, -36, 6, 26, 3); ctx.fill();
+    ctx.restore();
+  }
+  function itemBatata(ctx, x, y, s) {                       // a batata frita na caixinha
+    const k = s / 100;
+    ctx.save(); ctx.translate(x, y); ctx.scale(k, k);
+    ctx.fillStyle = '#F2C14E'; for (let i = 0; i < 9; i++) { const bx = -26 + i * 6.5, h = 34 + 14 * hash(i, 2); ctx.save(); ctx.translate(bx, -14); ctx.rotate((i - 4) * 0.06); rr(ctx, -4, -h, 8, h + 10, 2); ctx.fill(); ctx.fillStyle = '#E3A93A'; rr(ctx, -4, -h, 3, h + 10, 1.5); ctx.fill(); ctx.fillStyle = '#F2C14E'; ctx.restore(); }
+    ctx.fillStyle = C.coral; ctx.beginPath(); ctx.moveTo(-34, -20); ctx.quadraticCurveTo(0, -6, 34, -20); ctx.lineTo(26, 46); ctx.lineTo(-26, 46); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = C.coralDark; ctx.beginPath(); ctx.moveTo(10, -14); ctx.quadraticCurveTo(26, -17, 34, -20); ctx.lineTo(26, 46); ctx.lineTo(14, 46); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = C.amarelo; starPath(ctx, -4, 16, 11, 5, 0.45); ctx.fill();
+    ctx.restore();
+  }
+  function itemAcai(ctx, x, y, s) {                         // a tigela de açaí com banana e granola
+    const k = s / 100;
+    ctx.save(); ctx.translate(x, y); ctx.scale(k, k);
+    ctx.fillStyle = '#5B2A6E'; ctx.beginPath(); ctx.ellipse(0, -6, 44, 26, 0, Math.PI, TAU); ctx.fill();
+    ctx.fillStyle = '#6E3684'; ctx.beginPath(); ctx.ellipse(-8, -16, 22, 10, -0.2, 0, TAU); ctx.fill();
+    ctx.fillStyle = '#F6E7A0'; for (const [bx, by] of [[-24, -10], [-8, -22], [10, -14], [26, -8]]) { ctx.beginPath(); ctx.ellipse(bx, by, 8, 6, 0.3, 0, TAU); ctx.fill(); ctx.fillStyle = '#E3CC6E'; ctx.beginPath(); ctx.arc(bx, by, 2, 0, TAU); ctx.fill(); ctx.fillStyle = '#F6E7A0'; }
+    ctx.fillStyle = '#B9814A'; for (let i = 0; i < 10; i++) { ctx.beginPath(); ctx.arc(-30 + i * 6.5, -4 - 6 * hash(i, 4), 2.6, 0, TAU); ctx.fill(); }
+    ctx.fillStyle = C.branco; ctx.beginPath(); ctx.moveTo(-50, -6); ctx.lineTo(50, -6); ctx.quadraticCurveTo(46, 34, 0, 36); ctx.quadraticCurveTo(-46, 34, -50, -6); ctx.closePath(); ctx.fill();
+    ctx.lineWidth = 2.5; ctx.strokeStyle = C.cremeDeep; ctx.stroke();
+    ctx.fillStyle = C.coral; ctx.fillRect(-47, 6, 94, 8);
+    ctx.strokeStyle = '#B9B0A6'; ctx.lineWidth = 6; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(22, -20); ctx.lineTo(48, -54); ctx.stroke();   // a colher
+    ctx.restore();
+  }
+  Object.assign(ITENS, { agua: itemAgua, batata: itemBatata, acai: itemAcai });
+
+  // ===================== cenas do ep06 ("Sexta sem cozinhar?")
+
+  // a capa do fogão (ep06): no quadro 0 o fogão com cara de cansado e a panela vazia já estão na tela
+  CENAS.capa.fogao = function (ctx, cap, t) {
+    const Ly = cap.Ly, ev = cap.ev, B = Ly.bottom;
+    const su = Math.max(...[ev.fogao, ...ev.suspiros].map((x0) => Math.sin(Math.PI * p(t, x0, x0 + 1.2))));
+    fogao(ctx, 400, B, 270, t, { suspiro: su, pisca: Math.max(blinkAt(t, 21), 0.6 * su) });
+    BOX('fogão', 400 - 140, B - 300, 400 + 140, B);
+    const pl = Math.sin(Math.PI * p(t, ev.panela, ev.panela + 0.4));
+    panelaVazia(ctx, 740, B - 20 * pl, 170, t);
+    BOX('panela', 740 - 106, B - 110, 740 + 136, B);
+  };
+
+  // ---- semana ("O CAUSO"): a família cansada largada no sofá e a geladeira que abre com uma garrafa d'água e um limão sozinho
+  CENAS.semana = {
+    setup(cap) {
+      const d = cap.diagrama, ev = cap.ev;
+      ev.familia = at(cap, d.familia.em, cap.t0 + 0.4);
+      ev.cansado = Math.max(at(cap, d.cansado.em, ev.familia + 0.5), ev.familia + 0.3);
+      ev.geladeira = Math.max(at(cap, d.geladeira.em, ev.cansado + 0.6), ev.cansado + 0.4);
+      ev.agua = Math.max(at(cap, d.agua.em, ev.geladeira + 0.5), ev.geladeira + 0.35);
+      ev.limao = Math.max(at(cap, d.limao.em, ev.agua + 0.4), ev.agua + 0.3);
+      [0, 1, 2].forEach((i) => cue(ev.familia + i * 0.1, 'pop', { f: 480 + 60 * i }));
+      cue(ev.cansado, 'zzz'); cue(ev.geladeira, 'door'); cue(ev.geladeira + 0.12, 'light');
+      cue(ev.agua, 'pop', { f: 700 }); cue(ev.limao, 'pop', { f: 620 }); cue(ev.limao + 0.4, 'grilo');
+    },
+    draw(ctx, cap, t) {
+      const ev = cap.ev, T = cap.cenaTop;
+      const SX = 320, SW = 440, SB = PE - 10, k = SW / 300;
+      const es = ent(t, cap.t0 + 0.1, 0.45), sink = 18 * E.outCubic(p(t, ev.cansado, ev.cansado + 0.6));
+      enter(ctx, es, SX, SB, () => {
+        sofa(ctx, SX, SB, SW);
+        // a família largada no sofá (brota na palavra; no "cansado", afunda e fecha os olhos)
+        [[SX - 95, 0], [SX + 5, 2], [SX + 100, 1]].forEach(([x, vi], i) => {
+          const e = ent(t, ev.familia + i * 0.1, 0.35);
+          if (e <= 0) return;
+          const cans = t >= ev.cansado;
+          ctx.save(); ctx.globalAlpha *= clamp(e * 2);
+          pessoa(ctx, VISITAS[vi], x, SB - 40 * k + sink + 12 * (1 - e), t, { k: 0.66, look: [0.3 * (i - 1), 0.5], sorriso: 0, blink: cans ? 0.75 : blinkAt(t, 40 + i) });
+          ctx.restore();
+        });
+        ctx.save(); ctx.translate(SX, SB); ctx.scale(k, k); ctx.fillStyle = C.coralBg; rr(ctx, -112, -66, 224, 48, 18); ctx.fill(); ctx.restore();
+        if (es >= 1) BOX('sofá', SX - 154 * k, SB - 150 * k, SX + 154 * k, SB);
+      });
+      // o suspiro de cansaço em cima de cada um
+      if (t >= ev.cansado) [SX - 95, SX + 5, SX + 100].forEach((x, i) => {
+        const u = p(t, ev.cansado + i * 0.15, ev.cansado + 1.2 + i * 0.15);
+        if (u > 0 && u < 1) { ctx.fillStyle = css('#CFC6BC', 0.8 * Math.sin(Math.PI * u)); ctx.beginPath(); ctx.arc(x + 30 + 30 * u, SB - 290 - 50 * u, 12 + 10 * u, 0, TAU); ctx.fill(); }
+      });
+      // a geladeira: abre com luz e só tem a garrafa d'água e um limão
+      const GX = 770, GW = 240, GB = PE - 10, GH = Math.min(470, GB - T - 30);
+      const ab = E.outCubic(p(t, ev.geladeira, ev.geladeira + 0.5)), eg = ent(t, cap.t0 + 0.15, 0.45);
+      enter(ctx, eg, GX, GB, () => {
+        geladeira(ctx, GX, GB, GW, GH, { abre: ab, dentro: (ix0, iy0, ix1, iy1, prat) => {
+          pop(ctx, p(t, ev.agua, ev.agua + 0.35), GX + 20, prat[1], () => itemAgua(ctx, GX + 20, prat[1] - 52, 86), 2.4);
+          pop(ctx, p(t, ev.limao, ev.limao + 0.35), GX - 30, prat[2], () => itemLimao(ctx, GX - 30, prat[2] - 28, 80), 2.4);
+        } });
+      });
+      if (eg >= 1) BOX('geladeira', GX - GW / 2 - (ab > 0.5 ? GW * 0.3 : 0), GB - GH, GX + GW / 2, GB);
+      interrog(ctx, GX + 60, GB - GH - 40, 38, p(t, ev.limao + 0.3, ev.limao + 0.6), t, ev.limao + 0.3);
+    },
+  };
+
+  // ---- lanchonete: a lanchonete (lojinha com olhinhos) olhando o lanche caprichado e a batata, que brotam na bandeja
+  //      na palavra; no "faz", ela pula de alegria, com o check e as figurinhas
+  CENAS.lanchonete = {
+    setup(cap) {
+      const d = cap.diagrama, ev = cap.ev;
+      ev.lanche = at(cap, d.lanche.em, cap.t0 + 0.4);
+      ev.batata = Math.max(at(cap, d.batata.em, ev.lanche + 0.6), ev.lanche + 0.4);
+      ev.loja = Math.max(at(cap, d.loja.em, ev.batata + 0.6), ev.batata + 0.4);
+      ev.faz = Math.max(at(cap, d.faz.em, ev.loja + 0.5), ev.loja + 0.3);
+      cue(cap.t0 + 0.15, 'sprout', { i: 0 }); cue(ev.lanche, 'pop', { f: 560 }); cue(ev.batata, 'pop', { f: 680 });
+      cue(ev.loja, 'jump'); cue(ev.faz, 'check'); cue(ev.faz + 0.05, 'confete');
+    },
+    draw(ctx, cap, t) {
+      const ev = cap.ev, T = cap.cenaTop;
+      const LX = 255, LW = 290, base = PE - 10, alegre = clamp((t - ev.loja) * 3);
+      lojinha(ctx, 'lanchonete', LX, base, LW, t, { e: p(t, cap.t0 + 0.1, cap.t0 + 0.6), smile: Math.max(0.3, alegre), altura: 11 + 30 * alegre, alvo: [720, base - 160], seed: 61,
+        swing: 6 * Math.sin((t - ev.loja) * 8) * Math.exp(-Math.max(0, t - ev.loja) * 2) * (t > ev.loja ? 1 : 0), box: t > cap.t0 + 0.6 ? 'lanchonete' : null });
+      // as figurinhas e o confete atrás da bandeja
+      sticker(ctx, 'estrela', 560, T + 90, 58, p(t, ev.faz, ev.faz + 0.35), t);
+      sticker(ctx, 'coracao', 880, T + 140, 54, p(t, ev.faz + 0.1, ev.faz + 0.45), t);
+      confete(ctx, t, ev.faz + 0.05, 720, base - 260, 67, { n: 34, v: 900 });
+      // a bandeja
+      const BY = base - 30;
+      enter(ctx, ent(t, cap.t0 + 0.2, 0.4), 720, base, () => {
+        shadow(ctx, 720, base - 4, 200, 8, 0.14);
+        ctx.fillStyle = C.madeira; rr(ctx, 525, BY, 390, 22, 10); ctx.fill(); ctx.fillStyle = C.madeiraDark; rr(ctx, 525, BY + 14, 390, 8, 4); ctx.fill();
+        BOX('bandeja', 525, BY, 915, base);
+      });
+      pop(ctx, p(t, ev.lanche, ev.lanche + 0.4), 640, BY, () => ITENS.lanche(ctx, 640, BY - 80, 190), 2.4);
+      pop(ctx, p(t, ev.batata, ev.batata + 0.4), 830, BY, () => itemBatata(ctx, 830, BY - 78, 160), 2.4);
+      if (t >= ev.lanche + 0.4) BOX('lanche', 545, BY - 170, 735, BY);
+      if (t >= ev.batata + 0.4) BOX('batata', 775, BY - 170, 890, BY);
+      check(ctx, 870, BY - 200, 40, p(t, ev.faz, ev.faz + 0.4), { box: t >= ev.faz + 0.4 ? 'check' : null });
+    },
+  };
+
+  // ---- pizzaria: a pizzaria (lojinha) e a caixa de pizza que abre e mostra a pizza meio a meio; no "briga", corações
+  CENAS.pizzaria = {
+    setup(cap) {
+      const d = cap.diagrama, ev = cap.ev;
+      ev.caixa = at(cap, d.caixa.em, cap.t0 + 0.4);
+      ev.meio = Math.max(at(cap, d.meio.em, ev.caixa + 0.5), ev.caixa + 0.4);
+      ev.briga = Math.max(at(cap, d.briga.em, ev.meio + 0.6), ev.meio + 0.4);
+      cue(cap.t0 + 0.15, 'sprout', { i: 0 }); cue(ev.caixa, 'door'); cue(ev.caixa + 0.3, 'shine'); cue(ev.meio, 'tick'); cue(ev.briga, 'heart');
+    },
+    draw(ctx, cap, t) {
+      const ev = cap.ev;
+      const base = PE - 10;
+      lojinha(ctx, 'pizzaria', 200, base, 220, t, { e: p(t, cap.t0 + 0.1, cap.t0 + 0.6), smile: t >= ev.caixa ? 1 : 0.3, alvo: [620, base - 200], seed: 63, box: t > cap.t0 + 0.6 ? 'pizzaria' : null });
+      const ab = E.outBack(p(t, ev.caixa, ev.caixa + 0.6), 1.3);
+      enter(ctx, ent(t, cap.t0 + 0.2, 0.45), 625, base - 10, () => caixaPizza(ctx, 625, base - 10, 420, t, { abre: Math.min(1, ab), meio: p(t, ev.meio, ev.meio + 0.4), box: t > cap.t0 + 0.65 ? 'caixa de pizza' : null }));
+      // a fumacinha de quentinha
+      if (ab > 0.3) for (let i = 0; i < 3; i++) {
+        const ph = (t * 0.6 + i / 3) % 1; ctx.strokeStyle = css(C.cinza, 0.5 * Math.sin(Math.PI * ph) * clamp(ab)); ctx.lineWidth = 6; ctx.lineCap = 'round';
+        const sx = 565 + i * 60, y0 = base - 150 - ph * 90; ctx.beginPath(); ctx.moveTo(sx, y0); ctx.bezierCurveTo(sx - 14, y0 - 18, sx + 14, y0 - 30, sx, y0 - 48); ctx.stroke();
+      }
+      sticker(ctx, 'brilho', 520, base - 200, 46, p(t, ev.meio, ev.meio + 0.3), t);
+      sticker(ctx, 'brilho', 730, base - 200, 46, p(t, ev.meio + 0.1, ev.meio + 0.4), t);
+      // no fim da briga: os dois corações
+      sticker(ctx, 'coracao', 470, base - 330, 54, p(t, ev.briga, ev.briga + 0.35), t);
+      sticker(ctx, 'coracao', 790, base - 340, 54, p(t, ev.briga + 0.12, ev.briga + 0.47), t);
+    },
+  };
+
+  // ---- sobremesa ("GELADIM"): o refri gelado (com brilho e gelo) e a tigela de açaí de sobremesa, com a sorveteria olhando
+  CENAS.sobremesa = {
+    setup(cap) {
+      const d = cap.diagrama, ev = cap.ev;
+      ev.refri = at(cap, d.refri.em, cap.t0 + 0.4);
+      ev.gelado = Math.max(at(cap, d.gelado.em, ev.refri + 0.4), ev.refri + 0.3);
+      ev.acai = Math.max(at(cap, d.acai.em, ev.gelado + 0.5), ev.gelado + 0.4);
+      ev.sobremesa = Math.max(at(cap, d.sobremesa.em, ev.acai + 0.4), ev.acai + 0.3);
+      cue(cap.t0 + 0.15, 'sprout', { i: 0 }); [0, 1].forEach((i) => cue(ev.refri + i * 0.14, 'pop', { f: 680 + 90 * i }));
+      cue(ev.gelado, 'shine'); [0, 1, 2].forEach((i) => cue(ev.gelado + 0.1 + i * 0.08, 'clink'));
+      cue(ev.acai, 'pop', { f: 520 }); cue(ev.sobremesa, 'heart');
+    },
+    draw(ctx, cap, t) {
+      const ev = cap.ev;
+      const base = PE - 10;
+      lojinha(ctx, 'sorveteria', 210, base, 250, t, { e: p(t, cap.t0 + 0.1, cap.t0 + 0.6), smile: t >= ev.acai ? 1 : 0.4, alvo: [640, base - 160], seed: 65, box: t > cap.t0 + 0.6 ? 'sorveteria' : null });
+      // os refris subindo (sem marca, com gotinhas)
+      [[450, C.coral], [580, C.verde]].forEach(([x, cor], i) => {
+        const t0 = ev.refri + i * 0.14; if (t < t0) return;
+        const u = E.outBack(p(t, t0, t0 + 0.45), 1.5), y = lerp(base + 80, base - 128, u);
+        ctx.save(); ctx.beginPath(); ctx.rect(0, 0, W, base + 2); ctx.clip();
+        ctx.save(); ctx.translate(x, y); ctx.rotate((i ? 0.08 : -0.08) * u); itemRefri(ctx, 0, 0, 230, cor); ctx.restore(); ctx.restore();
+        if (u >= 1) BOX(`refri ${i + 1}`, x - 58, base - 290, x + 58, base);
+      });
+      // o gelado: brilhos e cubos de gelo
+      [[395, base - 300], [650, base - 320]].forEach(([x, y], i) => sticker(ctx, 'brilho', x, y, 54, p(t, ev.gelado + i * 0.1, ev.gelado + 0.35 + i * 0.1), t));
+      [[420, base - 20], [520, base - 14], [620, base - 22]].forEach(([x, y], i) => pop(ctx, p(t, ev.gelado + 0.1 + i * 0.08, ev.gelado + 0.4 + i * 0.08), x, y, () => itemGelo(ctx, x, y - 14, 50), 2.4));
+      // o açaí
+      pop(ctx, p(t, ev.acai, ev.acai + 0.4), 800, base, () => itemAcai(ctx, 800, base - 86, 260), 2.4);
+      if (t >= ev.acai + 0.4) BOX('açaí', 670, base - 240, 932, base);
+      sticker(ctx, 'coracao', 870, base - 300, 54, p(t, ev.sobremesa, ev.sobremesa + 0.35), t);
+      sticker(ctx, 'estrela', 720, base - 330, 50, p(t, ev.sobremesa + 0.1, ev.sobremesa + 0.45), t);
+    },
+  };
+
+  // ---- entrega ("CHEGOU", ep06): o PERTIM chega pilotando a motinha (grande, olhando para a câmera), desce, entrega a
+  //      sacola na mesa e acena; a família comemora; no "prato", o prato limpinho brilha (nenhum prato pra lavar)
+  CENAS.entrega = {
+    setup(cap) {
+      const d = cap.diagrama, ev = cap.ev;
+      ev.moto = at(cap, d.moto.em, cap.t0 + 0.3);
+      ev.para = ev.moto + 0.9;
+      ev.desce = Math.max(at(cap, d.mesa.em, ev.para + 0.3), ev.para + 0.2);
+      ev.entrega = ev.desce + 0.6;
+      ev.louca = Math.max(at(cap, d.louca.em, ev.entrega + 0.3), ev.entrega + 0.2);
+      ev.prato = Math.max(at(cap, d.prato.em, ev.louca + 0.5), ev.louca + 0.3);
+      ev.piscadas = [ev.para + 0.25, ev.entrega + 0.9, ev.prato + 0.8].filter((x) => x < cap.t1 - 0.2);
+      cue(ev.moto, 'moto', { d: 0.9 }); cue(ev.para, 'horn'); cue(ev.desce, 'jump'); cue(ev.entrega, 'whoosh'); cue(ev.entrega + 0.2, 'plop');
+      cue(ev.entrega + 0.25, 'heart'); cue(ev.louca, 'question'); cue(ev.prato, 'shine'); cue(ev.prato + 0.05, 'confete');
+    },
+    draw(ctx, cap, t) {
+      const ev = cap.ev, T = cap.cenaTop;
+      const base = PE - 10, Y = PE - 205;                   // o tampo da mesa
+      const pisca = Math.max(0, ...ev.piscadas.map((x0) => { const u = (t - x0) / 0.16; return u >= 0 && u <= 1 ? (u < 0.5 ? u * 2 : (1 - u) * 2) : 0; }));
+      // a família atrás da mesa (comemora quando a sacola chega)
+      [[715, 0], [865, 1]].forEach(([x, vi], i) => {
+        const e = ent(t, cap.t0 + 0.1 + i * 0.08, 0.4); if (e <= 0) return;
+        const fest = t > ev.entrega + 0.2;
+        ctx.save(); ctx.globalAlpha *= clamp(e * 2);
+        pessoa(ctx, VISITAS[vi], x, Y + 40 - (fest ? 12 * hop(t, i * 0.5) : 0), t, { k: 0.82, look: fest ? [0, 0] : [-0.8, 0.2], acena: fest, sorriso: fest ? 1 : 0.3, blink: blinkAt(t, i + 77) });
+        ctx.restore();
+        for (let j = 0; j < 2; j++) { const t0 = ev.entrega + 0.25 + i * 0.15 + j * 0.45, u = p(t, t0, t0 + 1.3); if (u > 0 && u < 1) sticker(ctx, 'coracao', x + (j ? 34 : -30), Y - 230 - 110 * u, 36, Math.min(1, u * 5) * (1 - p(u, 0.8, 1)), t); }
+      });
+      confete(ctx, t, ev.prato + 0.05, 790, Y - 120, 71, { n: 36, v: 900 });
+      // a mesa, com a pizza e o lanche, e a sacola entregue (com a logo oficial)
+      enter(ctx, ent(t, cap.t0 + 0.15, 0.45), 790, Y, () => { mesaXadrez(ctx, 640, 930, Y, PE - 8, 1); BOX('mesa', 640, Y, 930, PE - 8); });
+      if (t >= cap.t0 + 0.4) { caixaPizza(ctx, 870, Y + 2, 110, t, {}); }
+      const es = p(t, ev.entrega, ev.entrega + 0.3);
+      if (es > 0) pop(ctx, es, 735, Y + 2, () => {
+        const S = { x: 735, bot: Y + 2, w: 96, h: 86 }, tp = S.bot - S.h;
+        ctx.strokeStyle = C.coralDark; ctx.lineWidth = 6; ctx.lineCap = 'round';
+        for (const dx of [-20, 20]) { ctx.beginPath(); ctx.moveTo(S.x + dx - 11, tp + 2); ctx.bezierCurveTo(S.x + dx - 11, tp - 28, S.x + dx + 11, tp - 28, S.x + dx + 11, tp + 2); ctx.stroke(); }
+        ctx.fillStyle = C.papel; ctx.beginPath(); ctx.moveTo(S.x - S.w / 2, tp); ctx.lineTo(S.x + S.w / 2, tp); ctx.lineTo(S.x + S.w / 2 + 5, S.bot); ctx.lineTo(S.x - S.w / 2 - 5, S.bot); ctx.closePath(); ctx.fill();
+        ctx.lineWidth = 2; ctx.strokeStyle = C.cremeDeep; ctx.stroke();
+        ctx.fillStyle = C.coral; ctx.fillRect(S.x - S.w / 2, tp, S.w, 12);
+        logo(ctx, S.x, tp + 12 + (S.h - 12) / 2, 58);
+      }, 2.4);
+      // o prato limpinho (nenhum prato pra lavar)
+      pop(ctx, p(t, ev.prato, ev.prato + 0.35), 810, Y + 2, () => prato(ctx, 810, Y + 2, 70), 2.4);
+      sticker(ctx, 'brilho', 845, Y - 60, 40, p(t, ev.prato + 0.1, ev.prato + 0.4), t);
+      interrog(ctx, 790, Y - 300, 36, p(t, ev.louca, ev.louca + 0.3) * (1 - p(t, ev.prato, ev.prato + 0.2)), t, ev.louca);
+      // o PERTIM: pilotando até parar; desce num pulinho; fica em pé com a sacola; entrega e acena (sempre olhando para a câmera)
+      if (t < ev.moto - 0.05) return;
+      const MX = 340, MH = 360, PX = 440, PH = 480, pc = piscaQ(pisca);
+      const um = p(t, ev.moto, ev.para), mx = lerp(-260, MX, E.outCubic(um));
+      if (t < ev.desce) {
+        const bump = um < 1 ? 5 * Math.abs(Math.sin(t * 22)) : 3 * hop(t);
+        pertimQ(ctx, `moto-p${pc}`, mx, base - bump, MH, { box: um >= 1 ? 'Pertim na moto' : null, mx0: 0.12 });
+        return;
+      }
+      pertimQ(ctx, 'moto-estacionada', MX, base, MH, { box: 'moto' , mx0: 0.12 });
+      const ud = p(t, ev.desce, ev.desce + 0.35), x = lerp(MX + 40, PX, E.outCubic(ud)), pulo = 90 * Math.sin(Math.PI * ud);
+      const q = 4 * hop(t) * (ud >= 1 ? 1 : 0);              // o quique leve, na batida
+      if (t < ev.entrega) pertimQ(ctx, `sacola-p${pc}`, x, base - pulo - q, PH, { box: ud >= 1 ? 'Pertim' : null, mx0: 0.06, mx1: 0.12 });
+      else {
+        const a = acenoQ(22 * Math.sin((t - ev.entrega) * 9));
+        pertimQ(ctx, `acena-a${a}-p${pc}`, PX, base - q, PH, { box: 'Pertim', mx0: 0.12, mx1: 0.06 });
+      }
+    },
+  };
+
   // =====================================================================
   // O QUADRO
   // =====================================================================
@@ -3832,6 +4310,13 @@
     if (!w.trans) {
       OFF = { dx: 0, dy: 0, n: w.k };
       drawChap(ctx, CAPS[w.k], t);
+    } else if (TRANS === 'pizza') {
+      // a caixa de pizza: até fechar, o capítulo atual embaixo da tampa; depois que fecha, o próximo
+      const T = travessia(w.k, w.u), k = w.k + T.lado;
+      OFF = { dx: 0, dy: 0, n: k };
+      drawChap(ctx, CAPS[k], t);
+      OFF = { dx: 0, dy: 0, n: -1 };
+      drawWipe(ctx, t, w.k, w.u);
     } else {
       // a varredura: do lado de onde a motinha ainda não passou, o capítulo atual; do lado de trás dela, o próximo
       const T = travessia(w.k, w.u);
@@ -3871,7 +4356,8 @@
   // =====================================================================
   // INÍCIO
   // =====================================================================
-  function init(img, linha) {
+  function init(img, linha, pertim) {
+    PERTIM = pertim || null;                              // os quadros do Pertim (só nos episódios que os carregam)
     LOGO = img; LN = linha; DUR = linha.duracao; TR = linha.tr; CUES = []; AVISOS.length = 0; BT = 60 / (linha.bpm || 120);
     M = document.createElement('canvas').getContext('2d');
     CAPS = linha.capitulos.map((c) => ({ ...c, ev: {} }));
@@ -3884,6 +4370,7 @@
       CENAS[cap.diagrama.tipo].setup(cap, k);
       if (k > 0) {
         if (TRANS === 'sacola') cue(CAPS[k - 1].t1, 'sacola', { d: TR, k, dir: travessia(k - 1, 0).dir, nhac: nhacU(k - 1) * TR, jeito: (k - 1) % 4 });   // os pulos, o NHAC! e o ploc
+        else if (TRANS === 'pizza') cue(CAPS[k - 1].t1, 'pizza', { d: TR, k });   // a tampa descendo, o plof e a tampa abrindo
         else cue(CAPS[k - 1].t1, { galinha: 'galinha', viralata: 'cachorro' }[TRANS] || 'trans', { d: TR, k, dir: travessia(k - 1, 0).dir });   // quem atravessa (o som anda junto)
         cue(rotuloT(cap), 'pop', { f: 820 });                                        // o "plop" do adesivo do rótulo
         tituloT(cap).forEach((x, i) => cue(x, 'punch', { i }));
