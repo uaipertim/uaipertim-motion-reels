@@ -287,6 +287,7 @@ episodios/<id>.json       roteiro (o único arquivo que muda entre episódios)
 scripts/episodio.sh       o comando único (e --previa, sem voz)
 scripts/voz.py            narração: uma geração inteira por capítulo (with-timestamps), conferida e com histórico; v2 ou v4 pelo campo "voz"
 scripts/voz_versao.py     qual voz (voz_oficial.json v2 ou voz_v4.json) e qual grafia vão para a API; tempo das palavras no v4
+scripts/tomadas.py        tomadas de um capítulo para escolher pela entonação (F0 pelo Praat, por frase): gera N seeds, confere, grava mp3 em output/<id>/revisao/ e instala a escolhida (o mesmo áudio medido)
 scripts/pertim_sprites.mjs  os quadros do Pertim (personagem oficial, src/personagem — V1) gerados do próprio componente <Pertim> com o rig → src/pertim/*.svg + manifest.json
 src/pertim/               os quadros do Pertim que o motor desenha (só posicionados pelo pé, escalados e animados: quique, piscada, aceno)
 testes/voz-v4/            teste v2 × v4 (RELATORIO.md) e validação do fluxo com o v4 (validacao/), fora da produção
@@ -302,4 +303,4 @@ src/index.html            página de render e de prévia no navegador (?ep=<id>,
 
 Para ver no navegador: na raiz do repositório, rode `npx http-server -p 8080` e abra `http://localhost:8080/reels/tudo-pertim/src/index.html?ep=tudo-pertim-01&previa`.
 
-**Dependências:** Node com `playwright` (Chromium), `ffmpeg` e Python 3 com `numpy`, `scipy`, `pillow` e `soundfile` (usado por `audio/common.py`, que o `voz.py` e o `linha.py` importam para a pronúncia).
+**Dependências:** Node com `playwright` (Chromium), `ffmpeg` e Python 3 com `numpy`, `scipy`, `pillow` e `soundfile` (usado por `audio/common.py`, que o `voz.py` e o `linha.py` importam para a pronúncia); o `scripts/tomadas.py` usa também `praat-parselmouth`.
