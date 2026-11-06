@@ -1,0 +1,1076 @@
+{
+ "episodio": "tudo-pertim-07",
+ "titulo": "Faltou o bolo?",
+ "marca": "@uaipertim",
+ "bpm": 120,
+ "transicao": "baloes",
+ "duracao": 51.25,
+ "tr": 0.75,
+ "ap_entra": 0.34,
+ "ap_leitura": 1.5,
+ "previa": false,
+ "capitulos": [
+  {
+   "n": 0,
+   "rotulo": "TUDO PERTIM · EP. 07",
+   "tom": "pessego",
+   "titulo": [
+    "Faltou o",
+    "bolo? 🎂"
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "capa",
+    "cena": "bolo",
+    "marcador": "bolo",
+    "susto": {
+     "em": "bolo"
+    }
+   },
+   "t0": 0.0,
+   "t1": 3.75,
+   "voz_t0": 0.1,
+   "voz_t1": 3.14,
+   "palavras": [
+    {
+     "w": "Aniversário",
+     "n": "aniversario",
+     "i0": 0,
+     "t0": 0.1667,
+     "t1": 0.82
+    },
+    {
+     "w": "hoje…",
+     "n": "hoje",
+     "i0": 12,
+     "t0": 0.9667,
+     "t1": 1.38
+    },
+    {
+     "w": "e",
+     "n": "e",
+     "i0": 18,
+     "t0": 1.8,
+     "t1": 1.78
+    },
+    {
+     "w": "ninguém",
+     "n": "ninguem",
+     "i0": 20,
+     "t0": 1.9167,
+     "t1": 2.26
+    },
+    {
+     "w": "lembrou",
+     "n": "lembrou",
+     "i0": 28,
+     "t0": 2.4,
+     "t1": 2.58
+    },
+    {
+     "w": "do",
+     "n": "do",
+     "i0": 36,
+     "t0": 2.7167,
+     "t1": 2.74
+    },
+    {
+     "w": "bolo?",
+     "n": "bolo",
+     "i0": 39,
+     "t0": 2.8833,
+     "t1": 3.14
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Aniversário hoje… e ninguém lembrou do bolo?",
+     "apoio": null,
+     "t0": 0.1,
+     "t1": 3.14
+    }
+   ],
+   "apoios": [],
+   "seed": 42
+  },
+  {
+   "n": 1,
+   "rotulo": "O CAUSO",
+   "tom": "amarelo",
+   "titulo": [
+    "A festa tá",
+    "armada."
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "festa",
+    "convidados": {
+     "em": "convidados"
+    },
+    "decoracao": {
+     "em": "decoração"
+    },
+    "mesa": {
+     "em": "mesa"
+    },
+    "pratinhos": {
+     "em": "pratinhos"
+    }
+   },
+   "t0": 4.5,
+   "t1": 10.75,
+   "voz_t0": 4.75,
+   "voz_t1": 10.04,
+   "palavras": [
+    {
+     "w": "Os",
+     "n": "os",
+     "i0": 0,
+     "t0": 4.8167,
+     "t1": 4.91
+    },
+    {
+     "w": "convidados",
+     "n": "convidados",
+     "i0": 3,
+     "t0": 5.05,
+     "t1": 5.55
+    },
+    {
+     "w": "chegando,",
+     "n": "chegando",
+     "i0": 14,
+     "t0": 5.65,
+     "t1": 6.35
+    },
+    {
+     "w": "a",
+     "n": "a",
+     "i0": 24,
+     "t0": 6.4833,
+     "t1": 6.51
+    },
+    {
+     "w": "decoração",
+     "n": "decoracao",
+     "i0": 26,
+     "t0": 6.7333,
+     "t1": 7.15
+    },
+    {
+     "w": "pronta…",
+     "n": "pronta",
+     "i0": 36,
+     "t0": 7.2833,
+     "t1": 8.03
+    },
+    {
+     "w": "e",
+     "n": "e",
+     "i0": 44,
+     "t0": 8.1667,
+     "t1": 8.15
+    },
+    {
+     "w": "na",
+     "n": "na",
+     "i0": 46,
+     "t0": 8.25,
+     "t1": 8.27
+    },
+    {
+     "w": "mesa?",
+     "n": "mesa",
+     "i0": 49,
+     "t0": 8.4167,
+     "t1": 8.99
+    },
+    {
+     "w": "Só",
+     "n": "so",
+     "i0": 55,
+     "t0": 9.1333,
+     "t1": 9.19
+    },
+    {
+     "w": "os",
+     "n": "os",
+     "i0": 58,
+     "t0": 9.2833,
+     "t1": 9.39
+    },
+    {
+     "w": "pratinhos.",
+     "n": "pratinhos",
+     "i0": 61,
+     "t0": 9.4833,
+     "t1": 10.51
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Os convidados chegando, a decoração pronta…",
+     "apoio": null,
+     "t0": 4.75,
+     "t1": 8.03
+    },
+    {
+     "texto": "e na mesa? Só os pratinhos.",
+     "apoio": "Só os *pratinhos*.",
+     "t0": 8.11,
+     "t1": 10.51
+    }
+   ],
+   "apoios": [
+    {
+     "t": 7.99,
+     "texto": "Só os *pratinhos*.",
+     "ate": 11.5
+    }
+   ],
+   "seed": 1042
+  },
+  {
+   "n": 2,
+   "rotulo": "A PADARIA",
+   "tom": "pessego",
+   "titulo": [
+    "A padaria",
+    "salva!"
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "balcao",
+    "tipoLoja": "padaria",
+    "itens": [
+     {
+      "tipo": "boloChoco",
+      "em": "Bolo",
+      "x": 650,
+      "tam": 250
+     },
+     {
+      "tipo": "brigadeiro",
+      "em": "brigadeiro",
+      "x": 850,
+      "tam": 120
+     }
+    ],
+    "loja": {
+     "em": "padaria"
+    },
+    "faz": {
+     "em": "faz"
+    }
+   },
+   "t0": 11.5,
+   "t1": 17.0,
+   "voz_t0": 11.75,
+   "voz_t1": 16.23,
+   "palavras": [
+    {
+     "w": "Bolo",
+     "n": "bolo",
+     "i0": 0,
+     "t0": 11.8167,
+     "t1": 11.99
+    },
+    {
+     "w": "de",
+     "n": "de",
+     "i0": 5,
+     "t0": 12.1333,
+     "t1": 12.15
+    },
+    {
+     "w": "chocolate,",
+     "n": "chocolate",
+     "i0": 8,
+     "t0": 12.25,
+     "t1": 12.87
+    },
+    {
+     "w": "com",
+     "n": "com",
+     "i0": 19,
+     "t0": 13.1667,
+     "t1": 13.19
+    },
+    {
+     "w": "brigadeiro",
+     "n": "brigadeiro",
+     "i0": 23,
+     "t0": 13.3333,
+     "t1": 13.75
+    },
+    {
+     "w": "por",
+     "n": "por",
+     "i0": 34,
+     "t0": 13.8833,
+     "t1": 13.91
+    },
+    {
+     "w": "cima?",
+     "n": "cima",
+     "i0": 38,
+     "t0": 14.05,
+     "t1": 14.31
+    },
+    {
+     "w": "A",
+     "n": "a",
+     "i0": 44,
+     "t0": 14.7667,
+     "t1": 14.79
+    },
+    {
+     "w": "padaria",
+     "n": "padaria",
+     "i0": 46,
+     "t0": 14.9333,
+     "t1": 15.27
+    },
+    {
+     "w": "do",
+     "n": "do",
+     "i0": 54,
+     "t0": 15.3667,
+     "t1": 15.35
+    },
+    {
+     "w": "Glória",
+     "n": "gloria",
+     "i0": 57,
+     "t0": 15.4833,
+     "t1": 15.75
+    },
+    {
+     "w": "faz.",
+     "n": "faz",
+     "i0": 64,
+     "t0": 15.8833,
+     "t1": 16.23
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Bolo de chocolate, com brigadeiro por cima?",
+     "apoio": null,
+     "t0": 11.75,
+     "t1": 14.31
+    },
+    {
+     "texto": "A padaria do Glória faz.",
+     "apoio": "A padaria do Glória *faz*.",
+     "t0": 14.71,
+     "t1": 16.23
+    }
+   ],
+   "apoios": [
+    {
+     "t": 14.59,
+     "texto": "A padaria do Glória *faz*.",
+     "ate": 17.75
+    }
+   ],
+   "seed": 42
+  },
+  {
+   "n": 3,
+   "rotulo": "OS DOCINHOS",
+   "tom": "amarelo",
+   "titulo": [
+    "E os",
+    "docinhos?"
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "docinhos",
+    "brigadeiro": {
+     "em": "Brigadeiro"
+    },
+    "beijinho": {
+     "em": "beijinho"
+    },
+    "coxinha": {
+     "em": "coxinha"
+    },
+    "garantir": {
+     "em": "garantir"
+    }
+   },
+   "t0": 17.75,
+   "t1": 23.25,
+   "voz_t0": 18.0,
+   "voz_t1": 21.6,
+   "palavras": [
+    {
+     "w": "Brigadeiro,",
+     "n": "brigadeiro",
+     "i0": 0,
+     "t0": 18.0667,
+     "t1": 18.88
+    },
+    {
+     "w": "beijinho…",
+     "n": "beijinho",
+     "i0": 12,
+     "t0": 19.2667,
+     "t1": 19.92
+    },
+    {
+     "w": "e",
+     "n": "e",
+     "i0": 22,
+     "t0": 20.2667,
+     "t1": 20.24
+    },
+    {
+     "w": "coxinha",
+     "n": "coxinha",
+     "i0": 24,
+     "t0": 20.3833,
+     "t1": 20.8
+    },
+    {
+     "w": "pra",
+     "n": "pra",
+     "i0": 32,
+     "t0": 20.9333,
+     "t1": 20.96
+    },
+    {
+     "w": "garantir.",
+     "n": "garantir",
+     "i0": 36,
+     "t0": 21.1,
+     "t1": 21.6
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Brigadeiro, beijinho… e coxinha pra garantir.",
+     "apoio": "Brigadeiro e *coxinha*.",
+     "t0": 18.0,
+     "t1": 21.6
+    }
+   ],
+   "apoios": [
+    {
+     "t": 18.05,
+     "texto": "Brigadeiro e *coxinha*.",
+     "ate": 24.0
+    }
+   ],
+   "seed": 42
+  },
+  {
+   "n": 4,
+   "rotulo": "A VELINHA",
+   "tom": "verde",
+   "titulo": [
+    "Faltou a",
+    "velinha?"
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "velinha",
+    "vela": {
+     "em": "velinha"
+    },
+    "loja": {
+     "em": "mercadim"
+    },
+    "acende": {
+     "em": "número"
+    }
+   },
+   "t0": 24.0,
+   "t1": 29.5,
+   "voz_t0": 24.25,
+   "voz_t1": 27.13,
+   "palavras": [
+    {
+     "w": "E",
+     "n": "e",
+     "i0": 0,
+     "t0": 24.3167,
+     "t1": 24.29
+    },
+    {
+     "w": "a",
+     "n": "a",
+     "i0": 2,
+     "t0": 24.3833,
+     "t1": 24.41
+    },
+    {
+     "w": "velinha?",
+     "n": "velinha",
+     "i0": 4,
+     "t0": 24.5833,
+     "t1": 24.97
+    },
+    {
+     "w": "O",
+     "n": "o",
+     "i0": 13,
+     "t0": 25.3167,
+     "t1": 25.29
+    },
+    {
+     "w": "mercadim",
+     "n": "mercadim",
+     "i0": 15,
+     "t0": 25.4333,
+     "t1": 25.93
+    },
+    {
+     "w": "tem",
+     "n": "tem",
+     "i0": 24,
+     "t0": 26.0667,
+     "t1": 26.09
+    },
+    {
+     "w": "até",
+     "n": "ate",
+     "i0": 28,
+     "t0": 26.2667,
+     "t1": 26.37
+    },
+    {
+     "w": "a",
+     "n": "a",
+     "i0": 32,
+     "t0": 26.4667,
+     "t1": 26.45
+    },
+    {
+     "w": "do",
+     "n": "do",
+     "i0": 34,
+     "t0": 26.55,
+     "t1": 26.65
+    },
+    {
+     "w": "número.",
+     "n": "numero",
+     "i0": 37,
+     "t0": 26.75,
+     "t1": 27.13
+    }
+   ],
+   "frases": [
+    {
+     "texto": "E a velinha? O mercadim tem até a do número.",
+     "apoio": "Até a *velinha*.",
+     "t0": 24.25,
+     "t1": 27.13
+    }
+   ],
+   "apoios": [
+    {
+     "t": 24.3,
+     "texto": "Até a *velinha*.",
+     "ate": 30.25
+    }
+   ],
+   "seed": 42
+  },
+  {
+   "n": 5,
+   "rotulo": "CHEGOU",
+   "tom": "amarelo",
+   "titulo": [
+    "Chegou antes do",
+    "parabéns!"
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "entregaBolo",
+    "moto": {
+     "em": "Chegou"
+    },
+    "desce": {
+     "em": "parabéns"
+    },
+    "canta": {
+     "em": "ninguém"
+    },
+    "pisca": {
+     "em": "desconfiou"
+    }
+   },
+   "t0": 30.25,
+   "t1": 35.75,
+   "voz_t0": 30.5,
+   "voz_t1": 34.32,
+   "palavras": [
+    {
+     "w": "Chegou",
+     "n": "chegou",
+     "i0": 0,
+     "t0": 30.5667,
+     "t1": 30.9
+    },
+    {
+     "w": "antes",
+     "n": "antes",
+     "i0": 7,
+     "t0": 31.0333,
+     "t1": 31.22
+    },
+    {
+     "w": "do",
+     "n": "do",
+     "i0": 13,
+     "t0": 31.3667,
+     "t1": 31.38
+    },
+    {
+     "w": "parabéns…",
+     "n": "parabens",
+     "i0": 16,
+     "t0": 31.5167,
+     "t1": 32.34
+    },
+    {
+     "w": "e",
+     "n": "e",
+     "i0": 26,
+     "t0": 32.4833,
+     "t1": 32.46
+    },
+    {
+     "w": "ninguém",
+     "n": "ninguem",
+     "i0": 28,
+     "t0": 32.5667,
+     "t1": 32.98
+    },
+    {
+     "w": "desconfiou",
+     "n": "desconfiou",
+     "i0": 36,
+     "t0": 33.1667,
+     "t1": 33.62
+    },
+    {
+     "w": "de",
+     "n": "de",
+     "i0": 47,
+     "t0": 33.7667,
+     "t1": 33.86
+    },
+    {
+     "w": "nada.",
+     "n": "nada",
+     "i0": 50,
+     "t0": 34.0,
+     "t1": 34.58
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Chegou antes do parabéns…",
+     "apoio": null,
+     "t0": 30.5,
+     "t1": 32.34
+    },
+    {
+     "texto": "e ninguém desconfiou de nada.",
+     "apoio": "Ninguém *desconfiou*.",
+     "t0": 32.42,
+     "t1": 34.58
+    }
+   ],
+   "apoios": [
+    {
+     "t": 32.3,
+     "texto": "Ninguém *desconfiou*.",
+     "ate": 36.5
+    }
+   ],
+   "seed": 42
+  },
+  {
+   "n": 6,
+   "rotulo": "SUA VEZ",
+   "tom": "amarelo",
+   "titulo": [
+    "Bolo",
+    "de quê?"
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "enquete",
+    "opcoes": [
+     {
+      "t": "chocolate",
+      "em": "Chocolate"
+     },
+     {
+      "t": "morango",
+      "em": "Morango"
+     },
+     {
+      "t": "cenoura",
+      "em": "cenoura"
+     },
+     {
+      "t": "prestígio",
+      "em": "cenoura"
+     }
+    ]
+   },
+   "t0": 36.5,
+   "t1": 43.0,
+   "voz_t0": 36.75,
+   "voz_t1": 42.03,
+   "palavras": [
+    {
+     "w": "Comenta",
+     "n": "comenta",
+     "i0": 0,
+     "t0": 36.8167,
+     "t1": 37.15
+    },
+    {
+     "w": "aí:",
+     "n": "ai",
+     "i0": 8,
+     "t0": 37.25,
+     "t1": 37.31
+    },
+    {
+     "w": "qual",
+     "n": "qual",
+     "i0": 12,
+     "t0": 37.7667,
+     "t1": 37.79
+    },
+    {
+     "w": "é",
+     "n": "e",
+     "i0": 17,
+     "t0": 37.8833,
+     "t1": 37.87
+    },
+    {
+     "w": "o",
+     "n": "o",
+     "i0": 19,
+     "t0": 37.9667,
+     "t1": 37.95
+    },
+    {
+     "w": "seu",
+     "n": "seu",
+     "i0": 21,
+     "t0": 38.0833,
+     "t1": 38.19
+    },
+    {
+     "w": "bolo",
+     "n": "bolo",
+     "i0": 25,
+     "t0": 38.3333,
+     "t1": 38.51
+    },
+    {
+     "w": "preferido?",
+     "n": "preferido",
+     "i0": 30,
+     "t0": 38.65,
+     "t1": 39.31
+    },
+    {
+     "w": "Chocolate?",
+     "n": "chocolate",
+     "i0": 41,
+     "t0": 39.6833,
+     "t1": 40.27
+    },
+    {
+     "w": "Morango?",
+     "n": "morango",
+     "i0": 52,
+     "t0": 40.65,
+     "t1": 41.15
+    },
+    {
+     "w": "Ou",
+     "n": "ou",
+     "i0": 61,
+     "t0": 41.45,
+     "t1": 41.51
+    },
+    {
+     "w": "cenoura?",
+     "n": "cenoura",
+     "i0": 64,
+     "t0": 41.6167,
+     "t1": 42.03
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Comenta aí: qual é o seu bolo preferido? Chocolate? Morango? Ou cenoura?",
+     "apoio": "E aí, *qual é o seu*?",
+     "t0": 36.75,
+     "t1": 42.03
+    }
+   ],
+   "apoios": [
+    {
+     "t": 36.8,
+     "texto": "E aí, *qual é o seu*?",
+     "ate": 43.75
+    }
+   ],
+   "seed": 42
+  },
+  {
+   "n": 7,
+   "rotulo": "PRA NÃO PERDER",
+   "tom": "amarelo",
+   "titulo": [
+    "Em breve",
+    "no Glória."
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "fecho",
+    "logo": {
+     "em": "UaiPertim"
+    },
+    "assinatura": {
+     "t": "Tudo pertim de você.",
+     "em": "Tudo"
+    },
+    "chip": {
+     "t": "Segue @uaipertim",
+     "em": "Segue"
+    },
+    "confete": {
+     "em": "+1.2"
+    },
+    "pertim": {
+     "em": "UaiPertim",
+     "pisca": "pertim"
+    }
+   },
+   "t0": 43.75,
+   "t1": 51.25,
+   "voz_t0": 44.0,
+   "voz_t1": 49.68,
+   "palavras": [
+    {
+     "w": "Faltou",
+     "n": "faltou",
+     "i0": 0,
+     "t0": 44.0667,
+     "t1": 44.4
+    },
+    {
+     "w": "o",
+     "n": "o",
+     "i0": 7,
+     "t0": 44.5333,
+     "t1": 44.56
+    },
+    {
+     "w": "bolo?",
+     "n": "bolo",
+     "i0": 9,
+     "t0": 44.75,
+     "t1": 44.96
+    },
+    {
+     "w": "Relaxa,",
+     "n": "relaxa",
+     "i0": 15,
+     "t0": 45.4167,
+     "t1": 45.92
+    },
+    {
+     "w": "tem",
+     "n": "tem",
+     "i0": 23,
+     "t0": 46.2167,
+     "t1": 46.24
+    },
+    {
+     "w": "UaiPertim.",
+     "n": "uaipertim",
+     "i0": 27,
+     "t0": 46.3833,
+     "t1": 47.36
+    },
+    {
+     "w": "Tudo",
+     "n": "tudo",
+     "i0": 39,
+     "t0": 47.5833,
+     "t1": 47.68
+    },
+    {
+     "w": "pertim",
+     "n": "pertim",
+     "i0": 44,
+     "t0": 47.9,
+     "t1": 48.08
+    },
+    {
+     "w": "de",
+     "n": "de",
+     "i0": 51,
+     "t0": 48.1833,
+     "t1": 48.16
+    },
+    {
+     "w": "você.",
+     "n": "voce",
+     "i0": 54,
+     "t0": 48.3,
+     "t1": 48.88
+    },
+    {
+     "w": "Segue",
+     "n": "segue",
+     "i0": 60,
+     "t0": 49.0167,
+     "t1": 49.12
+    },
+    {
+     "w": "a",
+     "n": "a",
+     "i0": 66,
+     "t0": 49.2667,
+     "t1": 49.28
+    },
+    {
+     "w": "gente!",
+     "n": "gente",
+     "i0": 68,
+     "t0": 49.3833,
+     "t1": 49.68
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Faltou o bolo? Relaxa, tem UaiPertim. Tudo pertim de você. Segue a gente!",
+     "apoio": null,
+     "t0": 44.0,
+     "t1": 49.68
+    }
+   ],
+   "apoios": [],
+   "seed": 42
+  }
+ ],
+ "colocacao": [
+  {
+   "cap": 0,
+   "arquivo": "voz/cap-00.wav",
+   "de_s": 0.0,
+   "ate_s": 3.28,
+   "no_video_s": 0.1,
+   "amostras": 157440,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 1,
+   "arquivo": "voz/cap-01.wav",
+   "de_s": 0.0,
+   "ate_s": 5.59,
+   "no_video_s": 4.75,
+   "amostras": 268320,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 2,
+   "arquivo": "voz/cap-02.wav",
+   "de_s": 0.0,
+   "ate_s": 4.72,
+   "no_video_s": 11.75,
+   "amostras": 226560,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 3,
+   "arquivo": "voz/cap-03.wav",
+   "de_s": 0.0,
+   "ate_s": 3.84,
+   "no_video_s": 18.0,
+   "amostras": 184320,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 4,
+   "arquivo": "voz/cap-04.wav",
+   "de_s": 0.0,
+   "ate_s": 3.12,
+   "no_video_s": 24.25,
+   "amostras": 149760,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 5,
+   "arquivo": "voz/cap-05.wav",
+   "de_s": 0.0,
+   "ate_s": 4.08,
+   "no_video_s": 30.5,
+   "amostras": 195840,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 6,
+   "arquivo": "voz/cap-06.wav",
+   "de_s": 0.0,
+   "ate_s": 5.52,
+   "no_video_s": 36.75,
+   "amostras": 264960,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 7,
+   "arquivo": "voz/cap-07.wav",
+   "de_s": 0.0,
+   "ate_s": 5.84,
+   "no_video_s": 44.0,
+   "amostras": 280320,
+   "fade_ms": [
+    8,
+    60
+   ]
+  }
+ ],
+ "mapa": {
+  "ok": true,
+  "falhas": []
+ }
+}

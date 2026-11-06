@@ -634,6 +634,19 @@ for c in CUES['cues']:
         place(sfx, plof, t + dd * 0.42, 0.5, 0.0); place(send, plof, t + dd * 0.42, 0.06)
         place(sfx, whoosh(dd * 0.42, 900, 2600, 0.5, 1.1), t + dd * 0.58, 0.18, 0.2)
         place(sfx, pop(880), t + dd * 0.95, 0.16, 0.2)
+    elif ty == 'baloes':
+        # os balões de festa (ep07): o chiadinho de borracha subindo, os estouros espalhados ("pop" com o estalo) e o POP! maior
+        dd = max(0.3, d)
+        tq = tt(dd * 0.45)
+        sq = np.sin(2 * np.pi * np.cumsum(500 + 700 * tq / (dd * 0.45) + 40 * np.sin(2 * np.pi * 9 * tq)) / SR) * np.sin(np.pi * np.clip(tq / (dd * 0.45), 0, 1)) ** 2
+        place(sfx, filt(sq, 2500, 'low') * 0.5, t, 0.1, 0.0)
+        place(sfx, whoosh(dd * 0.45, 300, 1800, 0.45, 1.0), t, 0.14, 0.0)
+        for j in range(7):
+            tp = t + dd * (0.555 + 0.12 * j / 6) + 0.01 * rng.uniform(-1, 1)
+            estalo = add(filt(noise(0.04), [1500, 9000], 'band') * np.exp(-tt(0.04) / 0.006), thump(0.06, 160, 0.012, 0.6) * 0.5)
+            place(sfx, estalo, tp, 0.26 * (0.7 + 0.3 * rng.uniform()), rng.uniform(-0.7, 0.7))
+        big = add(filt(noise(0.08), [800, 7000], 'band') * np.exp(-tt(0.08) / 0.012), thump(0.2, 110, 0.04, 1.0) * 0.7, pop(700) * 0.5)
+        place(sfx, big, t + dd * 0.56, 0.42, 0.0); place(send, big, t + dd * 0.56, 0.06)
     elif ty == 'grilo':
         # o grilinho da geladeira vazia: "cri-cri" (dois trinados agudos, baixinho)
         for q in range(2):

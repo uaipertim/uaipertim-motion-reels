@@ -1,0 +1,276 @@
+{
+  "id": "tudo-pertim-07",
+  "titulo": "Faltou o bolo?",
+  "marca": "@uaipertim",
+  "bpm": 120,
+  "voz": "v4",
+  "transicao": "baloes",
+  "capitulos": [
+    {
+      "rotulo": "TUDO PERTIM · EP. 07",
+      "tom": "pessego",
+      "titulo": [
+        "Faltou o",
+        "bolo? 🎂"
+      ],
+      "fala": [
+        {
+          "texto": "Aniversário hoje… e ninguém lembrou do bolo?",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "capa",
+        "cena": "bolo",
+        "marcador": "bolo",
+        "susto": {
+          "em": "bolo"
+        }
+      }
+    },
+    {
+      "rotulo": "O CAUSO",
+      "tom": "amarelo",
+      "titulo": [
+        "A festa tá",
+        "armada."
+      ],
+      "fala": [
+        {
+          "texto": "Os convidados chegando, a decoração pronta…",
+          "apoio": null
+        },
+        {
+          "texto": "e na mesa? Só os pratinhos.",
+          "apoio": "Só os *pratinhos*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "festa",
+        "convidados": {
+          "em": "convidados"
+        },
+        "decoracao": {
+          "em": "decoração"
+        },
+        "mesa": {
+          "em": "mesa"
+        },
+        "pratinhos": {
+          "em": "pratinhos"
+        }
+      },
+      "segura": 0.6
+    },
+    {
+      "rotulo": "A PADARIA",
+      "tom": "pessego",
+      "titulo": [
+        "A padaria",
+        "salva!"
+      ],
+      "fala": [
+        {
+          "texto": "Bolo de chocolate, com brigadeiro por cima?",
+          "apoio": null
+        },
+        {
+          "texto": "A padaria do Glória faz.",
+          "apoio": "A padaria do Glória *faz*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "balcao",
+        "tipoLoja": "padaria",
+        "itens": [
+          {
+            "tipo": "boloChoco",
+            "em": "Bolo",
+            "x": 650,
+            "tam": 250
+          },
+          {
+            "tipo": "brigadeiro",
+            "em": "brigadeiro",
+            "x": 850,
+            "tam": 120
+          }
+        ],
+        "loja": {
+          "em": "padaria"
+        },
+        "faz": {
+          "em": "faz"
+        }
+      },
+      "segura": 0.6
+    },
+    {
+      "rotulo": "OS DOCINHOS",
+      "tom": "amarelo",
+      "titulo": [
+        "E os",
+        "docinhos?"
+      ],
+      "fala": [
+        {
+          "texto": "Brigadeiro, beijinho… e coxinha pra garantir.",
+          "apoio": "Brigadeiro e *coxinha*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "docinhos",
+        "brigadeiro": {
+          "em": "Brigadeiro"
+        },
+        "beijinho": {
+          "em": "beijinho"
+        },
+        "coxinha": {
+          "em": "coxinha"
+        },
+        "garantir": {
+          "em": "garantir"
+        }
+      },
+      "segura": 0.6,
+      "min": 5.5
+    },
+    {
+      "rotulo": "A VELINHA",
+      "tom": "verde",
+      "titulo": [
+        "Faltou a",
+        "velinha?"
+      ],
+      "fala": [
+        {
+          "texto": "E a velinha? O mercadim tem até a do número.",
+          "apoio": "Até a *velinha*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "velinha",
+        "vela": {
+          "em": "velinha"
+        },
+        "loja": {
+          "em": "mercadim"
+        },
+        "acende": {
+          "em": "número"
+        }
+      },
+      "segura": 0.6,
+      "min": 5.5
+    },
+    {
+      "rotulo": "CHEGOU",
+      "tom": "amarelo",
+      "titulo": [
+        "Chegou antes do",
+        "parabéns!"
+      ],
+      "fala": [
+        {
+          "texto": "Chegou antes do parabéns…",
+          "apoio": null
+        },
+        {
+          "texto": "e ninguém desconfiou de nada.",
+          "apoio": "Ninguém *desconfiou*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "entregaBolo",
+        "moto": {
+          "em": "Chegou"
+        },
+        "desce": {
+          "em": "parabéns"
+        },
+        "canta": {
+          "em": "ninguém"
+        },
+        "pisca": {
+          "em": "desconfiou"
+        }
+      },
+      "segura": 0.7,
+      "min": 5.5
+    },
+    {
+      "rotulo": "SUA VEZ",
+      "tom": "amarelo",
+      "titulo": [
+        "Bolo",
+        "de quê?"
+      ],
+      "fala": [
+        {
+          "texto": "Comenta aí: qual é o seu bolo preferido? Chocolate? Morango? Ou cenoura?",
+          "apoio": "E aí, *qual é o seu*?"
+        }
+      ],
+      "diagrama": {
+        "tipo": "enquete",
+        "opcoes": [
+          {
+            "t": "chocolate",
+            "em": "Chocolate"
+          },
+          {
+            "t": "morango",
+            "em": "Morango"
+          },
+          {
+            "t": "cenoura",
+            "em": "cenoura"
+          },
+          {
+            "t": "prestígio",
+            "em": "cenoura"
+          }
+        ]
+      },
+      "segura": 0.8,
+      "min": 5.5
+    },
+    {
+      "rotulo": "PRA NÃO PERDER",
+      "tom": "amarelo",
+      "titulo": [
+        "Em breve",
+        "no Glória."
+      ],
+      "min": 7.5,
+      "fala": [
+        {
+          "texto": "Faltou o bolo? Relaxa, tem UaiPertim. Tudo pertim de você. Segue a gente!",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "fecho",
+        "logo": {
+          "em": "UaiPertim"
+        },
+        "assinatura": {
+          "t": "Tudo pertim de você.",
+          "em": "Tudo"
+        },
+        "chip": {
+          "t": "Segue @uaipertim",
+          "em": "Segue"
+        },
+        "confete": {
+          "em": "+1.2"
+        },
+        "pertim": {
+          "em": "UaiPertim",
+          "pisca": "pertim"
+        }
+      }
+    }
+  ]
+}

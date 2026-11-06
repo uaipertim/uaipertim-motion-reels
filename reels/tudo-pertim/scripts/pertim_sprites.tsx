@@ -51,6 +51,9 @@ for (const a of ACENO) for (const pc of PISCA) QUADROS.push(quadro(`acena-a${a}-
 for (const a of ACENO) QUADROS.push(quadro(`pisca-a${a}`, { v: 1, pose: "acenando", expr: "piscadinha" }, { aceno: a }));
 // alegre (olhos fechados de felicidade), acenando — a comemoração
 for (const a of ACENO) QUADROS.push(quadro(`alegre-a${a}`, { v: 1, pose: "acenando", expr: "alegre" }, { aceno: a }));
+// em pé, parado (braços ao lado), olhando para a câmera — e com a piscadinha (o EP. 07: entrega o bolo e pisca)
+for (const pc of PISCA) QUADROS.push(quadro(`parado-p${pc * 10}`, { v: 1, pose: "parado", expr: "sorrindo" }, { piscada: pc, centro: true, olhar: [0, 0] }));
+QUADROS.push(quadro("parado-pisca", { v: 1, pose: "parado", expr: "piscadinha" }));
 const mv = pertimVals({ v: 1, pose: "moto" }).vb;
 QUADROS.push({ nome: "moto-estacionada", svg: renderToStaticMarkup(<MotoEstacionada />), vb: mv, chao: [150, 284] });
 

@@ -1,0 +1,8 @@
+Tomadas do capítulo 06 de tudo-pertim-07 (voz Victor Pinho, eleven_v4; texto enviado: "Comenta aí: qual é o seu bolo preferido? Chocolate? Morango? Ou cenoura?"; contexto: previous_text sim, next_text não) — 2026-11-06 19:14
+
+sua-vez-a.mp3 · seed 42 · 5.52 s · conferência: ok · F0 mediano 179 Hz · preferido: sobe -5.7 st, termina -4.1 st, Chocolate: sobe +1.6 st, termina +6.1 st, Morango: sobe -1.7 st, termina -3.2 st, cenoura: sobe +2.0 st, termina +7.7 st
+sua-vez-b.mp3 · seed 1042 · 5.44 s · conferência: ok · F0 mediano 163 Hz · preferido: sobe -16.0 st, termina -10.0 st, Chocolate: sobe +1.8 st, termina +7.5 st, Morango: sobe -8.4 st, termina -12.7 st, cenoura: sobe -19.6 st, termina -8.9 st
+sua-vez-c.mp3 · seed 2042 · 5.36 s · conferência: ok · F0 mediano 161 Hz · preferido: sobe -2.3 st, termina -10.2 st, Chocolate: sobe +0.9 st, termina +8.1 st, Morango: sobe +9.5 st, termina +5.3 st, cenoura: sobe -23.4 st, termina -9.1 st
+
+MELHOR: sua-vez-a.mp3 (seed 42): a pior palavra termina -4.1 st da mediana (pergunta: acima); subida média -0.9 st
+

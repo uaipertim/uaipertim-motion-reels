@@ -1,0 +1,191 @@
+{
+ "duracao": 51.25,
+ "apoios": [
+  {
+   "cap": 1,
+   "i": 1,
+   "texto": "Só os pratinhos.",
+   "entra": 7.99,
+   "inteira_de": 8.33,
+   "ate": 11.5,
+   "linhas": [
+    "Só os pratinhos."
+   ]
+  },
+  {
+   "cap": 2,
+   "i": 1,
+   "texto": "A padaria do Glória faz.",
+   "entra": 14.59,
+   "inteira_de": 14.93,
+   "ate": 17.75,
+   "linhas": [
+    "A padaria do Glória faz."
+   ]
+  },
+  {
+   "cap": 3,
+   "i": 1,
+   "texto": "Brigadeiro e coxinha.",
+   "entra": 18.05,
+   "inteira_de": 18.39,
+   "ate": 24,
+   "linhas": [
+    "Brigadeiro e coxinha."
+   ]
+  },
+  {
+   "cap": 4,
+   "i": 1,
+   "texto": "Até a velinha.",
+   "entra": 24.3,
+   "inteira_de": 24.64,
+   "ate": 30.25,
+   "linhas": [
+    "Até a velinha."
+   ]
+  },
+  {
+   "cap": 5,
+   "i": 1,
+   "texto": "Ninguém desconfiou.",
+   "entra": 32.3,
+   "inteira_de": 32.64,
+   "ate": 36.5,
+   "linhas": [
+    "Ninguém desconfiou."
+   ]
+  },
+  {
+   "cap": 6,
+   "i": 1,
+   "texto": "E aí, qual é o seu?",
+   "entra": 36.8,
+   "inteira_de": 37.14,
+   "ate": 43.75,
+   "linhas": [
+    "E aí, qual é o seu?"
+   ]
+  }
+ ],
+ "trocas": [
+  {
+   "de": 0,
+   "para": 1,
+   "t0": 3.75,
+   "t1": 4.5
+  },
+  {
+   "de": 1,
+   "para": 2,
+   "t0": 10.75,
+   "t1": 11.5
+  },
+  {
+   "de": 2,
+   "para": 3,
+   "t0": 17,
+   "t1": 17.75
+  },
+  {
+   "de": 3,
+   "para": 4,
+   "t0": 23.25,
+   "t1": 24
+  },
+  {
+   "de": 4,
+   "para": 5,
+   "t0": 29.5,
+   "t1": 30.25
+  },
+  {
+   "de": 5,
+   "para": 6,
+   "t0": 35.75,
+   "t1": 36.5
+  },
+  {
+   "de": 6,
+   "para": 7,
+   "t0": 43,
+   "t1": 43.75
+  }
+ ],
+ "montagens": [
+  {
+   "n": 0,
+   "t0": 0,
+   "t1": 3.75,
+   "primeira": 0.6,
+   "ultima": 3.25
+  },
+  {
+   "n": 1,
+   "t0": 4.5,
+   "t1": 10.75,
+   "primeira": 5.05,
+   "ultima": 9.4833
+  },
+  {
+   "n": 2,
+   "t0": 11.5,
+   "t1": 17,
+   "primeira": 12,
+   "ultima": 15.8833
+  },
+  {
+   "n": 3,
+   "t0": 17.75,
+   "t1": 23.25,
+   "primeira": 18.0667,
+   "ultima": 21.1
+  },
+  {
+   "n": 4,
+   "t0": 24,
+   "t1": 29.5,
+   "primeira": 24.5833,
+   "ultima": 26.75
+  },
+  {
+   "n": 5,
+   "t0": 30.25,
+   "t1": 35.75,
+   "primeira": 30.5667,
+   "ultima": 33.1667
+  },
+  {
+   "n": 6,
+   "t0": 36.5,
+   "t1": 43,
+   "primeira": 39.6833,
+   "ultima": 41.9167
+  },
+  {
+   "n": 7,
+   "t0": 43.75,
+   "t1": 51.25,
+   "primeira": 44.95,
+   "ultima": 48.2
+  }
+ ],
+ "fecho": {
+  "ultima_mudanca_de_texto": 48.2,
+  "duracao": 51.25,
+  "logo": {
+   "entra": 46.3833,
+   "parada": 47.2833
+  },
+  "t0": 43.75,
+  "t1": 51.25
+ },
+ "capa": {
+  "tamanho": 176,
+  "linhas": [
+   693.7925122070312,
+   713.1523754882812
+  ]
+ },
+ "palavras_sem_peca": []
+}
