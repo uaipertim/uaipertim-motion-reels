@@ -1,5 +1,5 @@
 {
- "duracao": 51.25,
+ "duracao": 51.5,
  "apoios": [
   {
    "cap": 1,
@@ -62,7 +62,7 @@
    "texto": "E aí, qual é o seu?",
    "entra": 36.8,
    "inteira_de": 37.14,
-   "ate": 43.75,
+   "ate": 44,
    "linhas": [
     "E aí, qual é o seu?"
    ]
@@ -108,8 +108,8 @@
   {
    "de": 6,
    "para": 7,
-   "t0": 43,
-   "t1": 43.75
+   "t0": 43.25,
+   "t1": 44
   }
  ],
  "montagens": [
@@ -158,27 +158,27 @@
   {
    "n": 6,
    "t0": 36.5,
-   "t1": 43,
-   "primeira": 39.6833,
-   "ultima": 41.9167
+   "t1": 43.25,
+   "primeira": 39.8167,
+   "ultima": 41.9833
   },
   {
    "n": 7,
-   "t0": 43.75,
-   "t1": 51.25,
-   "primeira": 44.95,
-   "ultima": 48.2
+   "t0": 44,
+   "t1": 51.5,
+   "primeira": 45.2,
+   "ultima": 48.45
   }
  ],
  "fecho": {
-  "ultima_mudanca_de_texto": 48.2,
-  "duracao": 51.25,
+  "ultima_mudanca_de_texto": 48.45,
+  "duracao": 51.5,
   "logo": {
-   "entra": 46.3833,
-   "parada": 47.2833
+   "entra": 46.6333,
+   "parada": 47.5333
   },
-  "t0": 43.75,
-  "t1": 51.25
+  "t0": 44,
+  "t1": 51.5
  },
  "capa": {
   "tamanho": 176,

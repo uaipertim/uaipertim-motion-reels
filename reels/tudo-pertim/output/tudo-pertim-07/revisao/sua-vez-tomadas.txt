@@ -6,3 +6,21 @@ sua-vez-c.mp3 · seed 2042 · 5.36 s · conferência: ok · F0 mediano 161 Hz ·
 
 MELHOR: sua-vez-a.mp3 (seed 42): a pior palavra termina -4.1 st da mediana (pergunta: acima); subida média -0.9 st
 
+Tomadas do capítulo 06 de tudo-pertim-07 (voz Victor Pinho, eleven_v4; texto enviado: "Comenta aí: qual é o seu bolo preferido? Chocolate? Morango? Ou cenoura?"; contexto: previous_text sim, next_text não) — 2026-11-07 12:14
+
+sua-vez-d.mp3 · seed 3042 · 5.36 s · conferência: ok · F0 mediano 162 Hz · preferido: sobe -19.3 st, termina -13.1 st, Chocolate: sobe +0.9 st, termina +9.1 st, Morango: sobe -12.2 st, termina -7.7 st, cenoura: sobe +2.4 st, termina +9.1 st
+sua-vez-e.mp3 · seed 4042 · 5.6 s · conferência: ok · F0 mediano 161 Hz · preferido: sobe -20.3 st, termina -11.5 st, Chocolate: sobe -6.8 st, termina -10.6 st, Morango: sobe -9.3 st, termina -12.9 st, cenoura: sobe -21.9 st, termina -9.7 st
+sua-vez-f.mp3 · seed 5042 · 5.44 s · conferência: ok · F0 mediano 168 Hz · preferido: sobe -15.0 st, termina -12.1 st, Chocolate: sobe +1.3 st, termina +7.8 st, Morango: sobe +6.9 st, termina +2.2 st, cenoura: sobe -23.1 st, termina -10.5 st
+
+NENHUMA tomada em que Chocolate, Morango, cenoura terminem todas acima da mediana.
+
+Nenhuma das 6 tomadas com "Chocolate? Morango? Ou cenoura?" teve as três opções terminando acima da mediana; o texto falado foi trocado para "… É chocolate? Morango? Ou cenoura?" (a tela não muda) e geradas mais 3 (g, h, i):
+
+Tomadas do capítulo 06 de tudo-pertim-07 (voz Victor Pinho, eleven_v4; texto enviado: "Comenta aí: qual é o seu bolo preferido? É chocolate? Morango? Ou cenoura?"; contexto: previous_text sim, next_text não) — 2026-11-07 12:15
+
+sua-vez-g.mp3 · seed 42 · 5.76 s · conferência: ok · F0 mediano 178 Hz · preferido: sobe -10.8 st, termina -6.6 st, chocolate: sobe +2.3 st, termina +6.2 st, Morango: sobe -14.5 st, termina -12.6 st, cenoura: sobe -25.5 st, termina -13.9 st
+sua-vez-h.mp3 · seed 1042 · 5.6 s · conferência: ok · F0 mediano 189 Hz · preferido: sobe -17.8 st, termina -12.3 st, chocolate: sobe +5.2 st, termina +4.8 st, Morango: sobe +1.6 st, termina +4.1 st, cenoura: sobe +1.2 st, termina +6.4 st
+sua-vez-i.mp3 · seed 2042 · 5.44 s · conferência: ok · F0 mediano 152 Hz · preferido: sobe -17.3 st, termina -12.0 st, chocolate: sobe +2.5 st, termina +8.9 st, Morango: sobe -5.8 st, termina -10.7 st, cenoura: sobe -23.8 st, termina -10.1 st
+
+MELHOR: sua-vez-h.mp3 (seed 1042): a pior palavra termina -12.3 st da mediana (pergunta: acima); subida média -2.5 st · é a primeira em que chocolate, Morango, cenoura terminam acima da mediana
+

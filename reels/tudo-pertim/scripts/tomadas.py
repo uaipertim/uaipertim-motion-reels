@@ -14,6 +14,10 @@ Tomadas de um capítulo para escolher pela entonação (ex.: uma fala que tem de
     --sem-next  não manda o texto do capítulo seguinte como contexto (next_text): use quando a voz começa a falar o
                 começo do próximo capítulo no fim da tomada (ex.: um "s" inventado quando o próximo começa com "S…")
 
+    --desde d   a letra da primeira tomada nova (ex.: d, para guardar as a/b/c de uma rodada anterior)
+    --sobem Chocolate,Morango,cenoura   a escolha passa a ser a PRIMEIRA tomada (na ordem das letras) que passa na
+                conferência e em que todas essas palavras terminam acima da mediana do tom
+    --letras g,h,i   (com --remedir) só essas tomadas
     --remedir   refaz só a medição (e o relatório) das tomadas já guardadas, sem chamar a API
 
 Entonação (F0 medido com o Praat, via praat-parselmouth: pitch por autocorrelação, 75–500 Hz, passo de 10 ms). A fala é
@@ -92,13 +96,19 @@ def entonacao(path, n):
 
 def relatorio(res, api, nome, prev, nxt):
     boas = [r for r in res if r['ok']]
-    melhor = max(boas, key=lambda r: (r['min'], r['media'])) if boas else None
+    sobem = [w for w in str(OPT.get('sobem', '')).split(',') if w]
+    if sobem:                                            # a primeira (na ordem) em que todas as palavras pedidas terminam acima
+        ok_s = [r for r in sorted(boas, key=lambda r: r['letra']) if all(r['ent'].get(w, (None, None))[1] is not None and r['ent'][w][1] > 0 for w in sobem)]
+        melhor = ok_s[0] if ok_s else None
+    else:
+        melhor = max(boas, key=lambda r: (r['min'], r['media'])) if boas else None
     linhas = [f"{nome}-{r['letra']}.mp3 · seed {r['seed']} · {r['dur']} s · conferência: {r['motivo']} · F0 mediano {r['med']} Hz · "
               + ', '.join(f'{w}: sobe {"—" if v[0] is None else f"{v[0]:+.1f}"} st, termina {"—" if v[1] is None else f"{v[1]:+.1f}"} st' for w, v in r['ent'].items()) for r in res]
     txt = (f'Tomadas do capítulo {KEY} de {EP} (voz {voz.VOZ["name"]}, {voz.MODEL}; texto enviado: "{api}"; '
            f'contexto: previous_text {"sim" if prev else "não"}, next_text {"sim" if nxt else "não"}) — {time.strftime("%Y-%m-%d %H:%M")}\n\n' + '\n'.join(linhas)
-           + (f'\n\nMELHOR: {nome}-{melhor["letra"]}.mp3 (seed {melhor["seed"]}): a pior palavra termina {melhor["min"]:+.1f} st da mediana (pergunta: acima); subida média {melhor["media"]:+.1f} st\n'
-              if melhor else '\n\nNENHUMA tomada passou na conferência.\n'))
+           + (f'\n\nMELHOR: {nome}-{melhor["letra"]}.mp3 (seed {melhor["seed"]}): a pior palavra termina {melhor["min"]:+.1f} st da mediana (pergunta: acima); subida média {melhor["media"]:+.1f} st'
+              + (f' · é a primeira em que {", ".join(sobem)} terminam acima da mediana' if sobem else '') + '\n'
+              if melhor else ('\n\nNENHUMA tomada em que ' + ', '.join(sobem) + ' terminem todas acima da mediana.\n' if sobem else '\n\nNENHUMA tomada passou na conferência.\n')))
     open(os.path.join(REV, f'{nome}-tomadas.txt'), 'a').write(txt + '\n')
     print(txt)
 
@@ -128,7 +138,7 @@ def gerar():
     os.makedirs(TOM, exist_ok=True); os.makedirs(REV, exist_ok=True)
     res = []
     for j, seed in enumerate(seeds):
-        letra = 'abcdefgh'[j]
+        letra = 'abcdefghijkl'['abcdefghijkl'.index(str(OPT.get('desde', 'a'))) + j]
         x, al, fmt = voz.tts(api, prev, nxt, seed)
         ok, motivo, num = voz.confere(x, al, api)
         pcm = np.round(np.clip(x, -1, 1) * 32767).astype(np.int16)
@@ -147,7 +157,8 @@ def remedir():
     alvo = [w for w in str(OPT.get('palavras', '')).split(',') if w]
     nome = OPT.get('nome', f'cap-{KEY}')
     res, d = [], None
-    for letra in 'abcdefgh':
+    letras = str(OPT['letras']).split(',') if 'letras' in OPT else 'abcdefghijkl'
+    for letra in letras:
         if not os.path.exists(os.path.join(TOM, f'cap-{KEY}-{letra}.json')):
             break
         d, r = medida(letra, alvo)

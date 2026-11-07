@@ -4,16 +4,16 @@ output/tudo-pertim-07/uaipertim-tudo-pertim-07.mp4
 FORMATO
 OK     vídeo h264 High yuv420p
 OK     resolução 1080x1920 (9:16)
-OK     60 fps, 3075 quadros
-OK     duração 51.25 s (alvo 45–60 s)
+OK     60 fps, 3090 quadros
+OK     duração 51.50 s (alvo 45–60 s)
 OK     áudio aac 48000 Hz, 2 canais, 271 kb/s
 OK     vídeo e áudio com a mesma duração (Δ 0 ms)
        arquivo 20.8 MB, 3.2 Mb/s
-       capítulos: 00 3.75 s · 01 6.25 s · 02 5.50 s · 03 5.50 s · 04 5.50 s · 05 5.50 s · 06 6.50 s · 07 7.50 s · trocas de 0.8 s
+       capítulos: 00 3.75 s · 01 6.25 s · 02 5.50 s · 03 5.50 s · 04 5.50 s · 05 5.50 s · 06 6.75 s · 07 7.50 s · trocas de 0.8 s
 
 SOM
 OK     loudness integrado -14.0 LUFS (alvo −14)
-OK     pico real -1.6 dBTP (limite −1)
+OK     pico real -1.4 dBTP (limite −1)
        a voz sozinha, na escala da mixagem: -13.6 LUFS
        a trilha sozinha, na escala da mixagem: -26.5 LUFS
        os efeitos sozinhos, na escala da mixagem: -22.1 LUFS
@@ -38,9 +38,9 @@ OK     capítulo 04: "do/no Glória" (nunca "de Glória"); enviado à API: "E a 
 OK     capítulo 05: 4.08 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000024; 1 geração(ões) inteiras feitas)
 OK     capítulo 05: sem chiado depois da fala (pior janela depois da última letra: 0% em 4–10 kHz a -120.0 dB)
 OK     capítulo 05: "do/no Glória" (nunca "de Glória"); enviado à API: "Chegou antes do parabéns… e ninguém desconfiou de nada."
-OK     capítulo 06: 5.52 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000026; 2 geração(ões) inteiras feitas)
-OK     capítulo 06: sem chiado depois da fala (pior janela depois da última letra: 5% em 4–10 kHz a -35.8 dB)
-OK     capítulo 06: "do/no Glória" (nunca "de Glória"); enviado à API: "Comenta aí: qual é o seu bolo preferido? Chocolate? Morango? Ou cenoura?"
+OK     capítulo 06: 5.60 s contínuos da geração com seed 1042 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000028; 1 geração(ões) inteiras feitas)
+OK     capítulo 06: sem chiado depois da fala (pior janela depois da última letra: 0% em 4–10 kHz a -120.0 dB)
+OK     capítulo 06: "do/no Glória" (nunca "de Glória"); enviado à API: "Comenta aí: qual é o seu bolo preferido? É chocolate? Morango? Ou cenoura?"
 OK     capítulo 07: 5.84 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000027; 1 geração(ões) inteiras feitas)
 OK     capítulo 07: sem chiado depois da fala (pior janela depois da última letra: 0% em 4–10 kHz a -41.4 dB)
 OK     capítulo 07: "do/no Glória" (nunca "de Glória"); enviado à API: "Faltou o bolo? Relaxa, tem Uai pertím. Tudo pertím de você. Segue a gente!"
@@ -55,18 +55,18 @@ LEITURA (linhas de apoio)
        cap 03 · apoio 1: 5.61 s inteira · Brigadeiro e coxinha.
        cap 04 · apoio 1: 5.61 s inteira · Até a velinha.
        cap 05 · apoio 1: 3.86 s inteira · Ninguém desconfiou.
-       cap 06 · apoio 1: 6.61 s inteira · E aí, qual é o seu?
+       cap 06 · apoio 1: 6.86 s inteira · E aí, qual é o seu?
 OK     6 linhas de apoio, a mais curta fica 2.82 s inteira na tela (mínimo 1,5 s)
 OK     a linha de apoio anterior sai antes de a próxima entrar (nunca duas ao mesmo tempo)
 OK     quebras de linha: nunca separam as duas últimas palavras, "pertim de você", "do/no Glória" nem o emoji, e nunca deixam artigo/palavra curta no fim da linha
 
 ÁREAS SEGURAS E COMPOSIÇÃO
-OK     conteúdo entre x 80–940 e y 265–1456: 1141 caixas em 149 quadros fora das trocas
+OK     conteúdo entre x 80–940 e y 265–1456: 1151 caixas em 150 quadros fora das trocas
 OK     nenhuma caixa na coluna de botões (x ≥ 940, y 1060–1560)
 OK     a linha de apoio nunca fica por cima de card, balão ou peça de cena
        faixa usada pelo conteúdo: y 305–1442
 OK     sem quadro vazio nas 7 trocas de capítulo (sempre há conteúdo na tela)
-OK     coluna de botões: 0 pixel de conteúdo em 205 quadros amostrados (só o fundo creme passa por ali)
+OK     coluna de botões: 0 pixel de conteúdo em 206 quadros amostrados (só o fundo creme passa por ali)
 OK     sem trechos pretos
 OK     sem imagem congelada por 1,5 s ou mais
 
@@ -74,9 +74,9 @@ CAPA E FECHO
 OK     a capa é o quadro 0 do vídeo (PSNR 40.7 dB entre capa.png e o 1º quadro)
 OK     regra das capas (revisao/capa.txt): dentro da regra das capas
 OK     fecho com 7.50 s (alvo 6–8 s)
-OK     fecho: a última mudança de texto é em 48.20 s; o texto fica parado 3.05 s até o fim (mínimo 3 s)
-OK     a logo oficial está na tela em todos os 12 quadros amostrados dos 3 últimos segundos (parada desde 47.28 s)
-OK     fecho: 9 elementos (logo oficial, título, chip, seta, marca) iguais entre 48.25 s e o fim (maior diferença média 0.93 de 255)
-       elementos: rótulo 0.40, título, linha 1 0.53, título, linha 2 0.32, logo oficial 0.45, Pertim 0.78, assinatura 0.78, chip Segue 0.29, seta 0.93, marca 0.84
+OK     fecho: a última mudança de texto é em 48.45 s; o texto fica parado 3.05 s até o fim (mínimo 3 s)
+OK     a logo oficial está na tela em todos os 12 quadros amostrados dos 3 últimos segundos (parada desde 47.53 s)
+OK     fecho: 9 elementos (logo oficial, título, chip, seta, marca) iguais entre 48.50 s e o fim (maior diferença média 0.89 de 255)
+       elementos: rótulo 0.36, título, linha 1 0.50, título, linha 2 0.28, logo oficial 0.45, Pertim 0.76, assinatura 0.75, chip Segue 0.30, seta 0.89, marca 0.79
 
 RESULTADO: aprovado

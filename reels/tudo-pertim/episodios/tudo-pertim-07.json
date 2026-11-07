@@ -208,7 +208,7 @@
       ],
       "fala": [
         {
-          "texto": "Comenta aí: qual é o seu bolo preferido? Chocolate? Morango? Ou cenoura?",
+          "texto": "Comenta aí: qual é o seu bolo preferido? É chocolate? Morango? Ou cenoura?",
           "apoio": "E aí, *qual é o seu*?"
         }
       ],
@@ -217,11 +217,11 @@
         "opcoes": [
           {
             "t": "chocolate",
-            "em": "Chocolate"
+            "em": "chocolate"
           },
           {
             "t": "morango",
-            "em": "Morango"
+            "em": "+4.20"
           },
           {
             "t": "cenoura",
