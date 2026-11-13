@@ -1,0 +1,130 @@
+{
+ "episodio": "bateu-a-fome",
+ "cap": 6,
+ "texto": "E o Pertim leva rapidim!",
+ "voz": "Victor Pinho",
+ "perfil": "narracao",
+ "modelo": "eleven_v4",
+ "tomadas": [
+  {
+   "tomada": "A",
+   "arquivo": "A-seed42.mp3",
+   "seed": 42,
+   "texto_api": "E o Pertim leva rapidim!",
+   "conferencia": "ok",
+   "ritmo_letras_s": 9.5,
+   "maior_pausa_s": 0.24,
+   "sobra_no_fim_s": 0.0,
+   "fala_s": 2.0,
+   "pertim": [
+    {
+     "grafia": "Pertim",
+     "F1_PER_max_hz": null,
+     "E_aberto": false,
+     "vogal_PER": {
+      "dur": 0.036,
+      "f0": null
+     },
+     "vogal_TIM": {
+      "dur": 0.04,
+      "f0": 181
+     },
+     "forca": "TIM",
+     "F2_meio": 2413,
+     "F2_fim": 2637,
+     "fim": "in? (F2 alto)"
+    }
+   ]
+  },
+  {
+   "tomada": "B",
+   "arquivo": "B-seed1042.mp3",
+   "seed": 1042,
+   "texto_api": "E o Pertim leva rapidim!",
+   "conferencia": "ok",
+   "ritmo_letras_s": 10.3,
+   "maior_pausa_s": 0.24,
+   "sobra_no_fim_s": 0.24,
+   "fala_s": 1.84,
+   "pertim": [
+    {
+     "grafia": "Pertim",
+     "F1_PER_max_hz": 431,
+     "E_aberto": false,
+     "vogal_PER": {
+      "dur": 0.08,
+      "f0": 183
+     },
+     "vogal_TIM": {
+      "dur": 0.08,
+      "f0": 195
+     },
+     "forca": "TIM",
+     "F2_meio": 2448,
+     "F2_fim": 2767,
+     "fim": "in? (F2 alto)"
+    }
+   ]
+  },
+  {
+   "tomada": "C",
+   "arquivo": "C-seed2042.mp3",
+   "seed": 2042,
+   "texto_api": "E o Pertim leva rapidim!",
+   "conferencia": "ok",
+   "ritmo_letras_s": 9.9,
+   "maior_pausa_s": 0.28,
+   "sobra_no_fim_s": 0.24,
+   "fala_s": 1.92,
+   "pertim": [
+    {
+     "grafia": "Pertim",
+     "F1_PER_max_hz": 2377,
+     "E_aberto": true,
+     "vogal_PER": {
+      "dur": 0.053,
+      "f0": null
+     },
+     "vogal_TIM": {
+      "dur": 0.08,
+      "f0": 200
+     },
+     "forca": "TIM",
+     "F2_meio": 2484,
+     "F2_fim": 2859,
+     "fim": "in? (F2 alto)"
+    }
+   ]
+  },
+  {
+   "tomada": "D",
+   "arquivo": "D-seed3042.mp3",
+   "seed": 3042,
+   "texto_api": "E o Pertim leva rapidim!",
+   "conferencia": "ok",
+   "ritmo_letras_s": 10.8,
+   "maior_pausa_s": 0.24,
+   "sobra_no_fim_s": 0.24,
+   "fala_s": 1.76,
+   "pertim": [
+    {
+     "grafia": "Pertim",
+     "F1_PER_max_hz": 2030,
+     "E_aberto": true,
+     "vogal_PER": {
+      "dur": 0.04,
+      "f0": null
+     },
+     "vogal_TIM": {
+      "dur": 0.08,
+      "f0": null
+     },
+     "forca": "TIM",
+     "F2_meio": 3528,
+     "F2_fim": 2803,
+     "fim": "im (F2 cai)"
+    }
+   ]
+  }
+ ]
+}

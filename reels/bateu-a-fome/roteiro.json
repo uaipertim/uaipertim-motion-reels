@@ -1,0 +1,255 @@
+{
+  "id": "bateu-a-fome",
+  "titulo": "Bateu a fome?",
+  "marca": "@uaipertim",
+  "perfil_voz": "narracao",
+  "trilha": "animada",
+  "bpm": 120,
+  "legenda": true,
+  "grade": true,
+  "logo_pronta": 0.6,
+  "_doc": "Reel 'Bateu a fome?' (Instagram @uaipertim): comercial rápido no ritmo de anúncio de delivery, narrado pelo Pertim. A voz, a linha do tempo e a mixagem saem do pipeline do Explica, Sô! (voz.py, linha.py, audio.py); o vídeo é a composição Remotion BateuAFome (src/bateu-a-fome/). 'grade': true = todo corte de cena cai numa batida da trilha animada (120 BPM, uma batida a cada 0,5 s): cada cena dura no mínimo 'batidas' e termina na primeira batida depois do fim da fala + 'segura' (nunca entre batidas). 'inicio' = a pausa da batida do corte até a 1ª letra.",
+  "capitulos": [
+    {
+      "rotulo": "CENA 1 · gancho",
+      "titulo": [
+        "",
+        ""
+      ],
+      "batidas": 3,
+      "inicio": 0.12,
+      "segura": 0.05,
+      "fala": [
+        {
+          "texto": "Bateu aquela fome?",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "gancho"
+      },
+      "pronuncia": {
+        "fome?": "fome??"
+      },
+      "_doc_pronuncia": "Só o texto enviado à voz: 'fome??' (tomada K de reels/bateu-a-fome/tomadas/cap-00, seed 2042). Na tela e na legenda continua 'fome?'."
+    },
+    {
+      "rotulo": "CENA 2 · logo",
+      "titulo": [
+        "",
+        ""
+      ],
+      "batidas": 2,
+      "inicio": 0.08,
+      "segura": 0.05,
+      "fala": [
+        {
+          "texto": "Uai... tem UaiPertim!",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "logo",
+        "toldo": {
+          "em": "UaiPertim"
+        }
+      }
+    },
+    {
+      "rotulo": "CENA 3 · lojas",
+      "titulo": [
+        "",
+        ""
+      ],
+      "batidas": 2,
+      "inicio": 0.08,
+      "segura": 0.05,
+      "fala": [
+        {
+          "texto": "As lojas do Glória, tudo num lugar só.",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "lojas"
+      }
+    },
+    {
+      "rotulo": "CENA 4 · na mão",
+      "titulo": [
+        "",
+        ""
+      ],
+      "batidas": 2,
+      "inicio": 0.08,
+      "segura": 0.05,
+      "fala": [
+        {
+          "texto": "Na palma da sua mão.",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "mao"
+      }
+    },
+    {
+      "rotulo": "CENA 5 · desfile",
+      "titulo": [
+        "",
+        ""
+      ],
+      "batidas": 8,
+      "inicio": 0.08,
+      "segura": 0.05,
+      "fala": [
+        {
+          "texto": "Pão de queijo, hambúrguer, pizza, açaí... e até o mercado!",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "desfile",
+        "itens": [
+          {
+            "em": "Pão",
+            "silabas": [
+              "Pão",
+              "de",
+              "queijo"
+            ],
+            "ilustracao": "paodequeijo"
+          },
+          {
+            "em": "hambúrguer",
+            "silabas": [
+              "Ham",
+              "búr",
+              "guer"
+            ],
+            "ilustracao": "hamburguer"
+          },
+          {
+            "em": "pizza",
+            "silabas": [
+              "Piz",
+              "za"
+            ],
+            "ilustracao": "pizza"
+          },
+          {
+            "em": "açaí",
+            "silabas": [
+              "A",
+              "ça",
+              "í"
+            ],
+            "ilustracao": "acai"
+          },
+          {
+            "em": "mercado",
+            "silabas": [
+              "Mer",
+              "ca",
+              "do"
+            ],
+            "ilustracao": "mercado"
+          }
+        ]
+      }
+    },
+    {
+      "rotulo": "CENA 6 · pagamento",
+      "titulo": [
+        "",
+        ""
+      ],
+      "batidas": 2,
+      "inicio": 0.08,
+      "segura": 0.05,
+      "fala": [
+        {
+          "texto": "Paga no Pix, no cartão ou na entrega.",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "pagamento",
+        "selos": [
+          {
+            "t": "Pix",
+            "em": "Pix"
+          },
+          {
+            "t": "Cartão",
+            "em": "cartão"
+          },
+          {
+            "t": "Na entrega",
+            "em": "entrega"
+          }
+        ]
+      }
+    },
+    {
+      "rotulo": "CENA 7 · rapidim",
+      "titulo": [
+        "",
+        ""
+      ],
+      "batidas": 5,
+      "inicio": 0.08,
+      "segura": 0.05,
+      "fala": [
+        {
+          "texto": "E o Pertim leva rapidim!",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "rapidim"
+      }
+    },
+    {
+      "rotulo": "CENA 8 · chegou",
+      "titulo": [
+        "",
+        ""
+      ],
+      "batidas": 3,
+      "inicio": 0.08,
+      "segura": 0.05,
+      "fala": [
+        {
+          "texto": "Chegou!",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "chegou"
+      }
+    },
+    {
+      "rotulo": "FECHO",
+      "titulo": [
+        "",
+        ""
+      ],
+      "batidas": 7,
+      "inicio": 0.08,
+      "segura": 0.05,
+      "fala": [
+        {
+          "texto": "Foi facim! UaiPertim. Tudo pertim de você.",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "fecho",
+        "logo": {
+          "em": "UaiPertim"
+        }
+      }
+    }
+  ]
+}

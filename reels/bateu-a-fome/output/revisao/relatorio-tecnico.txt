@@ -1,0 +1,94 @@
+REVISÃO TÉCNICA · Reel "Bateu a fome?" (@uaipertim) · reels/bateu-a-fome/output/uaipertim-bateu-a-fome.mp4
+26.00 s · 780 quadros a 30 fps
+
+FORMATO
+OK     vídeo h264 yuv420p
+OK     1080×1920
+OK     30 fps
+OK     duração 26.00 s (22–26 s)
+OK     áudio aac 48000 Hz, 2 canais
+OK     vídeo 26.000 s × áudio 26.000 s
+
+SOM
+OK     -14.0 LUFS integrados (alvo −14)
+OK     pico real -1.6 dBTP (≤ −1)
+
+RITMO (trilha animada, 120 BPM: uma batida a cada 0.5 s)
+OK     cena 1 gancho: 0.00–1.50 s = batidas 0–3
+OK         a fala (0.12–1.32 s) fica dentro da cena
+OK     cena 2 logo: 1.50–3.50 s = batidas 3–7
+OK         a fala (1.58–3.34 s) fica dentro da cena
+OK     cena 3 lojas: 3.50–7.00 s = batidas 7–14
+OK         a fala (3.58–6.46 s) fica dentro da cena
+OK     cena 4 mao: 7.00–9.00 s = batidas 14–18
+OK         a fala (7.08–8.52 s) fica dentro da cena
+OK     cena 5 desfile: 9.00–14.00 s = batidas 18–28
+OK         a fala (9.08–13.88 s) fica dentro da cena
+OK     cena 6 pagamento: 14.00–17.00 s = batidas 28–34
+OK         a fala (14.08–16.64 s) fica dentro da cena
+OK     cena 7 rapidim: 17.00–19.50 s = batidas 34–39
+OK         a fala (17.08–18.84 s) fica dentro da cena
+OK     cena 8 chegou: 19.50–21.00 s = batidas 39–42
+OK         a fala (19.58–20.14 s) fica dentro da cena
+OK     cena 9 fecho: 21.00–26.00 s = batidas 42–52
+OK         a fala (21.08–24.84 s) fica dentro da cena
+OK     desfile: "Pão-de-queijo" entra na batida 18 (9.00 s)
+OK         as sílabas entram depois da palavra e a palavra termina antes da seguinte
+OK     desfile: "Ham-búr-guer" entra na batida 20 (10.00 s)
+OK         as sílabas entram depois da palavra e a palavra termina antes da seguinte
+OK     desfile: "Piz-za" entra na batida 22 (11.00 s)
+OK         as sílabas entram depois da palavra e a palavra termina antes da seguinte
+OK     desfile: "A-ça-í" entra na batida 24 (12.00 s)
+OK         as sílabas entram depois da palavra e a palavra termina antes da seguinte
+OK     desfile: "Mer-ca-do" entra na batida 26 (13.00 s)
+OK         as sílabas entram depois da palavra e a palavra termina antes da seguinte
+     as transições (todas diferentes): íris coral do impacto do pin · empurra para baixo · zoom-out para o celular · zoom para dentro da tela · varrida lateral entre as palavras · três faixas caindo · chicote horizontal · mapa empurrado · íris verde da porta · faixa diagonal amarela
+
+VOZ
+OK     o texto falado é o roteiro, cena a cena
+OK     perfil "narracao" (eleven_v4) em todas as falas
+OK     voz oficial: Victor Pinho
+OK     "UaiPertim"/"Pertim" vão para a voz sem troca de grafia
+     cena 1: seed 2042 · 1.20 s · enviado "Bateu aquela fome??" · reels/bateu-a-fome/tomadas/cap-00/K-seed2042-duas-interrogacoes.mp3
+     cena 2: seed 2042 · 1.76 s · enviado "Uai... tem UaiPertim!" · reels/bateu-a-fome/tomadas/cap-01/C-seed2042.mp3
+     cena 3: seed 2042 · 2.88 s · enviado "As lojas do Glória, tudo num lugar só." · reels/bateu-a-fome/tomadas/cap-02/C-seed2042.mp3
+     cena 4: seed 42 · 1.44 s · enviado "Na palma da sua mão." · voz.py, seed 42
+     cena 5: seed 5042 · 4.80 s · enviado "Pão de queijo, hambúrguer, pizza, açaí... e até o mercado!" · reels/bateu-a-fome/tomadas/cap-04/F-seed5042.mp3
+     cena 6: seed 3042 · 2.56 s · enviado "Paga no Pix, no cartão ou na entrega." · reels/bateu-a-fome/tomadas/cap-05/D-seed3042.mp3
+     cena 7: seed 3042 · 1.76 s · enviado "E o Pertim leva rapidim!" · reels/bateu-a-fome/tomadas/cap-06/D-seed3042.mp3
+     cena 8: seed 42 · 0.56 s · enviado "Chegou!" · voz.py, seed 42
+     cena 9: seed 4042 · 3.76 s · enviado "Foi facim! UaiPertim. Tudo pertim de você." · reels/bateu-a-fome/tomadas/cap-08/E-seed4042.mp3
+OK     cada cena é UMA geração inteira, colocada sem cortes (linha.json → colocacao)
+OK     nunca "de Glória" (só "do/no Glória")
+OK     sem preço
+OK     sem nome de loja real
+
+A PERGUNTA DO GANCHO ("Bateu aquela fome?")
+     tomada usada: reels/bateu-a-fome/tomadas/cap-00/K-seed2042-duas-interrogacoes.mp3 (seed 2042, enviado "Bateu aquela fome??")
+     o F0 sobe de 120 Hz (mediana de "aquela") para 237 Hz na tônica "FO" (+11.9 st, em 0.98 s)
+     fim do trecho com voz (o "-me" sai grave e quase sem voz): 162 Hz = -6.6 st em relação ao pico (o contorno é sobe-na-tônica-e-cai)
+OK     a pergunta sobe até a tônica (+11.9 st ≥ +6 st)
+AVISO  a pergunta termina alta (fim ≥ pico − 3 st)? não: nenhuma das 32 tomadas completas (28 no perfil "narracao", com seeds, grafias e contexto, + 4 no "pausas" só para comparar) terminou subindo; ver as amostras em reels/bateu-a-fome/tomadas/cap-00
+     gráfico: output/revisao/f0-gancho.png
+
+LEGENDA GRAVADA
+OK     13 blocos, todos com até 2 linhas
+OK     cada bloco ≥ 0.8 s (menor: 1.04 s)
+OK     a linha mais larga (589 px) cabe na faixa (796 px), entre x 112 e 908
+OK     a faixa (y 1336–1456) fica abaixo das cenas (y ≤ 1310) e dentro da zona segura
+OK     só o texto da tela (nunca a grafia enviada à voz)
+OK     cobre a fala inteira, na ordem (no fecho, até "UaiPertim."; "Tudo pertim de você." é o texto grande da tela)
+OK     sai em 22.95 s: os 3 últimos segundos ficam sem legenda
+
+PERTIM
+OK     nenhuma boca com menos de 2 quadros (780 quadros, 130 trechos)
+OK     as bocas A, E, O e M/B/P aparecem na fala
+OK     olhar sempre na câmera (pupilas centradas) quando ele aparece
+     o Pertim aparece de frente em: 0.00–1.50 s, 17.00–18.71 s, 21.00–26.00 s (gancho, motinha, fecho), sempre falando com a boca da voz
+
+GANCHO E FECHO (pelos pixels)
+OK     o quadro muda a cada 0,1 s nos primeiros 0,5 s (diferença média 8.7, 7.6, 3.1, 3.5, 1.8)
+OK     a logo oficial fica PARADA nos 3 últimos segundos (diferença máxima 1.54 na caixa da logo)
+OK     a logo para em 22.91 s (3.09 s antes do fim)
+
+RESULTADO: aprovado

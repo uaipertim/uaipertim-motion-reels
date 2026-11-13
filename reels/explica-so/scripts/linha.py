@@ -46,7 +46,11 @@ EP = sys.argv[1] if len(sys.argv) > 1 and not sys.argv[1].startswith('--') else 
 PREVIA = '--previa' in sys.argv
 AUD = os.path.join(ROOT, 'audio', EP)
 DEST = os.path.join(AUD, 'previa') if PREVIA else AUD
-SCRIPT = json.load(open(os.path.join(ROOT, 'episodios', EP + '.json'), encoding='utf-8'))
+# o roteiro: episodios/<id>.json (série e Reels antigos) ou, nos Reels com pasta própria, reels/<id>/roteiro.json
+_EPJ = os.path.join(ROOT, 'episodios', EP + '.json')
+if not os.path.exists(_EPJ):
+    _EPJ = os.path.join(os.path.dirname(ROOT), EP, 'roteiro.json')
+SCRIPT = json.load(open(_EPJ, encoding='utf-8'))
 SR_IN, SR = 44100, 48000
 PERFIL = SCRIPT.get('perfil_voz', 'narracao')   # o perfil de voz do episódio (o mesmo de scripts/voz.py)
 TR = 0.9                      # a troca de capítulo (a motinha na rua)
@@ -55,12 +59,24 @@ AP_LEITURA = 1.5              # e fica ao menos 1,5 s inteira na tela
 AP_PASSO = AP_ENTRA + AP_LEITURA + 0.08
 PRE, POS = 0.04, 0.30         # o que fica do áudio antes da 1ª letra e depois da última
 # duração total: 30–45 s na série; os episódios especiais têm o seu limite (o fecho, os apoios e a logo seguem iguais)
-LIMITES = {'historia-uaipertim': (60.0, 80.0), 'prazer-pertim': (15.0, 30.0), 'pedir-no-uaipertim': (35.0, 40.0)}
+LIMITES = {'historia-uaipertim': (60.0, 80.0), 'prazer-pertim': (15.0, 30.0), 'pedir-no-uaipertim': (35.0, 40.0), 'bateu-a-fome': (22.0, 26.0)}
 DUR_MIN, DUR_MAX = LIMITES.get(EP, (30.0, 45.0))
 # o fecho: 6–8 s na série; os Reels com roteiro próprio têm o seu (a logo continua parada nos 3 últimos segundos)
-FECHOS = {'pedir-no-uaipertim': (4.0, 6.0)}
+FECHOS = {'pedir-no-uaipertim': (4.0, 6.0), 'bateu-a-fome': (3.5, 5.5)}
 FECHO_MIN, FECHO_MAX = FECHOS.get(EP, (6.0, 8.0))
-LOGO_PRONTA = 0.9             # a logo do fecho entra e para em até 0,9 s depois da palavra (src/anim.js, CENAS.fecho)
+LOGO_PRONTA = SCRIPT.get('logo_pronta', 0.9)   # a logo do fecho entra e para em até 0,9 s depois da palavra (src/anim.js, CENAS.fecho)
+# GRADE DE BATIDAS ("grade": true no roteiro; Reels no ritmo da trilha animada): sem a troca de 0,9 s; cada cena começa
+# exatamente onde a anterior termina, dura no mínimo `batidas` e termina sempre numa batida (60/bpm s): se a fala + `segura`
+# não couber, a cena cresce de batida em batida. No fecho, cresce também até a logo ficar 3 s parada no fim.
+GRADE = bool(SCRIPT.get('grade'))
+BT = 60.0 / float(SCRIPT.get('bpm', 120))
+if GRADE:
+    TR = 0.0
+
+
+def na_batida(x):
+    """a primeira batida em ou depois de x"""
+    return float(np.ceil(round(x / BT, 6)) * BT)
 
 
 def pron(c, t):
@@ -208,6 +224,12 @@ def main():
             ta = max(f['t0'] - 0.12, t0 + 0.30, (apoios[-1]['t'] + AP_PASSO) if apoios else -9)
             apoios.append({'t': round(ta, 4), 'texto': f['apoio']})
         t1 = max(v1 + c.get('segura', 0.45), t0 + c.get('min', 0), (apoios[-1]['t'] + AP_PASSO) if apoios else 0)
+        if GRADE:
+            t1 = max(t0 + c.get('batidas', 4) * BT, na_batida(t1))
+            if n + 1 == len(SCRIPT['capitulos']) and (c['diagrama'].get('logo') or {}).get('em'):
+                spec = c['diagrama']['logo']['em']
+                tl = t0 + float(spec[1:]) if spec.startswith('+') else next(w['t0'] for w in ws if w['n'] == norm(spec))
+                t1 = max(t1, na_batida(tl + LOGO_PRONTA + 3.0))
         for i, a in enumerate(apoios):
             a['ate'] = round(apoios[i + 1]['t'] if i + 1 < len(apoios) else t1 + TR, 4)
         caps.append({'n': n, 'rotulo': c.get('rotulo'), 'tom': c.get('tom', ['creme', 'pessego', 'amarelo', 'verde'][n % 4]),
@@ -241,7 +263,7 @@ def main():
         wavfile.write(os.path.join(AUD, 'voz.wav'), SR, np.round(np.clip(x, -1, 1) * 32767).astype(np.int16))
     falhas, linhas = mapa(caps, dur)
     json.dump({'episodio': EP, 'titulo': SCRIPT['titulo'], 'marca': SCRIPT.get('marca', '@uaipertim'), 'legenda': bool(SCRIPT.get('legenda')),
-               'duracao': round(dur, 4), 'tr': TR,
+               'duracao': round(dur, 4), 'tr': TR, 'grade': {'bpm': 60.0 / BT, 'batida_s': BT} if GRADE else None,
                'ap_entra': AP_ENTRA, 'ap_leitura': AP_LEITURA, 'previa': PREVIA, 'capitulos': caps, 'colocacao': coloc,
                'mapa': {'ok': not falhas, 'falhas': falhas}},
               open(os.path.join(DEST, 'linha.json'), 'w'), ensure_ascii=False, indent=1)

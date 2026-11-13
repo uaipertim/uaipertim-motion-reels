@@ -41,6 +41,7 @@ import { CapaReel, CapaReelProps, measureCapaReel } from "./covers/CapaReel";
 import { CAPAS_REELS } from "./covers/capasReels";
 import { PRAZER, PertimBocaTeste, PrazerPertim, PrazerPertimCapa } from "./prazer-pertim/PrazerPertim";
 import { PEDIR, PedirNoUaiPertim } from "./pedir-no-uaipertim/PedirNoUaiPertim";
+import { BATEU, BateuAFome, caveatReady } from "./bateu-a-fome/BateuAFome";
 import facim02 from "../carrosseis/facim/02-como-vai-funcionar.json";
 import facim03 from "../carrosseis/facim/03-o-que-vai-ter.json";
 import facim04 from "../carrosseis/facim/04-quem-e-o-pertim.json";
@@ -242,6 +243,8 @@ export const RemotionRoot: React.FC = () => (
     <Composition id="PertimBocaTeste" component={PertimBocaTeste} durationInFrames={PRAZER.bocaTeste} fps={PRAZER.fps} width={1080} height={1080} />
     {/* Reel "Pedir no UaiPertim é assim" (o app por dentro, narrado pelo Pertim; reels/pedir-no-uaipertim) */}
     <Composition id="PedirNoUaiPertim" component={PedirNoUaiPertim} durationInFrames={PEDIR.duracao} fps={PEDIR.fps} width={1080} height={1920} calculateMetadata={async () => { await fontsReady; return {}; }} />
+    {/* Reel "Bateu a fome?" (comercial no ritmo da trilha animada, narrado pelo Pertim; reels/bateu-a-fome) */}
+    <Composition id="BateuAFome" component={BateuAFome} durationInFrames={BATEU.duracao} fps={BATEU.fps} width={1080} height={1920} calculateMetadata={async () => { await fontsReady; await caveatReady; return {}; }} />
     <Still id="Destaque-Capa" component={DestaqueCapa} width={1080} height={1920} defaultProps={{ icone: "conheca" as const }} />
   </>
 );

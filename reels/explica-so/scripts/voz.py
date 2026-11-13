@@ -47,7 +47,11 @@ EP = sys.argv[1] if len(sys.argv) > 1 and not sys.argv[1].startswith('--') else 
 OUT = os.path.join(ROOT, 'audio', EP, 'voz')
 API = 'https://api.elevenlabs.io/v1/text-to-speech/{voice}/with-timestamps?output_format={fmt}'
 SR = 44100
-SCRIPT = json.load(open(os.path.join(ROOT, 'episodios', EP + '.json'), encoding='utf-8'))
+# o roteiro: episodios/<id>.json (série e Reels antigos) ou, nos Reels com pasta própria, reels/<id>/roteiro.json
+_EPJ = os.path.join(ROOT, 'episodios', EP + '.json')
+if not os.path.exists(_EPJ):
+    _EPJ = os.path.join(os.path.dirname(ROOT), EP, 'roteiro.json')
+SCRIPT = json.load(open(_EPJ, encoding='utf-8'))
 # o perfil de voz do episódio ("perfil_voz" no JSON): "narracao" (eleven_v4) por padrão; "pausas" (eleven_multilingual_v2)
 # para texto com <break> e nos episódios já publicados (gerados assim). Ver audio/voz_oficial.json → perfis.
 PERFIL = SCRIPT.get('perfil_voz', 'narracao')

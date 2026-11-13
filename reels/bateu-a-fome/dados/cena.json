@@ -1,0 +1,309 @@
+{
+ "duracao": 26.0,
+ "fps": 30,
+ "quadros": 780,
+ "batida": 0.5,
+ "bpm": 120.0,
+ "cenas": [
+  {
+   "n": 0,
+   "tipo": "gancho",
+   "t0": 0.0,
+   "t1": 1.5,
+   "voz_t0": 0.12,
+   "voz_t1": 1.32,
+   "texto": "Bateu aquela fome?"
+  },
+  {
+   "n": 1,
+   "tipo": "logo",
+   "t0": 1.5,
+   "t1": 3.5,
+   "voz_t0": 1.58,
+   "voz_t1": 3.34,
+   "texto": "Uai... tem UaiPertim!"
+  },
+  {
+   "n": 2,
+   "tipo": "lojas",
+   "t0": 3.5,
+   "t1": 7.0,
+   "voz_t0": 3.58,
+   "voz_t1": 6.46,
+   "texto": "As lojas do Glória, tudo num lugar só."
+  },
+  {
+   "n": 3,
+   "tipo": "mao",
+   "t0": 7.0,
+   "t1": 9.0,
+   "voz_t0": 7.08,
+   "voz_t1": 8.52,
+   "texto": "Na palma da sua mão."
+  },
+  {
+   "n": 4,
+   "tipo": "desfile",
+   "t0": 9.0,
+   "t1": 14.0,
+   "voz_t0": 9.08,
+   "voz_t1": 13.88,
+   "texto": "Pão de queijo, hambúrguer, pizza, açaí... e até o mercado!"
+  },
+  {
+   "n": 5,
+   "tipo": "pagamento",
+   "t0": 14.0,
+   "t1": 17.0,
+   "voz_t0": 14.08,
+   "voz_t1": 16.64,
+   "texto": "Paga no Pix, no cartão ou na entrega."
+  },
+  {
+   "n": 6,
+   "tipo": "rapidim",
+   "t0": 17.0,
+   "t1": 19.5,
+   "voz_t0": 17.08,
+   "voz_t1": 18.84,
+   "texto": "E o Pertim leva rapidim!"
+  },
+  {
+   "n": 7,
+   "tipo": "chegou",
+   "t0": 19.5,
+   "t1": 21.0,
+   "voz_t0": 19.58,
+   "voz_t1": 20.14,
+   "texto": "Chegou!"
+  },
+  {
+   "n": 8,
+   "tipo": "fecho",
+   "t0": 21.0,
+   "t1": 26.0,
+   "voz_t0": 21.08,
+   "voz_t1": 24.84,
+   "texto": "Foi facim! UaiPertim. Tudo pertim de você."
+  }
+ ],
+ "eventos": {
+  "gancho": {
+   "escrita": [
+    [
+     0.0,
+     0.57
+    ],
+    [
+     0.6,
+     0.82
+    ],
+    [
+     0.84,
+     1.2
+    ]
+   ],
+   "interrogacao": 1.2,
+   "sublinha": 1.32,
+   "pertim": 0.0
+  },
+  "logo": {
+   "cai": 1.5,
+   "bate": 1.72,
+   "toldo": 2.38,
+   "explode": 2.58
+  },
+  "lojas": {
+   "freia": 5.29,
+   "para": 5.54,
+   "moldura": 5.98,
+   "gloria": 4.42
+  },
+  "mao": {
+   "sobe": 7.0,
+   "palavras": [
+    7.05,
+    7.37,
+    7.73,
+    7.93,
+    8.17
+   ]
+  },
+  "desfile": {
+   "itens": [
+    {
+     "ilustracao": "paodequeijo",
+     "entra": 9.0,
+     "silabas": [
+      {
+       "t": "Pão",
+       "t0": 9.08
+      },
+      {
+       "t": "de",
+       "t0": 9.32
+      },
+      {
+       "t": "queijo",
+       "t0": 9.52
+      }
+     ],
+     "mais": 10.02,
+     "fim_fala": 9.96
+    },
+    {
+     "ilustracao": "hamburguer",
+     "entra": 10.0,
+     "silabas": [
+      {
+       "t": "Ham",
+       "t0": 10.16
+      },
+      {
+       "t": "búr",
+       "t0": 10.36
+      },
+      {
+       "t": "guer",
+       "t0": 10.6
+      }
+     ],
+     "mais": 10.9,
+     "fim_fala": 10.84
+    },
+    {
+     "ilustracao": "pizza",
+     "entra": 11.0,
+     "silabas": [
+      {
+       "t": "Piz",
+       "t0": 11.36
+      },
+      {
+       "t": "za",
+       "t0": 11.528
+      }
+     ],
+     "mais": 11.7,
+     "fim_fala": 11.64
+    },
+    {
+     "ilustracao": "acai",
+     "entra": 12.0,
+     "silabas": [
+      {
+       "t": "A",
+       "t0": 12.0
+      },
+      {
+       "t": "ça",
+       "t0": 12.04
+      },
+      {
+       "t": "í",
+       "t0": 12.28
+      }
+     ],
+     "mais": 12.58,
+     "fim_fala": 12.52
+    },
+    {
+     "ilustracao": "mercado",
+     "entra": 13.0,
+     "silabas": [
+      {
+       "t": "Mer",
+       "t0": 13.44
+      },
+      {
+       "t": "ca",
+       "t0": 13.59
+      },
+      {
+       "t": "do",
+       "t0": 13.72
+      }
+     ],
+     "mais": 13.94,
+     "fim_fala": 13.88
+    }
+   ]
+  },
+  "pagamento": {
+   "selos": [
+    {
+     "t": "Pix",
+     "em": 14.5
+    },
+    {
+     "t": "Cartão",
+     "em": 15.3
+    },
+    {
+     "t": "Na entrega",
+     "em": 16.1
+    }
+   ]
+  },
+  "rapidim": {
+   "cruza": [
+    17.0,
+    18.41
+   ],
+   "mapa": 18.31,
+   "rota": [
+    18.61,
+    19.38
+   ]
+  },
+  "chegou": {
+   "check": 19.52,
+   "texto": 19.54,
+   "estrelas": [
+    19.88,
+    19.99,
+    20.1,
+    20.21,
+    20.32
+   ]
+  },
+  "fecho": {
+   "escrita": [
+    21.0,
+    21.91
+   ],
+   "logo": {
+    "entra": 22.31,
+    "parada": 22.91
+   },
+   "frase": 23.52,
+   "selo": 24.4,
+   "aceno": 21.0
+  }
+ },
+ "piscadas": [
+  1.3,
+  6.579,
+  8.629,
+  11.179,
+  13.959,
+  17.432,
+  20.785,
+  24.736
+ ],
+ "piscada_dur": 0.16,
+ "aparece": [
+  [
+   0.0,
+   1.5
+  ],
+  [
+   17.0,
+   18.71
+  ],
+  [
+   21.0,
+   26.0
+  ]
+ ]
+}

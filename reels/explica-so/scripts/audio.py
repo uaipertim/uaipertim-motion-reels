@@ -49,7 +49,11 @@ rng = np.random.default_rng(2024)
 PERFIS = {}
 PERFIL = PERFIS.get(LN.get('episodio', EP), {})
 # a trilha do episódio ("trilha" no JSON): "serie" (padrão: pad + baixo + arpejo) ou "animada" (a do motor Tudo Pertim)
-EPJ = json.load(open(os.path.join(ROOT, 'episodios', EP + '.json'), encoding='utf-8'))
+# o roteiro: episodios/<id>.json (série e Reels antigos) ou, nos Reels com pasta própria, reels/<id>/roteiro.json
+_EPJ = os.path.join(ROOT, 'episodios', EP + '.json')
+if not os.path.exists(_EPJ):
+    _EPJ = os.path.join(os.path.dirname(ROOT), EP, 'roteiro.json')
+EPJ = json.load(open(_EPJ, encoding='utf-8'))
 TRILHA = EPJ.get('trilha', 'serie')
 
 
@@ -568,6 +572,8 @@ if TRILHA == 'animada':
     music = np.zeros(N)
     t = np.arange(N) / SR
     FIM = LN_C[-1]['voz_t1'] + 0.6                                                    # o último acorde começa aqui e sustenta
+    if EPJ.get('grade'):                                                              # Reels na grade de batidas: o sting cai numa batida
+        FIM = float(np.ceil(round(FIM / BT, 6)) * BT)
 
     def at_(sig, t0, g=1.0):
         i = int(round(t0 * SR))

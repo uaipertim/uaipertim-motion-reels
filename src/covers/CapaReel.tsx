@@ -7,6 +7,8 @@ import { ShopChar } from "../components/Town";
 import { ScooterIcon } from "../components/AppIcons";
 import { fitWrap, Wrapped } from "../dicionario/fit";
 import { Text } from "../carrossel/CarrosselFacim";
+import { BreadIcon, BurgerIcon } from "../components/Icons";
+import { Pertim } from "../personagem/Pertim";
 
 // CAPAS NOVAS DE REELS JÁ PUBLICADOS (só PNG, para "Editar capa → Adicionar da galeria"; os vídeos não mudam), no padrão
 // das capas do Dicionário (src/dicionario/CapaDicionario.tsx) e dos carrosséis (src/carrossel/CapaFacim.tsx):
@@ -19,7 +21,7 @@ export type CapaReelProps = {
   ilustracao: Ilustracao; titulo: string[]; fundo: "creme" | "pessego"; cor: "coral" | "verde" | "amarelo";
   layout?: { titulo: Wrapped; fonte: string };
 };
-type Ilustracao = "mesa" | "nao-e-app" | "entrega" | "vaga";
+type Ilustracao = "mesa" | "nao-e-app" | "entrega" | "vaga" | "fome";
 
 const SAFE = { x0: 110, x1: 970, y0: 300, y1: 1620 };
 const SELO_Y = 372;                                     // centro do selo
@@ -218,7 +220,34 @@ const Vaga: React.FC = () => {
   );
 };
 
-const ILUSTRACOES: Record<Ilustracao, React.FC> = { mesa: Mesa, "nao-e-app": NaoEApp, entrega: Entrega, vaga: Vaga };
+// 5 · Bateu a fome?: o Pertim na motinha (o personagem oficial, olhando para a câmera), com o hambúrguer e o pão de queijo
+//     voando em balõezinhos e a rua tracejada
+const Fome: React.FC = () => {
+  const h = 430, w = (h * 300) / 254;
+  return (
+    <>
+      <Svg abs>
+        <ellipse cx="378" cy="584" rx="340" ry="14" fill="#000" opacity="0.08" />
+        <rect x="0" y="548" width="756" height="30" rx="14" fill={C.cremeDeep} />
+        <path d="M20 563 H736" stroke={C.coral} strokeWidth="7" strokeDasharray="34 24" strokeLinecap="round" />
+        {[[30, 470, 120], [40, 410, 80], [60, 350, 100]].map(([x, y, l], i) => <path key={i} d={`M${x} ${y} H${x + l}`} stroke={C.tinta} strokeOpacity="0.25" strokeWidth="9" strokeLinecap="round" />)}
+        {/* os balõezinhos dos itens */}
+        <circle cx="120" cy="130" r="92" fill="#fff" stroke={C.tinta} strokeWidth="6" />
+        <path d="M150 214 L178 262 L190 206 Z" fill="#fff" stroke={C.tinta} strokeWidth="6" strokeLinejoin="round" />
+        <circle cx="636" cy="120" r="84" fill="#fff" stroke={C.tinta} strokeWidth="6" />
+        <path d="M602 196 L578 244 L566 190 Z" fill="#fff" stroke={C.tinta} strokeWidth="6" strokeLinejoin="round" />
+        <Brilho x={300} y={40} s={44} c={C.coral} /><Brilho x={470} y={70} s={34} /><Brilho x={720} y={300} s={30} />
+      </Svg>
+      <div style={{ position: "absolute", left: 120 - 64, top: 130 - 66 }}><BurgerIcon size={128} /></div>
+      <div style={{ position: "absolute", left: 636 - 58, top: 120 - 62 }}><BreadIcon size={116} /></div>
+      <div style={{ position: "absolute", left: 400 - w / 2, top: 572 - h, width: w, height: h, transform: "rotate(-4deg)", transformOrigin: "50% 95%" }}>
+        <Pertim v={1} pose="moto" expr="alegre" altura={h} rig={{ olhar: [0, 0], centro: true }} />
+      </div>
+    </>
+  );
+};
+
+const ILUSTRACOES: Record<Ilustracao, React.FC> = { mesa: Mesa, "nao-e-app": NaoEApp, entrega: Entrega, vaga: Vaga, fome: Fome };
 
 // ---------------------------------------------------------------- a capa
 const TWINK: Array<[number, number]> = [[150, 470], [930, 520], [130, 1120], [950, 1100], [170, 1560], [910, 1570]];

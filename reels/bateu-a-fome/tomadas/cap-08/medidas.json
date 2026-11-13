@@ -1,0 +1,292 @@
+{
+ "episodio": "bateu-a-fome",
+ "cap": 8,
+ "texto": "Foi facim! UaiPertim. Tudo pertim de você.",
+ "voz": "Victor Pinho",
+ "perfil": "narracao",
+ "modelo": "eleven_v4",
+ "tomadas": [
+  {
+   "tomada": "A",
+   "arquivo": "A-seed42.mp3",
+   "seed": 42,
+   "texto_api": "Foi facim! UaiPertim. Tudo pertim de você.",
+   "conferencia": "ok",
+   "ritmo_letras_s": 8.8,
+   "maior_pausa_s": 0.4,
+   "sobra_no_fim_s": 0.16,
+   "fala_s": 3.76,
+   "pertim": [
+    {
+     "grafia": "UaiPertim",
+     "F1_PER_max_hz": null,
+     "E_aberto": false,
+     "vogal_PER": {
+      "dur": 0.053,
+      "f0": null
+     },
+     "vogal_TIM": {
+      "dur": 0.24,
+      "f0": 115
+     },
+     "forca": "TIM",
+     "F2_meio": 2380,
+     "F2_fim": 2479,
+     "fim": "in? (F2 alto)"
+    },
+    {
+     "grafia": "pertim",
+     "F1_PER_max_hz": null,
+     "E_aberto": false,
+     "vogal_PER": {
+      "dur": 0.04,
+      "f0": null
+     },
+     "vogal_TIM": {
+      "dur": 0.04,
+      "f0": 146
+     },
+     "forca": "TIM",
+     "F2_meio": 2233,
+     "F2_fim": 2498,
+     "fim": "in? (F2 alto)"
+    }
+   ]
+  },
+  {
+   "tomada": "B",
+   "arquivo": "B-seed1042.mp3",
+   "seed": 1042,
+   "texto_api": "Foi facim! UaiPertim. Tudo pertim de você.",
+   "conferencia": "ok",
+   "ritmo_letras_s": 8.8,
+   "maior_pausa_s": 0.4,
+   "sobra_no_fim_s": 0.16,
+   "fala_s": 3.76,
+   "pertim": [
+    {
+     "grafia": "UaiPertim",
+     "F1_PER_max_hz": 2096,
+     "E_aberto": true,
+     "vogal_PER": {
+      "dur": 0.053,
+      "f0": 145
+     },
+     "vogal_TIM": {
+      "dur": 0.08,
+      "f0": 128
+     },
+     "forca": "TIM",
+     "F2_meio": 2324,
+     "F2_fim": 1181,
+     "fim": "im (F2 cai)"
+    },
+    {
+     "grafia": "pertim",
+     "F1_PER_max_hz": 493,
+     "E_aberto": true,
+     "vogal_PER": {
+      "dur": 0.08,
+      "f0": 244
+     },
+     "vogal_TIM": {
+      "dur": 0.04,
+      "f0": null
+     },
+     "forca": "PER",
+     "F2_meio": 2323,
+     "F2_fim": 2508,
+     "fim": "in? (F2 alto)"
+    }
+   ]
+  },
+  {
+   "tomada": "C",
+   "arquivo": "C-seed2042.mp3",
+   "seed": 2042,
+   "texto_api": "Foi facim! UaiPertim. Tudo pertim de você.",
+   "conferencia": "ok",
+   "ritmo_letras_s": 9.0,
+   "maior_pausa_s": 0.43,
+   "sobra_no_fim_s": 0.16,
+   "fala_s": 3.68,
+   "pertim": [
+    {
+     "grafia": "UaiPertim",
+     "F1_PER_max_hz": null,
+     "E_aberto": false,
+     "vogal_PER": {
+      "dur": 0.053,
+      "f0": null
+     },
+     "vogal_TIM": {
+      "dur": 0.08,
+      "f0": 175
+     },
+     "forca": "TIM",
+     "F2_meio": 2406,
+     "F2_fim": 2627,
+     "fim": "in? (F2 alto)"
+    },
+    {
+     "grafia": "pertim",
+     "F1_PER_max_hz": null,
+     "E_aberto": false,
+     "vogal_PER": {
+      "dur": 0.04,
+      "f0": null
+     },
+     "vogal_TIM": {
+      "dur": 0.08,
+      "f0": 144
+     },
+     "forca": "TIM",
+     "F2_meio": 2508,
+     "F2_fim": 2496,
+     "fim": "in? (F2 alto)"
+    }
+   ]
+  },
+  {
+   "tomada": "D",
+   "arquivo": "D-seed3042.mp3",
+   "seed": 3042,
+   "texto_api": "Foi facim! UaiPertim. Tudo pertim de você.",
+   "conferencia": "ok",
+   "ritmo_letras_s": 8.8,
+   "maior_pausa_s": 0.4,
+   "sobra_no_fim_s": 0.16,
+   "fala_s": 3.76,
+   "pertim": [
+    {
+     "grafia": "UaiPertim",
+     "F1_PER_max_hz": 207,
+     "E_aberto": false,
+     "vogal_PER": {
+      "dur": 0.04,
+      "f0": 174
+     },
+     "vogal_TIM": {
+      "dur": 0.12,
+      "f0": 131
+     },
+     "forca": "TIM",
+     "F2_meio": 2158,
+     "F2_fim": 2520,
+     "fim": "in? (F2 alto)"
+    },
+    {
+     "grafia": "pertim",
+     "F1_PER_max_hz": 414,
+     "E_aberto": false,
+     "vogal_PER": {
+      "dur": 0.08,
+      "f0": 240
+     },
+     "vogal_TIM": {
+      "dur": 0.08,
+      "f0": 151
+     },
+     "forca": "PER",
+     "F2_meio": 2579,
+     "F2_fim": 2558,
+     "fim": "in? (F2 alto)"
+    }
+   ]
+  },
+  {
+   "tomada": "E",
+   "arquivo": "E-seed4042.mp3",
+   "seed": 4042,
+   "texto_api": "Foi facim! UaiPertim. Tudo pertim de você.",
+   "conferencia": "ok",
+   "ritmo_letras_s": 8.8,
+   "maior_pausa_s": 0.4,
+   "sobra_no_fim_s": 0.16,
+   "fala_s": 3.76,
+   "pertim": [
+    {
+     "grafia": "UaiPertim",
+     "F1_PER_max_hz": 256,
+     "E_aberto": false,
+     "vogal_PER": {
+      "dur": 0.04,
+      "f0": 248
+     },
+     "vogal_TIM": {
+      "dur": 0.12,
+      "f0": 169
+     },
+     "forca": "TIM",
+     "F2_meio": 2156,
+     "F2_fim": 2482,
+     "fim": "in? (F2 alto)"
+    },
+    {
+     "grafia": "pertim",
+     "F1_PER_max_hz": 438,
+     "E_aberto": false,
+     "vogal_PER": {
+      "dur": 0.08,
+      "f0": 248
+     },
+     "vogal_TIM": {
+      "dur": 0.08,
+      "f0": 145
+     },
+     "forca": "PER",
+     "F2_meio": 2452,
+     "F2_fim": 1875,
+     "fim": "im (F2 cai)"
+    }
+   ]
+  },
+  {
+   "tomada": "F",
+   "arquivo": "F-seed5042.mp3",
+   "seed": 5042,
+   "texto_api": "Foi facim! UaiPertim. Tudo pertim de você.",
+   "conferencia": "ok",
+   "ritmo_letras_s": 8.6,
+   "maior_pausa_s": 0.4,
+   "sobra_no_fim_s": 0.16,
+   "fala_s": 3.84,
+   "pertim": [
+    {
+     "grafia": "UaiPertim",
+     "F1_PER_max_hz": 2144,
+     "E_aberto": true,
+     "vogal_PER": {
+      "dur": 0.04,
+      "f0": 155
+     },
+     "vogal_TIM": {
+      "dur": 0.12,
+      "f0": 127
+     },
+     "forca": "TIM",
+     "F2_meio": 2177,
+     "F2_fim": 2539,
+     "fim": "in? (F2 alto)"
+    },
+    {
+     "grafia": "pertim",
+     "F1_PER_max_hz": 502,
+     "E_aberto": true,
+     "vogal_PER": {
+      "dur": 0.08,
+      "f0": 218
+     },
+     "vogal_TIM": {
+      "dur": 0.08,
+      "f0": 143
+     },
+     "forca": "PER",
+     "F2_meio": 2546,
+     "F2_fim": 2559,
+     "fim": "in? (F2 alto)"
+    }
+   ]
+  }
+ ]
+}

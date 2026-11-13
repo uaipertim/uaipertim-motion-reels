@@ -1,0 +1,16 @@
+{
+  "_doc": "Layout do Reel 'Bateu a fome?' (1080×1920, 30 fps). Lido pela composição Remotion (src/bateu-a-fome/), por scripts/preparar.py e pela revisão (scripts/qa.py). Caixas [x0, y0, x1, y1]. 'seguro' = onde fica todo o texto; 'botoes' = a coluna dos botões do Instagram (nada de texto ali). Pertim: cx, base (pé da caixa do desenho, y) e altura da caixa. A legenda fica na faixa de baixo, abaixo de tudo o que a cena desenha (as cenas usam y ≤ 1300).",
+  "W": 1080, "H": 1920, "fps": 30,
+  "seguro": [80, 265, 940, 1456],
+  "botoes": [940, 1060, 1080, 1560],
+  "cena_max_y": 1310,
+  "legenda": { "faixa": [112, 1336, 908, 1456], "cx": 510, "base": 1456, "size": 42, "lh": 50, "padX": 28, "padY": 10, "maxW": 740, "minDur": 0.8, "maxPal": 6 },
+  "pertim": {
+    "gancho": { "cx": 540, "base": 1320, "altura": 560, "pose": "parado" },
+    "rapidim": { "base": 1250, "altura": 470, "pose": "moto" },
+    "fecho": { "cx": 285, "base": 1318, "altura": 400, "pose": "acenando" }
+  },
+  "gancho": { "linhas": ["Bateu a", "fome?"], "cy": [470, 680], "size": 230 },
+  "logo": { "cx": 540, "cy": 780, "d": 560 },
+  "fecho": { "facim": { "cy": 400, "size": 200 }, "logo": { "cx": 540, "cy": 690, "d": 330 }, "frase": { "cy": 930, "size": 66 }, "selo": { "cx": 690, "cy": 1150 } }
+}

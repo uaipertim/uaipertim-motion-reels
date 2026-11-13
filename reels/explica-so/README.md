@@ -7,6 +7,18 @@ Vídeos curtos que explicam uma coisa do dia a dia em capítulos, com a cara da 
 | **explica-so-01** | "Faltou um trem?" | 00 capa · 01 o causo · 02 o Glória tem · 03 a sacola · 04 chegou · 05 fecho | [`output/explica-so-01/`](output/explica-so-01) · 38,6 s |
 | **historia-uaipertim** (especial) | "Por que UaiPertim?" (a nossa história) | 00 capa · 01 o Glória hoje · 02 do outro lado do balcão · 03 a ideia · 04 o nome · 05 feito aqui · 06 fecho | [`output/historia-uaipertim/`](output/historia-uaipertim) · 63,8 s |
 
+Reels com pasta própria (ex.: `reels/bateu-a-fome/`) usam o mesmo pipeline. O roteiro fica em `reels/<id>/roteiro.json`; `voz.py`, `linha.py` e `audio.py` procuram primeiro `episodios/<id>.json` e, se não existir, esse arquivo.
+
+Com `"grade": true` (e `"bpm"`), o `linha.py` usa a **grade de batidas**:
+
+- não há troca de 0,9 s entre as cenas;
+- cada cena dura no mínimo `batidas` e termina na primeira batida depois da fala + `segura`;
+- no fecho, a cena cresce até a logo ficar 3 s parada (`logo_pronta` = o tempo da logo até parar).
+
+Na trilha animada, o sting final também cai numa batida.
+
+Para tomadas A/B de uma fala, com o F0 do fim da pergunta, o ritmo e o "Pertim" medidos, use `scripts/tomadas.py` (na raiz).
+
 Em cada episódio, `output/<id>/` traz:
 
 - **Vídeo:** `uaipertim-<id>.mp4` (1080×1920, 60 fps, H.264 + AAC 48 kHz).

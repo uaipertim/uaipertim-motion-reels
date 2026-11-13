@@ -6,5 +6,6 @@ export const CAPAS_REELS: CapaReelProps[] = [
   { id: "explica-so-01", selo: "EXPLICA, SÔ!", numero: 1, icone: "balao", ilustracao: "mesa", titulo: ["Faltou um", "*trem*?"], fundo: "creme", cor: "coral" },
   { id: "nao-e-app", selo: "CONHEÇA", icone: "pin", ilustracao: "nao-e-app", titulo: ["O UaiPertim", "*NÃO*", "é app."], fundo: "pessego", cor: "amarelo" },
   { id: "vai-funcionar-assim", selo: "CONHEÇA", icone: "pin", ilustracao: "entrega", titulo: ["Vai funcionar", "*assim, ó*"], fundo: "creme", cor: "verde" },
+  { id: "bateu-a-fome", selo: "CONHEÇA", icone: "pin", ilustracao: "fome", titulo: ["Bateu a", "*fome*?"], fundo: "pessego", cor: "amarelo" },
   { id: "qual-comercio-precisa", selo: "CONTA PRA GENTE", icone: "megafone", ilustracao: "vaga", titulo: ["Qual comércio", "*PRECISA*", "estar aqui?"], fundo: "pessego", cor: "coral" },
 ];

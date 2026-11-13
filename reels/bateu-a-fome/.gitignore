@@ -1,0 +1,3 @@
+# as tomadas guardam o .mp3 (para ouvir) e o .json (alinhamento); o .wav é o cache local que o tomadas.py --usar lê
+tomadas/**/*.wav
+output/revisao/video-mudo.mp4
