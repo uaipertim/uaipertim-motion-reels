@@ -41,7 +41,7 @@
       ],
       "batidas": 2,
       "inicio": 0.08,
-      "segura": 0.05,
+      "segura": 0.0,
       "fala": [
         {
           "texto": "Uai... tem UaiPertim!",
@@ -53,6 +53,11 @@
         "toldo": {
           "em": "UaiPertim"
         }
+      },
+      "pronuncia": {
+        "UaiPertim": "Uai pertím",
+        "Pertim": "pertím",
+        "pertim": "pertím"
       }
     },
     {
@@ -208,6 +213,11 @@
       ],
       "diagrama": {
         "tipo": "rapidim"
+      },
+      "pronuncia": {
+        "UaiPertim": "Uai pertím",
+        "Pertim": "pertím",
+        "pertim": "pertím"
       }
     },
     {
@@ -249,7 +259,13 @@
         "logo": {
           "em": "UaiPertim"
         }
+      },
+      "pronuncia": {
+        "UaiPertim": "Uai pertím",
+        "Pertim": "pertím",
+        "pertim": "pertím"
       }
     }
-  ]
+  ],
+  "_doc_pronuncia": "Grafia c (escolhida de ouvido em 2026-11-13, comparativos em tomadas/comparativos): nas falas 2, 7 e 9, 'UaiPertim' vai para a voz como 'Uai pertím' e 'Pertim'/'pertim' como 'pertím' (só o texto enviado; na tela e na legenda continua 'UaiPertim'/'Pertim'). Tomadas: cap-01 G (seed 2042), cap-06 H (seed 42), cap-08 I (seed 4042)."
 }

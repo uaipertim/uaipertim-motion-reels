@@ -62,37 +62,43 @@ Seeds diferentes quase não mudam a duração da fala (variação de ±0,1 s).
 ## Voz
 
 - **Voz:** Victor Pinho, perfil `narracao` (eleven_v4, estabilidade 0,50, semelhança 0,75). Cada fala é UMA geração inteira.
-- **Pronúncia:** "UaiPertim"/"Pertim" vão para a voz sem troca de grafia (padrão atual).
+- **Pronúncia do "Pertim" neste Reel: grafia c**, escolhida de ouvido em 2026-11-13 pelos comparativos. Nas falas 2,
+  7 e 9, "UaiPertim" vai para a voz como "Uai pertím" e "Pertim"/"pertim" como "pertím" (campo `pronuncia` dessas
+  falas no `roteiro.json`). Na tela e na legenda continua "UaiPertim"/"Pertim". As outras falas não têm "Pertim".
 - **Glória:** só "do/no Glória"; o `voz.py` recusa "de Glória".
 - **Tomadas escolhidas** (geradas com `scripts/tomadas.py`, instaladas com `--usar`; tudo em `tomadas/`):
 
 | cena | fala | tomada | seed | fala (s) | por quê |
 |---|---|---|---|---|---|
 | 1 | Bateu aquela fome? | K (`cap-00/K-seed2042-duas-interrogacoes.mp3`), enviada como "fome??" | 2042 | 1,20 | a maior subida até a tônica e o fim mais alto entre as completas (ver abaixo) |
-| 2 | Uai... tem UaiPertim! | C (`cap-01/C-seed2042.mp3`) | 2042 | 1,76 | a mais curta; o fim do "Pertim" com F2 caindo ("im") |
+| 2 | Uai... tem UaiPertim! | G (`cap-01/G-seed2042-c-acento-no-i.mp3`), enviada como "Uai pertím" | 2042 | 1,92 | escolhida de ouvido (comparativo nº 5) |
 | 3 | As lojas do Glória… | C (`cap-02/C-seed2042.mp3`) | 2042 | 2,88 | a mais curta das 6 |
 | 4 | Na palma da sua mão. | voz.py | 42 | 1,44 | — |
 | 5 | Pão de queijo… | F (`cap-04/F-seed5042.mp3`) | 5042 | 4,80 | a mais curta das 6 |
 | 6 | Paga no Pix… | D (`cap-05/D-seed3042.mp3`) | 3042 | 2,56 | a mais curta das 6 |
-| 7 | E o Pertim leva rapidim! | D (`cap-06/D-seed3042.mp3`) | 3042 | 1,76 | a mais curta; o fim do "Pertim" com F2 caindo ("im") |
+| 7 | E o Pertim leva rapidim! | H (`cap-06/H-seed42-c-acento-no-i.mp3`), enviada como "pertím" | 42 | 1,84 | escolhida de ouvido (comparativo nº 6) |
 | 8 | Chegou! | voz.py | 42 | 0,56 | — |
-| 9 | Foi facim! UaiPertim. Tudo pertim de você. | E (`cap-08/E-seed4042.mp3`) | 4042 | 3,76 | o "pertim de você" com F2 caindo ("im") |
+| 9 | Foi facim! UaiPertim. Tudo pertim de você. | I (`cap-08/I-seed4042-c-acento-no-i.mp3`), enviada como "Uai pertím" / "pertím" | 4042 | 3,76 | escolhida de ouvido (comparativo nº 5) |
 
-**Pronúncia do "Pertim" (falas 2, 7 e 9): aguardando a escolha.** De ouvido, as tomadas atuais falam "PertiN"; o
-certo é "Pértim" (E aberto, final em "im", nasal). Há tomadas com 5 grafias (só no texto enviado à voz), cada uma com a
-seed da tomada atual e com a seed 42:
+**Como a grafia foi escolhida.** De ouvido, as tomadas sem troca falavam "PertiN"; o certo é "Pértim" (E aberto,
+final em "im", nasal). Foram geradas tomadas com 5 grafias (só no texto enviado à voz), cada uma com a seed da
+tomada anterior e com a seed 42:
 
 - a) sem troca (referência);
 - b) "UaiPértim"/"Pértim";
-- c) "Uai pertím"/"pertím";
+- c) "Uai pertím"/"pertím" — **a escolhida**;
 - d) "UaiPértĩ"/"Pértĩ";
 - e) "Uai Pérti"/"Pérti".
 
-Os comparativos para ouvir estão em `tomadas/comparativos/` (`comparativo-fala2.mp3`, `-fala7.mp3`, `-fala9.mp3`; a
-ordem e o início de cada tomada em `LISTA.md`, montados pelo `scripts/comparativo.py`). Nenhuma tomada nova foi
-instalada: o vídeo continua com as tomadas da tabela acima até a escolha.
+Os comparativos ouvidos estão em `tomadas/comparativos/` (`comparativo-fala2.mp3`, `-fala7.mp3`, `-fala9.mp3`; a ordem
+em `LISTA.md`, montados pelo `scripts/comparativo.py`).
 
-A medição acústica das falas 2, 7 e 9 não é conclusiva. O alinhamento do v4 vem em degraus
+**Linha do tempo.** A tomada G da fala 2 tem 1,92 s (a anterior tinha 1,76 s). Para o corte continuar na batida de
+3,5 s, só o `segura` da cena 2 mudou, para 0: a fala termina exatamente na batida. O total continua 26,00 s, com
+todos os cortes nas mesmas batidas. A boca (visemas) e a legenda das falas 2, 7 e 9 foram refeitas a partir das
+tomadas novas.
+
+A medição acústica do "Pertim" não foi conclusiva (alinhamento do v4 em degraus de 40 ms); a escolha foi de ouvido. O alinhamento do v4 vem em degraus
 de 40 ms, e o F1 do "é" saiu instável. As amostras A/B de cada fala estão em `tomadas/cap-01`, `cap-06` e `cap-08`
 para conferir de ouvido. Para trocar uma fala:
 
