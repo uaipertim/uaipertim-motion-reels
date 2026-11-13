@@ -20,9 +20,9 @@ A trilha é a **animada do Tudo Pertim** (`"trilha": "animada"`, 120 BPM, uma ba
 |---|---|---|---|---|---|
 | 1 | gancho | 0,0–1,5 s (0–3) | "Bateu aquela fome?" | fundo creme com raios, "Bateu a fome?" escrito à mão (Caveat, traço que se desenha letra a letra), o "?" pula; o Pertim sobe falando | movimento desde o quadro 0 |
 | 2 | logo | 1,5–3,5 s (3–7) | "Uai... tem UaiPertim!" | o pin cai na batida e quica, o toldo listrado abre em "tem", a logo explode em "UaiPertim" (raios, confete) | íris coral a partir do impacto do pin |
-| 3 | lojas | 3,5–7,0 s (7–14) | "As lojas do Glória, tudo num lugar só." | fileiras de lojinhas com olhinhos descendo rápido; freiam e param em "lugar"; a moldura com o pin fecha em "só" | empurra para baixo |
+| 3 | lojas | 3,5–7,0 s (7–14) | "As lojas do Glória, tudo num lugar só." | fileiras de lojinhas com olhinhos descendo rápido; freiam e, em "lugar", ficam só as 9 da grade 3×3 dentro de um "modal" (fundo papel); a moldura se desenha e fecha em "só", com o pin no topo | empurra para baixo |
 | 4 | na mão | 7,0–9,0 s (14–18) | "Na palma da sua mão." | mão segurando um celular estilizado (blocos e cards genéricos); "Na palma da sua mão!" palavra por palavra | zoom-out: as lojinhas viram a tela do celular |
-| 5 | desfile | 9,0–14,0 s (18–28) | "Pão de queijo, hambúrguer, pizza, açaí... e até o mercado!" | palavras GIGANTES em sílabas, foto em adesivo e o botão "+" (sem preço); selo "Imagens ilustrativas" | zoom para dentro da tela; entre as palavras, a cor varre da direita |
+| 5 | desfile | 9,0–14,0 s (18–28) | "Pão de queijo, hambúrguer, pizza, açaí... e até o mercado!" | palavras GIGANTES em sílabas no alto; a foto em adesivo (620 px, 57% da largura) na metade de baixo, com pop na batida, e o botão "+" proporcional (sem preço); selo "Imagens ilustrativas" | zoom para dentro da tela; entre as palavras, a cor varre da direita |
 | 6 | pagamento | 14,0–17,0 s (28–34) | "Paga no Pix, no cartão ou na entrega." | três selos carimbados, cada um na sua palavra: Pix, Cartão, Na entrega | a tela se parte em três faixas que caem |
 | 7 | rapidim | 17,0–19,5 s (34–39) | "E o Pertim leva rapidim!" | "RAPIDIM" gigante passando ao fundo e o Pertim atravessando de motinha; depois o mapa simples, com a rota pontilhada do pin até a casinha | chicote horizontal; o mapa entra empurrando |
 | 8 | chegou | 19,5–21,0 s (39–42) | "Chegou!" | check verde, "Seu pedido chegou!" e 5 estrelas acendendo uma a uma | íris verde saindo da porta da casinha |
@@ -38,6 +38,22 @@ A trilha é a **animada do Tudo Pertim** (`"trilha": "animada"`, 120 BPM, uma ba
 - Mer-ca-do: 13,00 s · 13,44 · 13,59 · 13,72
 
 As fotos do desfile são as fotos de categoria já usadas no Reel "Pedir no UaiPertim" (`public/pedir-no-uaipertim/fotos/`).
+
+**Layout do desfile** (`layout.json` → `desfile`):
+
+- **Palavras:** no alto (y 290–640, até 800 px de largura, centradas). As sílabas se quebram em 1 a 3 linhas, do jeito
+  que deixa a letra maior (ex.: "Pão de" / "queijo", "Ham-" / "búr-guer", "Piz-za" numa linha).
+- **Foto:** 620 px, centrada em x 540 e y 975; termina em y 1285, acima da faixa da legenda.
+- **Botão "+":** 190 px, na borda de baixo à direita da foto.
+- **Selo "Imagens ilustrativas":** embaixo, à esquerda, sem encostar na foto.
+
+**A moldura da cena 3** (`layout.json` → `lojas`; posições calculadas no `preparar.py` → `cena.json` → `eventos.lojas.grade`):
+
+- **Moldura:** 700×870 px (x 190–890, y 420–1290), traço de 14 px; termina 89 px acima da legenda.
+- **Grade:** 3×3 com lojinhas de 169 px e margem interna de 44 px igual nos 4 lados, medida até a caixa visível
+  (a placa no alto, a calçada embaixo); vãos de 51 px na horizontal e 30 px na vertical.
+- **Descida:** a mesma de antes. Entre a freada e "lugar", o recorte encolhe da tela inteira até o interior da moldura
+  e as fileiras de fora da grade somem; a partir de "lugar", nada aparece fora dela. O QA confere pelos pixels.
 
 **Por que 26 s, e não 25.** O v4 fala ~9–10 letras/s, e a soma das falas dá 21,3 s. Com os cortes nas batidas, a
 cena 3 precisou de 3,5 s (a fala tem 2,88 s) e a cena 6 de 3,0 s. Mesmo assim, o total ficou no limite pedido (22–26 s).
@@ -62,7 +78,21 @@ Seeds diferentes quase não mudam a duração da fala (variação de ±0,1 s).
 | 8 | Chegou! | voz.py | 42 | 0,56 | — |
 | 9 | Foi facim! UaiPertim. Tudo pertim de você. | E (`cap-08/E-seed4042.mp3`) | 4042 | 3,76 | o "pertim de você" com F2 caindo ("im") |
 
-**Pronúncia do "Pertim".** A medição acústica das falas 2, 7 e 9 não é conclusiva. O alinhamento do v4 vem em degraus
+**Pronúncia do "Pertim" (falas 2, 7 e 9): aguardando a escolha.** De ouvido, as tomadas atuais falam "PertiN"; o
+certo é "Pértim" (E aberto, final em "im", nasal). Há tomadas com 5 grafias (só no texto enviado à voz), cada uma com a
+seed da tomada atual e com a seed 42:
+
+- a) sem troca (referência);
+- b) "UaiPértim"/"Pértim";
+- c) "Uai pertím"/"pertím";
+- d) "UaiPértĩ"/"Pértĩ";
+- e) "Uai Pérti"/"Pérti".
+
+Os comparativos para ouvir estão em `tomadas/comparativos/` (`comparativo-fala2.mp3`, `-fala7.mp3`, `-fala9.mp3`; a
+ordem e o início de cada tomada em `LISTA.md`, montados pelo `scripts/comparativo.py`). Nenhuma tomada nova foi
+instalada: o vídeo continua com as tomadas da tabela acima até a escolha.
+
+A medição acústica das falas 2, 7 e 9 não é conclusiva. O alinhamento do v4 vem em degraus
 de 40 ms, e o F1 do "é" saiu instável. As amostras A/B de cada fala estão em `tomadas/cap-01`, `cap-06` e `cap-08`
 para conferir de ouvido. Para trocar uma fala:
 
@@ -80,8 +110,9 @@ Medido com `scripts/tomadas.py` (YIN, passo de 10 ms) e conferido no `qa.py`, na
 - **sobe:** de 120 Hz (mediana de "aquela") para **237 Hz na tônica "FO"**, ou seja, **+11,9 st**;
 - **depois cai:** o fim do trecho com voz fica em 162 Hz (−6,6 st em relação ao pico), e o "-me" final sai grave e quase sem voz.
 
-**A pergunta NÃO termina subindo.** Nenhuma das 41 tomadas fez o "-me" final subir. O contorno é sempre o da pergunta
-comum do português: sobe na tônica e cai na postônica. Das 41 tomadas, 32 estão completas e 9 saíram cortadas.
+**O contorno é o natural da pergunta em português:** sobe na tônica "FO" e cai na postônica. A tomada K fica (decisão
+de 2026-11-13), e o `qa.py` confere a **subida até a tônica: ≥ +8 st** (deu +11,9 st). Nenhuma das 41 tomadas
+testadas fez o "-me" final subir; 32 delas estão completas e 9 saíram cortadas.
 
 As variações testadas (só no texto enviado; tela e legenda continuam "Bateu a fome?"/"Bateu aquela fome?"):
 
@@ -186,5 +217,6 @@ A chave do ElevenLabs nunca fica no repositório: nesta nuvem, a rede a põe no 
   - É a `CapaReel-bateu-a-fome` (`src/covers/capasReels.ts`), sobe pelo "Editar capa".
   - O `capa-3x4.png` é o recorte da grade (y 240–1680).
 - `quadros/cena-N-<tipo>.png`: 1 quadro de revisão por cena, tirado do MP4; `storyboard.png` reúne os 9.
-- `revisao/relatorio-tecnico.txt`: o QA (`RESULTADO: aprovado`, com o AVISO da pergunta que não termina subindo).
+- `revisao/relatorio-tecnico.txt`: o QA do vídeo final; `revisao/relatorio-previa.txt`: o QA da prévia (`qa.py --previa`).
+- `previa/` (fora do git): a prévia (`render.mjs previa`) e os quadros de revisão dela.
 - `revisao/f0-gancho.png`: o gráfico do F0 do gancho.

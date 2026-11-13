@@ -125,6 +125,170 @@
      "fim": "in? (F2 alto)"
     }
    ]
+  },
+  {
+   "tomada": "E",
+   "arquivo": "E-seed2042-b-pertim-e-aberto.mp3",
+   "seed": 2042,
+   "texto_api": "Uai... tem UaiPértim!",
+   "conferencia": "ok",
+   "ritmo_letras_s": 8.5,
+   "maior_pausa_s": 0.4,
+   "sobra_no_fim_s": 0.24,
+   "fala_s": 1.76,
+   "pertim": [
+    {
+     "grafia": "UaiPértim",
+     "F1_PER_max_hz": 622,
+     "E_aberto": true,
+     "vogal_PER": {
+      "dur": 0.08,
+      "f0": 188
+     },
+     "vogal_TIM": {
+      "dur": 0.08,
+      "f0": null
+     },
+     "forca": "PER",
+     "F2_meio": 2198,
+     "F2_fim": 2502,
+     "fim": "in? (F2 alto)"
+    }
+   ]
+  },
+  {
+   "tomada": "F",
+   "arquivo": "F-seed42-b-pertim-e-aberto.mp3",
+   "seed": 42,
+   "texto_api": "Uai... tem UaiPértim!",
+   "conferencia": "ok",
+   "ritmo_letras_s": 8.5,
+   "maior_pausa_s": 0.32,
+   "sobra_no_fim_s": 0.24,
+   "fala_s": 1.76,
+   "pertim": [
+    {
+     "grafia": "UaiPértim",
+     "F1_PER_max_hz": 625,
+     "E_aberto": true,
+     "vogal_PER": {
+      "dur": 0.053,
+      "f0": 259
+     },
+     "vogal_TIM": {
+      "dur": 0.08,
+      "f0": null
+     },
+     "forca": "TIM",
+     "F2_meio": 2823,
+     "F2_fim": 2519,
+     "fim": "im (F2 cai)"
+    }
+   ]
+  },
+  {
+   "tomada": "G",
+   "arquivo": "G-seed2042-c-acento-no-i.mp3",
+   "seed": 2042,
+   "texto_api": "Uai... tem Uai pertím!",
+   "conferencia": "ritmo 7.8 letras/s",
+   "ritmo_letras_s": 7.8,
+   "maior_pausa_s": 0.32,
+   "sobra_no_fim_s": 0.32,
+   "fala_s": 1.92,
+   "pertim": [
+    {
+     "grafia": "Uai pertím",
+     "F1_PER_max_hz": 2851,
+     "E_aberto": true,
+     "vogal_PER": {
+      "dur": 0.1,
+      "f0": 329
+     },
+     "vogal_TIM": {
+      "dur": 0.08,
+      "f0": 217
+     },
+     "forca": "PER",
+     "F2_meio": 2549,
+     "F2_fim": 2069,
+     "fim": "im (F2 cai)"
+    }
+   ]
+  },
+  {
+   "tomada": "H",
+   "arquivo": "H-seed42-c-acento-no-i.mp3",
+   "seed": 42,
+   "texto_api": "Uai... tem Uai pertím!",
+   "conferencia": "ok",
+   "ritmo_letras_s": 8.5,
+   "maior_pausa_s": 0.32,
+   "sobra_no_fim_s": 0.32,
+   "fala_s": 1.76,
+   "pertim": [
+    {
+     "grafia": "Uai pertím",
+     "F1_PER_max_hz": null,
+     "E_aberto": false,
+     "vogal_PER": {
+      "dur": 0.05,
+      "f0": null
+     },
+     "vogal_TIM": {
+      "dur": 0.08,
+      "f0": 194
+     },
+     "forca": "TIM",
+     "F2_meio": 2541,
+     "F2_fim": 2739,
+     "fim": "in? (F2 alto)"
+    }
+   ]
+  },
+  {
+   "tomada": "I",
+   "arquivo": "I-seed2042-d-til.mp3",
+   "seed": 2042,
+   "texto_api": "Uai... tem UaiPértĩ!",
+   "conferencia": "ritmo 8.0 letras/s",
+   "ritmo_letras_s": 8.0,
+   "maior_pausa_s": 0.4,
+   "sobra_no_fim_s": 0.24,
+   "fala_s": 1.76
+  },
+  {
+   "tomada": "J",
+   "arquivo": "J-seed42-d-til.mp3",
+   "seed": 42,
+   "texto_api": "Uai... tem UaiPértĩ!",
+   "conferencia": "ritmo 7.6 letras/s",
+   "ritmo_letras_s": 7.6,
+   "maior_pausa_s": 0.32,
+   "sobra_no_fim_s": 0.24,
+   "fala_s": 1.84
+  },
+  {
+   "tomada": "K",
+   "arquivo": "K-seed2042-e-sem-m.mp3",
+   "seed": 2042,
+   "texto_api": "Uai... tem Uai Pérti!",
+   "conferencia": "ok",
+   "ritmo_letras_s": 8.3,
+   "maior_pausa_s": 0.32,
+   "sobra_no_fim_s": 0.24,
+   "fala_s": 1.68
+  },
+  {
+   "tomada": "L",
+   "arquivo": "L-seed42-e-sem-m.mp3",
+   "seed": 42,
+   "texto_api": "Uai... tem Uai Pérti!",
+   "conferencia": "ritmo 7.4 letras/s",
+   "ritmo_letras_s": 7.4,
+   "maior_pausa_s": 0.36,
+   "sobra_no_fim_s": 0.12,
+   "fala_s": 1.88
   }
  ]
 }

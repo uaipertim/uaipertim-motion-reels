@@ -1,6 +1,7 @@
 // Reel "Bateu a fome?": o vídeo (composição BateuAFome, src/bateu-a-fome/BateuAFome.tsx) com a mixagem do pipeline do
 // Explica, Sô! (reels/explica-so/audio/bateu-a-fome/mix.wav).
-//   node reels/bateu-a-fome/scripts/render.mjs      -> reels/bateu-a-fome/output/uaipertim-bateu-a-fome.mp4 (1080×1920, 30 fps, H.264 + AAC 48 kHz)
+//   node reels/bateu-a-fome/scripts/render.mjs          -> reels/bateu-a-fome/output/uaipertim-bateu-a-fome.mp4 (1080×1920, 30 fps, H.264 + AAC 48 kHz)
+//   node reels/bateu-a-fome/scripts/render.mjs previa   -> reels/bateu-a-fome/output/previa/uaipertim-bateu-a-fome-previa.mp4 (para revisar; fora do git)
 import { bundle } from "@remotion/bundler";
 import { openBrowser, renderMedia, selectComposition } from "@remotion/renderer";
 import { execFileSync } from "node:child_process";
@@ -24,7 +25,9 @@ await renderMedia({
   puppeteerInstance: browser, browserExecutable, concurrency: 4,
   onProgress: ({ progress }) => { const p = Math.floor(progress * 10); if (p !== ultimo) { ultimo = p; process.stdout.write(`BateuAFome ${p * 10}%\n`); } },
 });
-const mp4 = path.join(OUT, "uaipertim-bateu-a-fome.mp4");
+const PREVIA = process.argv.includes("previa");
+if (PREVIA) fs.mkdirSync(path.join(OUT, "previa"), { recursive: true });
+const mp4 = PREVIA ? path.join(OUT, "previa", "uaipertim-bateu-a-fome-previa.mp4") : path.join(OUT, "uaipertim-bateu-a-fome.mp4");
 execFileSync("ffmpeg", ["-y", "-loglevel", "error", "-i", mudo, "-i", path.join(AUD, "mix.wav"), "-map", "0:v", "-map", "1:a", "-c:v", "copy", "-c:a", "aac", "-b:a", "256k",
   "-ar", "48000", "-t", (composition.durationInFrames / composition.fps).toFixed(4), "-movflags", "+faststart", mp4], { stdio: "inherit" });
 fs.rmSync(mudo);

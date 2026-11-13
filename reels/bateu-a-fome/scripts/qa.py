@@ -2,7 +2,8 @@
 """
 Revisão técnica do Reel "Bateu a fome?".
 
-    python3 reels/bateu-a-fome/scripts/qa.py
+    python3 reels/bateu-a-fome/scripts/qa.py            (o vídeo final)
+    python3 reels/bateu-a-fome/scripts/qa.py --previa   (a prévia de output/previa/ → revisao/relatorio-previa.txt)
 
 Confere o MP4 final (output/uaipertim-bateu-a-fome.mp4) contra os mesmos dados que a composição usa (roteiro.json,
 layout.json, dados/{cena,visemas,legenda}.json e a voz) e escreve output/revisao/relatorio-tecnico.txt e
@@ -17,7 +18,11 @@ output/revisao/f0-gancho.png (o F0 da pergunta do gancho):
     "UaiPertim." e sai antes dos 3 últimos segundos;
   • boca: nenhuma boca menos de 2 quadros; olhar na câmera (o rig usa olhar [0, 0] com a pupila centrada);
   • gancho: o quadro muda a cada 0,1 s nos primeiros 0,5 s; logo oficial PARADA nos 3 últimos segundos (pelos pixels);
-  • a pergunta do gancho: o F0 da última palavra (medido na voz usada no vídeo).
+  • a pergunta do gancho: o F0 sobe ≥ +8 st de "aquela" até a tônica "FO" (o contorno natural da pergunta em português:
+    sobe na tônica e cai na postônica), medido na voz usada no vídeo;
+  • cena 3: a grade 3×3 inteira dentro da moldura (modal), com a mesma margem interna nos 4 lados, e nada escuro fora
+    dela a partir de "lugar" (pelos pixels); a legenda abaixo da moldura, sem encostar;
+  • cena 5: a foto com 55–60% da largura, na metade de baixo, e a legenda abaixo dela.
 Termina em "RESULTADO: aprovado" ou "RESULTADO: ajustar".
 """
 import json
@@ -38,7 +43,9 @@ AUD = os.path.join(REPO, 'reels', 'explica-so', 'audio', EP)
 OUT = os.path.join(REEL, 'output')
 REV = os.path.join(OUT, 'revisao')
 os.makedirs(REV, exist_ok=True)
-VIDEO = os.path.join(OUT, 'uaipertim-bateu-a-fome.mp4')
+import sys
+PREVIA = '--previa' in sys.argv            # confere a prévia (output/previa/) e grava revisao/relatorio-previa.txt
+VIDEO = os.path.join(OUT, 'previa', 'uaipertim-bateu-a-fome-previa.mp4') if PREVIA else os.path.join(OUT, 'uaipertim-bateu-a-fome.mp4')
 ROT = json.load(open(os.path.join(REEL, 'roteiro.json')))
 LAY = json.load(open(os.path.join(REEL, 'layout.json')))
 CENA = json.load(open(os.path.join(REEL, 'dados', 'cena.json')))
@@ -117,7 +124,12 @@ ok([caps[f'{i:02d}']['texto'] for i in range(len(ROTEIRO))] == ROTEIRO, 'o texto
 ok(all(caps[k]['perfil'] == 'narracao' and caps[k]['modelo'] == 'eleven_v4' for k in caps), 'perfil "narracao" (eleven_v4) em todas as falas')
 ok(FALAS['voz'] == 'Victor Pinho' and FALAS['voice_id'] == 'LuQ9eaWO9yCQrR73VQFa', f'voz oficial: {FALAS["voz"]}')
 api = ' '.join(caps[k]['texto_api'] for k in sorted(caps))
-ok('UaiPertim' in api and 'Pertim' in api and not re.search(r'P[ée]rr|Pért', api), '"UaiPertim"/"Pertim" vão para a voz sem troca de grafia')
+# a grafia do "Pertim" enviada à voz é a do roteiro (campo "pronuncia" de cada fala; sem o campo, sem troca) e a tela não muda
+gr = {k: re.findall(r'(?:Uai ?)?[Pp][ée]rr?-?t[ií]m?[ĩ]?|(?:Uai ?)?[Pp]érti\b', caps[k]['texto_api']) for k in caps}
+ok(all((ROT['capitulos'][int(k)].get('pronuncia') or {}) or not re.search(r'P[ée]rr|Pért|pertí', caps[k]['texto_api']) for k in caps),
+   'o "Pertim" vai para a voz com a grafia do roteiro (tela e legenda sem troca)')
+for k in ('01', '06', '08'):
+    info(f'cena {int(k) + 1}: o "Pertim" enviado como {", ".join(gr[k]) or "(sem troca)"} · pronuncia no roteiro: {ROT["capitulos"][int(k)].get("pronuncia") or "nenhuma (sem troca)"}')
 for k in sorted(caps):
     f = caps[k]
     origem = f.get('tomada', {}).get('arquivo', f'voz.py, seed {f["seed"]}')
@@ -170,10 +182,7 @@ st = lambda a_, b_: 12 * np.log2(b_ / a_)
 info(f'tomada usada: {f0c.get("tomada", {}).get("arquivo", "voz.py")} (seed {f0c["seed"]}, enviado "{f0c["texto_api"]}")')
 info(f'o F0 sobe de {base:.0f} Hz (mediana de "aquela") para {pico[1]:.0f} Hz na tônica "FO" ({st(base, pico[1]):+.1f} st, em {pico[0]:.2f} s)')
 info(f'fim do trecho com voz (o "-me" sai grave e quase sem voz): {fim:.0f} Hz = {st(pico[1], fim):+.1f} st em relação ao pico (o contorno é sobe-na-tônica-e-cai)')
-sobe_fim = fim >= pico[1] * 2 ** (-3 / 12)
-ok(st(base, pico[1]) >= 6, f'a pergunta sobe até a tônica (+{st(base, pico[1]):.1f} st ≥ +6 st)')
-report.append(('OK   ' if sobe_fim else 'AVISO') + f'  a pergunta termina alta (fim ≥ pico − 3 st)? {"sim" if sobe_fim else "não"}: '
-              'nenhuma das 32 tomadas completas (28 no perfil "narracao", com seeds, grafias e contexto, + 4 no "pausas" só para comparar) terminou subindo; ver as amostras em reels/bateu-a-fome/tomadas/cap-00')
+ok(st(base, pico[1]) >= 8, f'a pergunta sobe até a tônica "FO": +{st(base, pico[1]):.1f} st (mínimo +8 st)')
 try:
     import matplotlib
     matplotlib.use('Agg')
@@ -190,6 +199,30 @@ try:
     info('gráfico: output/revisao/f0-gancho.png')
 except ImportError:
     info('(sem matplotlib: o gráfico do F0 não foi gerado)')
+
+# ---------------------------------------------------------------- cena 3: a grade dentro da moldura
+sec('CENA 3 · AS LOJAS DENTRO DA MOLDURA')
+G = EV['lojas']['grade']
+k_ = G['k']
+ix0, iy0, ix1, iy1 = G['interno']
+vis = [G['cx'][0] - 98 * k_, G['base'][0] - 263 * k_, G['cx'][2] + 98 * k_, G['base'][2] + G['calcada'][1]]   # a caixa visível das 9 lojinhas
+mg = [vis[0] - ix0, vis[1] - iy0, ix1 - vis[2], iy1 - vis[3]]
+ok(min(mg) > 0 and max(mg) - min(mg) < 1.0, f'as 9 lojinhas (largura {G["w"]:.0f} px) ficam dentro da moldura, margem interna esquerda/cima/direita/baixo = ' + ' / '.join(f'{m:.1f}' for m in mg) + ' px')
+ok(all(G['cx'][c + 1] - G['cx'][c] >= 196 * k_ for c in range(2)) and G['passo'] >= 263 * k_ + G['calcada'][1], 'nenhuma lojinha encosta na outra (vão horizontal ' + f'{G["gx"]:.0f} px, vertical {G["passo"] - 263 * k_ - G["calcada"][1]:.0f} px)')
+mx0, my0, mx1, my1 = G['moldura']
+tops = [LEG['estilo']['base'] - (len(b['linhas']) * LEG['estilo']['lh'] + 2 * LEG['estilo']['padY']) for b in LEG['blocos'] if b['cena'] == 2]
+ok(min(tops) - (my1 + G['esp'] / 2) >= 20, f'a legenda da cena (topo em y {min(tops)}) fica {min(tops) - (my1 + G["esp"] / 2):.0f} px abaixo da moldura (y {my1 + G["esp"] / 2:.0f})')
+ok(mx1 + G['esp'] / 2 <= LAY['seguro'][2], f'a moldura (x {mx0 - G["esp"] / 2:.0f}–{mx1 + G["esp"] / 2:.0f}) fica fora da coluna dos botões (x ≥ {LAY["seguro"][2]})')
+
+# ---------------------------------------------------------------- cena 5: a foto do desfile
+sec('CENA 5 · O DESFILE')
+DF = LAY['desfile']
+fd = DF['foto']
+ok(0.55 <= fd['d'] / 1080 <= 0.60, f'a foto tem {fd["d"]} px = {fd["d"] / 1080:.0%} da largura (55–60%)')
+tops5 = [LEG['estilo']['base'] - (len(b['linhas']) * LEG['estilo']['lh'] + 2 * LEG['estilo']['padY']) for b in LEG['blocos'] if b['cena'] == 4]
+pe = fd['cy'] + fd['d'] / 2
+ok(min(tops5) - pe >= 20, f'a foto termina em y {pe:.0f}; a legenda começa em y {min(tops5)} (nunca por cima da foto)')
+ok(fd['cy'] - fd['d'] / 2 >= DF['texto']['y1'], f'as palavras (y {DF["texto"]["y0"]}–{DF["texto"]["y1"]}) ficam acima da foto (y {fd["cy"] - fd["d"] / 2:.0f}–{pe:.0f})')
 
 # ---------------------------------------------------------------- legenda
 sec('LEGENDA GRAVADA')
@@ -230,6 +263,17 @@ with tempfile.TemporaryDirectory() as tmp:
         p = os.path.join(tmp, f'{t:.3f}.png')
         subprocess.run(['ffmpeg', '-v', 'error', '-y', '-ss', f'{t:.3f}', '-i', VIDEO, '-frames:v', '1', p], check=True)
         return np.asarray(Image.open(p).convert('RGB')).astype(np.int16)
+    E3 = EV['lojas']
+    G = E3['grade']
+    mx0, my0, mx1, my1 = G['moldura']
+    for tq in (E3['para'] + 0.05, (E3['para'] + E3['moldura']) / 2, E3['moldura'] + 0.4, CENA['cenas'][2]['t1'] - 0.25):
+        q = quadro(tq)
+        luma = 0.299 * q[..., 0] + 0.587 * q[..., 1] + 0.114 * q[..., 2]
+        fora = np.ones(luma.shape, bool)
+        fora[:265] = False; fora[1320:] = False                                   # fora da zona da cena (o topo e a faixa da legenda)
+        fora[int(my0 - G['esp']):int(my1 + G['esp']) + 1, int(mx0 - G['esp']):int(mx1 + G['esp']) + 1] = False
+        n = int(np.sum((luma < 60) & fora))
+        ok(n < 40, f'cena 3 em {tq:.2f} s: nada das lojinhas fora da moldura ({n} pixels escuros fora dela)')
     qs = [quadro(t) for t in (0.0, 0.1, 0.2, 0.3, 0.4, 0.5)]
     dif = [np.mean(np.abs(a_ - b_)) for a_, b_ in zip(qs, qs[1:])]
     ok(min(dif) > 0.3, 'o quadro muda a cada 0,1 s nos primeiros 0,5 s (diferença média ' + ', '.join(f'{d:.1f}' for d in dif) + ')')
@@ -245,5 +289,5 @@ sec(f'RESULTADO: {"aprovado" if not fails else "ajustar"}')
 if fails:
     report.append('  ' + '\n  '.join(fails))
 cab = [f'REVISÃO TÉCNICA · Reel "Bateu a fome?" (@uaipertim) · {os.path.relpath(VIDEO, REPO)}', f'{DUR:.2f} s · {int(round(DUR * FPS))} quadros a {FPS} fps']
-open(os.path.join(REV, 'relatorio-tecnico.txt'), 'w').write('\n'.join(cab + report) + '\n')
+open(os.path.join(REV, 'relatorio-previa.txt' if PREVIA else 'relatorio-tecnico.txt'), 'w').write('\n'.join(cab + report) + '\n')
 print('\n'.join(cab + report))

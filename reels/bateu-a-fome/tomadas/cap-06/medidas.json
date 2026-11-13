@@ -125,6 +125,170 @@
      "fim": "im (F2 cai)"
     }
    ]
+  },
+  {
+   "tomada": "E",
+   "arquivo": "E-seed3042-b-pertim-e-aberto.mp3",
+   "seed": 3042,
+   "texto_api": "E o Pértim leva rapidim!",
+   "conferencia": "ok",
+   "ritmo_letras_s": 8.5,
+   "maior_pausa_s": 0.08,
+   "sobra_no_fim_s": 0.0,
+   "fala_s": 2.24,
+   "pertim": [
+    {
+     "grafia": "Pértim",
+     "F1_PER_max_hz": 717,
+     "E_aberto": true,
+     "vogal_PER": {
+      "dur": 0.08,
+      "f0": 187
+     },
+     "vogal_TIM": {
+      "dur": 0.04,
+      "f0": null
+     },
+     "forca": "PER",
+     "F2_meio": 2308,
+     "F2_fim": 2635,
+     "fim": "in? (F2 alto)"
+    }
+   ]
+  },
+  {
+   "tomada": "F",
+   "arquivo": "F-seed42-b-pertim-e-aberto.mp3",
+   "seed": 42,
+   "texto_api": "E o Pértim leva rapidim!",
+   "conferencia": "ok",
+   "ritmo_letras_s": 9.1,
+   "maior_pausa_s": 0.12,
+   "sobra_no_fim_s": 0.0,
+   "fala_s": 2.08,
+   "pertim": [
+    {
+     "grafia": "Pértim",
+     "F1_PER_max_hz": 1986,
+     "E_aberto": true,
+     "vogal_PER": {
+      "dur": 0.08,
+      "f0": 233
+     },
+     "vogal_TIM": {
+      "dur": 0.04,
+      "f0": 143
+     },
+     "forca": "PER",
+     "F2_meio": 2427,
+     "F2_fim": 2635,
+     "fim": "in? (F2 alto)"
+    }
+   ]
+  },
+  {
+   "tomada": "G",
+   "arquivo": "G-seed3042-c-acento-no-i.mp3",
+   "seed": 3042,
+   "texto_api": "E o pertím leva rapidim!",
+   "conferencia": "ok",
+   "ritmo_letras_s": 10.3,
+   "maior_pausa_s": 0.24,
+   "sobra_no_fim_s": 0.24,
+   "fala_s": 1.84,
+   "pertim": [
+    {
+     "grafia": "pertím",
+     "F1_PER_max_hz": 2128,
+     "E_aberto": true,
+     "vogal_PER": {
+      "dur": 0.08,
+      "f0": 201
+     },
+     "vogal_TIM": {
+      "dur": 0.08,
+      "f0": 187
+     },
+     "forca": "PER",
+     "F2_meio": 2298,
+     "F2_fim": 2864,
+     "fim": "in? (F2 alto)"
+    }
+   ]
+  },
+  {
+   "tomada": "H",
+   "arquivo": "H-seed42-c-acento-no-i.mp3",
+   "seed": 42,
+   "texto_api": "E o pertím leva rapidim!",
+   "conferencia": "ok",
+   "ritmo_letras_s": 10.3,
+   "maior_pausa_s": 0.24,
+   "sobra_no_fim_s": 0.24,
+   "fala_s": 1.84,
+   "pertim": [
+    {
+     "grafia": "pertím",
+     "F1_PER_max_hz": 2052,
+     "E_aberto": true,
+     "vogal_PER": {
+      "dur": 0.08,
+      "f0": 203
+     },
+     "vogal_TIM": {
+      "dur": 0.08,
+      "f0": 214
+     },
+     "forca": "TIM",
+     "F2_meio": 2524,
+     "F2_fim": 2458,
+     "fim": "in? (F2 alto)"
+    }
+   ]
+  },
+  {
+   "tomada": "I",
+   "arquivo": "I-seed3042-d-til.mp3",
+   "seed": 3042,
+   "texto_api": "E o Pértĩ leva rapidim!",
+   "conferencia": "ok",
+   "ritmo_letras_s": 10.2,
+   "maior_pausa_s": 0.24,
+   "sobra_no_fim_s": 0.32,
+   "fala_s": 1.76
+  },
+  {
+   "tomada": "J",
+   "arquivo": "J-seed42-d-til.mp3",
+   "seed": 42,
+   "texto_api": "E o Pértĩ leva rapidim!",
+   "conferencia": "ok",
+   "ritmo_letras_s": 10.2,
+   "maior_pausa_s": 0.24,
+   "sobra_no_fim_s": 0.32,
+   "fala_s": 1.76
+  },
+  {
+   "tomada": "K",
+   "arquivo": "K-seed3042-e-sem-m.mp3",
+   "seed": 3042,
+   "texto_api": "E o Pérti leva rapidim!",
+   "conferencia": "ok",
+   "ritmo_letras_s": 10.2,
+   "maior_pausa_s": 0.24,
+   "sobra_no_fim_s": 0.32,
+   "fala_s": 1.76
+  },
+  {
+   "tomada": "L",
+   "arquivo": "L-seed42-e-sem-m.mp3",
+   "seed": 42,
+   "texto_api": "E o Pérti leva rapidim!",
+   "conferencia": "ok",
+   "ritmo_letras_s": 9.0,
+   "maior_pausa_s": 0.12,
+   "sobra_no_fim_s": 0.0,
+   "fala_s": 2.0
   }
  ]
 }

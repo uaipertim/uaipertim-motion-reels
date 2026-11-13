@@ -224,11 +224,13 @@ const Logo: React.FC<{ t: number; quadro: number }> = ({ t, quadro }) => {
   );
 };
 
-// ================================================================ 3 · LOJAS (fileiras descendo rápido)
+// ================================================================ 3 · LOJAS (fileiras descendo rápido → a grade 3×3 num "modal")
+// A grade (posições e tamanho) sai de scripts/preparar.py (cena.json → eventos.lojas.grade): 3×3 lojinhas dentro da
+// moldura com a MESMA margem interna nos 4 lados. A descida rápida continua igual; entre "freia" e "lugar" o recorte das
+// fileiras encolhe da tela inteira até o interior da moldura, e a partir de "lugar" nada aparece fora dela.
 const TIPOS: ShopCharKind[] = ["padaria", "mercado", "lanchonete", "farmacia", "restaurante", "hortifruti", "pet", "bebidas", "loja"];
-const COLS = [220, 540, 860 - 40];
-const LW = 220, LH = LW * SHOP_RATIO, PASSO_Y = 345;
-const BASES_PARADAS = [600, 945, 1290];           // a base das 3 fileiras quando a descida para (y)
+const GR = EV.lojas.grade;
+const LW = GR.w, LH = LW * SHOP_RATIO;
 // a descida: a velocidade cai até parar em "lugar"; o deslocamento é a integral (as fileiras param no lugar certo)
 const descida = (t: number) => {
   const E = EV.lojas, t0 = S[2].t0 - 0.12;
@@ -242,18 +244,31 @@ const Lojas: React.FC<{ t: number; quadro: number; congelado?: number }> = ({ t,
   const tt = congelado ?? t;
   const off = descida(tt);
   const vel = Math.abs(descida(tt + 0.02) - off) / 0.02;
-  const mold = entre(tt, E.moldura, E.moldura + 0.35);
+  const mold = entre(tt, E.moldura, E.moldura + 0.35);           // o pin e o brilho nos olhinhos, em "só"
+  const traco = outCubic(entre(tt, E.para, E.moldura + 0.2));     // a moldura se desenha de "lugar" até "só"
+  const rec = inOut(entre(tt, E.freia, E.para));                  // o recorte encolhe até o interior da moldura
+  const [ix0, iy0, ix1, iy1] = GR.interno;
+  const [mx0, my0, mx1, my1] = GR.moldura;
+  const [cx0, , cx1] = GR.conteudo;
+  const raioIn = GR.raio - GR.esp / 2;
+  const clip = `inset(${rec * iy0}px ${rec * (1080 - ix1)}px ${rec * (1920 - iy1)}px ${rec * ix0}px round ${rec * raioIn}px)`;
   const fil: React.ReactNode[] = [];
-  for (let r = -9; r < 3; r++) {
-    const base = BASES_PARADAS[0] + r * PASSO_Y + off;
-    if (base < 150 || base - LH > 1400) continue;
-    COLS.forEach((cx, c) => {
-      const k = ((r % 3) + 3) % 3 * 3 + c;
+  const ruas: React.ReactNode[] = [];
+  for (let r = -12; r < 4; r++) {
+    const base = GR.base[0] + r * GR.passo + off;
+    if (base < 150 || base - LH > 1500) continue;
+    // as fileiras de fora da grade 3×3 somem enquanto o recorte fecha: a partir de "lugar", só as 9 da grade
+    const fora = r < 0 || r > 2;
+    if (fora && rec >= 1) continue;
+    const alfa = fora ? 1 - rec : 1;
+    ruas.push(<div key={r} style={{ position: "absolute", opacity: alfa, left: cx0, width: cx1 - cx0, top: base + GR.calcada[0], height: GR.calcada[1] - GR.calcada[0], borderRadius: 10, background: C.cremeDeep }} />);
+    GR.cx.forEach((cx, c) => {
+      const k = (((r % 3) + 3) % 3) * 3 + c;
       const kind = TIPOS[(k + (r < 0 ? 4 : 0)) % TIPOS.length];
       const pisca = random(`bf-pisca-${r}-${c}`) * 3;
       const blink = tt > 3.6 + pisca && tt < 3.72 + pisca ? 1 : 0;
       fil.push(
-        <div key={`${r}-${c}`} style={{ position: "absolute", left: cx - LW / 2, top: base - LH, width: LW, height: LH }}>
+        <div key={`${r}-${c}`} style={{ position: "absolute", opacity: alfa, left: cx - LW / 2, top: base - LH, width: LW, height: LH }}>
           <ShopChar kind={kind} width={LW} mood="happy" look={[0, 0]} blink={blink} lit={0.9} awning={0.3 + 0.3 * Math.min(1, vel / 3000)} sparkle={mold} />
         </div>,
       );
@@ -263,25 +278,27 @@ const Lojas: React.FC<{ t: number; quadro: number; congelado?: number }> = ({ t,
     <AbsoluteFill>
       <CremeBackground frame={quadro} rays raysCenter={[540, 800]} raysColor={C.coral} raysOpacity={0.08} enfeites={false} />
       <AbsoluteFill style={{ background: PESSEGO, opacity: 0.45 }} />
-      {/* as ruas entre as fileiras */}
-      <AbsoluteFill style={{ WebkitMaskImage: "linear-gradient(to bottom, transparent 200px, black 300px, black 1250px, transparent 1316px)" }}>
-        {[-9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2].map((r) => {
-          const y = BASES_PARADAS[0] + r * PASSO_Y + off;
-          return y > 150 && y < 1400 ? <div key={r} style={{ position: "absolute", left: 60, right: 60, top: y - 6, height: 22, borderRadius: 11, background: C.cremeDeep }} /> : null;
-        })}
+      {/* o fundo do "modal" (papel), que aparece enquanto o recorte fecha */}
+      {rec > 0 && (
+        <div style={{ position: "absolute", left: ix0, top: iy0, width: ix1 - ix0, height: iy1 - iy0, borderRadius: raioIn, background: C.papel, opacity: 0.92 * rec,
+          boxShadow: `0 ${24 * rec}px ${48 * rec}px rgba(34,28,25,${0.16 * rec})` }} />
+      )}
+      {/* as fileiras: antes de parar, na tela inteira (com o esfumado no alto e embaixo); a partir de "lugar", só dentro da moldura */}
+      <AbsoluteFill style={{ clipPath: rec > 0 ? clip : undefined, WebkitMaskImage: rec < 1 ? "linear-gradient(to bottom, transparent 200px, black 300px, black 1250px, transparent 1316px)" : undefined }}>
+        {ruas}
         {fil}
       </AbsoluteFill>
-      <LinhasVelocidade t={tt} forca={Math.min(1, vel / 2500) * 0.9} ang={90} n={22} seed="bf-lojas" cor={C.coral} />
-      {/* a moldura "num lugar só": se desenha em volta das 3 fileiras, com o pin no topo */}
+      <LinhasVelocidade t={tt} forca={Math.min(1, vel / 2500) * 0.9 * (1 - rec)} ang={90} n={22} seed="bf-lojas" cor={C.coral} />
+      {/* a moldura "num lugar só" (o modal) e o pin no topo */}
+      {traco > 0 && (
+        <svg width={1080} height={1920} style={{ position: "absolute", left: 0, top: 0 }}>
+          <rect x={mx0} y={my0} width={mx1 - mx0} height={my1 - my0} rx={GR.raio} fill="none" stroke={C.coral} strokeWidth={GR.esp} pathLength={1} strokeDasharray="1 1" strokeDashoffset={1 - traco} />
+        </svg>
+      )}
       {mold > 0 && (
-        <>
-          <svg width={1080} height={1920} style={{ position: "absolute", left: 0, top: 0 }}>
-            <rect x={86} y={232} width={908 - 86 - 8} height={1300 - 232} rx={48} fill="none" stroke={C.coral} strokeWidth={14} pathLength={1} strokeDasharray="1 1" strokeDashoffset={1 - outCubic(mold)} />
-          </svg>
-          <div style={{ position: "absolute", left: 495 - 50, top: 232 - 130 + 10, transform: `scale(${outBack(mold, 2.4)})`, transformOrigin: "50% 100%" }}>
-            <MapPin size={100} color={C.coral} />
-          </div>
-        </>
+        <div style={{ position: "absolute", left: (mx0 + mx1) / 2 - 50, top: my0 - 126 + GR.esp / 2, transform: `scale(${outBack(mold, 2.4)})`, transformOrigin: "50% 100%" }}>
+          <MapPin size={100} color={C.coral} />
+        </div>
       )}
     </AbsoluteFill>
   );
@@ -388,43 +405,66 @@ const FUNDO = [
   { bg: PESSEGO, a: C.coral, b: C.tinta, hif: "rgba(34,28,25,0.3)" },
   { bg: C.coralBg, a: C.amarelo, b: C.creme, hif: "rgba(255,255,255,0.45)" },
 ];
+// o desfile: as palavras GIGANTES no alto (y 290–640, até 800 px de largura, centradas), quebradas nas sílabas da forma que
+// deixa a letra MAIOR; a foto (adesivo de 620 px, ~57% da largura) centrada na metade de baixo, entrando com pop NA
+// batida; o "+" proporcional na borda dela. Tudo acima da faixa da legenda (a foto termina em y ≈ 1285).
+const DESFILE = L.desfile;
 const CartaoItem: React.FC<{ t: number; quadro: number; it: Item; k: number }> = ({ t, quadro, it, k }) => {
   const f = FUNDO[k];
   const medir = useMedir(W.black);
   const sil = it.silabas;
   const hifen = it.ilustracao !== "paodequeijo";
-  const linhas = sil.map((s, i) => s.t + (hifen && i < sil.length - 1 ? "-" : ""));
-  // as sílabas empilhadas no alto, à esquerda (y 300–900, até 820 px de largura); a foto e o "+" embaixo, à direita
-  const size = Math.min(250, ...linhas.map((l) => (820 / medir(l, 100)) * 100), 600 / (sil.length * 0.98));
-  const lh = size * 0.98;
-  const top = 300 + Math.max(0, (600 - lh * sil.length) / 2);
-  const foto = mola(t, it.entra + 0.05, 0.4, 1.8);
+  const pedaco = (i: number) => sil[i].t + (hifen && i < sil.length - 1 ? "-" : "");
+  const DT = DESFILE.texto, FT = DESFILE.foto, MA = DESFILE.mais;
+  // as quebras possíveis (sílabas em sequência, 1 a 3 linhas): fica a que dá a maior letra
+  const arranjo = useMemo(() => {
+    const n = sil.length;
+    let melhor: { linhas: number[][]; size: number } | null = null;
+    for (let m = 0; m < 1 << (n - 1); m++) {
+      const linhas: number[][] = [[0]];
+      for (let i = 1; i < n; i++) (m & (1 << (i - 1)) ? linhas.push([i]) : linhas[linhas.length - 1].push(i));
+      const larg = Math.max(...linhas.map((l) => medir(l.map(pedaco).join(hifen ? "" : " "), 100)));
+      const size = Math.min(DT.max, (DT.w / larg) * 100, (DT.y1 - DT.y0) / (linhas.length * 0.98));
+      if (!melhor || size > melhor.size + 0.5) melhor = { linhas, size };
+    }
+    return melhor!;
+  }, [it.ilustracao]);
+  const size = arranjo.size, lh = size * 0.98;
+  const top = DT.y0 + ((DT.y1 - DT.y0) - lh * arranjo.linhas.length) / 2;
+  // a foto entra com pop exatamente na batida da palavra
+  const pop = t < it.entra ? 0 : outBack((t - it.entra) / 0.3, 2.4);
   const mais = it.mais;
   const aperta = t >= mais && t < mais + 0.14 ? 0.82 : 1;
   const ripple = entre(t, mais, mais + 0.45);
-  const fotoPulo = t >= mais ? 1 + 0.06 * Math.sin(entre(t, mais, mais + 0.3) * Math.PI) : 1;
+  const fotoPulo = t >= mais ? 1 + 0.05 * Math.sin(entre(t, mais, mais + 0.3) * Math.PI) : 1;
+  const ang = Math.PI / 4, mx = FT.cx + Math.cos(ang) * FT.d * 0.5 * 0.86, my = FT.cy + Math.sin(ang) * FT.d * 0.5 * 0.86, md = MA.d;
+  const corMais = k === 1 || k === 4 ? C.amarelo : C.coral;
   return (
     <AbsoluteFill style={{ background: f.bg, overflow: "hidden" }}>
-      <Sunburst frame={quadro} cx={700} cy={1000} color="#fff" opacity={0.1} rays={14} />
-      {sil.map((s, i) => {
-        const e = mola(t, s.t0 - 0.02, 0.24, 2.6);
-        if (t < s.t0 - 0.02) return null;
-        return (
-          <div key={i} style={{ position: "absolute", left: 96, top: top + i * lh, height: lh, fontFamily: FONT, fontWeight: W.black, fontSize: size, lineHeight: `${lh}px`,
-            letterSpacing: -size * 0.03, whiteSpace: "nowrap", color: i % 2 ? f.b : f.a, transform: `scale(${e}) rotate(${(1 - Math.min(1, e)) * -8}deg)`, transformOrigin: "0% 70%",
-            textShadow: `0 ${size * 0.05}px 0 rgba(34,28,25,0.18)` }}>
-            {s.t}{hifen && i < sil.length - 1 && <span style={{ color: f.hif }}>-</span>}
-          </div>
-        );
-      })}
-      <div style={{ position: "absolute", left: 610 - 185, top: 1080 - 185, width: 370, height: 370, transform: `scale(${foto * fotoPulo}) rotate(${-6 + 4 * Math.sin(t * 2 + k)}deg)` }}>
-        <Adesivo src={staticFile(`pedir-no-uaipertim/fotos/${FOTO[it.ilustracao]}.jpg`)} d={370} borda={15} />
+      <Sunburst frame={quadro} cx={FT.cx} cy={FT.cy} color="#fff" opacity={0.12} rays={14} />
+      {arranjo.linhas.map((l, li) => (
+        <div key={li} style={{ position: "absolute", left: 540 - DT.w / 2 - 40, width: DT.w + 80, top: top + li * lh, height: lh, display: "flex", justifyContent: "center",
+          fontFamily: FONT, fontWeight: W.black, fontSize: size, lineHeight: `${lh}px`, letterSpacing: -size * 0.03, whiteSpace: "nowrap" }}>
+          {l.map((i, j) => {
+            const s0 = sil[i];
+            const e = t < s0.t0 - 0.02 ? 0 : mola(t, s0.t0 - 0.02, 0.24, 2.6);
+            return (
+              <span key={i} style={{ display: "inline-block", marginLeft: !hifen && j ? size * 0.22 : 0, color: i % 2 ? f.b : f.a, opacity: e > 0 ? 1 : 0,
+                transform: `scale(${e}) rotate(${(1 - Math.min(1, e)) * -8}deg)`, transformOrigin: "50% 80%", textShadow: `0 ${size * 0.05}px 0 rgba(34,28,25,0.18)` }}>
+                {s0.t}{hifen && i < sil.length - 1 && <span style={{ color: f.hif }}>-</span>}
+              </span>
+            );
+          })}
+        </div>
+      ))}
+      <div style={{ position: "absolute", left: FT.cx - FT.d / 2, top: FT.cy - FT.d / 2, width: FT.d, height: FT.d, transform: `scale(${pop * fotoPulo}) rotate(${-5 + 3 * Math.sin(t * 2 + k)}deg)` }}>
+        <Adesivo src={staticFile(`pedir-no-uaipertim/fotos/${FOTO[it.ilustracao]}.jpg`)} d={FT.d} borda={FT.borda} />
       </div>
-      {/* o botão "+" (sem preço): aparece e aperta quando a palavra termina */}
-      <div style={{ position: "absolute", left: 840 - 62, top: 1190 - 62, width: 124, height: 124, transform: `scale(${mola(t, it.entra + 0.2, 0.3, 2.4) * aperta})` }}>
-        {ripple > 0 && ripple < 1 && <div style={{ position: "absolute", left: 62 - 62 - 70 * ripple, top: 62 - 62 - 70 * ripple, width: 124 + 140 * ripple, height: 124 + 140 * ripple, borderRadius: "50%", border: `${10 * (1 - ripple) + 2}px solid #fff`, opacity: 1 - ripple }} />}
-        <div style={{ position: "absolute", inset: 0, borderRadius: "50%", background: k === 1 || k === 4 ? C.amarelo : C.coral, boxShadow: `0 8px 0 ${C.tinta}`, border: `6px solid ${C.tinta}` }} />
-        <svg width={124} height={124} viewBox="0 0 124 124" style={{ position: "absolute", left: 0, top: 0 }}>
+      {/* o botão "+" (sem preço), proporcional à foto: entra logo depois dela e aperta quando a palavra termina */}
+      <div style={{ position: "absolute", left: mx - md / 2, top: my - md / 2, width: md, height: md, transform: `scale(${(t < it.entra + 0.12 ? 0 : mola(t, it.entra + 0.12, 0.3, 2.4)) * aperta})` }}>
+        {ripple > 0 && ripple < 1 && <div style={{ position: "absolute", left: -100 * ripple, top: -100 * ripple, width: md + 200 * ripple, height: md + 200 * ripple, borderRadius: "50%", border: `${14 * (1 - ripple) + 3}px solid #fff`, opacity: 1 - ripple }} />}
+        <div style={{ position: "absolute", inset: 0, borderRadius: "50%", background: corMais, boxShadow: `0 10px 0 ${C.tinta}`, border: `8px solid ${C.tinta}` }} />
+        <svg width={md} height={md} viewBox="0 0 124 124" style={{ position: "absolute", left: 0, top: 0 }}>
           <path d="M62 34 V90 M34 62 H90" stroke={k === 1 || k === 4 ? C.tinta : "#fff"} strokeWidth={14} strokeLinecap="round" />
         </svg>
       </div>
@@ -444,7 +484,7 @@ const Desfile: React.FC<{ t: number; quadro: number }> = ({ t, quadro }) => {
       <AbsoluteFill style={{ transform: `translateX(${(1 - e) * 1080}px)`, boxShadow: u < 1 ? "-30px 0 40px rgba(34,28,25,0.25)" : undefined }}>
         <CartaoItem t={t} quadro={quadro} it={cur} k={k} />
       </AbsoluteFill>
-      <Selo x={100} y={1262} size={22} />
+      <Selo x={96} y={1288} size={22} />
     </AbsoluteFill>
   );
 };

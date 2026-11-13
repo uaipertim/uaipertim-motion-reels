@@ -10,6 +10,8 @@
     "rapidim": { "base": 1250, "altura": 470, "pose": "moto" },
     "fecho": { "cx": 285, "base": 1318, "altura": 400, "pose": "acenando" }
   },
+  "lojas": { "_doc": "cena 3: a moldura (modal) é um retângulo [x0, y0, x1, y1] com traço 'esp' centrado na borda e cantos 'raio'; a grade 3×3 fica dentro dela com a MESMA margem interna 'margem' nos 4 lados (da borda de dentro do traço até a caixa visível das lojinhas: placa no alto, calçada embaixo). 'gy' = o vão entre a calçada de uma fileira e a placa da de baixo. O tamanho das lojinhas sai daí (scripts/preparar.py → cena.json → lojas).", "moldura": [190, 420, 890, 1290], "esp": 14, "raio": 48, "margem": 44, "gy": 30, "calcada": [-6, 14] },
+  "desfile": { "_doc": "cena 5: as palavras gigantes no alto (texto: faixa y0–y1, largura máxima w centrada em x 540, letra até max px); a foto em adesivo (círculo de diâmetro d, ~57% da largura, centrado em cx, cy, borda branca) e o botão + (diâmetro d) na borda de baixo à direita da foto. A foto termina acima da faixa da legenda.", "texto": { "y0": 290, "y1": 640, "w": 800, "max": 260 }, "foto": { "cx": 540, "cy": 975, "d": 620, "borda": 22 }, "mais": { "d": 190 } },
   "gancho": { "linhas": ["Bateu a", "fome?"], "cy": [470, 680], "size": 230 },
   "logo": { "cx": 540, "cy": 780, "d": 560 },
   "fecho": { "facim": { "cy": 400, "size": 200 }, "logo": { "cx": 540, "cy": 690, "d": 330 }, "frase": { "cy": 930, "size": 66 }, "selo": { "cx": 690, "cy": 1150 } }

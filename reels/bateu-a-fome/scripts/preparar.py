@@ -89,8 +89,25 @@ ev['gancho'] = {'escrita': [[0.0, r3(pb['t1'] + 0.05)], [r3(pa['t0']), r3(pa['t0
 pt, pu = palavra(c_logo, 'tem'), palavra(c_logo, 'UaiPertim')
 ev['logo'] = {'cai': c_logo['t0'], 'bate': r3(c_logo['t0'] + 0.22), 'toldo': r3(pt['t0'] - 0.04), 'explode': r3(pu['t0'] - 0.04)}
 # 3 · lojas: as fileiras de lojinhas descem rápido e param em "lugar"; a moldura fecha em "só"
+# a grade 3×3 dentro da moldura (modal), com a mesma margem interna nos 4 lados. A caixa visível de uma lojinha de
+# largura w (viewBox 0 0 200 256, k = w/200): x de 2k a 198k e y de −7k (a placa) a 257k; a calçada da fileira vai de
+# base−6 a base+14. Altura do conteúdo = 263k (1ª fileira) + 2 × (263k + 14 + gy) + 14; largura = 3 × 196k + 2 × gx.
+LJ = LAY['lojas']
+mx0, my0, mx1, my1 = LJ['moldura']
+ix0, iy0, ix1, iy1 = mx0 + LJ['esp'] / 2, my0 + LJ['esp'] / 2, mx1 - LJ['esp'] / 2, my1 - LJ['esp'] / 2      # a borda de dentro do traço
+M, GY, (c0_, c1_) = LJ['margem'], LJ['gy'], LJ['calcada']
+cw, ch = (ix1 - ix0) - 2 * M, (iy1 - iy0) - 2 * M
+k = (ch - 2 * (c1_ + GY) - c1_) / 789.0
+GX = (cw - 588 * k) / 2
+assert GX >= 20 * k, 'a grade não cabe na largura da moldura'
+passo = 263 * k + c1_ + GY
+grade = {'w': round(200 * k, 3), 'k': round(k, 5), 'gx': round(GX, 2), 'passo': round(passo, 3),
+         'cx': [round(ix0 + M + 98 * k + c * (196 * k + GX), 2) for c in range(3)],
+         'base': [round(iy0 + M + 263 * k + r * passo, 2) for r in range(3)],
+         'calcada': [c0_, c1_], 'conteudo': [ix0 + M, iy0 + M, ix1 - M, iy1 - M], 'interno': [ix0, iy0, ix1, iy1],
+         'moldura': LJ['moldura'], 'esp': LJ['esp'], 'raio': LJ['raio'], 'margem': M}
 ev['lojas'] = {'freia': r3(palavra(c_loja, 'lugar')['t0'] - 0.25), 'para': r3(palavra(c_loja, 'lugar')['t0']), 'moldura': r3(palavra(c_loja, 'só')['t0']),
-               'gloria': r3(palavra(c_loja, 'Glória')['t0'])}
+               'gloria': r3(palavra(c_loja, 'Glória')['t0']), 'grade': grade}
 # 4 · na mão: o celular sobe na mão; "Na palma da sua mão!" entra palavra por palavra
 ev['mao'] = {'sobe': c_mao['t0'], 'palavras': [r3(w['t0'] - 0.03) for w in c_mao['palavras']]}
 # 5 · desfile: a palavra GIGANTE de cada item entra na batida em que (ou logo antes de) a voz começa a dizê-la; as sílabas
@@ -172,6 +189,7 @@ cues += [{'t': c_mao['t0'], 'type': 'whoosh'}] + [{'t': t, 'type': 'pop', 'f': 5
 cues += [{'t': E['mao']['palavras'][-1], 'type': 'neq'}]
 for k, it in enumerate(E['desfile']['itens']):
     cues.append({'t': it['entra'], 'type': 'whoosh' if k == 0 else 'slide'})
+    cues.append({'t': it['entra'] + 0.02, 'type': 'pop', 'f': 460 + 30 * k})     # a foto entra com pop na batida
     cues += [{'t': s['t0'], 'type': 'pop', 'f': 600 + 110 * i + 40 * k} for i, s in enumerate(it['silabas'])]
     cues.append({'t': it['mais'], 'type': 'chip'})
 cues += [{'t': c_pag['t0'], 'type': 'whoosh'}] + [{'t': s['em'], 'type': 'stamp'} for s in E['pagamento']['selos']]
