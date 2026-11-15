@@ -6,13 +6,51 @@ TikTok + Instagram (Semana UaiPertim: terça, 17/11, 20h).
 
 | Arquivo | O que é |
 |---|---|
-| `tudo-pertim-08.mp4` | o vídeo final: 1080×1920, 60 fps, H.264 + AAC 48 kHz, **50,25 s**, −14,0 LUFS, pico real −1,6 dBTP |
-| `capa-3x4.jpg` | a capa para o Instagram (1080×1440, recorte 3:4 do quadro 0, como no EP.07) |
+| `tudo-pertim-08.mp4` | o vídeo final **com a legenda gravada**: 1080×1920, 60 fps, H.264 + AAC 48 kHz, **50,25 s**, −14,0 LUFS, pico real −1,6 dBTP |
+| `capa-3x4.jpg` | a capa para o Instagram (1080×1440, recorte 3:4 do quadro 0, como no EP.07); **não mudou** com a legenda, porque o quadro 0 não tem legenda (idêntica, pixel a pixel) |
 | `capa.png` | o quadro 0 (a capa do TikTok) |
-| `tudo-pertim-08-voz.mp4` | o mesmo vídeo, só com a voz |
-| `storyboard.jpg`, `zonas-seguras.jpg` | montagem/pronto por capítulo e a revisão das zonas seguras |
+| `tudo-pertim-08-voz.mp4` | o mesmo vídeo (com a legenda), só com a voz |
+| `storyboard.jpg`, `zonas-seguras.jpg` | montagem/pronto por capítulo e a revisão das zonas seguras (agora com a faixa da legenda, em amarelo) |
 
 Revisão técnica (`reels/tudo-pertim/output/tudo-pertim-08/revisao/relatorio-tecnico.txt`): **RESULTADO: aprovado**. Capa: dentro da regra das capas (palavra-chave "calor" 36%, linhas do título 70% e 41%, bloco centrado no recorte 3:4).
+
+## Legenda (re-render de 15/11)
+
+A legenda gravada passou a fazer parte do motor (vale para todos os episódios daqui pra frente; os 01–07 ficam como foram publicados, com `"legenda": false`). O EP.08 foi renderizado de novo **sem mudar voz, tomadas, tempos nem cenas**: o gancho continua com a tomada f, e a mix, os cues, a duração e a capa ficaram idênticos.
+
+- **Visual:** o dos Reels do Instagram (`src/personagem/Legenda.tsx` da `claude/explica-so`, portado para o canvas). Pílula tinta a 85%, Poppins 800 a 42 px, texto creme e a palavra-chave em amarelo. As palavras que ainda vão ser faladas ficam a 45%.
+- **Texto e tempo:** a fala de cada capítulo, na grafia da tela ("UaiPertim", "pertim", "do Glória"), no tempo das palavras de `linha.json`, que vem do alinhamento (timestamps) das tomadas instaladas. Todas as tomadas tinham alinhamento: **nenhuma voz nova, nenhuma chamada à API e nenhum alinhamento calculado à parte.**
+- **Posição:** faixa x 90–930, y 1470–1600, centrada em x 510, logo abaixo da cena. Some nas trocas e no quadro 0.
+- **Palavra-chave:** a marcada no apoio: *acabou* (01), *faz* (02), *pote* (03), *trincando* (04), *derreter* (05). No 06, o marcado ("qual é o seu") não está na fala, então nenhuma palavra fica amarela. A capa e o fecho não têm apoio.
+
+| Cap. | Tempo | Bloco |
+|---|---|---|
+| 00 | 0,12–1,67 s | Que calor, sô! |
+| 00 | 1,67–3,42 s | Tá derretendo aí também? |
+| 01 | 4,52–6,52 s | O ventilador já desistiu… |
+| 01 | 6,52–9,26 s | e o gelo do congelador **acabou**. |
+| 02 | 10,77–12,23 s | Açaí bem gelado, |
+| 02 | 12,23–13,97 s | com granola e leite em pó? |
+| 02 | 13,97–14,77 s | A loja de açaí |
+| 02 | 14,77–16,20 s | do Glória **faz**. |
+| 03 | 17,27–19,67 s | Picolé, sorvete de **pote**… |
+| 03 | 19,67–21,93 s | e água de coco geladinha. |
+| 04 | 23,52–24,52 s | E o gelo? |
+| 04 | 24,52–26,32 s | O mercadim tem saco de gelo |
+| 04 | 26,32–28,42 s | e refri **trincando**. |
+| 05 | 29,77–31,83 s | Chegou ainda geladinho… |
+| 05 | 31,83–33,71 s | antes de **derreter**. |
+| 06 | 36,02–37,65 s | Comenta aí: no calor, |
+| 06 | 37,65–38,82 s | você vai de quê? |
+| 06 | 38,82–41,64 s | Açaí? Sorvete? Ou picolé? |
+| 07 | 43,02–44,68 s | Que calor, sô! |
+| 07 | 44,68–47,20 s | Relaxa, tem UaiPertim. |
+
+**Atenção no fecho:** a fala do fecho vai até 49,0 s, mas os 3 últimos segundos começam em 47,25 s. Pela regra (legenda some nos 3 s finais, com a logo parada), a legenda vai até 47,20 s e termina em "Relaxa, tem UaiPertim.". O trecho "Tudo pertim de você. Segue a gente!" (46,8–49,0 s) fica sem bloco de legenda, mas já está escrito na tela (a assinatura "Tudo pertim de você." e o chip "Segue @uaipertim"). Isso acontece em todos os episódios da série, porque a fala do fecho sempre termina dentro dos 3 s finais. Para legendar o fecho inteiro, seria preciso alongar o fecho (mudar os tempos); me avise se quiser.
+
+**Revisão (`qa.py`, seção LEGENDA): aprovada.** A legenda bate com a fala (78 palavras em 20 blocos, na ordem); grafia da tela; blocos de 3 a 6 palavras, sempre 1 linha (a maior com 672 px); cada palavra na tela enquanto é falada; nunca nas trocas nem nos 3 s finais; a pílula sempre dentro da faixa, fora da coluna de botões e sem encostar em nenhuma peça (143 caixas); legenda na tela em todas as amostras com fala.
+
+Obs.: a parte de baixo da faixa (y 1540–1600) fica dentro da margem da interface do TikTok (a linha azul na `zonas-seguras.jpg`), onde ficam a descrição e o @ do post. Mantive a faixa como você pediu; se a legenda ficar coberta no app, dá para subir a faixa alguns pixels.
 
 ## Duração por capítulo
 

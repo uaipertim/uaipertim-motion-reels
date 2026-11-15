@@ -8,7 +8,7 @@ OK     60 fps, 3015 quadros
 OK     duração 50.25 s (alvo 45–60 s)
 OK     áudio aac 48000 Hz, 2 canais, 269 kb/s
 OK     vídeo e áudio com a mesma duração (Δ 0 ms)
-       arquivo 17.5 MB, 2.8 Mb/s
+       arquivo 17.9 MB, 2.8 Mb/s
        capítulos: 00 3.50 s · 01 5.50 s · 02 5.75 s · 03 5.50 s · 04 5.50 s · 05 5.50 s · 06 6.25 s · 07 7.50 s · trocas de 0.8 s
 
 SOM
@@ -77,6 +77,47 @@ OK     fecho com 7.50 s (alvo 6–8 s)
 OK     fecho: a última mudança de texto é em 47.20 s; o texto fica parado 3.05 s até o fim (mínimo 3 s)
 OK     a logo oficial está na tela em todos os 12 quadros amostrados dos 3 últimos segundos (parada desde 46.57 s)
 OK     fecho: 9 elementos (logo oficial, título, chip, seta, marca) iguais entre 47.25 s e o fim (maior diferença média 0.98 de 255)
-       elementos: rótulo 0.45, título, linha 1 0.58, título, linha 2 0.34, logo oficial 0.48, Pertim 0.82, assinatura 0.80, chip Segue 0.31, seta 0.91, marca 0.98
+       elementos: rótulo 0.45, título, linha 1 0.58, título, linha 2 0.33, logo oficial 0.47, Pertim 0.80, assinatura 0.81, chip Segue 0.31, seta 0.89, marca 0.98
+
+LEGENDA (gravada no vídeo)
+OK     o texto da legenda é a fala de cada capítulo, na ordem (78 palavras em 20 blocos)
+OK     grafia da tela na legenda ("UaiPertim", "pertim", "do/no Glória"; nunca a grafia enviada à voz)
+OK     fecho: a legenda acompanha a fala até 47.20 s e some nos 3 s finais; o trecho falado depois ("Tudo pertim de você. Segue a gente!", a partir de 46.82 s) já está na tela (assinatura e chip)
+OK     blocos de 3 a 6 palavras
+OK     no máximo 2 linhas por bloco, cada uma com até 740 px (maior: 672 px)
+OK     tempo: cada palavra está na tela enquanto é falada; o bloco entra com a voz; nunca nas trocas nem nos 3 s finais; nunca dois blocos juntos
+OK     a capa (quadro 0) sem legenda: o 1º bloco entra em 0.12 s
+       cap 00 · palavra-chave: — (sem apoio marcado)
+       cap 01 · palavra-chave: acabou.
+       cap 02 · palavra-chave: faz.
+       cap 03 · palavra-chave: pote…
+       cap 04 · palavra-chave: trincando.
+       cap 05 · palavra-chave: derreter.
+       cap 06 · palavra-chave: — (o marcado no apoio, "qual é o seu", não está na fala)
+       cap 07 · palavra-chave: — (sem apoio marcado)
+OK     a palavra-chave em amarelo é a marcada no apoio do capítulo
+OK     a pílula da legenda sempre na faixa x 90–930, y 1470–1600 e fora da coluna de botões (143 caixas)
+OK     a legenda nunca encosta em título, apoio, balão, cena ou no Pertim
+OK     sempre que uma palavra é falada, a legenda dela está na tela (amostras a cada 0,25 s)
+       cap 00   0.12–  1.67 s · Que calor, sô!
+       cap 00   1.67–  3.42 s · Tá derretendo aí também?
+       cap 01   4.52–  6.52 s · O ventilador já desistiu…
+       cap 01   6.52–  9.26 s · e o gelo do congelador acabou.
+       cap 02  10.77– 12.23 s · Açaí bem gelado,
+       cap 02  12.23– 13.97 s · com granola e leite em pó?
+       cap 02  13.97– 14.77 s · A loja de açaí
+       cap 02  14.77– 16.20 s · do Glória faz.
+       cap 03  17.27– 19.67 s · Picolé, sorvete de pote…
+       cap 03  19.67– 21.93 s · e água de coco geladinha.
+       cap 04  23.52– 24.52 s · E o gelo?
+       cap 04  24.52– 26.32 s · O mercadim tem saco de gelo
+       cap 04  26.32– 28.42 s · e refri trincando.
+       cap 05  29.77– 31.83 s · Chegou ainda geladinho…
+       cap 05  31.83– 33.71 s · antes de derreter.
+       cap 06  36.02– 37.65 s · Comenta aí: no calor,
+       cap 06  37.65– 38.82 s · você vai de quê?
+       cap 06  38.82– 41.64 s · Açaí? Sorvete? Ou picolé?
+       cap 07  43.02– 44.68 s · Que calor, sô!
+       cap 07  44.68– 47.20 s · Relaxa, tem UaiPertim.
 
 RESULTADO: aprovado
