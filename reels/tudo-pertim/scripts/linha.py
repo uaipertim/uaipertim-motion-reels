@@ -108,6 +108,73 @@ def palavras(texto, al, desloc, cap):
     return out
 
 
+VOG = {'A': 'aáàâã', 'E': 'eéêií', 'O': 'oóôõuú'}
+FPS_BOCA = 60
+
+
+def bocas(al, desloc, v0, v1, wav=None):
+    """A BOCA DA FALA (o Pertim falando, desde o ep08; "boca": true no diagrama do capítulo): uma letra por quadro (60 fps)
+    de v0 − 0,05 s a v1 + 0,05 s, pelas regras do rig do personagem (src/personagem/README.md): vogal aberta → A; "e/i" → E;
+    "o/u" → O; "m/b/p" → M; pausa → R (o sorriso); as outras consoantes pegam a forma da vogal seguinte da palavra; nenhuma
+    boca fica menos de 3 quadros. Com o áudio do capítulo (fora da prévia), o quadro em que a voz está quase em silêncio
+    (< 8% do pico do envelope de 30 ms) fica com a boca do sorriso: a boca só mexe quando há som."""
+    L = letras(al)
+    forma = []
+    for j, (i, c, a, b) in enumerate(L):
+        cl = c.lower()
+        f = next((k for k, v in VOG.items() if cl in v), None)
+        if f is None and cl in 'mbp':
+            f = 'M'
+        if f is None and c.isalpha():
+            for _, c2, _, _ in L[j + 1:]:
+                if not c2.isalpha():
+                    break
+                f = next((k for k, v in VOG.items() if c2.lower() in v), None)
+                if f:
+                    break
+            if f is None:
+                for _, c2, _, _ in reversed(L[:j]):
+                    if not c2.isalpha():
+                        break
+                    f = next((k for k, v in VOG.items() if c2.lower() in v), None)
+                    if f:
+                        break
+        forma.append((a + desloc, b + desloc, f or 'R'))
+    t0 = v0 - 0.05
+    n = int(np.ceil((v1 + 0.05 - t0) * FPS_BOCA))
+    out = []
+    env = None
+    if wav is not None:
+        sr, y = wav
+        e = np.sqrt(np.convolve(y.astype(np.float64) ** 2, np.ones(int(0.03 * sr)) / int(0.03 * sr), 'same'))
+        env = (sr, e, e.max())
+    for q in range(n):
+        t = t0 + (q + 0.5) / FPS_BOCA
+        f = next((x[2] for x in forma if x[0] <= t < x[1]), 'R')
+        if env is not None and f != 'R':
+            sr, e, mx = env
+            k = int(round((t - desloc) * sr))
+            if not 0 <= k < len(e) or e[k] < 0.08 * mx:
+                f = 'R'
+        out.append(f)
+    # nenhuma boca com menos de 3 quadros: a corrida curta vira a anterior (ou a seguinte, no começo)
+    mudou = True
+    while mudou:
+        mudou = False
+        runs, i = [], 0
+        while i < n:
+            j = i
+            while j < n and out[j] == out[i]:
+                j += 1
+            runs.append((i, j)); i = j
+        for r, (i, j) in enumerate(runs):
+            if j - i < 3 and len(runs) > 1:
+                viz = out[runs[r - 1][0]] if r > 0 else out[runs[r + 1][0]]
+                out[i:j] = [viz] * (j - i); mudou = True
+                break
+    return {'fps': FPS_BOCA, 't0': round(t0, 4), 'bocas': ''.join(out)}
+
+
 def estimado(texto_api):
     """PRÉVIA: um alinhamento estimado (≈14 letras/s, pausas na pontuação). Só para o visual; nunca para o vídeo final."""
     ch, st, en, t = [], [], [], 0.05
@@ -211,10 +278,15 @@ def main():
         t1 = np.ceil(t1 / (BT / 2) - 1e-6) * (BT / 2)      # a troca começa num meio tempo da batida
         for i, a in enumerate(apoios):
             a['ate'] = round(apoios[i + 1]['t'] if i + 1 < len(apoios) else t1 + TR, 4)
+        boca = None
+        if c['diagrama'].get('boca'):
+            wav = None if PREVIA else wavfile.read(os.path.join(AUD, 'voz', f'cap-{n:02d}.wav'))
+            boca = bocas(al, desloc, v0, v1, wav)
         caps.append({'n': n, 'rotulo': c.get('rotulo'), 'tom': c.get('tom', ['creme', 'pessego', 'amarelo', 'verde'][n % 4]),
                      'titulo': c['titulo'], 'risca_titulo': c.get('risca_titulo'), 'diagrama': c['diagrama'],
                      't0': round(t0, 4), 't1': round(t1, 4), 'voz_t0': round(v0, 4), 'voz_t1': round(v1, 4),
                      'palavras': ws, 'frases': frases, 'apoios': apoios, 'seed': F.get('seed'),
+                     **({'boca': boca} if boca else {}),
                      **{k: c[k] for k in ('ceu', 'relogio') if k in c}})   # o céu e o relógio do capítulo (opcionais, ep02 em diante)
         pistas.append((n, ini, fim, desloc))
         t = t1 + TR if n + 1 < len(SCRIPT['capitulos']) else t1

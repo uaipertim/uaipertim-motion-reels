@@ -1,0 +1,24 @@
+Tomadas do capítulo 00 de tudo-pertim-08 (voz Victor Pinho, eleven_v4; texto enviado: "Que calor, sô! Tá derretendo aí também?"; contexto: previous_text não, next_text sim) — 2026-11-15 15:52
+
+gancho-a.mp3 · seed 42 · 2.88 s · conferência: ok · F0 mediano 187 Hz · também: sobe -5.9 st, termina -0.7 st
+gancho-b.mp3 · seed 1042 · 2.88 s · conferência: ok · F0 mediano 186 Hz · também: sobe -11.8 st, termina -6.6 st
+gancho-c.mp3 · seed 2042 · 2.88 s · conferência: ok · F0 mediano 176 Hz · também: sobe +0.0 st, termina -4.4 st
+
+NENHUMA tomada em que também terminem todas acima da mediana.
+
+Tomadas do capítulo 00 de tudo-pertim-08 (voz Victor Pinho, eleven_v4; texto enviado: "Que calor, sô! Tá derretendo aí também?"; contexto: previous_text não, next_text não) — 2026-11-15 15:53
+
+gancho-d.mp3 · seed 3042 · 2.96 s · conferência: ok · F0 mediano 181 Hz · também: sobe -14.0 st, termina -3.7 st
+gancho-e.mp3 · seed 4042 · 2.96 s · conferência: ok · F0 mediano 182 Hz · também: sobe +1.6 st, termina +0.0 st
+gancho-f.mp3 · seed 5042 · 2.96 s · conferência: ok · F0 mediano 185 Hz · também: sobe +4.4 st, termina -0.4 st
+
+NENHUMA tomada em que também terminem todas acima da mediana.
+
+Tomadas do capítulo 00 de tudo-pertim-08 (voz Victor Pinho, eleven_v4; texto enviado: "Que calor, sô! Tá derretendo aí também?"; contexto: previous_text não, next_text não) — 2026-11-15 15:53
+
+gancho-g.mp3 · seed 6042 · 2.96 s · conferência: ok · F0 mediano 184 Hz · também: sobe -8.5 st, termina -2.1 st
+gancho-h.mp3 · seed 7042 · 2.88 s · conferência: ok · F0 mediano 182 Hz · também: sobe -12.5 st, termina -6.1 st
+gancho-i.mp3 · seed 8042 · 2.96 s · conferência: ok · F0 mediano 186 Hz · também: sobe +6.7 st, termina -1.4 st
+
+NENHUMA tomada em que também terminem todas acima da mediana.
+

@@ -264,6 +264,13 @@ def fall(d=0.7):
     return w * 0.9
 
 
+def plic(f=800):
+    """a gota pingando: um tom curto que sobe rápido e some"""
+    d = 0.08
+    t = tt(d)
+    return np.sin(2 * np.pi * np.cumsum(f * (1 + 2.4 * t / d)) / SR) * np.exp(-t / 0.018) * np.minimum(1, t / 0.002)
+
+
 def pop(f=700):
     t = tt(0.12)
     return np.sin(2 * np.pi * f * t * (1 + 0.5 * np.exp(-t / 0.02))) * np.exp(-t / 0.03)
@@ -662,6 +669,39 @@ for c in CUES['cues']:
         place(sfx, v, t, 0.3, 0.1)
     elif ty == 'heart':
         place(sfx, pop(900), t, 0.4); place(sfx, sparkle(), t + 0.05, 0.22); place(send, sparkle(), t, 0.12)
+    elif ty == 'picole':
+        # o picolé (ep08): o vento dele passando (anda de um lado ao outro), a calda escorrendo (um sopro molhado, grave,
+        # descendo) e as gotas pingando ("plic": um tom curto que sobe rápido e some)
+        dd, sd = max(0.3, d), c.get('dir', 1)
+        place_pan(sfx, whoosh(dd * 0.42, 400, 2600, 0.5, 1.1), t, 0.2, -0.8 * sd, 0.8 * sd)
+        tq = tt(dd * 0.55)
+        calda = filt(noise(dd * 0.55), [140, 1100], 'band') * (0.65 + 0.35 * np.sin(2 * np.pi * 13 * tq)) * np.sin(np.pi * np.clip(tq / (dd * 0.55), 0, 1)) ** 2
+        place(sfx, sweep(calda, 900, 200, 1.1) * 2.2, t + dd * 0.18, 0.26, 0.0)
+        for j in range(6):
+            tp = t + dd * (0.3 + 0.62 * j / 5) + 0.012 * rng.uniform(-1, 1)
+            place(sfx, plic(650 + 450 * rng.uniform()), tp, 0.2 * (0.7 + 0.3 * rng.uniform()), rng.uniform(-0.6, 0.6))
+        place(sfx, sparkle(), t + dd * 0.85, 0.08)
+    elif ty == 'plic':
+        place(sfx, plic(820), t, 0.32, 0.2); place(send, plic(820), t, 0.06)
+    elif ty == 'nevoa':
+        # a névoa gelada saindo (freezer, geladeira, caixa térmica): um sopro macio que desce, com o brilhinho do gelado
+        place(sfx, whoosh(0.55, 2200, 600, 0.5, 0.9), t, 0.14, 0.1); place(sfx, sparkle(), t + 0.12, 0.08)
+    elif ty == 'ventilador':
+        # o ventilador cansado: o zumbido das pás (a batida das pás desacelerando até parar) e o motor engasgando
+        dv = max(0.6, d)
+        tq = tt(dv)
+        rate = 11 * np.clip(1 - tq / dv, 0, 1) ** 1.5
+        mod = 0.55 + 0.45 * np.sin(2 * np.pi * np.cumsum(rate) / SR)
+        zum = (filt(noise(dv), [250, 1400], 'band') * 0.7 + np.sin(2 * np.pi * np.cumsum(90 + 40 * rate / 11) / SR) * 0.25) * mod
+        zum *= np.minimum(1, tq / 0.08) * np.clip((dv - tq) / 0.35, 0, 1) * (0.4 + 0.6 * np.clip(1 - tq / dv, 0, 1))
+        place(sfx, zum, t, 0.3, -0.3)
+        for j in range(3):
+            place(sfx, click(0.03, 900 + 200 * j, 0.006), t + dv * (0.55 + 0.12 * j), 0.25, -0.3)
+    elif ty == 'estouro':
+        # o termômetro estourando (capa do ep08): o "pá!" (estalo + baque), o tilintar do vidro e a tampinha voando
+        big = add(filt(noise(0.08), [700, 7000], 'band') * np.exp(-tt(0.08) / 0.012), thump(0.2, 120, 0.04, 1.0) * 0.7, pop(620) * 0.5)
+        place(sfx, big, t, 0.45, 0.2); place(send, big, t, 0.07)
+        place(sfx, glass(2900, 0.5), t + 0.03, 0.08, 0.3); place(sfx, whoosh(0.3, 900, 3000, 0.5, 1.2), t + 0.04, 0.12, 0.5)
     else:
         raise ValueError('cue desconhecido: ' + ty)
 sfx *= SFX_G

@@ -380,6 +380,11 @@
       ctx.fillStyle = C.madeira; ctx.beginPath(); ctx.moveTo(-13, -2); ctx.lineTo(13, -2); ctx.lineTo(0, 24); ctx.closePath(); ctx.fill();
       ctx.fillStyle = C.coralLight; ctx.beginPath(); ctx.arc(0, -8, 15, 0, TAU); ctx.fill();
       ctx.fillStyle = C.papel; ctx.beginPath(); ctx.arc(-5, -13, 4, 0, TAU); ctx.fill();
+    } else if (kind === 'acai') {                      // o copinho de açaí com a granola e a colherzinha
+      ctx.fillStyle = '#4B1F4E'; ctx.beginPath(); ctx.moveTo(-13, 19); ctx.lineTo(13, 19); ctx.lineTo(18, -5); ctx.lineTo(-18, -5); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = '#63285F'; ctx.beginPath(); ctx.moveTo(-18, -5); ctx.bezierCurveTo(-17, -19, 17, -19, 18, -5); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = '#E3B66A'; for (const [gx, gy] of [[-8, -10], [2, -13], [10, -8]]) { ctx.beginPath(); ctx.arc(gx, gy, 3, 0, TAU); ctx.fill(); }
+      ctx.strokeStyle = C.coral; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(7, -12); ctx.lineTo(17, -26); ctx.stroke();
     } else if (kind === 'misterio') {                   // a loja que ainda não se sabe qual é
       txt(ctx, '?', 0, 16, { size: 46, weight: 900, align: 'center', color: C.coral });
     } else {
@@ -1299,6 +1304,7 @@
     if (TRANS === 'sacola') return travessiaSacola(k, u);
     if (TRANS === 'pizza') return travessiaPizza(k, u);
     if (TRANS === 'baloes') return travessiaBaloes(k, u);
+    if (TRANS === 'picole') return travessiaPicole(k, u);
     const v = VARIA[k % VARIA.length], dir = k % 2 === 0 ? -1 : 1;
     const e = 0.75 * u + 0.25 * E.inOutSine(u);
     const x = lerp(dir > 0 ? -260 : W + 260, dir > 0 ? W + 260 : -260, e);
@@ -1590,6 +1596,7 @@
     if (TRANS === 'sacola') return drawWipeSacola(ctx, t, k, u);
     if (TRANS === 'pizza') return drawWipePizza(ctx, t, k, u);
     if (TRANS === 'baloes') return drawWipeBaloes(ctx, t, k, u);
+    if (TRANS === 'picole') return drawWipePicole(ctx, t, k, u);
     const T = travessia(k, u);
     // a cortina: uma faixa creme macia ao longo da borda da varredura
     const g = ctx.createLinearGradient(T.borda - 80, 0, T.borda + 80, 0);
@@ -1900,7 +1907,7 @@
       const MS = 320;                                       // a motinha da capa
       // a altura do adesivo inclinado (a mesma conta de adesivo(): h 64, −4°, mais a folga da borda)
       const aw = 2 * 26 + tw(cap.rotulo, 26, 900, 3), rot = 4 * DEG;
-      const chipH = 2 * (32 * Math.cos(rot) + (aw / 2) * Math.sin(rot) + 5), ilH = d.cena === 'porta' || d.cena === 'churrasco' || d.cena === 'segunda' || d.cena === 'fogao' || d.cena === 'bolo' ? 330 : MS * 1.0;
+      const chipH = 2 * (32 * Math.cos(rot) + (aw / 2) * Math.sin(rot) + 5), ilH = d.cena === 'porta' || d.cena === 'churrasco' || d.cena === 'segunda' || d.cena === 'fogao' || d.cena === 'bolo' || d.cena === 'sol' ? 330 : MS * 1.0;
       const titleH = 0.78 * S + 1.0 * S + 0.2 * S;
       const total = chipH + 44 + titleH + 56 + ilH;
       const top = 960 - total / 2;                          // o bloco centrado no recorte 3:4 (y 240–1680)
@@ -1915,6 +1922,13 @@
       cap.ev.confete = at(cap, d.confete && d.confete.em, cap.t0 + 1.2);
       cap.ev.buzina = Math.min(at(cap, d.buzina && d.buzina.em, cap.t1 - 1.4), cap.t1 - 0.95);
       cap.ev.sai = cap.t1 - 0.5;                            // a motinha arranca e sai pela esquerda
+      if (d.cena === 'sol') {
+        // o sol de rachar (cansado, ofegando) e o termômetro, já estourando no quadro 0; na palavra, o estouro grande
+        cap.ev.estoura = at(cap, d.estoura && d.estoura.em, cap.t0 + 1.6);
+        cap.ev.confete = null;
+        cue(cap.ev.estoura, 'estouro'); cue(cap.ev.estoura + 0.05, 'jump');
+        return;
+      }
       if (d.cena === 'bolo') {
         // o prato de bolo vazio leva o susto na palavra (e os balões balançam)
         cap.ev.susto = at(cap, d.susto && d.susto.em, cap.t0 + 2.0);
@@ -1997,6 +2011,7 @@
       if (d.cena === 'segunda') return CENAS.capa.segunda(ctx, cap, t);
       if (d.cena === 'fogao') return CENAS.capa.fogao(ctx, cap, t);
       if (d.cena === 'bolo') return CENAS.capa.bolo(ctx, cap, t);
+      if (d.cena === 'sol') return CENAS.capa.sol(ctx, cap, t);
       // a motinha (o mascote) chegando da direita: no quadro 0 está freando, inclinada, com fumaça e a marca do pneu
       const M = Ly.moto, MS = cap.motoS, u = p(t, 0, 0.75), us = p(t, ev.sai, cap.t1);
       const x = M.x + 34 * (1 - E.outCubic(u)) - 1000 * E.inCubic(us);
@@ -4691,6 +4706,822 @@
     },
   };
 
+  // ===================== peças do ep08 ("Que calor, sô!")
+
+  const GELO = { claro: '#E4F1F4', borda: '#B9D3DA', azul: '#9FD3EA', fundo: '#CFE8EF' };
+  const ACAI = { roxo: '#4B1F4E', roxo2: '#63285F', luz: '#8E4A8A' };
+  // a gotinha (de suor ou de água), no desenho da gota de suor do Pertim (src/personagem, efeito "sweat"): branca com
+  // contorno tinta. (x, y) = a ponta de cima; s = altura; o: cor, borda, alpha, rot, contorno
+  function gota(ctx, x, y, s, o = {}) {
+    if ((o.alpha ?? 1) <= 0.01) return;
+    const k = s / 24;
+    ctx.save(); ctx.globalAlpha *= o.alpha ?? 1; ctx.translate(x, y); ctx.rotate(o.rot || 0); ctx.scale(k, k);
+    ctx.beginPath(); ctx.moveTo(0, 0); ctx.quadraticCurveTo(9, 12, 5, 19); ctx.quadraticCurveTo(0, 24, -5, 19); ctx.quadraticCurveTo(-9, 12, 0, 0); ctx.closePath();
+    ctx.fillStyle = o.cor || C.branco; ctx.fill();
+    if (o.contorno !== false) { ctx.lineWidth = 2.5; ctx.lineJoin = 'round'; ctx.strokeStyle = o.borda || C.tinta; ctx.stroke(); }
+    ctx.restore();
+  }
+  // as ondas de calor subindo (risquinhos ondulados que sobem e somem); (x, y) = o pé; w = largura; h = altura
+  function ondasCalor(ctx, x, y, w, h, t, a = 1, cor = C.coralLight) {
+    if (a <= 0.01) return;
+    ctx.save(); ctx.lineCap = 'round'; ctx.lineWidth = Math.max(4, w * 0.05); ctx.strokeStyle = cor;
+    for (let i = 0; i < 3; i++) {
+      const ph = (t * 0.8 + i / 3) % 1, xx = x + (i - 1) * w * 0.38, y0 = y - ph * h * 0.45;
+      ctx.globalAlpha = a * Math.sin(Math.PI * ph) * 0.85;
+      ctx.beginPath();
+      for (let j = 0; j <= 14; j++) { const v = j / 14; ctx.lineTo(xx + Math.sin(v * TAU * 1.3 + t * 5 + i * 2) * w * 0.07, y0 - v * h * 0.55); }
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+  // o floquinho de gelo (6 braços com raminhos): o "gelado"
+  function floco(ctx, x, y, r, a = 1, rot = 0, cor = C.branco) {
+    if (a <= 0.01) return;
+    ctx.save(); ctx.globalAlpha *= a; ctx.translate(x, y); ctx.rotate(rot); ctx.strokeStyle = cor; ctx.lineCap = 'round'; ctx.lineWidth = Math.max(2, r * 0.16);
+    for (let i = 0; i < 6; i++) {
+      ctx.save(); ctx.rotate(i * TAU / 6);
+      ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(0, -r); ctx.moveTo(0, -r * 0.55); ctx.lineTo(-r * 0.28, -r * 0.8); ctx.moveTo(0, -r * 0.55); ctx.lineTo(r * 0.28, -r * 0.8); ctx.stroke();
+      ctx.restore();
+    }
+    ctx.restore();
+  }
+  // a névoa gelada (bolinhas brancas macias que sobem, abrem e somem); (x, y) = de onde sai; e = tempo desde que saiu (s)
+  function nevoa(ctx, x, y, w, e, seed = 0, dur = 1.4) {
+    if (e <= 0 || e >= dur) return;
+    ctx.save();
+    for (let i = 0; i < 9; i++) {
+      const u = clamp(e / dur), d = hash(i, seed), a = Math.sin(Math.PI * u) * (0.55 + 0.3 * d);
+      const px = x + (d - 0.5) * w + 30 * Math.sin(e * 2 + i) * u, py = y - 30 - 160 * u * (0.5 + hash(i, seed + 1)), r = w * (0.08 + 0.1 * hash(i, seed + 2)) * (0.6 + 0.8 * u);
+      ctx.fillStyle = css(C.branco, 0.75 * a); ctx.beginPath(); ctx.arc(px, py, r, 0, TAU); ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  // ---- o sol de rachar, com cara de cansado de calor: pálpebras pesadas, bochechas vermelhas, a língua de fora ofegando e
+  //      as gotas de suor. (x, y) = o centro; r = o raio do disco (os raios vão até 1,5 r). o: pisca 0..1
+  function solQuente(ctx, x, y, r, t, o = {}) {
+    ctx.save(); ctx.translate(x, y);
+    ctx.save(); ctx.rotate(t * 0.3);
+    for (let i = 0; i < 12; i++) {
+      const a = i / 12 * TAU, l = r * (1.4 + 0.1 * Math.sin(t * 5 + i * 1.3));
+      ctx.fillStyle = i % 2 ? C.amarelo : C.coralLight;
+      ctx.beginPath(); ctx.moveTo(Math.cos(a - 0.14) * r * 0.98, Math.sin(a - 0.14) * r * 0.98); ctx.lineTo(Math.cos(a) * l, Math.sin(a) * l); ctx.lineTo(Math.cos(a + 0.14) * r * 0.98, Math.sin(a + 0.14) * r * 0.98); ctx.closePath(); ctx.fill();
+    }
+    ctx.restore();
+    const g = ctx.createRadialGradient(-r * 0.3, -r * 0.35, r * 0.1, 0, 0, r);
+    g.addColorStop(0, C.amareloLight); g.addColorStop(1, C.amarelo);
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, r, 0, TAU); ctx.fill();
+    ctx.lineWidth = r * 0.05; ctx.strokeStyle = C.amareloDark; ctx.stroke();
+    ctx.fillStyle = css(C.coral, 0.5);                                                     // as bochechas vermelhas
+    for (const ex of [-0.52, 0.52]) { ctx.beginPath(); ctx.ellipse(ex * r, r * 0.2, r * 0.17, r * 0.1, 0, 0, TAU); ctx.fill(); }
+    const pc = clamp(o.pisca || 0);
+    for (const ex of [-0.33, 0.33]) {                                                      // os olhos cansados (pálpebra caída)
+      const cx = ex * r, cy = -r * 0.12, rx = r * 0.15, ry = r * 0.17;
+      ctx.fillStyle = C.branco; ctx.beginPath(); ctx.ellipse(cx, cy, rx, ry, 0, 0, TAU); ctx.fill();
+      ctx.fillStyle = C.tinta; ctx.beginPath(); ctx.arc(cx + ex * r * 0.05, cy + ry * 0.35, rx * 0.5, 0, TAU); ctx.fill();
+      ctx.save(); ctx.beginPath(); ctx.ellipse(cx, cy, rx, ry, 0, 0, TAU); ctx.clip();
+      const lid = cy - ry + ry * 2 * (0.52 + 0.48 * pc);
+      ctx.fillStyle = C.amareloDark; ctx.fillRect(cx - rx - 2, cy - ry - 2, rx * 2 + 4, lid - (cy - ry) + 2);
+      ctx.restore();
+      ctx.lineWidth = r * 0.035; ctx.strokeStyle = C.tinta; ctx.beginPath(); ctx.ellipse(cx, cy, rx, ry, 0, 0, TAU); ctx.stroke();
+      ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(cx - rx * 1.05, lid); ctx.lineTo(cx + rx * 1.05, lid); ctx.stroke();
+    }
+    // a boca aberta, ofegante, com a língua de fora balançando
+    const pant = 0.5 + 0.5 * Math.sin(t * 11);
+    ctx.fillStyle = '#5A2A1A'; ctx.beginPath(); ctx.ellipse(0, r * 0.36, r * 0.2, r * (0.1 + 0.04 * pant), 0, 0, TAU); ctx.fill();
+    ctx.fillStyle = C.coral; ctx.beginPath(); ctx.ellipse(r * 0.04, r * (0.5 + 0.03 * pant), r * 0.11, r * (0.14 + 0.02 * pant), 0.15, 0, TAU); ctx.fill();
+    ctx.strokeStyle = C.coralDark; ctx.lineWidth = r * 0.02; ctx.beginPath(); ctx.moveTo(r * 0.04, r * 0.44); ctx.lineTo(r * 0.06, r * 0.58); ctx.stroke();
+    // as gotas de suor escorrendo pela testa
+    [[0.62, -0.5, 0.3, 0], [-0.7, -0.32, 0.24, 0.9]].forEach(([gx, gy, gs, f]) => { const ph = (t * 0.55 + f) % 1; gota(ctx, gx * r, gy * r + ph * r * 0.3, gs * r, { alpha: Math.min(1, (1 - ph) * 3) }); });
+    ctx.restore();
+  }
+
+  // ---- o termômetro estourando: o mercúrio no topo, o vidro trincado e, no estouro, a tampinha voa, o estrelão amarelo e
+  //      as gotas coral. (x, base) = o pé do bulbo; h = altura. o: nivel 0..1, racha 0..1, estouro (s desde o estouro), t
+  function termometro(ctx, x, base, h, t, o = {}) {
+    const w = h * 0.17, bul = h * 0.15, topo = base - h, yb = base - bul, est = o.estouro ?? -1;
+    ctx.save();
+    // o estrelão do estouro atrás do topo (no quadro 0 já está estourando; pulsa no estouro da palavra)
+    const pulso = est >= 0 ? Math.sin(Math.PI * clamp(est / 0.45)) : 0, ks = (o.estrela ?? 1) * (0.75 + 0.06 * Math.sin(t * 9) + 0.5 * pulso);
+    if (ks > 0.02) {
+      ctx.save(); ctx.translate(x, topo + w * 0.2); ctx.rotate(-0.15 + 0.3 * pulso); ctx.scale(ks, ks);
+      ctx.beginPath(); for (let j = 0; j <= 20; j++) { const a = j / 20 * TAU, r2 = j % 2 ? w * 0.85 : w * 1.6; ctx.lineTo(Math.cos(a) * r2, Math.sin(a) * r2); }
+      ctx.closePath(); ctx.lineJoin = 'round'; ctx.lineWidth = w * 0.14; ctx.strokeStyle = C.branco; ctx.stroke(); ctx.fillStyle = C.amarelo; ctx.fill();
+      ctx.restore();
+    }
+    shadow(ctx, x, base + 2, bul * 1.15, 7, 0.14);
+    ctx.fillStyle = C.papel; ctx.strokeStyle = C.coral; ctx.lineWidth = w * 0.13;
+    rr(ctx, x - w / 2, topo, w, yb - topo, w / 2); ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.arc(x, yb, bul, 0, TAU); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = C.papel; rr(ctx, x - w / 2 + ctx.lineWidth / 2, yb - bul - 4, w - ctx.lineWidth, bul, 4); ctx.fill();   // a emenda do tubo com o bulbo
+    const nv = clamp(o.nivel ?? 1), mt = yb - (yb - topo - w * 0.25) * nv;
+    ctx.fillStyle = C.coral; rr(ctx, x - w * 0.24, mt, w * 0.48, yb - mt, w * 0.24); ctx.fill();
+    ctx.beginPath(); ctx.arc(x, yb, bul * 0.72, 0, TAU); ctx.fill();
+    ctx.fillStyle = css(C.branco, 0.55); rr(ctx, x - w * 0.36, topo + w * 0.7, w * 0.12, (yb - topo) * 0.55, w * 0.06); ctx.fill();
+    ctx.beginPath(); ctx.arc(x - bul * 0.35, yb - bul * 0.3, bul * 0.16, 0, TAU); ctx.fill();
+    ctx.strokeStyle = C.coralDark; ctx.lineWidth = Math.max(2, h * 0.012); ctx.lineCap = 'round';
+    for (let i = 1; i < 8; i++) { const y = yb - bul - i * (yb - bul - topo - w) / 8; ctx.beginPath(); ctx.moveTo(x + w * 0.62, y); ctx.lineTo(x + w * (i % 2 ? 0.95 : 1.15), y); ctx.stroke(); }
+    if ((o.racha ?? 1) > 0) {                                                               // as rachaduras do vidro, lá no alto
+      ctx.save(); ctx.globalAlpha *= clamp(o.racha ?? 1); ctx.strokeStyle = C.tinta; ctx.lineWidth = Math.max(2, h * 0.008); ctx.lineJoin = 'round';
+      ctx.beginPath(); ctx.moveTo(x - w * 0.5, topo + w * 1.1); ctx.lineTo(x - w * 0.15, topo + w * 1.35); ctx.lineTo(x - w * 0.3, topo + w * 1.7); ctx.lineTo(x + w * 0.05, topo + w * 2.0); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(x + w * 0.5, topo + w * 0.7); ctx.lineTo(x + w * 0.2, topo + w * 0.9); ctx.lineTo(x + w * 0.35, topo + w * 1.15); ctx.stroke();
+      ctx.restore();
+    }
+    // a tampinha do topo (voa no estouro) e o mercúrio espirrando
+    const tv = est >= 0 ? clamp(est / 0.7) : 0;
+    ctx.save(); ctx.translate(x + w * 2.2 * tv, topo - 4 - h * 0.45 * Math.sin(Math.PI * tv) * 1.2 + h * 0.2 * tv * tv); ctx.rotate(tv * 7);
+    ctx.globalAlpha *= 1 - p(tv, 0.75, 1);
+    ctx.fillStyle = C.coralDark; rr(ctx, -w * 0.45, -w * 0.3, w * 0.9, w * 0.42, w * 0.15); ctx.fill();
+    ctx.restore();
+    const gotas = [[-1.6, -1.2], [1.4, -1.5], [-0.6, -1.9], [2.1, -0.6], [-2.2, -0.4]];
+    gotas.forEach(([vx, vy], i) => {
+      const ph = est >= 0 && est < 0.9 ? est / 0.9 : ((t * 0.7 + i * 0.2) % 1) * 0.55;     // sempre espirrando um pouquinho; no estouro, um jorro
+      const big = est >= 0 && est < 0.9 ? 1.4 : 0.8;
+      const gx = x + vx * w * ph * 2.4 * big, gy = topo + vy * w * ph * 2.2 * big + h * 0.5 * ph * ph;
+      ctx.fillStyle = C.coral; ctx.globalAlpha = Math.sin(Math.PI * ph) * (est >= 0 && est < 0.9 ? 1 : 0.8);
+      ctx.beginPath(); ctx.arc(gx, gy, w * (0.16 + 0.06 * (i % 2)) * big, 0, TAU); ctx.fill();
+    });
+    ctx.restore();
+  }
+  // o chão rachado de calor (a terra seca com as rachaduras); de x0 a x1, (y) = a linha do chão
+  function chaoRachado(ctx, x0, x1, y) {
+    ctx.save();
+    ctx.fillStyle = '#EBC995'; ctx.beginPath(); ctx.ellipse((x0 + x1) / 2, y, (x1 - x0) / 2, 26, 0, 0, TAU); ctx.fill();
+    ctx.fillStyle = '#E0B57A'; ctx.beginPath(); ctx.ellipse((x0 + x1) / 2, y + 6, (x1 - x0) / 2 - 20, 16, 0, 0, Math.PI); ctx.fill();
+    ctx.strokeStyle = '#B9874A'; ctx.lineWidth = 3.5; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    for (let i = 0; i < 6; i++) {
+      const cx = lerp(x0 + 70, x1 - 70, i / 5), cy = y + (i % 2 ? 6 : -6);
+      ctx.beginPath(); ctx.moveTo(cx - 34, cy - 4); ctx.lineTo(cx - 12, cy + 4); ctx.lineTo(cx + 2, cy - 6); ctx.lineTo(cx + 26, cy + 3); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(cx + 2, cy - 6); ctx.lineTo(cx + 6, cy - 16); ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  // ---- o ventilador de mesa cansado: gira fraco e desiste (para, a cabeça cai e solta fumacinha). (x, base) = o pé;
+  //      s = altura. o: ang (das pás), caida 0..1 (a cabeça tombando), sono 0..1 (as pálpebras), t
+  function ventilador(ctx, x, base, s, t, o = {}) {
+    const k = s / 116, cai = clamp(o.caida || 0), sono = clamp(o.sono || 0);      // 116 = a altura do desenho (pé até o topo da grade)
+    ctx.save(); ctx.translate(x, base); ctx.scale(k, k);
+    shadow(ctx, 0, 0, 30, 3.5, 0.15);
+    ctx.fillStyle = C.coralDark; ctx.beginPath(); ctx.ellipse(0, -3, 26, 6.5, 0, 0, TAU); ctx.fill();
+    ctx.fillStyle = C.coral; ctx.beginPath(); ctx.ellipse(0, -6, 25, 6, 0, 0, TAU); ctx.fill();
+    ctx.fillStyle = C.papel; rr(ctx, -2, -9, 4, 3, 1.5); ctx.fill();                                       // o botãozinho
+    ctx.fillStyle = C.coral; rr(ctx, -3.5, -52, 7, 46, 3.5); ctx.fill();                                    // a haste
+    ctx.translate(0, -52); ctx.rotate(cai * 0.42);
+    ctx.fillStyle = C.coralDark; rr(ctx, -9, -20, 18, 22, 7); ctx.fill();                                   // o motor atrás
+    const cy = -34, R = 30;
+    // as pás (giram; rápidas ficam meio borradas)
+    const vel = clamp(o.vel ?? 0);
+    if (vel > 0.4) { ctx.fillStyle = css(C.amareloLight, 0.35 * (vel - 0.4)); ctx.beginPath(); ctx.arc(0, cy, R * 0.92, 0, TAU); ctx.fill(); }
+    for (let i = 0; i < 3; i++) {
+      ctx.save(); ctx.translate(0, cy); ctx.rotate((o.ang || 0) + i * TAU / 3);
+      ctx.fillStyle = C.amarelo; ctx.beginPath(); ctx.ellipse(R * 0.48, 0, R * 0.42, R * 0.2, 0.3, 0, TAU); ctx.fill();
+      ctx.fillStyle = css(C.branco, 0.35); ctx.beginPath(); ctx.ellipse(R * 0.42, -R * 0.05, R * 0.24, R * 0.07, 0.3, 0, TAU); ctx.fill();
+      ctx.restore();
+    }
+    // a grade
+    ctx.strokeStyle = css(C.tinta2, 0.75); ctx.lineWidth = 1.6;
+    ctx.beginPath(); ctx.arc(0, cy, R, 0, TAU); ctx.stroke();
+    ctx.beginPath(); ctx.arc(0, cy, R * 0.62, 0, TAU); ctx.globalAlpha *= 0.6; ctx.stroke(); ctx.globalAlpha /= 0.6;
+    for (let i = 0; i < 12; i++) { const a = i / 12 * TAU; ctx.beginPath(); ctx.moveTo(Math.cos(a) * R * 0.3, cy + Math.sin(a) * R * 0.3); ctx.lineTo(Math.cos(a) * R, cy + Math.sin(a) * R); ctx.globalAlpha *= 0.55; ctx.stroke(); ctx.globalAlpha /= 0.55; }
+    ctx.lineWidth = 3; ctx.strokeStyle = C.coral; ctx.beginPath(); ctx.arc(0, cy, R + 1, 0, TAU); ctx.stroke();
+    // o miolo com a carinha cansada (por cima da grade)
+    ctx.fillStyle = C.coral; ctx.beginPath(); ctx.arc(0, cy, 11, 0, TAU); ctx.fill();
+    for (const ex of [-4.2, 4.2]) {
+      ctx.fillStyle = C.branco; ctx.beginPath(); ctx.ellipse(ex, cy - 1.5, 3, 3.4, 0, 0, TAU); ctx.fill();
+      ctx.fillStyle = C.tinta; ctx.beginPath(); ctx.arc(ex, cy - 0.6, 1.5, 0, TAU); ctx.fill();
+      ctx.save(); ctx.beginPath(); ctx.ellipse(ex, cy - 1.5, 3, 3.4, 0, 0, TAU); ctx.clip();
+      ctx.fillStyle = C.coralDark; ctx.fillRect(ex - 3.4, cy - 5.2, 6.8, 3.4 + 3.6 * sono); ctx.restore();   // a pálpebra pesada
+      ctx.strokeStyle = C.tinta; ctx.lineWidth = 0.9; ctx.beginPath(); ctx.moveTo(ex - 3.3, cy - 1.8 + 3.6 * sono); ctx.lineTo(ex + 3.3, cy - 1.8 + 3.6 * sono); ctx.stroke();
+    }
+    ctx.strokeStyle = C.tinta; ctx.lineWidth = 1.2; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.arc(0, cy + 6.5 + 2 * sono, 2.6, Math.PI * 1.15, Math.PI * 1.85); ctx.stroke();    // a boquinha triste
+    ctx.restore();
+  }
+  // a fumacinha cinza (do motor cansado): bolinhas que sobem e abrem; e = tempo desde que começou
+  function fumacinha(ctx, x, y, s, t, e, seed = 0) {
+    if (e <= 0) return;
+    ctx.save();
+    for (let i = 0; i < 4; i++) {
+      const ph = ((t * 0.6 + i / 4 + hash(i, seed) * 0.1) % 1), a = Math.sin(Math.PI * ph) * clamp(e * 2);
+      ctx.fillStyle = css('#A99C92', 0.55 * a); ctx.beginPath(); ctx.arc(x + 14 * Math.sin(ph * 5 + i) + ph * s * 0.3, y - ph * s * 1.4, s * (0.18 + 0.3 * ph), 0, TAU); ctx.fill();
+    }
+    ctx.restore();
+  }
+  // a forminha de gelo (de plástico azulado, 2 × 5 casinhas): vazia, só com uma gotinha de água no fundo. (x, y) = o centro
+  function bandejaGelo(ctx, x, y, w, o = {}) {
+    const h = w * 0.36;
+    ctx.save(); ctx.translate(x, y); ctx.rotate(o.rot || 0);
+    ctx.fillStyle = css('#BFE3EE', 0.95); rr(ctx, -w / 2, -h / 2, w, h, h * 0.22); ctx.fill();
+    ctx.lineWidth = Math.max(2, w * 0.018); ctx.strokeStyle = '#8CC3D3'; ctx.stroke();
+    const cw = (w - w * 0.1) / 5, ch = (h - h * 0.2) / 2;
+    for (let r = 0; r < 2; r++) for (let c = 0; c < 5; c++) {
+      const cx = -w / 2 + w * 0.05 + c * cw, cy = -h / 2 + h * 0.1 + r * ch;
+      ctx.fillStyle = '#A9D6E3'; rr(ctx, cx + cw * 0.08, cy + ch * 0.1, cw * 0.84, ch * 0.8, cw * 0.18); ctx.fill();
+      ctx.fillStyle = css(C.branco, 0.5); rr(ctx, cx + cw * 0.18, cy + ch * 0.2, cw * 0.18, ch * 0.3, cw * 0.08); ctx.fill();
+      if (o.cubos) { itemGelo(ctx, cx + cw / 2, cy + ch / 2, cw * 1.25); }
+    }
+    ctx.restore();
+  }
+
+  // ---- o copo de açaí (copo transparente, o açaí bem roxo, a granola e o leite em pó por cima e a colherzinha coral).
+  //      (x, base) = o pé; s = altura do copo. o: granola 0..1, leite 0..1, t
+  function copoAcai(ctx, x, base, s, o = {}) {
+    const k = s / 100, gr = clamp(o.granola ?? 1), lt = clamp(o.leite ?? 1);
+    ctx.save(); ctx.translate(x, base); ctx.scale(k, k);
+    shadow(ctx, 0, 0, 36, 4, 0.14);
+    const copo = () => { ctx.beginPath(); ctx.moveTo(-27, -2); ctx.lineTo(27, -2); ctx.lineTo(38, -100); ctx.lineTo(-38, -100); ctx.closePath(); };
+    // o açaí dentro (com as camadas mais claras)
+    ctx.save(); copo(); ctx.clip();
+    ctx.fillStyle = ACAI.roxo; ctx.fillRect(-40, -100, 80, 100);
+    ctx.strokeStyle = ACAI.luz; ctx.lineWidth = 3; ctx.globalAlpha = 0.6;
+    for (const yy of [-30, -62]) { ctx.beginPath(); ctx.moveTo(-40, yy); ctx.bezierCurveTo(-15, yy - 8, 10, yy + 8, 40, yy - 2); ctx.stroke(); }
+    ctx.globalAlpha = 1;
+    ctx.restore();
+    // a cúpula de açaí por cima da boca
+    ctx.fillStyle = ACAI.roxo2; ctx.beginPath(); ctx.moveTo(-40, -99); ctx.bezierCurveTo(-38, -128, 38, -128, 40, -99); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = css(ACAI.luz, 0.7); ctx.beginPath(); ctx.ellipse(-14, -116, 12, 4.5, -0.25, 0, TAU); ctx.fill();
+    // a colherzinha coral espetada
+    ctx.save(); ctx.translate(18, -112); ctx.rotate(0.45);
+    ctx.fillStyle = C.coral; rr(ctx, -3, -40, 6, 40, 3); ctx.fill(); ctx.beginPath(); ctx.ellipse(0, 2, 7, 9, 0, 0, TAU); ctx.fill();
+    ctx.restore();
+    // o leite em pó (um montinho branco e o pozinho espalhado)
+    if (lt > 0.01) {
+      ctx.save(); ctx.globalAlpha *= lt;
+      ctx.fillStyle = '#FFFDF6'; ctx.beginPath(); ctx.ellipse(6, -121, 18 * lt + 4, 6 * lt + 2, 0, 0, TAU); ctx.fill();
+      ctx.fillStyle = C.branco; for (let i = 0; i < 18; i++) { ctx.beginPath(); ctx.arc(-30 + 60 * hash(i, 31), -104 - 22 * hash(i, 32) * (1 - Math.abs(hash(i, 31) - 0.5)), 1.8, 0, TAU); ctx.fill(); }
+      ctx.restore();
+    }
+    // a granola (pedacinhos dourados)
+    const ng = Math.round(14 * gr);
+    for (let i = 0; i < ng; i++) {
+      const gx = -30 + 60 * hash(i, 21), gy = -104 - 20 * (1 - Math.abs(gx) / 40) * (0.4 + 0.6 * hash(i, 22));
+      ctx.save(); ctx.translate(gx, gy); ctx.rotate(hash(i, 23) * 3);
+      ctx.fillStyle = i % 3 ? '#C98A4B' : '#E3B66A'; rr(ctx, -4, -2.6, 8, 5.2, 2); ctx.fill();
+      ctx.restore();
+    }
+    // o copo de plástico (transparente, com o brilho e as gotinhas de gelado)
+    copo(); ctx.lineWidth = 2.6; ctx.strokeStyle = css('#9FC9D6', 0.95); ctx.stroke();
+    ctx.fillStyle = css(C.branco, 0.28); ctx.beginPath(); ctx.moveTo(-31, -92); ctx.lineTo(-24, -92); ctx.lineTo(-18, -10); ctx.lineTo(-23, -10); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = css('#DDEFF5', 0.95); rr(ctx, -40, -103, 80, 6, 3); ctx.fill();                       // a borda do copo
+    for (const [gx, gy] of [[22, -70], [-8, -40], [26, -28], [14, -54]]) gota(ctx, gx, gy, 9, { cor: css(C.branco, 0.8), contorno: false });
+    ctx.restore();
+  }
+
+  // ---- o picolé (o mesmo da transição): o corpo do sabor com a mordidinha, o brilho, o palito e a calda escorrendo.
+  //      (x, base) = a ponta de baixo do palito; s = altura total. sab = SABORES[i]. o: cara (olhinhos), derrete 0..1
+  //      (o tamanho das gotas que escorrem), blink, look, smile, mordida (0..1), t
+  const SABORES = [
+    { nome: 'morango', corpo: C.coral, claro: '#FF8A63', calda: '#F77A5C', pinta: C.coralDark },
+    { nome: 'manga', corpo: C.amarelo, claro: '#FFD27A', calda: '#FBC253', pinta: C.amareloDark },
+    { nome: 'limão', corpo: '#7FC66E', claro: '#A8DB98', calda: '#93D083', pinta: C.verdeDark },
+    { nome: 'coco', corpo: '#FFF6EA', claro: '#FFFFFF', calda: '#FFF3E2', pinta: C.cremeDeep },
+  ];
+  function picole(ctx, x, base, s, sab, o = {}) {
+    const k = s / 100, t = o.t || 0, der = clamp(o.derrete ?? 0.4);
+    ctx.save(); ctx.translate(x, base); ctx.rotate(o.rot || 0); ctx.scale(k, k);
+    ctx.fillStyle = C.madeira; rr(ctx, -5, -36, 10, 36, 5); ctx.fill();                                     // o palito
+    ctx.fillStyle = C.madeiraDark; rr(ctx, -5, -10, 10, 10, 5); ctx.fill();
+    // o corpo (topo redondo, com a mordidinha) e as gotas escorrendo da borda de baixo
+    const bx = -22, bw = 44, by = -100, bh = 66;
+    ctx.save();
+    ctx.beginPath(); ctx.rect(-60, -110, 120, 120);
+    const mr = 9 * (0.6 + 0.4 * clamp(o.mordida ?? 1));
+    ctx.moveTo(bx + bw + mr * 0.25 + mr, by + 12); ctx.arc(bx + bw + mr * 0.25, by + 12, mr, 0, TAU); ctx.clip('evenodd');
+    ctx.fillStyle = sab.corpo;
+    ctx.beginPath(); ctx.moveTo(bx, by + bh); ctx.lineTo(bx, by + bw / 2); ctx.arc(0, by + bw / 2, bw / 2, Math.PI, TAU); ctx.lineTo(bx + bw, by + bh); ctx.closePath(); ctx.fill();
+    [[-14, 0.8, 0], [0, 1.3, 1.7], [13, 0.6, 3.1]].forEach(([dx, l, f]) => {                                 // as gotas da calda
+      const ph = 0.75 + 0.25 * Math.sin(t * 3 + f), L = (5 + 9 * l) * der * ph;
+      ctx.beginPath(); ctx.moveTo(dx - 5, by + bh - 1); ctx.lineTo(dx - 4, by + bh + L); ctx.arc(dx, by + bh + L, 4.2, Math.PI, 0, true); ctx.lineTo(dx + 5, by + bh - 1); ctx.closePath(); ctx.fill();
+    });
+    if (sab.nome === 'coco' || sab.nome === 'morango') { ctx.fillStyle = sab.pinta; for (let i = 0; i < 9; i++) { ctx.beginPath(); ctx.ellipse(-14 + 28 * hash(i, 41), -90 + 50 * hash(i, 42), 1.6, sab.nome === 'coco' ? 1.6 : 2.4, 0.4, 0, TAU); ctx.fill(); } }
+    ctx.fillStyle = css(sab.claro, 0.85); rr(ctx, -15, -90, 7, 40, 3.5); ctx.fill();                       // o brilho
+    if (sab.nome === 'coco') { ctx.lineWidth = 2; ctx.strokeStyle = C.cremeDeep; ctx.beginPath(); ctx.moveTo(bx, by + bh); ctx.lineTo(bx, by + bw / 2); ctx.arc(0, by + bw / 2, bw / 2, Math.PI, TAU); ctx.lineTo(bx + bw, by + bh); ctx.stroke(); }
+    ctx.restore();
+    if (o.cara) { ctx.save(); ctx.translate(-15, -78); ctx.scale(0.1, 0.1); face(ctx, o.blink || 0, o.look || [0, 0.1], o.smile ?? 0.6); ctx.restore(); }
+    ctx.restore();
+  }
+
+  // ---- o freezer de sorveteria (horizontal, com a tampa de vidro de correr). (x, base) = o pé no meio; w = largura.
+  //      o: abre 0..1 (a tampa da direita corre por cima da da esquerda)
+  function freezerSorvete(ctx, x, base, w, t, o = {}) {
+    const h = w * 0.4, x0 = x - w / 2, top = base - h, ab = clamp(o.abre || 0);
+    ctx.save();
+    shadow(ctx, x, base, w * 0.56, 10, 0.15);
+    ctx.fillStyle = C.tinta2; for (const fx of [0.08, 0.86]) { rr(ctx, x0 + w * fx, base - 12, w * 0.06, 12, 3); ctx.fill(); }
+    ctx.fillStyle = C.papel; rr(ctx, x0, top, w, h - 10, 22); ctx.fill(); ctx.lineWidth = 5; ctx.strokeStyle = C.cremeDeep; ctx.stroke();
+    ctx.fillStyle = C.coral; rr(ctx, x0, top + h * 0.62, w, h * 0.16, 6); ctx.fill();                         // a faixa coral
+    for (let i = 0; i < 5; i++) floco(ctx, x0 + w * (0.18 + i * 0.16), top + h * 0.7, h * 0.05, 0.9, i);    // os floquinhos da faixa
+    ctx.fillStyle = C.cremeDeep; rr(ctx, x0 + w * 0.06, top + h * 0.3, w * 0.88, 8, 4); ctx.fill();         // a grade do motor
+    // a boca de cima: o vão gelado (azulado) com os sorvetes lá dentro e a tampa de vidro
+    const bx0 = x0 + w * 0.05, bw = w * 0.9, by = top - h * 0.02, bh = h * 0.2;
+    ctx.fillStyle = '#5F8FA0'; rr(ctx, bx0, by, bw, bh, 12); ctx.fill();
+    ctx.save(); rr(ctx, bx0, by, bw, bh, 12); ctx.clip();
+    const cores = [C.coral, C.amarelo, '#7FC66E', '#FFF6EA', ACAI.roxo2];
+    for (let i = 0; i < 9; i++) { ctx.fillStyle = cores[i % 5]; rr(ctx, bx0 + 14 + i * (bw - 28) / 9, by + bh * 0.35, (bw - 28) / 9 - 8, bh * 0.8, 8); ctx.fill(); }
+    ctx.fillStyle = css(C.branco, 0.35 + 0.35 * ab); ctx.fillRect(bx0, by, bw, bh * 0.4);                     // o frio branquinho
+    ctx.restore();
+    // as duas tampas de vidro (a da direita corre para a esquerda e fica por cima)
+    const vidro = (vx) => { ctx.fillStyle = css('#DDEFF5', 0.62); rr(ctx, vx, by - 6, bw / 2 + 6, bh + 10, 10); ctx.fill(); ctx.lineWidth = 4; ctx.strokeStyle = '#9FC9D6'; ctx.stroke();
+      ctx.fillStyle = css(C.branco, 0.6); rr(ctx, vx + 16, by, 10, bh - 4, 5); ctx.fill(); };
+    vidro(bx0 - 3);
+    vidro(lerp(bx0 + bw / 2, bx0 + 6, E.inOutCubic(ab)));
+    ctx.restore();
+  }
+  // o pote de sorvete (aberto, com a bola por cima e a colherzinha). (x, base) = o pé; s = altura
+  function poteSorvete(ctx, x, base, s, o = {}) {
+    const k = s / 100;
+    ctx.save(); ctx.translate(x, base); ctx.scale(k, k);
+    shadow(ctx, 0, 0, 40, 4, 0.14);
+    ctx.fillStyle = C.papel; ctx.beginPath(); ctx.moveTo(-34, -2); ctx.lineTo(34, -2); ctx.lineTo(42, -62); ctx.lineTo(-42, -62); ctx.closePath(); ctx.fill();
+    ctx.lineWidth = 2.5; ctx.strokeStyle = C.cremeDeep; ctx.stroke();
+    ctx.fillStyle = C.coral; ctx.beginPath(); ctx.moveTo(-38.6, -36); ctx.lineTo(38.6, -36); ctx.lineTo(36.6, -20); ctx.lineTo(-36.6, -20); ctx.closePath(); ctx.fill();
+    // a casquinha desenhada no rótulo (sem texto, sem marca)
+    ctx.fillStyle = C.papel; ctx.beginPath(); ctx.arc(0, -29, 9.5, 0, TAU); ctx.fill();
+    ctx.fillStyle = C.madeira; ctx.beginPath(); ctx.moveTo(-4, -28); ctx.lineTo(4, -28); ctx.lineTo(0, -21); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = C.coralLight; ctx.beginPath(); ctx.arc(0, -31, 4.5, 0, TAU); ctx.fill();
+    // o sorvete: a borda cremosa e as bolas (morango e creme)
+    ctx.fillStyle = '#FBE3C8'; ctx.beginPath(); ctx.ellipse(0, -62, 42, 8, 0, 0, TAU); ctx.fill();
+    ctx.fillStyle = '#FBE3C8'; ctx.beginPath(); ctx.arc(-14, -70, 16, 0, TAU); ctx.fill();
+    ctx.fillStyle = '#F7A08A'; ctx.beginPath(); ctx.arc(12, -72, 17, 0, TAU); ctx.fill();
+    ctx.fillStyle = css(C.branco, 0.5); ctx.beginPath(); ctx.arc(6, -80, 5, 0, TAU); ctx.fill(); ctx.beginPath(); ctx.arc(-19, -77, 4, 0, TAU); ctx.fill();
+    ctx.strokeStyle = '#B9B0A6'; ctx.lineWidth = 5; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(26, -70); ctx.lineTo(48, -98); ctx.stroke();   // a colher
+    ctx.fillStyle = css(C.papel, 0.6); rr(ctx, -34, -58, 6, 50, 3); ctx.fill();
+    ctx.restore();
+  }
+  // o coco verde aberto com o canudinho listrado. (x, base) = o pé; s = altura
+  function coco(ctx, x, base, s, o = {}) {
+    const k = s / 100;
+    ctx.save(); ctx.translate(x, base); ctx.scale(k, k);
+    shadow(ctx, 0, 0, 36, 4, 0.14);
+    // o canudinho (atrás da boca do coco)
+    ctx.save(); ctx.translate(8, -72); ctx.rotate(0.28);
+    ctx.fillStyle = C.papel; rr(ctx, -4, -46, 8, 50, 4); ctx.fill();
+    ctx.save(); rr(ctx, -4, -46, 8, 50, 4); ctx.clip(); ctx.fillStyle = C.coral; for (let i = 0; i < 6; i++) { ctx.save(); ctx.translate(0, -44 + i * 9); ctx.rotate(-0.5); ctx.fillRect(-10, -2, 20, 4); ctx.restore(); } ctx.restore();
+    ctx.fillStyle = C.papel; rr(ctx, -4, -56, 8, 14, 4); ctx.fill(); ctx.save(); ctx.translate(0, -56); ctx.rotate(-0.9); ctx.fillStyle = C.papel; rr(ctx, -4, -14, 8, 16, 4); ctx.fill(); ctx.restore();
+    ctx.restore();
+    ctx.fillStyle = C.verde; ctx.beginPath(); ctx.moveTo(-34, -66); ctx.bezierCurveTo(-46, -36, -36, -2, 0, -2); ctx.bezierCurveTo(36, -2, 46, -36, 34, -66); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = C.verdeLight; ctx.beginPath(); ctx.ellipse(-16, -40, 7, 18, 0.2, 0, TAU); ctx.fill();
+    ctx.fillStyle = C.verdeDark; ctx.beginPath(); ctx.ellipse(0, -68, 35, 10, 0, 0, TAU); ctx.fill();
+    ctx.fillStyle = '#FBF5EA'; ctx.beginPath(); ctx.ellipse(0, -70, 29, 7.5, 0, 0, TAU); ctx.fill();          // a polpa branquinha
+    ctx.fillStyle = css('#DDEFF5', 0.95); ctx.beginPath(); ctx.ellipse(0, -70, 20, 4.8, 0, 0, TAU); ctx.fill();  // a água
+    for (const [gx, gy] of [[24, -44], [-26, -24], [16, -18]]) gota(ctx, gx, gy, 9, { cor: css(C.branco, 0.85), contorno: false });
+    ctx.restore();
+  }
+  // o saco de gelo (plástico transparente, os cubos dentro, o lacre coral e o floquinho). (x, base) = o pé; s = altura
+  function sacoGelo(ctx, x, base, s, o = {}) {
+    const k = s / 100;
+    ctx.save(); ctx.translate(x, base); ctx.scale(k, k);
+    shadow(ctx, 0, 0, 44, 4, 0.14);
+    const saco = () => { ctx.beginPath(); ctx.moveTo(-40, -4); ctx.quadraticCurveTo(-50, -60, -16, -86); ctx.lineTo(16, -86); ctx.quadraticCurveTo(50, -60, 40, -4); ctx.quadraticCurveTo(0, 4, -40, -4); ctx.closePath(); };
+    saco(); ctx.fillStyle = css(GELO.claro, 0.92); ctx.fill();
+    ctx.save(); saco(); ctx.clip();
+    for (const [cx, cy, r] of [[-22, -18, 0.3], [4, -14, 1.2], [26, -20, 2.1], [-14, -42, 2.6], [12, -44, 0.6], [-2, -64, 1.6], [24, -60, 2.9]]) { ctx.save(); ctx.translate(cx, cy); ctx.rotate(r); itemGelo(ctx, 0, 0, 40); ctx.restore(); }
+    ctx.fillStyle = css(C.branco, 0.35); ctx.fillRect(-50, -90, 100, 30);
+    ctx.restore();
+    saco(); ctx.lineWidth = 3; ctx.strokeStyle = GELO.borda; ctx.stroke();
+    ctx.fillStyle = css(C.branco, 0.55); rr(ctx, -34, -66, 6, 44, 3); ctx.fill();
+    ctx.fillStyle = css(GELO.claro, 0.95); ctx.beginPath(); ctx.moveTo(-16, -86); ctx.lineTo(-10, -100); ctx.lineTo(10, -100); ctx.lineTo(16, -86); ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = C.coral; rr(ctx, -14, -94, 28, 10, 4); ctx.fill();                                       // o lacre
+    ctx.fillStyle = C.papel; ctx.beginPath(); ctx.arc(0, -40, 14, 0, TAU); ctx.fill();                       // a etiqueta com o floquinho
+    floco(ctx, 0, -40, 9, 1, 0, '#6FB3C8');
+    ctx.restore();
+  }
+  // a garrafa de refri suando de gelada (sem marca): as gotinhas descendo pelo vidro e o branquinho do gelado embaixo.
+  //      (x, base) = o pé; s = altura; cor = a do refri
+  function garrafaSuando(ctx, x, base, s, cor, t, o = {}) {
+    const k = s / 100;
+    ctx.save(); ctx.translate(x, base); ctx.scale(k, k);
+    shadow(ctx, 0, 0, 22, 3, 0.14);
+    const corpo = () => { ctx.beginPath(); ctx.moveTo(-5, -100); ctx.lineTo(5, -100); ctx.quadraticCurveTo(6, -80, 14, -66); ctx.lineTo(14, -6); ctx.quadraticCurveTo(14, 0, 8, 0); ctx.lineTo(-8, 0); ctx.quadraticCurveTo(-14, 0, -14, -6); ctx.lineTo(-14, -66); ctx.quadraticCurveTo(-6, -80, -5, -100); ctx.closePath(); };
+    corpo(); ctx.fillStyle = cor; ctx.fill();
+    ctx.save(); corpo(); ctx.clip();
+    ctx.fillStyle = css(C.branco, 0.45); ctx.fillRect(-16, -18, 32, 18);                                   // o embaçado do gelado (embaixo)
+    ctx.fillStyle = C.papel; ctx.fillRect(-16, -50, 32, 16);                                                // o rótulo liso
+    ctx.fillStyle = css(C.papel, 0.45); rr(ctx, -10, -64, 4, 56, 2); ctx.fill();                            // o brilho
+    // as gotinhas: nascem, escorrem e somem (cada uma no seu tempo)
+    for (let i = 0; i < 6; i++) {
+      const ph = (t * 0.5 + hash(i, 51)) % 1, gx = -10 + 20 * hash(i, 52), gy = -76 + 70 * ph * ph;
+      ctx.fillStyle = css(C.branco, 0.85 * Math.sin(Math.PI * Math.min(1, ph * 1.1))); ctx.beginPath(); ctx.ellipse(gx, gy, 1.7, 2.5, 0, 0, TAU); ctx.fill();
+    }
+    ctx.restore();
+    ctx.fillStyle = C.tinta; rr(ctx, -6, -106, 12, 7, 2); ctx.fill();                                         // a tampinha
+    ctx.restore();
+  }
+  // a caixa térmica (coral, com a tampa creme, a alça e a logo oficial na lateral — o arquivo, nunca redesenhado).
+  //      (x, base) = o chão no meio; w = largura. o: abre 0..1 (a tampa gira na dobradiça de trás)
+  function caixaTermica(ctx, x, base, w, o = {}) {
+    const h = w * 0.62, x0 = x - w / 2, top = base - h, ab = clamp(o.abre || 0);
+    ctx.save();
+    shadow(ctx, x, base, w * 0.55, Math.max(4, w * 0.04), 0.15);
+    if (ab > 0.01) {                                                                                         // aberta: o vão gelado e a tampa em pé atrás
+      const th = w * 0.2 + w * 0.5 * E.outBack(ab, 1.4);
+      ctx.fillStyle = C.papel; rr(ctx, x0 - w * 0.02, top - th + w * 0.06, w * 1.04, th, w * 0.07); ctx.fill(); ctx.lineWidth = Math.max(2, w * 0.025); ctx.strokeStyle = C.cremeDeep; ctx.stroke();
+      ctx.fillStyle = '#5F8FA0'; ctx.beginPath(); ctx.ellipse(x, top + w * 0.05, w * 0.44, w * 0.07, 0, 0, TAU); ctx.fill();
+    }
+    ctx.fillStyle = C.coral; rr(ctx, x0, top + w * 0.05, w, h - w * 0.05, w * 0.08); ctx.fill();
+    ctx.fillStyle = C.coralDark; rr(ctx, x0, base - h * 0.16, w, h * 0.16, w * 0.06); ctx.fill();
+    ctx.fillStyle = C.papel; ctx.beginPath(); ctx.arc(x, top + h * 0.52, w * 0.2, 0, TAU); ctx.fill();          // a etiqueta redonda com a logo oficial
+    logo(ctx, x, top + h * 0.52, w * 0.32);
+    if (ab <= 0.01) {                                                                                       // fechada: a tampa creme por cima
+      ctx.fillStyle = C.papel; rr(ctx, x0 - w * 0.03, top - w * 0.02, w * 1.06, w * 0.14, w * 0.06); ctx.fill(); ctx.lineWidth = Math.max(2, w * 0.025); ctx.strokeStyle = C.cremeDeep; ctx.stroke();
+      ctx.fillStyle = C.cremeDeep; rr(ctx, x - w * 0.18, top - w * 0.08, w * 0.36, w * 0.08, w * 0.04); ctx.fill();   // a alça
+    }
+    ctx.restore();
+  }
+  // a poça de suor (o Pertim quase derretendo): (x, y) = o centro; e 0..1 (vai crescendo)
+  function poca(ctx, x, y, w, e) {
+    if (e <= 0.01) return;
+    ctx.save(); ctx.globalAlpha *= 0.8;
+    ctx.fillStyle = css('#BFE3EE', 0.9); ctx.beginPath(); ctx.ellipse(x, y, w * 0.5 * e, w * 0.09 * e, 0, 0, TAU); ctx.fill();
+    ctx.fillStyle = css(C.branco, 0.7); ctx.beginPath(); ctx.ellipse(x - w * 0.15 * e, y - w * 0.02 * e, w * 0.12 * e, w * 0.025 * e, 0, 0, TAU); ctx.fill();
+    ctx.restore();
+  }
+
+  // a loja de açaí (lojinha com olhinhos): a cor e o ícone da placa (o copinho de açaí)
+  LOOK.acai = { wall: '#E7C3E4', wallDark: '#C99BC6', a: ACAI.roxo2, b: '#FFFFFF', door: ACAI.roxo };
+
+  // ===================== a transição do picolé (episódio com "transicao": "picole"; desde o ep08)
+  // Um PICOLÉ com olhinhos (o sabor muda a cada troca: morango, manga, limão, coco) atravessa a parte de cima da tela e,
+  // por onde passa, a tela DERRETE: a calda do sabor escorre de cima para baixo, com dedos de calda pingando, até cobrir
+  // a área do capítulo; aí o próximo capítulo fica por baixo e a calda escorre para fora, pingando, abrindo a cena nova.
+  // Fica na área do conteúdo (x 70–938, de y 398 para baixo: nunca a marca do topo nem a coluna de botões; o picolé passa
+  // com o pé acima de y 820). Em ciclo de 4: desliza reto; aos pulinhos; balançando (quase caindo); dando uma pirueta.
+  const PIC = { x0: 70, x1: 938, y0: 398, y1: 1490 };
+  const PIC_PASSA = 0.4, PIC_DESCE = 0.22, PIC_TROCA = 0.62, PIC_S = 440;
+  function travessiaPicole(k, u) {
+    const dir = k % 2 === 0 ? -1 : 1, jeito = k % 4;
+    const xa = dir > 0 ? -200 : W + 200, xb = dir > 0 ? W + 200 : -200, e = u / PIC_PASSA;
+    const x = lerp(xa, xb, e);
+    let base = 870, rot = 0.06 * dir * Math.sin(u * 40);
+    if (jeito === 1) base -= 90 * Math.abs(Math.sin(Math.PI * clamp(e) * 3));
+    if (jeito === 2) rot = 0.32 * Math.sin(clamp(e) * Math.PI * 5);
+    if (jeito === 3) rot = dir * TAU * E.inOutCubic(p(e, 0.2, 0.8));
+    return { dir, x, base, rot, jeito, xa, xb, sab: SABORES[k % 4], lado: u < PIC_TROCA ? 0 : 1 };
+  }
+  const picPassa = (T, x) => clamp((x - T.xa) / (T.xb - T.xa)) * PIC_PASSA;
+  function drawWipePicole(ctx, t, k, u) {
+    const T = travessiaPicole(k, u), sab = T.sab, w = PIC.x1 - PIC.x0;
+    const frente = (x) => { const d = p(u, picPassa(T, x), picPassa(T, x) + PIC_DESCE); return PIC.y0 - 4 + (PIC.y1 - PIC.y0 + 230) * Math.pow(d, 1.35) + 16 * Math.sin(x / 47 + k * 1.7) * d; };
+    const topo = (x) => {                                       // a calda escorre para fora: a beira de cima desce ondulada, macia
+      const d = E.inOutSine(p(u, PIC_TROCA + 0.06 * (0.5 + 0.5 * Math.sin(x / 110 + k * 2.1)), 1));
+      return PIC.y0 - 4 + (H + 300 - PIC.y0) * d + Math.min(1, d * 8) * (26 * Math.sin(x / 61 + k) + 12 * Math.sin(x / 23 + k * 3));
+    };
+    // os dedos de calda pingando da frente (e as gotas que se soltam)
+    const n = 15, dedos = [];
+    for (let i = 0; i < n; i++) {
+      const xi = PIC.x0 + 24 + (i + 0.5) * (w - 48) / n + 14 * (hash(i, k + 11) - 0.5);
+      const wi = 24 + 22 * hash(i, k + 12), d = p(u, picPassa(T, xi), picPassa(T, xi) + PIC_DESCE);
+      dedos.push({ x: xi, w: wi, L: (30 + 130 * hash(i, k + 13)) * Math.min(1, d * 1.6), d, td: picPassa(T, xi) + 0.08 + 0.12 * hash(i, k + 14) });
+    }
+    const cobre = u > picPassa(T, PIC.x0) || u > picPassa(T, PIC.x1);
+    if (cobre) {
+      ctx.save();
+      ctx.beginPath(); ctx.rect(PIC.x0, PIC.y0 - 6, w, H); ctx.clip();
+      const g = ctx.createLinearGradient(0, PIC.y0, 0, PIC.y1);
+      g.addColorStop(0, sab.calda); g.addColorStop(1, mixHex(sab.calda, sab.claro, 0.35));
+      ctx.fillStyle = g;
+      // a folha de calda: do topo (que desce depois da troca) até a frente
+      ctx.beginPath();
+      for (let x = PIC.x0; x <= PIC.x1 + 0.1; x += 8) ctx.lineTo(x, topo(x));
+      for (let x = PIC.x1; x >= PIC.x0 - 0.1; x -= 8) ctx.lineTo(x, Math.max(topo(x), frente(x)));
+      ctx.closePath(); ctx.fill();
+      // os veios mais claros da calda escorrendo (para ler como líquido) e as bolhinhas
+      ctx.save(); ctx.clip();
+      for (let i = 0; i < 7; i++) {
+        const xv = PIC.x0 + (i + 0.3 + 0.4 * hash(i, k + 21)) * w / 7, wv = 10 + 14 * hash(i, k + 22);
+        ctx.fillStyle = css(sab.claro, 0.32); rr(ctx, xv - wv / 2, topo(xv) + 30 + 60 * hash(i, k + 23), wv, H, wv / 2); ctx.fill();
+      }
+      ctx.fillStyle = css(C.branco, 0.35);
+      for (let i = 0; i < 10; i++) { const xb = PIC.x0 + 40 + (w - 80) * hash(i, k + 24), yb = lerp(topo(xb), Math.max(topo(xb), frente(xb)), 0.2 + 0.6 * hash(i, k + 25)); ctx.beginPath(); ctx.arc(xb, yb, 5 + 7 * hash(i, k + 26), 0, TAU); ctx.fill(); }
+      ctx.restore();
+      dedos.forEach((dd) => {
+        if (dd.d <= 0) return;
+        const y0 = frente(dd.x), y1 = y0 + dd.L, tp = topo(dd.x);
+        if (y1 <= tp) return;
+        ctx.fillStyle = mixHex(sab.calda, sab.claro, 0.3);
+        rr(ctx, dd.x - dd.w / 2, Math.max(tp, y0 - dd.w), dd.w, y1 - Math.max(tp, y0 - dd.w), dd.w / 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(dd.x, y1 - dd.w * 0.1, dd.w * 0.62, 0, TAU); ctx.fill();
+        ctx.fillStyle = css(sab.claro, 0.7); ctx.beginPath(); ctx.ellipse(dd.x - dd.w * 0.18, y1 - dd.w * 0.25, dd.w * 0.12, dd.w * 0.2, 0, 0, TAU); ctx.fill();
+        if (u > dd.td) {                                                                                         // a gota que se solta e cai
+          const q = u - dd.td, yg = y1 + 40 + 5200 * q * q;
+          ctx.fillStyle = mixHex(sab.calda, sab.claro, 0.3); ctx.beginPath(); ctx.arc(dd.x, yg, dd.w * 0.36, 0, TAU); ctx.fill();
+          ctx.beginPath(); ctx.moveTo(dd.x - dd.w * 0.3, yg - dd.w * 0.1); ctx.lineTo(dd.x, yg - dd.w * 0.75); ctx.lineTo(dd.x + dd.w * 0.3, yg - dd.w * 0.1); ctx.closePath(); ctx.fill();
+        }
+      });
+      // o brilho molhado ao longo da frente
+      ctx.strokeStyle = css(sab.claro, 0.55); ctx.lineWidth = 7; ctx.lineCap = 'round';
+      ctx.beginPath(); let on = false;
+      for (let x = PIC.x0 + 10; x <= PIC.x1 - 10; x += 8) { const y = frente(x) - 18; if (y > topo(x) + 10 && frente(x) > PIC.y0 + 30) { on ? ctx.lineTo(x, y) : ctx.moveTo(x, y); on = true; } else on = false; }
+      ctx.stroke();
+      if (sab.nome === 'coco') {                                                                                 // a calda de coco (creme) ganha o contorno
+        ctx.strokeStyle = C.cremeDeep; ctx.lineWidth = 4; ctx.beginPath(); on = false;
+        for (let x = PIC.x0; x <= PIC.x1; x += 8) { const y = Math.max(topo(x), frente(x)); if (y > topo(x) + 2) { on ? ctx.lineTo(x, y) : ctx.moveTo(x, y); on = true; } else on = false; }
+        ctx.stroke();
+      }
+      ctx.restore();
+      if (u > 0.2 && u < 0.9) BOX('calda do picolé', PIC.x0, PIC.y0, PIC.x1, Math.min(PIC.y1, Math.max(...dedos.map((dd) => frente(dd.x)))));
+    }
+    // o picolé passando (com os olhinhos, suando e pingando)
+    if (u <= PIC_PASSA + 0.08) {
+      const e = u / PIC_PASSA;
+      for (let i = 0; i < 4; i++) {                                                                             // as gotas que pingam dele
+        const ph = (e * 3 + i / 4) % 1, gx = T.x - T.dir * (30 + 60 * ph) + (i - 1.5) * 18, gy = T.base - PIC_S * 0.36 + 260 * ph * ph;
+        ctx.fillStyle = sab.calda; ctx.globalAlpha = 1 - ph; ctx.beginPath(); ctx.arc(gx, gy, 9, 0, TAU); ctx.fill(); ctx.globalAlpha = 1;
+      }
+      gota(ctx, T.x + T.dir * 70, T.base - PIC_S * 0.92 - 20 * Math.sin(e * 9), 34, { rot: T.dir * 0.4 });   // a gota de suor
+      ctx.save(); ctx.translate(T.x, T.base - PIC_S * 0.55); ctx.rotate(T.rot); ctx.translate(-T.x, -(T.base - PIC_S * 0.55));
+      ctx.save(); ctx.translate(T.x, 0); ctx.scale(T.dir, 1); ctx.translate(-T.x, 0);
+      picole(ctx, T.x, T.base, PIC_S, sab, { cara: true, derrete: 1, t, look: [0.6, 0.2], smile: 0.9, blink: 0 });
+      ctx.restore();
+      ctx.restore();
+    }
+  }
+
+  // ===================== cenas do ep08 ("Que calor, sô!")
+
+  // a capa do calor (ep08): no quadro 0 o sol de rachar com cara de cansado, o termômetro estourando e o chão rachado
+  CENAS.capa.sol = function (ctx, cap, t) {
+    const Ly = cap.Ly, ev = cap.ev, B = Ly.bottom;
+    chaoRachado(ctx, 130, 910, B - 14);
+    ondasCalor(ctx, 540, B - 40, 120, 260, t, 0.9);
+    ondasCalor(ctx, 830, B - 30, 90, 200, t + 0.4, 0.7);
+    solQuente(ctx, 320, B - 172, 104, t, { pisca: blinkAt(t, 9) });
+    BOX('sol', 320 - 156, B - 330, 320 + 156, B - 14);
+    const es = t - ev.estoura;
+    termometro(ctx, 725, B - 18, 290, t, { nivel: 1, racha: 1, estouro: es >= 0 ? es : -1 });
+    BOX('termômetro', 725 - 60, B - 330, 725 + 66, B);
+  };
+
+  // ---- calorao ("O CAUSO"): o ventilador girando fraco que desiste (para, a cabeça tomba e sai fumacinha) e a geladeira
+  //      que abre no "congelador": a forminha de gelo sai VAZIA, vira de ponta-cabeça, sacode, e só cai uma gotinha
+  CENAS.calorao = {
+    setup(cap) {
+      const d = cap.diagrama, ev = cap.ev;
+      ev.vent = at(cap, d.ventilador.em, cap.t0 + 0.3);
+      ev.desiste = Math.max(at(cap, d.desistiu.em, ev.vent + 0.6), ev.vent + 0.4);
+      ev.cong = Math.max(at(cap, d.congelador.em, ev.desiste + 0.6), ev.desiste + 0.4);
+      ev.acabou = Math.max(at(cap, d.acabou.em, ev.cong + 0.5), ev.cong + 0.4);
+      cue(cap.t0 + 0.12, 'pop', { f: 460 }); cue(ev.vent, 'ventilador', { d: 0.9 + ev.desiste - ev.vent });
+      cue(ev.desiste + 0.5, 'zzz'); cue(cap.t0 + 0.2, 'pop', { f: 540 });
+      cue(ev.cong, 'door'); cue(ev.cong + 0.25, 'nevoa'); cue(ev.cong + 0.3, 'pop', { f: 700 });
+      cue(ev.acabou, 'flop'); cue(ev.acabou + 0.25, 'question'); cue(ev.acabou + 0.75, 'plic');
+    },
+    draw(ctx, cap, t) {
+      const ev = cap.ev, T = cap.cenaTop, base = PE - 10;
+      // o ventilador: gira fraco desde o começo, e no "desistiu" vai parando, tomba e solta fumacinha
+      const v0 = 5.5, td = ev.desiste, dec = 1.6;
+      const ang = t < td ? v0 * (t - cap.t0) : v0 * (td - cap.t0) + (v0 / dec) * (1 - Math.exp(-(t - td) * dec));
+      const vel = t < td ? 0.55 : 0.55 * Math.exp(-(t - td) * dec);
+      const caida = E.outBack(p(t, td + 0.35, td + 0.85), 2.2), sono = p(t, td + 0.2, td + 0.8);
+      const VX = 300, VS = 440;
+      enter(ctx, ent(t, cap.t0 + 0.1, 0.45), VX, base, () => ventilador(ctx, VX, base, VS, t, { ang, vel, caida, sono: Math.max(sono, 0.35) }));
+      if (t > cap.t0 + 0.55) BOX('ventilador', VX - 150, base - VS * 1.02, VX + 150, base);
+      fumacinha(ctx, VX - 30, base - VS * 0.62, 70, t, t - td - 0.4, 3);
+      ondasCalor(ctx, VX + 10, base - VS * 1.05, 90, 120, t, 0.7 * (1 - p(t, td, td + 0.4)));
+      // a geladeira (abre no "congelador") e a forminha vazia
+      const GX = 720, GW = 250, GH = 430, ab = E.outCubic(p(t, ev.cong, ev.cong + 0.4));
+      enter(ctx, ent(t, cap.t0 + 0.2, 0.45), GX, base, () => geladeira(ctx, GX, base, GW, GH, { abre: ab, luz: ab * 0.6 }));
+      if (t > cap.t0 + 0.65) BOX('geladeira', GX - GW / 2, base - GH, GX + GW / 2, base);
+      nevoa(ctx, GX, base - GH + 60, GW * 0.9, t - ev.cong - 0.15, 7);
+      const ub = p(t, ev.cong + 0.3, ev.cong + 0.75);
+      if (ub > 0) {
+        const fx = GX - 10, fy = lerp(base - GH + 90, base - GH - 40, E.outBack(ub, 1.8));
+        const vira = E.inOutCubic(p(t, ev.acabou, ev.acabou + 0.35)), sacode = t > ev.acabou + 0.35 ? 0.12 * Math.sin((t - ev.acabou) * 30) * Math.exp(-(t - ev.acabou - 0.35) * 3) : 0;
+        bandejaGelo(ctx, fx, fy, 230, { rot: Math.PI * vira + sacode });
+        BOX('forminha de gelo', fx - 118, fy - 44, fx + 118, fy + 44);
+        // só cai uma gotinha
+        const ug = p(t, ev.acabou + 0.6, ev.acabou + 1.0);
+        if (ug > 0 && ug < 1) gota(ctx, fx + 20, fy + 30 + 260 * ug * ug, 26, { cor: css('#BFE3EE', 1), borda: '#6FB3C8', alpha: 1 - p(ug, 0.85, 1) });
+        interrog(ctx, fx + 150, fy - 70, 34, p(t, ev.acabou + 0.25, ev.acabou + 0.55), t, ev.acabou + 0.25);
+      }
+    },
+  };
+
+  // ---- acai ("O AÇAÍ"): a loja de açaí (lojinha com olhinhos) olhando o copo que aparece no "Açaí", gelado (floquinhos),
+  //      a granola chovendo por cima e o leite em pó polvilhando; ela pula no "loja"; no "faz", check, confete e figurinhas
+  CENAS.acai = {
+    setup(cap) {
+      const d = cap.diagrama, ev = cap.ev;
+      ev.acai = at(cap, d.acai.em, cap.t0 + 0.3);
+      ev.gelado = Math.max(at(cap, d.gelado.em, ev.acai + 0.4), ev.acai + 0.3);
+      ev.granola = Math.max(at(cap, d.granola.em, ev.gelado + 0.4), ev.gelado + 0.3);
+      ev.leite = Math.max(at(cap, d.leite.em, ev.granola + 0.4), ev.granola + 0.3);
+      ev.loja = Math.max(at(cap, d.loja.em, ev.leite + 0.5), ev.leite + 0.3);
+      ev.faz = Math.max(at(cap, d.faz.em, ev.loja + 0.5), ev.loja + 0.3);
+      cue(cap.t0 + 0.15, 'sprout', { i: 0 }); cue(ev.acai, 'pop', { f: 560 }); cue(ev.gelado, 'shine');
+      [0, 1, 2, 3].forEach((i) => cue(ev.granola + 0.08 + i * 0.07, 'tick')); cue(ev.leite, 'whoosh');
+      cue(ev.loja, 'jump'); cue(ev.faz, 'check'); cue(ev.faz + 0.05, 'confete');
+    },
+    draw(ctx, cap, t) {
+      const ev = cap.ev, T = cap.cenaTop, base = PE - 10, alegre = clamp((t - ev.loja) * 3);
+      lojinha(ctx, 'acai', 255, base, 290, t, { e: p(t, cap.t0 + 0.1, cap.t0 + 0.6), smile: Math.max(0.3, alegre), altura: 11 + 30 * alegre, alvo: [720, base - 200], seed: 81,
+        swing: 6 * Math.sin((t - ev.loja) * 8) * Math.exp(-Math.max(0, t - ev.loja) * 2) * (t > ev.loja ? 1 : 0), box: t > cap.t0 + 0.6 ? 'loja de açaí' : null });
+      sticker(ctx, 'estrela', 560, T + 90, 58, p(t, ev.faz, ev.faz + 0.35), t);
+      sticker(ctx, 'coracao', 880, T + 140, 54, p(t, ev.faz + 0.1, ev.faz + 0.45), t);
+      confete(ctx, t, ev.faz + 0.05, 720, base - 300, 83, { n: 34, v: 900 });
+      const BY = base - 30, CX = 720, CS = 270;
+      enter(ctx, ent(t, cap.t0 + 0.2, 0.4), 720, base, () => {
+        shadow(ctx, 720, base - 4, 200, 8, 0.14);
+        ctx.fillStyle = C.madeira; rr(ctx, 525, BY, 390, 22, 10); ctx.fill(); ctx.fillStyle = C.madeiraDark; rr(ctx, 525, BY + 14, 390, 8, 4); ctx.fill();
+        BOX('bandeja', 525, BY, 915, base);
+      });
+      const gr = p(t, ev.granola + 0.25, ev.granola + 0.7), lt = p(t, ev.leite + 0.3, ev.leite + 0.8);
+      pop(ctx, p(t, ev.acai, ev.acai + 0.4), CX, BY, () => copoAcai(ctx, CX, BY, CS, { granola: gr, leite: lt }), 2.4);
+      if (t >= ev.acai + 0.4) BOX('copo de açaí', CX - 0.42 * CS, BY - 1.5 * CS, CX + 0.42 * CS, BY);
+      // a granola chovendo e o leite em pó polvilhando por cima do copo
+      const topo = BY - 1.2 * CS;
+      for (let i = 0; i < 12; i++) {
+        const q = p(t, ev.granola + i * 0.035, ev.granola + 0.3 + i * 0.035); if (q <= 0 || q >= 1) continue;
+        ctx.save(); ctx.translate(CX - 70 + 140 * hash(i, 61), lerp(topo - 220, topo + 10, q * q)); ctx.rotate(q * 6 + i);
+        ctx.fillStyle = i % 3 ? '#C98A4B' : '#E3B66A'; rr(ctx, -11, -7, 22, 14, 5); ctx.fill(); ctx.restore();
+      }
+      const ul = t - ev.leite;
+      if (ul > 0 && ul < 0.9) for (let i = 0; i < 30; i++) {
+        const q = clamp((ul - 0.012 * i) / 0.5); if (q <= 0 || q >= 1) continue;
+        ctx.fillStyle = css(C.branco, 0.95 * (1 - q * 0.3)); ctx.beginPath(); ctx.arc(CX - 80 + 160 * hash(i, 71) + 20 * Math.sin(q * 6 + i), lerp(topo - 200, topo + 12, q), 4 + 3 * hash(i, 72), 0, TAU); ctx.fill();
+      }
+      // o gelado: os floquinhos em volta do copo
+      [[CX - 150, BY - 300, 22], [CX + 150, BY - 250, 18], [CX + 120, BY - 380, 14]].forEach(([x, y, r], i) => floco(ctx, x, y + 6 * Math.sin(t * 2 + i), r, p(t, ev.gelado + i * 0.1, ev.gelado + 0.3 + i * 0.1), t * 0.6 + i, '#7FC0D4'));
+      check(ctx, 880, BY - 330, 40, p(t, ev.faz, ev.faz + 0.4), { box: t >= ev.faz + 0.4 ? 'check' : null });
+    },
+  };
+
+  // ---- freezer ("A SORVETERIA"): o freezer de sorveteria abre a tampa de vidro com a névoa gelada; pulam de dentro os
+  //      picolés, o pote de sorvete e o coco com o canudinho; no "geladinha", os floquinhos e os brilhos
+  CENAS.freezer = {
+    setup(cap) {
+      const d = cap.diagrama, ev = cap.ev;
+      ev.picole = at(cap, d.picole.em, cap.t0 + 0.4);
+      ev.abre = Math.max(cap.t0 + 0.2, ev.picole - 0.35);
+      ev.pote = Math.max(at(cap, d.pote.em, ev.picole + 0.6), ev.picole + 0.4);
+      ev.coco = Math.max(at(cap, d.coco.em, ev.pote + 0.6), ev.pote + 0.4);
+      ev.geladinha = Math.max(at(cap, d.geladinha.em, ev.coco + 0.4), ev.coco + 0.3);
+      cue(cap.t0 + 0.1, 'pop', { f: 440 }); cue(ev.abre, 'slide'); cue(ev.abre + 0.1, 'nevoa');
+      [0, 1].forEach((i) => cue(ev.picole + i * 0.12, 'pop', { f: 640 + 90 * i })); cue(ev.pote, 'pop', { f: 560 }); cue(ev.coco, 'pop', { f: 480 });
+      cue(ev.geladinha, 'shine');
+    },
+    draw(ctx, cap, t) {
+      const ev = cap.ev, T = cap.cenaTop, base = PE - 10, FW = 600, FX = 510, ftop = base - FW * 0.4;
+      const ab = E.outCubic(p(t, ev.abre, ev.abre + 0.4));
+      // o que pula de dentro (atrás da frente do freezer na subida, à frente depois)
+      const pecas = [
+        [ev.picole, 250, ftop - 30, (x, y) => picole(ctx, x, y, 230, SABORES[0], { t, derrete: 0.5, rot: -0.12 })],
+        [ev.picole + 0.12, 360, ftop - 10, (x, y) => picole(ctx, x, y, 210, SABORES[1], { t, derrete: 0.5, rot: 0.1 })],
+        [ev.pote, 540, ftop + 6, (x, y) => poteSorvete(ctx, x, y, 190)],
+        [ev.coco, 755, ftop + 6, (x, y) => coco(ctx, x, y, 200)],
+      ];
+      const nomes = ['picolé de morango', 'picolé de manga', 'pote de sorvete', 'coco'];
+      const caixasP = [[180, 320], [295, 425], [450, 640], [670, 840]], alt = [240, 220, 210, 215];
+      const sub = (t0) => E.outBack(p(t, t0, t0 + 0.45), 1.5);
+      nevoa(ctx, FX, ftop, FW * 0.8, t - ev.abre - 0.05, 9, 1.8);
+      pecas.forEach(([t0, x, y, fn], i) => { const u = sub(t0); if (u <= 0) return; const yy = lerp(ftop + 120, y, u) - 5 * Math.sin((t - t0) * 2.4 + i) * clamp((t - t0 - 0.45) * 2); fn(x, yy); if (u >= 1) BOX(nomes[i], caixasP[i][0], y - alt[i], caixasP[i][1], y); });
+      enter(ctx, ent(t, cap.t0 + 0.1, 0.45), FX, base, () => freezerSorvete(ctx, FX, base, FW, t, { abre: ab }));
+      if (t > cap.t0 + 0.55) BOX('freezer', FX - FW / 2, ftop - 6, FX + FW / 2, base);
+      // geladinha: os floquinhos e os brilhos
+      [[160, T + 120, 26], [470, T + 70, 20], [880, T + 110, 24]].forEach(([x, y, r], i) => floco(ctx, x, y + 8 * Math.sin(t * 1.8 + i), r, p(t, ev.geladinha + i * 0.1, ev.geladinha + 0.35 + i * 0.1), t * 0.5 + i, '#7FC0D4'));
+      sticker(ctx, 'brilho', 650, T + 150, 50, p(t, ev.geladinha + 0.05, ev.geladinha + 0.4), t);
+      sticker(ctx, 'brilho', 300, T + 200, 44, p(t, ev.geladinha + 0.15, ev.geladinha + 0.5), t);
+    },
+  };
+
+  // ---- gelo ("O GELO"): o "?" do gelo que faltou; o mercadim (lojinha) pula no "mercadim"; no balcão, o saco de gelo
+  //      cai com "tum" e as garrafas de refri suando de geladas sobem; no "trincando", brilhos e floquinhos
+  CENAS.gelo = {
+    setup(cap) {
+      const d = cap.diagrama, ev = cap.ev;
+      ev.loja = at(cap, d.loja.em, cap.t0 + 0.6);
+      ev.saco = Math.max(at(cap, d.saco.em, ev.loja + 0.5), ev.loja + 0.3);
+      ev.refri = Math.max(at(cap, d.refri.em, ev.saco + 0.5), ev.saco + 0.35);
+      ev.trinca = Math.max(at(cap, d.trincando.em, ev.refri + 0.4), ev.refri + 0.3);
+      cue(cap.t0 + 0.12, 'sprout', { i: 1 }); cue(cap.t0 + 0.3, 'question'); cue(ev.loja, 'jump');
+      cue(ev.saco + 0.3, 'flop'); [0, 1, 2].forEach((i) => cue(ev.saco + 0.35 + i * 0.08, 'clink'));
+      [0, 1].forEach((i) => cue(ev.refri + i * 0.14, 'pop', { f: 700 + 90 * i })); cue(ev.trinca, 'shine'); cue(ev.trinca + 0.1, 'nevoa');
+    },
+    draw(ctx, cap, t) {
+      const ev = cap.ev, T = cap.cenaTop, base = PE - 10, alegre = clamp((t - ev.loja) * 3);
+      lojinha(ctx, 'mercado', 245, base, 290, t, { e: p(t, cap.t0 + 0.1, cap.t0 + 0.6), smile: Math.max(0.3, alegre), altura: 11 + 30 * alegre, alvo: [700, base - 200], seed: 85,
+        swing: 6 * Math.sin((t - ev.loja) * 8) * Math.exp(-Math.max(0, t - ev.loja) * 2) * (t > ev.loja ? 1 : 0), box: t > cap.t0 + 0.6 ? 'mercadim' : null });
+      // o "?" (E o gelo?) até o saco chegar
+      const eq = p(t, cap.t0 + 0.3, cap.t0 + 0.6) * (1 - p(t, ev.saco - 0.25, ev.saco));
+      interrog(ctx, 720, T + 130, 40, eq, t, cap.t0 + 0.3);
+      const BY = base - 30;
+      enter(ctx, ent(t, cap.t0 + 0.2, 0.4), 720, base, () => {
+        shadow(ctx, 720, base - 4, 200, 8, 0.14);
+        ctx.fillStyle = C.madeira; rr(ctx, 525, BY, 390, 22, 10); ctx.fill(); ctx.fillStyle = C.madeiraDark; rr(ctx, 525, BY + 14, 390, 8, 4); ctx.fill();
+        BOX('bandeja', 525, BY, 915, base);
+      });
+      // o saco de gelo cai na bandeja (amassa um tiquinho ao chegar)
+      const es = p(t, ev.saco, ev.saco + 0.3);
+      if (es > 0) {
+        const SX = 625, SS = 250, y = lerp(T + SS + 10, BY, E.inCubic(es)), sq = es >= 1 ? 1 - 0.1 * Math.sin(Math.PI * p(t, ev.saco + 0.3, ev.saco + 0.5)) : 1;
+        ctx.save(); ctx.translate(SX, y); ctx.scale(1 / sq, sq); sacoGelo(ctx, 0, 0, SS); ctx.restore();
+        if (es >= 1) BOX('saco de gelo', SX - 0.5 * SS, BY - 1.02 * SS, SX + 0.5 * SS, BY);
+      }
+      // as garrafas suando de geladas
+      [[790, C.coral], [868, C.verde]].forEach(([x, cor], i) => {
+        const e = p(t, ev.refri + i * 0.14, ev.refri + 0.4 + i * 0.14);
+        pop(ctx, e, x, BY, () => garrafaSuando(ctx, x, BY, 230, cor, t), 2.4);
+        if (e >= 1) BOX(`refri ${i + 1}`, x - 34, BY - 245, x + 34, BY);
+      });
+      // trincando: os brilhos e os floquinhos
+      nevoa(ctx, 830, BY - 230, 140, t - ev.trinca - 0.05, 11);
+      sticker(ctx, 'brilho', 760, BY - 300, 52, p(t, ev.trinca, ev.trinca + 0.35), t);
+      sticker(ctx, 'brilho', 905, BY - 270, 40, p(t, ev.trinca + 0.12, ev.trinca + 0.45), t);
+      floco(ctx, 560, T + 90 + 6 * Math.sin(t * 2), 24, p(t, ev.trinca + 0.1, ev.trinca + 0.4), t * 0.5, '#7FC0D4');
+    },
+  };
+
+  // ---- entregaGelada ("CHEGOU", ep08): o PERTIM chega pilotando a motinha com a caixa térmica na garupa, suando de leve
+  //      (as gotinhas, as ondas de calor e o sol batendo), FALANDO para a câmera com a boca sincronizada com a voz; desce,
+  //      a caixa vai para a mesa e abre com a névoa gelada: o copo de açaí sobe inteirinho, brilhando. A piada: ele quase
+  //      derrete (a poça de suor no chão), mas o açaí chega inteiro. A família comemora; a piscadinha no fim
+  //      "boca": true no diagrama → linha.json traz a boca de cada quadro (scripts/linha.py → bocas)
+  const bocaEm = (cap, t) => {
+    const b = cap.boca;
+    if (!b) return 'R';
+    const i = Math.floor((t - b.t0) * b.fps);
+    return i >= 0 && i < b.bocas.length ? b.bocas[i] : 'R';
+  };
+  const BOCA_Q = { A: 'A', E: 'E', O: 'O', M: 'MBP' };
+  CENAS.entregaGelada = {
+    setup(cap) {
+      const d = cap.diagrama, ev = cap.ev;
+      ev.moto = Math.min(at(cap, d.moto.em, cap.t0 + 0.3), cap.t0 + 0.3);
+      ev.para = ev.moto + 0.9;
+      ev.desce = Math.max(at(cap, d.desce.em, ev.para + 0.3), ev.para + 0.2);
+      ev.entrega = ev.desce + 0.5;
+      ev.abre = Math.max(at(cap, d.abre.em, ev.entrega + 0.5), ev.entrega + 0.45);
+      ev.derrete = Math.max(at(cap, d.derreter.em, ev.abre + 0.3), ev.abre + 0.25);
+      ev.pisca = Math.max(cap.voz_t1 + 0.2, ev.derrete + 0.6);
+      ev.piscadas = [];
+      cue(ev.moto, 'moto', { d: 0.9 }); cue(ev.para, 'horn'); cue(ev.desce, 'jump'); cue(ev.entrega, 'whoosh'); cue(ev.entrega + 0.35, 'plop');
+      cue(ev.abre, 'door'); cue(ev.abre + 0.05, 'nevoa'); cue(ev.abre + 0.25, 'shine'); cue(ev.abre + 0.3, 'heart'); cue(ev.abre + 0.35, 'confete');
+      cue(ev.derrete + 0.1, 'plic'); cue(ev.pisca, 'blink'); cue(ev.pisca + 0.05, 'shine');
+    },
+    draw(ctx, cap, t) {
+      const ev = cap.ev, T = cap.cenaTop, base = PE - 10, Y = PE - 205;
+      // o sol batendo, no canto de cima
+      solQuente(ctx, 168, T + 96, 46, t, { pisca: blinkAt(t, 13) });
+      // a família atrás da mesa: comemora quando a caixa abre
+      [[715, 2], [865, 1]].forEach(([x, vi], i) => {
+        const e = ent(t, cap.t0 + 0.1 + i * 0.08, 0.4); if (e <= 0) return;
+        const feliz = t > ev.abre + 0.2;
+        ctx.save(); ctx.globalAlpha *= clamp(e * 2);
+        pessoa(ctx, VISITAS[vi], x, Y + 40 - (feliz ? 8 * hop(t, i * 0.5) : 0), t, { k: 0.82, look: feliz ? [0, 0] : [-0.8, 0.2], acena: feliz, sorriso: feliz ? 1 : 0.4, blink: blinkAt(t, i + 91) });
+        ctx.restore();
+      });
+      confete(ctx, t, ev.abre + 0.35, 790, Y - 150, 93, { n: 22, v: 700, dur: 1.8 });
+      enter(ctx, ent(t, cap.t0 + 0.15, 0.45), 790, Y, () => { mesaXadrez(ctx, 640, 930, Y, PE - 8, 1); BOX('mesa', 640, Y, 930, PE - 8); });
+      // a caixa térmica na mesa: abre com a névoa e o copo de açaí sobe inteirinho, brilhando
+      const KX = 775, KW = 132;
+      if (t >= ev.entrega + 0.4) {
+        const ab = E.outCubic(p(t, ev.abre, ev.abre + 0.35));
+        const uc = E.outBack(p(t, ev.abre + 0.15, ev.abre + 0.6), 1.6);
+        const pousa = E.inOutCubic(p(t, ev.abre + 0.6, ev.abre + 1.0)), CXp = lerp(KX, 882, pousa), CYp = lerp(Y + 2 - KW * 0.5 - 120 * uc, Y + 2, pousa) - 70 * Math.sin(Math.PI * pousa);
+        if (uc > 0 && pousa <= 0) copoAcai(ctx, CXp, CYp, 100);
+        caixaTermica(ctx, KX, Y + 2, KW, { abre: ab });
+        nevoa(ctx, KX, Y - KW * 0.6, KW * 1.3, t - ev.abre, 13, 1.6);
+        sticker(ctx, 'brilho', KX + 80, Y - 260, 46, p(t, ev.abre + 0.25, ev.abre + 0.55), t);
+        floco(ctx, KX - 85, Y - 230 + 6 * Math.sin(t * 2), 20, p(t, ev.abre + 0.3, ev.abre + 0.6), t * 0.5, '#7FC0D4');
+        if (pousa > 0) copoAcai(ctx, CXp, CYp, 100);
+        BOX('caixa térmica', KX - KW * 0.55, Y + 2 - KW * 0.7, KX + KW * 0.55, Y + 2);
+        if (pousa >= 1) BOX('açaí inteirinho', 882 - 45, Y + 2 - 150, 882 + 45, Y + 2);
+      }
+      // o PERTIM (olhando para a câmera; a boca segue a voz)
+      if (t < ev.moto - 0.05) return;
+      const MX = 340, MH = 360, PX = 430, PH = 480, q = MH / 254;
+      const bc = bocaEm(cap, t), falando = bc !== 'R';
+      const pb = blinkAt(t, 17), pc = falando ? 0 : piscaQ(pb);
+      const um = p(t, ev.moto, ev.para), mx = lerp(-260, MX, E.outCubic(um));
+      const garupa = (x, b) => [x + (60 - 150) * q, b - (284 - 196) * q];
+      const suor = (x, topo, a) => {                                                                     // as gotinhas de suor voando da cabeça
+        for (let i = 0; i < 3; i++) { const ph = (t * 0.9 + i / 3) % 1, sd = i % 2 ? 1 : -1; gota(ctx, x + sd * (60 + 70 * ph), topo + 30 - 50 * Math.sin(Math.PI * ph) + 40 * ph, 40, { rot: sd * 0.5, alpha: a * Math.sin(Math.PI * ph) }); }
+      };
+      if (t < ev.desce) {
+        const bump = um < 1 ? 5 * Math.abs(Math.sin(t * 22)) : 3 * hop(t);
+        const [gx, gy] = garupa(mx, base - bump);
+        caixaTermica(ctx, gx, gy, 100);
+        ondasCalor(ctx, mx + 40, base - MH * 0.95, 110, 160, t, 0.8);
+        pertimQ(ctx, falando ? `moto-boca-${BOCA_Q[bc]}` : `moto-p${pc}`, mx, base - bump, MH, { box: um >= 1 ? 'Pertim na moto' : null, mx0: 0.12 });
+        suor(mx + 40, base - MH * 1.0, 1);
+        return;
+      }
+      pertimQ(ctx, 'moto-estacionada', MX, base, MH, { box: 'moto', mx0: 0.12 });
+      const [gx, gy] = garupa(MX, base), ue = p(t, ev.entrega, ev.entrega + 0.4);
+      if (t < ev.entrega) caixaTermica(ctx, gx, gy, 100);
+      else if (ue < 1) { const x = lerp(gx, KX, E.inOutCubic(ue)), y = lerp(gy, Y + 2, ue) - 150 * Math.sin(Math.PI * ue), w = lerp(100, KW, ue); caixaTermica(ctx, x, y, w); }
+      const ud = p(t, ev.desce, ev.desce + 0.35), x = lerp(MX + 40, PX, E.outCubic(ud)), pulo = 90 * Math.sin(Math.PI * ud), qq = 4 * hop(t) * (ud >= 1 ? 1 : 0);
+      // a poça de suor no chão (ele quase derrete…) e o alívio do gelado quando a caixa abre
+      poca(ctx, PX + 10, base + 4, 220, E.outCubic(p(t, ev.derrete, ev.derrete + 0.6)) * (ud >= 1 ? 1 : 0));
+      const alivio = p(t, ev.abre + 0.2, ev.abre + 0.8);
+      ondasCalor(ctx, x, base - PH * 0.98, 110, 160, t, 0.8 * (1 - alivio));
+      const nome = t >= ev.pisca && t < ev.pisca + 1.0 ? 'parado-pisca' : falando ? `parado-boca-${BOCA_Q[bc]}` : `parado-p${pc}`;
+      pertimQ(ctx, nome, x, base - pulo - qq, PH, { box: ud >= 1 ? 'Pertim' : null, mx0: 0.14, mx1: 0.14 });
+      suor(x, base - PH * 0.98, 1 - 0.7 * alivio);
+    },
+  };
+
   // =====================================================================
   // O QUADRO
   // =====================================================================
@@ -4743,8 +5574,8 @@
     if (!w.trans) {
       OFF = { dx: 0, dy: 0, n: w.k };
       drawChap(ctx, CAPS[w.k], t);
-    } else if (TRANS === 'pizza' || TRANS === 'baloes') {
-      // a caixa de pizza / os balões: até a tela fechar, o capítulo atual por baixo; depois, o próximo
+    } else if (TRANS === 'pizza' || TRANS === 'baloes' || TRANS === 'picole') {
+      // a caixa de pizza / os balões / a calda do picolé: até a tela fechar, o capítulo atual por baixo; depois, o próximo
       const T = travessia(w.k, w.u), k = w.k + T.lado;
       OFF = { dx: 0, dy: 0, n: k };
       drawChap(ctx, CAPS[k], t);
@@ -4804,7 +5635,8 @@
       if (k > 0) {
         if (TRANS === 'sacola') cue(CAPS[k - 1].t1, 'sacola', { d: TR, k, dir: travessia(k - 1, 0).dir, nhac: nhacU(k - 1) * TR, jeito: (k - 1) % 4 });   // os pulos, o NHAC! e o ploc
         else if (TRANS === 'pizza') cue(CAPS[k - 1].t1, 'pizza', { d: TR, k });
-        else if (TRANS === 'baloes') cue(CAPS[k - 1].t1, 'baloes', { d: TR, k });   // os balões subindo e o estouro   // a tampa descendo, o plof e a tampa abrindo
+        else if (TRANS === 'baloes') cue(CAPS[k - 1].t1, 'baloes', { d: TR, k });   // os balões subindo e o estouro
+        else if (TRANS === 'picole') cue(CAPS[k - 1].t1, 'picole', { d: TR, k, dir: travessia(k - 1, 0).dir });   // o picolé passando, a calda escorrendo e pingando
         else cue(CAPS[k - 1].t1, { galinha: 'galinha', viralata: 'cachorro' }[TRANS] || 'trans', { d: TR, k, dir: travessia(k - 1, 0).dir });   // quem atravessa (o som anda junto)
         cue(rotuloT(cap), 'pop', { f: 820 });                                        // o "plop" do adesivo do rótulo
         tituloT(cap).forEach((x, i) => cue(x, 'punch', { i }));

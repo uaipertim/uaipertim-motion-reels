@@ -1,0 +1,8 @@
+Tomadas do capítulo 06 de tudo-pertim-08 (voz Victor Pinho, eleven_v4; texto enviado: "Comenta aí: no calor, você vai de quê? Açaí? Sorvete? Ou picolé?"; contexto: previous_text sim, next_text sim) — 2026-11-15 15:52
+
+sua-vez-a.mp3 · seed 42 · 5.2 s · conferência: ok · F0 mediano 161 Hz · Açaí: sobe +16.9 st, termina +8.9 st, Sorvete: sobe +8.7 st, termina +8.7 st, picolé: sobe +6.1 st, termina +10.6 st
+sua-vez-b.mp3 · seed 1042 · 5.44 s · conferência: ok · F0 mediano 208 Hz · Açaí: sobe +0.9 st, termina +4.0 st, Sorvete: sobe +1.1 st, termina +5.6 st, picolé: sobe +0.1 st, termina +6.3 st
+sua-vez-c.mp3 · seed 2042 · 5.6 s · conferência: ok · F0 mediano 209 Hz · Açaí: sobe +15.1 st, termina +3.1 st, Sorvete: sobe +0.3 st, termina +9.8 st, picolé: sobe +4.9 st, termina +6.6 st
+
+MELHOR: sua-vez-a.mp3 (seed 42): a pior palavra termina +8.7 st da mediana (pergunta: acima); subida média +10.6 st · é a primeira em que Açaí, Sorvete, picolé terminam acima da mediana
+

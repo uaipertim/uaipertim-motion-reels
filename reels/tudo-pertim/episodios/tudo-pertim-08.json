@@ -1,0 +1,275 @@
+{
+  "id": "tudo-pertim-08",
+  "titulo": "Que calor, sô!",
+  "marca": "@uaipertim",
+  "bpm": 120,
+  "voz": "v4",
+  "transicao": "picole",
+  "capitulos": [
+    {
+      "rotulo": "TUDO PERTIM · EP. 08",
+      "tom": "pessego",
+      "titulo": [
+        "Que calor,",
+        "sô! 🥵"
+      ],
+      "fala": [
+        {
+          "texto": "Que calor, sô! Tá derretendo aí também?",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "capa",
+        "cena": "sol",
+        "marcador": "calor",
+        "estoura": {
+          "em": "derretendo"
+        }
+      }
+    },
+    {
+      "rotulo": "O CAUSO",
+      "tom": "amarelo",
+      "titulo": [
+        "Tá quente",
+        "demais."
+      ],
+      "fala": [
+        {
+          "texto": "O ventilador já desistiu…",
+          "apoio": null
+        },
+        {
+          "texto": "e o gelo do congelador acabou.",
+          "apoio": "O gelo *acabou*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "calorao",
+        "ventilador": {
+          "em": "ventilador"
+        },
+        "desistiu": {
+          "em": "desistiu"
+        },
+        "congelador": {
+          "em": "congelador"
+        },
+        "acabou": {
+          "em": "acabou"
+        }
+      },
+      "segura": 0.6,
+      "min": 5.5
+    },
+    {
+      "rotulo": "O AÇAÍ",
+      "tom": "pessego",
+      "titulo": [
+        "O açaí",
+        "salva!"
+      ],
+      "fala": [
+        {
+          "texto": "Açaí bem gelado, com granola e leite em pó?",
+          "apoio": null
+        },
+        {
+          "texto": "A loja de açaí do Glória faz.",
+          "apoio": "A loja de açaí *faz*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "acai",
+        "acai": {
+          "em": "Açaí"
+        },
+        "gelado": {
+          "em": "gelado"
+        },
+        "granola": {
+          "em": "granola"
+        },
+        "leite": {
+          "em": "leite"
+        },
+        "loja": {
+          "em": "loja"
+        },
+        "faz": {
+          "em": "faz"
+        }
+      },
+      "segura": 0.6,
+      "min": 5.5
+    },
+    {
+      "rotulo": "A SORVETERIA",
+      "tom": "amarelo",
+      "titulo": [
+        "E pra",
+        "refrescar?"
+      ],
+      "fala": [
+        {
+          "texto": "Picolé, sorvete de pote… e água de coco geladinha.",
+          "apoio": "Sorvete de *pote*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "freezer",
+        "picole": {
+          "em": "Picolé"
+        },
+        "pote": {
+          "em": "pote"
+        },
+        "coco": {
+          "em": "coco"
+        },
+        "geladinha": {
+          "em": "geladinha"
+        }
+      },
+      "segura": 0.6,
+      "min": 5.5
+    },
+    {
+      "rotulo": "O GELO",
+      "tom": "verde",
+      "titulo": [
+        "Faltou o",
+        "gelo?"
+      ],
+      "fala": [
+        {
+          "texto": "E o gelo? O mercadim tem saco de gelo e refri trincando.",
+          "apoio": "Refri *trincando*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "gelo",
+        "loja": {
+          "em": "mercadim"
+        },
+        "saco": {
+          "em": "saco"
+        },
+        "refri": {
+          "em": "refri"
+        },
+        "trincando": {
+          "em": "trincando"
+        }
+      },
+      "segura": 0.6,
+      "min": 5.5
+    },
+    {
+      "rotulo": "CHEGOU",
+      "tom": "amarelo",
+      "titulo": [
+        "Chegou ainda",
+        "gelado!"
+      ],
+      "fala": [
+        {
+          "texto": "Chegou ainda geladinho…",
+          "apoio": null
+        },
+        {
+          "texto": "antes de derreter.",
+          "apoio": "Antes de *derreter*."
+        }
+      ],
+      "diagrama": {
+        "tipo": "entregaGelada",
+        "boca": true,
+        "moto": {
+          "em": "Chegou"
+        },
+        "desce": {
+          "em": "geladinho"
+        },
+        "abre": {
+          "em": "antes"
+        },
+        "derreter": {
+          "em": "derreter"
+        }
+      },
+      "segura": 0.7,
+      "min": 5.5
+    },
+    {
+      "rotulo": "SUA VEZ",
+      "tom": "amarelo",
+      "titulo": [
+        "No calor,",
+        "é o quê?"
+      ],
+      "fala": [
+        {
+          "texto": "Comenta aí: no calor, você vai de quê? Açaí? Sorvete? Ou picolé?",
+          "apoio": "E aí, *qual é o seu*?"
+        }
+      ],
+      "diagrama": {
+        "tipo": "enquete",
+        "opcoes": [
+          {
+            "t": "açaí",
+            "em": "Açaí"
+          },
+          {
+            "t": "sorvete",
+            "em": "Sorvete"
+          },
+          {
+            "t": "picolé",
+            "em": "picolé"
+          }
+        ]
+      },
+      "segura": 0.8,
+      "min": 5.5
+    },
+    {
+      "rotulo": "PRA NÃO PERDER",
+      "tom": "amarelo",
+      "titulo": [
+        "Em breve",
+        "no Glória."
+      ],
+      "min": 7.5,
+      "fala": [
+        {
+          "texto": "Que calor, sô! Relaxa, tem UaiPertim. Tudo pertim de você. Segue a gente!",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "fecho",
+        "logo": {
+          "em": "UaiPertim"
+        },
+        "assinatura": {
+          "t": "Tudo pertim de você.",
+          "em": "Tudo"
+        },
+        "chip": {
+          "t": "Segue @uaipertim",
+          "em": "Segue"
+        },
+        "confete": {
+          "em": "+1.2"
+        },
+        "pertim": {
+          "em": "UaiPertim",
+          "pisca": "pertim"
+        }
+      }
+    }
+  ]
+}

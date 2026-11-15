@@ -54,6 +54,12 @@ for (const a of ACENO) QUADROS.push(quadro(`alegre-a${a}`, { v: 1, pose: "acenan
 // em pé, parado (braços ao lado), olhando para a câmera — e com a piscadinha (o EP. 07: entrega o bolo e pisca)
 for (const pc of PISCA) QUADROS.push(quadro(`parado-p${pc * 10}`, { v: 1, pose: "parado", expr: "sorrindo" }, { piscada: pc, centro: true, olhar: [0, 0] }));
 QUADROS.push(quadro("parado-pisca", { v: 1, pose: "parado", expr: "piscadinha" }));
+// falando (o EP. 08: a boca sincronizada com a voz): as 4 bocas de fala do componente (A, E, O, M/B/P) na moto e em pé,
+// sorrindo e olhando para a câmera; nas pausas vale o sorriso dos quadros moto-p*/parado-p*
+for (const b of ["A", "E", "O", "MBP"] as const) {
+  QUADROS.push(quadro(`moto-boca-${b}`, { v: 1, pose: "moto", expr: "sorrindo", mouth: b }, { centro: true, olhar: [0, 0] }));
+  QUADROS.push(quadro(`parado-boca-${b}`, { v: 1, pose: "parado", expr: "sorrindo", mouth: b }, { centro: true, olhar: [0, 0] }));
+}
 const mv = pertimVals({ v: 1, pose: "moto" }).vb;
 QUADROS.push({ nome: "moto-estacionada", svg: renderToStaticMarkup(<MotoEstacionada />), vb: mv, chao: [150, 284] });
 
