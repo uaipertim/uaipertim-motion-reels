@@ -1,0 +1,191 @@
+{
+  "id": "olha-ele-por-dentro",
+  "titulo": "Olha ele por dentro!",
+  "marca": "@uaipertim",
+  "perfil_voz": "narracao",
+  "trilha": "animada",
+  "bpm": 120,
+  "legenda": true,
+  "grade": true,
+  "logo_pronta": 0.6,
+  "_doc": "Reel 'Olha ele por dentro!' (Instagram @uaipertim, Semana UaiPertim, seg 16/11 20h): a primeira vez que o app aparece, narrado pelo Pertim. A voz, a linha do tempo e a mixagem saem do pipeline do Explica, Sô! (voz.py, linha.py, audio.py); o vídeo é a composição Remotion OlhaElePorDentro (src/olha-ele-por-dentro/). 'grade': true = todo corte de cena cai numa batida da trilha animada (120 BPM, 0,5 s): cada cena dura no mínimo 'batidas' e termina na primeira batida depois do fim da fala + 'segura'. Telas: public/telas-app/celular/ (Main, Loja, Produto, Sacola, Checkout; nunca Cartao.png).",
+  "_doc_pronuncia": "Grafia c (aprovada no 'Bateu a fome?'): 'UaiPertim' vai para a voz como 'Uai pertím' e 'Pertim'/'pertim' como 'pertím' (só o texto enviado; na tela e na legenda continua 'UaiPertim'/'Pertim').",
+  "capitulos": [
+    {
+      "rotulo": "CENA 1 · gancho",
+      "titulo": [
+        "",
+        ""
+      ],
+      "batidas": 5,
+      "inicio": 0.12,
+      "segura": 0.1,
+      "fala": [
+        {
+          "texto": "Psiu! Quer ver o UaiPertim por dentro?",
+          "apoio": null
+        }
+      ],
+      "pronuncia": {
+        "UaiPertim": "Uai pertím",
+        "Pertim": "pertím",
+        "pertim": "pertím"
+      },
+      "diagrama": {
+        "tipo": "gancho"
+      }
+    },
+    {
+      "rotulo": "CENA 2 · início",
+      "titulo": [
+        "",
+        ""
+      ],
+      "batidas": 9,
+      "inicio": 0.1,
+      "segura": 0.05,
+      "fala": [
+        {
+          "texto": "Logo de cara, as lojas do Glória: lanche, pizza, açaí, padaria, mercado…",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "inicio",
+        "categorias": [
+          {
+            "em": "lanche",
+            "i": 1
+          },
+          {
+            "em": "pizza",
+            "i": 2
+          },
+          {
+            "em": "açaí",
+            "i": 3
+          },
+          {
+            "em": "padaria",
+            "i": 4
+          }
+        ],
+        "mercado": {
+          "em": "mercado"
+        }
+      }
+    },
+    {
+      "rotulo": "CENA 3 · loja",
+      "titulo": [
+        "",
+        ""
+      ],
+      "batidas": 8,
+      "inicio": 0.1,
+      "segura": 0.05,
+      "fala": [
+        {
+          "texto": "Escolheu a loja? O cardápio tá todo aqui, com foto e preço.",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "loja"
+      }
+    },
+    {
+      "rotulo": "CENA 4 · produto",
+      "titulo": [
+        "",
+        ""
+      ],
+      "batidas": 6,
+      "inicio": 0.1,
+      "segura": 0.05,
+      "fala": [
+        {
+          "texto": "Quer caprichar? É só marcar.",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "produto",
+        "marca": {
+          "em": "marcar"
+        }
+      }
+    },
+    {
+      "rotulo": "CENA 5 · sacola",
+      "titulo": [
+        "",
+        ""
+      ],
+      "batidas": 4,
+      "inicio": 0.1,
+      "segura": 0.05,
+      "fala": [
+        {
+          "texto": "Joga na sacola…",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "sacola"
+      }
+    },
+    {
+      "rotulo": "CENA 6 · pagamento",
+      "titulo": [
+        "",
+        ""
+      ],
+      "batidas": 7,
+      "inicio": 0.08,
+      "segura": 0.05,
+      "fala": [
+        {
+          "texto": "…e paga do jeito que quiser: Pix, cartão ou na entrega.",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "pagamento",
+        "formas": [
+          {
+            "em": "Pix"
+          },
+          {
+            "em": "cartão"
+          },
+          {
+            "em": "entrega"
+          }
+        ]
+      }
+    },
+    {
+      "rotulo": "FECHO",
+      "titulo": [
+        "",
+        ""
+      ],
+      "batidas": 8,
+      "inicio": 0.12,
+      "segura": 0.3,
+      "fala": [
+        {
+          "texto": "Facim, né? Tá chegando no Glória!",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "fecho",
+        "logo": {
+          "em": "Facim"
+        }
+      }
+    }
+  ]
+}

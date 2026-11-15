@@ -1,0 +1,185 @@
+{
+ "duracao": 27.5,
+ "fps": 30,
+ "quadros": 825,
+ "batida": 0.5,
+ "bpm": 120.0,
+ "cenas": [
+  {
+   "n": 0,
+   "tipo": "gancho",
+   "t0": 0.0,
+   "t1": 3.0,
+   "voz_t0": 0.12,
+   "voz_t1": 2.52,
+   "texto": "Psiu! Quer ver o UaiPertim por dentro?"
+  },
+  {
+   "n": 1,
+   "tipo": "inicio",
+   "t0": 3.0,
+   "t1": 9.5,
+   "voz_t0": 3.1,
+   "voz_t1": 9.26,
+   "texto": "Logo de cara, as lojas do Glória: lanche, pizza, açaí, padaria, mercado…"
+  },
+  {
+   "n": 2,
+   "tipo": "loja",
+   "t0": 9.5,
+   "t1": 14.5,
+   "voz_t0": 9.6,
+   "voz_t1": 14.08,
+   "texto": "Escolheu a loja? O cardápio tá todo aqui, com foto e preço."
+  },
+  {
+   "n": 3,
+   "tipo": "produto",
+   "t0": 14.5,
+   "t1": 17.5,
+   "voz_t0": 14.6,
+   "voz_t1": 16.52,
+   "texto": "Quer caprichar? É só marcar."
+  },
+  {
+   "n": 4,
+   "tipo": "sacola",
+   "t0": 17.5,
+   "t1": 19.5,
+   "voz_t0": 17.6,
+   "voz_t1": 19.04,
+   "texto": "Joga na sacola…"
+  },
+  {
+   "n": 5,
+   "tipo": "pagamento",
+   "t0": 19.5,
+   "t1": 23.5,
+   "voz_t0": 19.58,
+   "voz_t1": 23.18,
+   "texto": "…e paga do jeito que quiser: Pix, cartão ou na entrega."
+  },
+  {
+   "n": 6,
+   "tipo": "fecho",
+   "t0": 23.5,
+   "t1": 27.5,
+   "voz_t0": 23.62,
+   "voz_t1": 25.94,
+   "texto": "Facim, né? Tá chegando no Glória!"
+  }
+ ],
+ "eventos": {
+  "gancho": {
+   "acende": 0.3,
+   "logo": 0.55,
+   "pertim": 0.0
+  },
+  "inicio": {
+   "lupa": [
+    5.44,
+    8.32
+   ],
+   "cats": [
+    {
+     "i": 1,
+     "t": 5.71
+    },
+    {
+     "i": 2,
+     "t": 6.55
+    },
+    {
+     "i": 3,
+     "t": 6.99
+    },
+    {
+     "i": 4,
+     "t": 7.75
+    }
+   ],
+   "rola": [
+    8.19,
+    8.72,
+    0,
+    1580
+   ],
+   "mercado": [
+    8.72,
+    9.28
+   ],
+   "toque": 9.3
+  },
+  "loja": {
+   "rola": [
+    10.73,
+    12.13,
+    0,
+    1100
+   ],
+   "lupa": [
+    12.68,
+    14.38
+   ],
+   "toque": 14.18
+  },
+  "produto": {
+   "rola": [
+    14.8,
+    15.75,
+    0,
+    900
+   ],
+   "lupa": [
+    15.68,
+    17.05
+   ],
+   "marca": 16.24,
+   "toque": 17.2
+  },
+  "sacola": {
+   "pula": 18.137,
+   "toque": 19.22
+  },
+  "pagamento": {
+   "rola": [
+    19.7,
+    20.5,
+    0,
+    360
+   ],
+   "lupa": [
+    20.6,
+    23.38
+   ],
+   "formas": [
+    21.49,
+    21.93,
+    22.73
+   ]
+  },
+  "fecho": {
+   "afasta": [
+    23.4,
+    24.0
+   ],
+   "logo": {
+    "entra": 23.57,
+    "parada": 24.17
+   },
+   "frase": 24.32,
+   "selo": 25.52,
+   "pisca": 26.14
+  }
+ },
+ "piscadas": [
+  0.933,
+  5.379,
+  7.429,
+  13.479,
+  16.625,
+  20.865,
+  24.218
+ ],
+ "piscada_dur": 0.16
+}

@@ -1,0 +1,74 @@
+REVISÃO TÉCNICA · Reel "Olha ele por dentro!" (@uaipertim) · reels/olha-ele-por-dentro/output/uaipertim-olha-ele-por-dentro.mp4
+27.50 s · 825 quadros a 30 fps
+
+FORMATO E SOM
+OK     vídeo h264 yuv420p 1080×1920
+OK     30 fps
+OK     duração 27.50 s (24–28 s)
+OK     áudio aac 48000 Hz, 2 canais, 27.50 s
+OK     -14.0 LUFS integrados (alvo −14)
+OK     pico real -1.6 dBTP (≤ −1)
+
+RITMO (trilha animada, 120 BPM: uma batida a cada 0.5 s)
+OK     cena 1 gancho: 0.00–3.00 s = batidas 0–6; fala 0.12–2.52 s dentro dela
+OK     cena 2 inicio: 3.00–9.50 s = batidas 6–19; fala 3.10–9.26 s dentro dela
+OK     cena 3 loja: 9.50–14.50 s = batidas 19–29; fala 9.60–14.08 s dentro dela
+OK     cena 4 produto: 14.50–17.50 s = batidas 29–35; fala 14.60–16.52 s dentro dela
+OK     cena 5 sacola: 17.50–19.50 s = batidas 35–39; fala 17.60–19.04 s dentro dela
+OK     cena 6 pagamento: 19.50–23.50 s = batidas 39–47; fala 19.58–23.18 s dentro dela
+OK     cena 7 fecho: 23.50–27.50 s = batidas 47–55; fala 23.62–25.94 s dentro dela
+     transições (todas diferentes): a logo da abertura vira a do app · a Loja entra empurrando · o Produto abre a partir do card · a Sacola sobe como folha · o celular gira (3D) · o celular se afasta
+
+VOZ
+OK     o texto falado é o roteiro, cena a cena
+OK     perfil "narracao" (eleven_v4) em todas as falas
+OK     voz oficial: Victor Pinho
+OK     "UaiPertim"/"Pertim" vão para a voz como "Uai pertím"/"pertím" (grafia c)
+     cena 1: seed 4042 · 2.40 s · enviado "Psiu! Quer ver o Uai pertím por dentro?" · reels/olha-ele-por-dentro/tomadas/cap-00/E-seed4042.mp3
+     cena 2: seed 42 · 6.16 s · enviado "Logo de cara, as lojas do Glória: lanche, pizza, açaí, padaria, mercado…" · voz.py, seed 42
+     cena 3: seed 42 · 4.48 s · enviado "Escolheu a loja? O cardápio tá todo aqui, com foto e preço." · voz.py, seed 42
+     cena 4: seed 42 · 1.92 s · enviado "Quer caprichar? É só marcar." · voz.py, seed 42
+     cena 5: seed 42 · 1.44 s · enviado "Joga na sacola…" · voz.py, seed 42
+     cena 6: seed 42 · 3.60 s · enviado "…e paga do jeito que quiser: Pix, cartão ou na entrega." · voz.py, seed 42
+     cena 7: seed 42 · 2.32 s · enviado "Facim, né? Tá chegando no Glória!" · voz.py, seed 42
+OK     cada cena é UMA geração inteira, colocada sem cortes (linha.json → colocacao)
+OK     nunca "de Glória" (só "do/no Glória")
+
+A PERGUNTA DO GANCHO ("Psiu! Quer ver o UaiPertim por dentro?")
+     tomada usada: reels/olha-ele-por-dentro/tomadas/cap-00/E-seed4042.mp3 (seed 4042)
+     o F0 sobe de 121 Hz (mediana de "por") para 230 Hz na tônica de "dentro" (em 2.21 s; "den" começa em 2.00 s, "tro" em 2.18 s)
+OK     a pergunta sobe até a tônica: +11.0 st (mínimo +8 st)
+     gráfico: output/revisao/f0-gancho.png
+
+TELAS, CELULAR, LUPAS E PERTIM
+OK     telas usadas: Checkout, Loja, Main, Produto, Sacola (só as do roteiro; nunca Cartao.png)
+OK         public/telas-app/celular/Loja.png existe
+OK         public/telas-app/celular/Checkout.png existe
+OK         public/telas-app/celular/Produto.png existe
+OK         public/telas-app/celular/Sacola.png existe
+OK         public/telas-app/celular/Main.png existe
+OK     celular com 1440 px = 75% da altura, x 245–935 (fora da coluna dos botões)
+OK     as lupas ficam em x 90–930, y 325–690 (zona segura, fora da coluna dos botões)
+OK     o Pertim do canto (até x 257) não cobre a tela do app (que começa em x 274)
+OK     o Pertim pisa em y 1318, acima da faixa da legenda (y 1336)
+OK     olhar sempre na câmera (pupilas centradas)
+
+LEGENDA GRAVADA
+OK     15 blocos, todos com até 2 linhas
+OK     cada bloco ≥ 0.8 s (menor: 1.00 s)
+OK     a linha mais larga (657 px) cabe na faixa (x 112–908)
+OK     só o texto da tela ("UaiPertim", nunca a grafia enviada à voz)
+OK     cobre a fala inteira, na ordem (no fecho também: "Tá chegando no Glória!" não está escrito na tela)
+     a legenda sai em 26.29 s; os 1.21 s finais ficam só com a logo, a frase e o selo
+
+BOCA
+OK     nenhuma boca com menos de 2 quadros (825 quadros, 124 trechos)
+OK     as bocas A, E, O e M/B/P aparecem na fala
+
+PELOS PIXELS DO VÍDEO
+OK     o quadro muda a cada 0,1 s nos primeiros 0,5 s (diferença média 10.4, 8.3, 4.2, 39.0, 36.1)
+OK     o selo "Lojas e valores ilustrativos" aparece no começo, no meio e no fim (1656, 1669, 1661 px de texto)
+OK     a logo fica PARADA nos 3 últimos segundos (diferença máxima 0.04 na caixa da logo)
+OK     a logo para em 24.17 s (3.33 s antes do fim)
+
+RESULTADO: aprovado

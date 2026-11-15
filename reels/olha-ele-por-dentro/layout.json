@@ -1,0 +1,31 @@
+{
+  "_doc": "Layout do Reel 'Olha ele por dentro!' (1080×1920, 30 fps). Lido pela composição Remotion (src/olha-ele-por-dentro/), por scripts/preparar.py e pela revisão (scripts/qa.py). Caixas [x0, y0, x1, y1]. Telas: px do PNG (1170 de largura, escala 3x de 390). 'fixo' = a barra de baixo que fica PRESA no pé do celular enquanto o resto rola ('faixa': a largura toda; 'flutua': só o retângulo arredondado, com a sombra). 'pontos' = os alvos de toque e de lupa, em px do PNG. As lupas (punch-in) ficam no alto (y 325–690), o Pertim no canto de baixo à esquerda, fora do celular, e a legenda na faixa de baixo, por cima do celular.",
+  "W": 1080, "H": 1920, "fps": 30,
+  "seguro": [80, 265, 940, 1456],
+  "botoes": [940, 1060, 1080, 1560],
+  "legenda": { "faixa": [112, 1336, 908, 1456], "cx": 510, "base": 1456, "size": 42, "lh": 50, "padX": 28, "padY": 10, "maxW": 740, "minDur": 0.8, "maxPal": 6 },
+  "selo": { "texto": "Lojas e valores ilustrativos", "cx": 540, "y": 262, "size": 22 },
+  "celular": { "x": 245, "y": 310, "w": 690, "h": 1440, "bezel": 0.042 },
+  "lupa": { "y0": 325, "y1": 690, "x0": 90, "x1": 930 },
+  "pertim": {
+    "canto": { "cx": 124, "base": 1318, "altura": 300 },
+    "gancho": { "cx": 150, "base": 1318, "altura": 420 },
+    "fecho": { "cx": 240, "base": 1318, "altura": 440 }
+  },
+  "telas": {
+    "Main": { "h": 4140, "fixo": { "faixa": [4033, 4140] },
+      "pontos": { "categorias": [290, 662, 1160, 928], "cat": [[156, 760], [384, 760], [612, 760], [840, 760], [1068, 760]], "catCaixa": 196,
+                  "burger": [40, 2280, 1130, 2460], "mercado": [40, 2525, 1130, 2705], "logo": [20, 18, 128, 126] } },
+    "Loja": { "h": 4920, "fixo": { "flutua": [48, 4691, 1122, 4871], "raio": 56 },
+      "pontos": { "smash": [50, 1940, 575, 2365], "mais": [490, 2024] } },
+    "Produto": { "h": 3360, "fixo": { "faixa": [3095, 3360] },
+      "pontos": { "turbine": [40, 1955, 1130, 2300], "bacon": [1032, 2212, 1098, 2278], "cheddar": [1032, 2408, 1098, 2474], "contador": [960, 2028, 1085, 2088],
+                  "contadorCor": "#F0ECE6", "adicionar": [790, 3220] } },
+    "Sacola": { "h": 3180, "fixo": { "faixa": [2908, 3180] },
+      "pontos": { "smash": [40, 640, 1130, 960], "qtd": [963, 852], "qtdCaixa": [817, 795, 1110, 908], "continuar": [585, 3033] } },
+    "Checkout": { "h": 4740, "fixo": { "faixa": [4467, 4740] },
+      "pontos": { "formas": [[60, 1100, 1110, 1522], [60, 1558, 1110, 1772], [60, 1808, 1110, 2020]], "secao": [40, 990, 1130, 2030] } }
+  },
+  "rola": { "Main_mercado": 1580, "Loja_cardapio": 1100, "Produto_turbine": 900, "Checkout_pagar": 360 },
+  "fecho": { "logo": { "cx": 540, "cy": 640, "d": 360 }, "frase": { "cy": 905, "size": 66 }, "selo": { "cx": 700, "cy": 1110 } }
+}

@@ -1,5 +1,5 @@
 import React from "react";
-import { AbsoluteFill } from "remotion";
+import { AbsoluteFill, Img, staticFile } from "remotion";
 import { C, FONT, W } from "../config/theme";
 import { Sunburst } from "../components/Decor";
 import { StarShape, Twinkles } from "../components/Particles";
@@ -20,8 +20,9 @@ export type CapaReelProps = {
   id: string; selo: string; numero?: number; icone: "balao" | "pin" | "megafone";
   ilustracao: Ilustracao; titulo: string[]; fundo: "creme" | "pessego"; cor: "coral" | "verde" | "amarelo";
   layout?: { titulo: Wrapped; fonte: string };
+  aviso?: string;   // um aviso discreto embaixo (ex.: "Lojas e valores ilustrativos", nas capas com telas do app)
 };
-type Ilustracao = "mesa" | "nao-e-app" | "entrega" | "vaga" | "fome";
+type Ilustracao = "mesa" | "nao-e-app" | "entrega" | "vaga" | "fome" | "dentro";
 
 const SAFE = { x0: 110, x1: 970, y0: 300, y1: 1620 };
 const SELO_Y = 372;                                     // centro do selo
@@ -247,11 +248,41 @@ const Fome: React.FC = () => {
   );
 };
 
-const ILUSTRACOES: Record<Ilustracao, React.FC> = { mesa: Mesa, "nao-e-app": NaoEApp, entrega: Entrega, vaga: Vaga, fome: Fome };
+// 6 · Olha ele por dentro!: o celular (genérico) com a tela do Início do app (public/telas-app/celular/Main.png, o topo) e o
+//     Pertim espiando por trás dele, olhando para a câmera
+const Dentro: React.FC = () => {
+  const cw = 300, ch = 600, bz = 13, tw = cw - 2 * bz, th = ch - 2 * bz;
+  const ph = 330, pw = (ph * 240) / 270;
+  return (
+    <>
+      <Svg abs>
+        <ellipse cx="378" cy="590" rx="250" ry="12" fill="#000" opacity="0.08" />
+        <Brilho x={120} y={120} s={44} c={C.coral} /><Brilho x={650} y={90} s={36} /><Brilho x={80} y={420} s={30} />
+      </Svg>
+      {/* o Pertim, atrás do celular, espiando pela direita */}
+      <div style={{ position: "absolute", left: 520 - pw / 2, top: 150, width: pw, height: ph, transform: "rotate(10deg)", transformOrigin: "50% 90%" }}>
+        <Pertim v={1} pose="parado" expr="surpreso" altura={ph} rig={{ olhar: [0, 0], centro: true }} />
+      </div>
+      <div style={{ position: "absolute", left: 378 - cw / 2 - 40, top: 0, width: cw, height: ch, transform: "rotate(-6deg)" }}>
+        <div style={{ position: "absolute", inset: 0, borderRadius: cw * 0.15, background: C.tinta, boxShadow: `inset 0 0 0 4px #4A3E38, 0 24px 44px rgba(34,28,25,0.3)` }} />
+        <div style={{ position: "absolute", left: bz, top: bz, width: tw, height: th, borderRadius: cw * 0.11, overflow: "hidden", background: "#FAF8F5" }}>
+          <Img src={staticFile("telas-app/celular/Main.png")} style={{ width: tw, height: (tw * 4140) / 1170, maxWidth: "none" }} />
+        </div>
+        <div style={{ position: "absolute", left: cw / 2 - 6, top: bz + 6, width: 12, height: 12, borderRadius: "50%", background: "#0D0B0A" }} />
+      </div>
+      {/* a mãozinha dele segurando a borda do celular */}
+      <svg width={60} height={60} viewBox="-30 -30 60 60" style={{ position: "absolute", left: 378 + cw / 2 - 40 - 30, top: 230, overflow: "visible" }}>
+        <circle r={20} fill={C.coral} /><circle cx={-15} cy={-3} r={9} fill={C.coral} />
+      </svg>
+    </>
+  );
+};
+
+const ILUSTRACOES: Record<Ilustracao, React.FC> = { mesa: Mesa, "nao-e-app": NaoEApp, entrega: Entrega, vaga: Vaga, fome: Fome, dentro: Dentro };
 
 // ---------------------------------------------------------------- a capa
 const TWINK: Array<[number, number]> = [[150, 470], [930, 520], [130, 1120], [950, 1100], [170, 1560], [910, 1570]];
-export const CapaReel: React.FC<CapaReelProps> = ({ id, selo, numero, icone, ilustracao, fundo, cor, layout }) => {
+export const CapaReel: React.FC<CapaReelProps> = ({ id, selo, numero, icone, ilustracao, fundo, cor, layout, aviso }) => {
   if (!layout) throw new Error("CapaReel: layout é medido no calculateMetadata");
   const k = COR[cor];
   const bg = fundo === "pessego"
@@ -273,6 +304,11 @@ export const CapaReel: React.FC<CapaReelProps> = ({ id, selo, numero, icone, ilu
       <div style={{ position: "absolute", top: TITULO.cy - th / 2, left: SAFE.x0, right: 1080 - SAFE.x1 }}>
         <Text source={layout.fonte} wrapped={t} weight={W.black} />
       </div>
+      {aviso && (
+        <div style={{ position: "absolute", left: 0, right: 0, top: 1568, display: "flex", justifyContent: "center" }}>
+          <div style={{ fontFamily: FONT, fontWeight: W.extraBold, fontSize: 24, lineHeight: "32px", color: C.tinta, opacity: 0.6, background: "rgba(255,249,241,0.85)", borderRadius: 999, padding: "4px 18px", whiteSpace: "nowrap" }}>{aviso}</div>
+        </div>
+      )}
     </AbsoluteFill>
   );
 };

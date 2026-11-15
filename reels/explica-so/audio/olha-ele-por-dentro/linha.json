@@ -1,0 +1,740 @@
+{
+ "episodio": "olha-ele-por-dentro",
+ "titulo": "Olha ele por dentro!",
+ "marca": "@uaipertim",
+ "legenda": true,
+ "duracao": 27.5,
+ "tr": 0.0,
+ "grade": {
+  "bpm": 120.0,
+  "batida_s": 0.5
+ },
+ "ap_entra": 0.34,
+ "ap_leitura": 1.5,
+ "previa": false,
+ "capitulos": [
+  {
+   "n": 0,
+   "rotulo": "CENA 1 · gancho",
+   "tom": "creme",
+   "titulo": [
+    "",
+    ""
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "gancho"
+   },
+   "t0": 0.0,
+   "t1": 3.0,
+   "voz_t0": 0.12,
+   "voz_t1": 2.52,
+   "palavras": [
+    {
+     "w": "Psiu!",
+     "n": "psiu",
+     "i0": 0,
+     "t0": 0.12,
+     "t1": 0.44
+    },
+    {
+     "w": "Quer",
+     "n": "quer",
+     "i0": 6,
+     "t0": 0.76,
+     "t1": 0.92
+    },
+    {
+     "w": "ver",
+     "n": "ver",
+     "i0": 11,
+     "t0": 1.0,
+     "t1": 1.16
+    },
+    {
+     "w": "o",
+     "n": "o",
+     "i0": 15,
+     "t0": 1.2,
+     "t1": 1.24
+    },
+    {
+     "w": "UaiPertim",
+     "n": "uaipertim",
+     "i0": 17,
+     "t0": 1.28,
+     "t1": 1.88
+    },
+    {
+     "w": "por",
+     "n": "por",
+     "i0": 28,
+     "t0": 1.96,
+     "t1": 2.04
+    },
+    {
+     "w": "dentro?",
+     "n": "dentro",
+     "i0": 32,
+     "t0": 2.12,
+     "t1": 2.52
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Psiu! Quer ver o UaiPertim por dentro?",
+     "apoio": null,
+     "t0": 0.12,
+     "t1": 2.52
+    }
+   ],
+   "apoios": [],
+   "seed": 4042
+  },
+  {
+   "n": 1,
+   "rotulo": "CENA 2 · início",
+   "tom": "pessego",
+   "titulo": [
+    "",
+    ""
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "inicio",
+    "categorias": [
+     {
+      "em": "lanche",
+      "i": 1
+     },
+     {
+      "em": "pizza",
+      "i": 2
+     },
+     {
+      "em": "açaí",
+      "i": 3
+     },
+     {
+      "em": "padaria",
+      "i": 4
+     }
+    ],
+    "mercado": {
+     "em": "mercado"
+    }
+   },
+   "t0": 3.0,
+   "t1": 9.5,
+   "voz_t0": 3.1,
+   "voz_t1": 9.26,
+   "palavras": [
+    {
+     "w": "Logo",
+     "n": "logo",
+     "i0": 0,
+     "t0": 3.1,
+     "t1": 3.34
+    },
+    {
+     "w": "de",
+     "n": "de",
+     "i0": 5,
+     "t0": 3.42,
+     "t1": 3.5
+    },
+    {
+     "w": "cara,",
+     "n": "cara",
+     "i0": 8,
+     "t0": 3.58,
+     "t1": 3.9
+    },
+    {
+     "w": "as",
+     "n": "as",
+     "i0": 14,
+     "t0": 4.1,
+     "t1": 4.22
+    },
+    {
+     "w": "lojas",
+     "n": "lojas",
+     "i0": 17,
+     "t0": 4.3,
+     "t1": 4.62
+    },
+    {
+     "w": "do",
+     "n": "do",
+     "i0": 23,
+     "t0": 4.7,
+     "t1": 4.78
+    },
+    {
+     "w": "Glória:",
+     "n": "gloria",
+     "i0": 26,
+     "t0": 4.86,
+     "t1": 5.26
+    },
+    {
+     "w": "lanche,",
+     "n": "lanche",
+     "i0": 34,
+     "t0": 5.74,
+     "t1": 6.14
+    },
+    {
+     "w": "pizza,",
+     "n": "pizza",
+     "i0": 42,
+     "t0": 6.58,
+     "t1": 6.86
+    },
+    {
+     "w": "açaí,",
+     "n": "acai",
+     "i0": 49,
+     "t0": 7.02,
+     "t1": 7.58
+    },
+    {
+     "w": "padaria,",
+     "n": "padaria",
+     "i0": 55,
+     "t0": 7.78,
+     "t1": 8.38
+    },
+    {
+     "w": "mercado…",
+     "n": "mercado",
+     "i0": 64,
+     "t0": 8.74,
+     "t1": 9.26
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Logo de cara, as lojas do Glória: lanche, pizza, açaí, padaria, mercado…",
+     "apoio": null,
+     "t0": 3.1,
+     "t1": 9.26
+    }
+   ],
+   "apoios": [],
+   "seed": 42
+  },
+  {
+   "n": 2,
+   "rotulo": "CENA 3 · loja",
+   "tom": "amarelo",
+   "titulo": [
+    "",
+    ""
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "loja"
+   },
+   "t0": 9.5,
+   "t1": 14.5,
+   "voz_t0": 9.6,
+   "voz_t1": 14.08,
+   "palavras": [
+    {
+     "w": "Escolheu",
+     "n": "escolheu",
+     "i0": 0,
+     "t0": 9.6,
+     "t1": 10.0
+    },
+    {
+     "w": "a",
+     "n": "a",
+     "i0": 9,
+     "t0": 10.027,
+     "t1": 10.053
+    },
+    {
+     "w": "loja?",
+     "n": "loja",
+     "i0": 11,
+     "t0": 10.08,
+     "t1": 10.72
+    },
+    {
+     "w": "O",
+     "n": "o",
+     "i0": 17,
+     "t0": 10.8,
+     "t1": 10.84
+    },
+    {
+     "w": "cardápio",
+     "n": "cardapio",
+     "i0": 19,
+     "t0": 10.88,
+     "t1": 11.36
+    },
+    {
+     "w": "tá",
+     "n": "ta",
+     "i0": 28,
+     "t0": 11.44,
+     "t1": 11.68
+    },
+    {
+     "w": "todo",
+     "n": "todo",
+     "i0": 31,
+     "t0": 11.76,
+     "t1": 12.0
+    },
+    {
+     "w": "aqui,",
+     "n": "aqui",
+     "i0": 36,
+     "t0": 12.16,
+     "t1": 12.48
+    },
+    {
+     "w": "com",
+     "n": "com",
+     "i0": 42,
+     "t0": 12.56,
+     "t1": 12.8
+    },
+    {
+     "w": "foto",
+     "n": "foto",
+     "i0": 46,
+     "t0": 12.88,
+     "t1": 13.28
+    },
+    {
+     "w": "e",
+     "n": "e",
+     "i0": 51,
+     "t0": 13.36,
+     "t1": 13.44
+    },
+    {
+     "w": "preço.",
+     "n": "preco",
+     "i0": 53,
+     "t0": 13.6,
+     "t1": 14.08
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Escolheu a loja? O cardápio tá todo aqui, com foto e preço.",
+     "apoio": null,
+     "t0": 9.6,
+     "t1": 14.08
+    }
+   ],
+   "apoios": [],
+   "seed": 42
+  },
+  {
+   "n": 3,
+   "rotulo": "CENA 4 · produto",
+   "tom": "verde",
+   "titulo": [
+    "",
+    ""
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "produto",
+    "marca": {
+     "em": "marcar"
+    }
+   },
+   "t0": 14.5,
+   "t1": 17.5,
+   "voz_t0": 14.6,
+   "voz_t1": 16.52,
+   "palavras": [
+    {
+     "w": "Quer",
+     "n": "quer",
+     "i0": 0,
+     "t0": 14.6,
+     "t1": 14.76
+    },
+    {
+     "w": "caprichar?",
+     "n": "caprichar",
+     "i0": 5,
+     "t0": 14.88,
+     "t1": 15.4
+    },
+    {
+     "w": "É",
+     "n": "e",
+     "i0": 16,
+     "t0": 15.8,
+     "t1": 15.88
+    },
+    {
+     "w": "só",
+     "n": "so",
+     "i0": 18,
+     "t0": 15.92,
+     "t1": 16.04
+    },
+    {
+     "w": "marcar.",
+     "n": "marcar",
+     "i0": 21,
+     "t0": 16.16,
+     "t1": 16.52
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Quer caprichar? É só marcar.",
+     "apoio": null,
+     "t0": 14.6,
+     "t1": 16.52
+    }
+   ],
+   "apoios": [],
+   "seed": 42
+  },
+  {
+   "n": 4,
+   "rotulo": "CENA 5 · sacola",
+   "tom": "creme",
+   "titulo": [
+    "",
+    ""
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "sacola"
+   },
+   "t0": 17.5,
+   "t1": 19.5,
+   "voz_t0": 17.6,
+   "voz_t1": 19.04,
+   "palavras": [
+    {
+     "w": "Joga",
+     "n": "joga",
+     "i0": 0,
+     "t0": 17.6,
+     "t1": 17.92
+    },
+    {
+     "w": "na",
+     "n": "na",
+     "i0": 5,
+     "t0": 18.0,
+     "t1": 18.08
+    },
+    {
+     "w": "sacola…",
+     "n": "sacola",
+     "i0": 8,
+     "t0": 18.187,
+     "t1": 19.04
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Joga na sacola…",
+     "apoio": null,
+     "t0": 17.6,
+     "t1": 19.04
+    }
+   ],
+   "apoios": [],
+   "seed": 42
+  },
+  {
+   "n": 5,
+   "rotulo": "CENA 6 · pagamento",
+   "tom": "pessego",
+   "titulo": [
+    "",
+    ""
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "pagamento",
+    "formas": [
+     {
+      "em": "Pix"
+     },
+     {
+      "em": "cartão"
+     },
+     {
+      "em": "entrega"
+     }
+    ]
+   },
+   "t0": 19.5,
+   "t1": 23.5,
+   "voz_t0": 19.58,
+   "voz_t1": 23.18,
+   "palavras": [
+    {
+     "w": "…e",
+     "n": "e",
+     "i0": 0,
+     "t0": 19.58,
+     "t1": 19.74
+    },
+    {
+     "w": "paga",
+     "n": "paga",
+     "i0": 3,
+     "t0": 19.82,
+     "t1": 19.98
+    },
+    {
+     "w": "do",
+     "n": "do",
+     "i0": 8,
+     "t0": 20.06,
+     "t1": 20.14
+    },
+    {
+     "w": "jeito",
+     "n": "jeito",
+     "i0": 11,
+     "t0": 20.22,
+     "t1": 20.54
+    },
+    {
+     "w": "que",
+     "n": "que",
+     "i0": 17,
+     "t0": 20.58,
+     "t1": 20.62
+    },
+    {
+     "w": "quiser:",
+     "n": "quiser",
+     "i0": 21,
+     "t0": 20.7,
+     "t1": 21.02
+    },
+    {
+     "w": "Pix,",
+     "n": "pix",
+     "i0": 29,
+     "t0": 21.54,
+     "t1": 21.74
+    },
+    {
+     "w": "cartão",
+     "n": "cartao",
+     "i0": 34,
+     "t0": 21.98,
+     "t1": 22.46
+    },
+    {
+     "w": "ou",
+     "n": "ou",
+     "i0": 41,
+     "t0": 22.54,
+     "t1": 22.62
+    },
+    {
+     "w": "na",
+     "n": "na",
+     "i0": 44,
+     "t0": 22.66,
+     "t1": 22.7
+    },
+    {
+     "w": "entrega.",
+     "n": "entrega",
+     "i0": 47,
+     "t0": 22.78,
+     "t1": 23.18
+    }
+   ],
+   "frases": [
+    {
+     "texto": "…e paga do jeito que quiser: Pix, cartão ou na entrega.",
+     "apoio": null,
+     "t0": 19.66,
+     "t1": 23.18
+    }
+   ],
+   "apoios": [],
+   "seed": 42
+  },
+  {
+   "n": 6,
+   "rotulo": "FECHO",
+   "tom": "amarelo",
+   "titulo": [
+    "",
+    ""
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "fecho",
+    "logo": {
+     "em": "Facim"
+    }
+   },
+   "t0": 23.5,
+   "t1": 27.5,
+   "voz_t0": 23.62,
+   "voz_t1": 25.94,
+   "palavras": [
+    {
+     "w": "Facim,",
+     "n": "facim",
+     "i0": 0,
+     "t0": 23.62,
+     "t1": 24.1
+    },
+    {
+     "w": "né?",
+     "n": "ne",
+     "i0": 7,
+     "t0": 24.26,
+     "t1": 24.34
+    },
+    {
+     "w": "Tá",
+     "n": "ta",
+     "i0": 11,
+     "t0": 24.7,
+     "t1": 24.82
+    },
+    {
+     "w": "chegando",
+     "n": "chegando",
+     "i0": 14,
+     "t0": 24.9,
+     "t1": 25.3
+    },
+    {
+     "w": "no",
+     "n": "no",
+     "i0": 23,
+     "t0": 25.38,
+     "t1": 25.54
+    },
+    {
+     "w": "Glória!",
+     "n": "gloria",
+     "i0": 26,
+     "t0": 25.62,
+     "t1": 25.94
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Facim, né? Tá chegando no Glória!",
+     "apoio": null,
+     "t0": 23.62,
+     "t1": 25.94
+    }
+   ],
+   "apoios": [],
+   "seed": 42
+  }
+ ],
+ "colocacao": [
+  {
+   "cap": 0,
+   "arquivo": "voz/cap-00.wav",
+   "de_s": 0.0,
+   "ate_s": 2.56,
+   "no_video_s": 0.12,
+   "amostras": 122880,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 1,
+   "arquivo": "voz/cap-01.wav",
+   "de_s": 0.0,
+   "ate_s": 6.46,
+   "no_video_s": 3.1,
+   "amostras": 310080,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 2,
+   "arquivo": "voz/cap-02.wav",
+   "de_s": 0.0,
+   "ate_s": 4.48,
+   "no_video_s": 9.6,
+   "amostras": 215040,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 3,
+   "arquivo": "voz/cap-03.wav",
+   "de_s": 0.0,
+   "ate_s": 2.22,
+   "no_video_s": 14.6,
+   "amostras": 106560,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 4,
+   "arquivo": "voz/cap-04.wav",
+   "de_s": 0.0,
+   "ate_s": 1.44,
+   "no_video_s": 17.6,
+   "amostras": 69120,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 5,
+   "arquivo": "voz/cap-05.wav",
+   "de_s": 0.0,
+   "ate_s": 3.9,
+   "no_video_s": 19.58,
+   "amostras": 187200,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 6,
+   "arquivo": "voz/cap-06.wav",
+   "de_s": 0.0,
+   "ate_s": 2.56,
+   "no_video_s": 23.62,
+   "amostras": 122880,
+   "fade_ms": [
+    8,
+    60
+   ]
+  }
+ ],
+ "mapa": {
+  "ok": true,
+  "falhas": []
+ }
+}

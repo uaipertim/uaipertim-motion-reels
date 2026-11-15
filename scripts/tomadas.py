@@ -165,7 +165,15 @@ def pergunta(y, sr, L):
         v0 = mediana([f for t, f in tv if t <= tv[0][0] + 0.06])
         v1 = mediana([f for t, f in tv if t >= tv[-1][0] - 0.06])
         pv = {'f0_inicio_hz': round(v0), 'f0_fim_hz': round(v1), 'st': round(float(12 * np.log2(v1 / v0)), 1), 'quadros_com_voz': len(tv)}
-    return {'ultima_vogal': pv,'palavra': w, 'de_s': round(a, 3), 'ate_s': round(b, 3), 'f0_inicio_hz': round(ini), 'f0_min_hz': round(mn), 't_min_s': round(tmin, 3),
+    # a subida até a tônica (a regra do Reel): a mediana do F0 da palavra anterior × o pico do F0 na última palavra
+    wa, ja0, ja1 = W[-2]
+    alfa_a = [k for k in range(ja0, ja1 + 1) if L[k][0].isalnum()]
+    fa = [f for t, f in f0_trilha(y, sr, L[alfa_a[0]][1], L[alfa_a[-1]][2] + 0.04) if f]
+    antes = float(np.median(fa)) if fa else None
+    pico = max(voz_, key=lambda q: q[1])
+    tonica = {'palavra_antes': wa, 'f0_antes_hz': round(antes) if antes else None, 'pico_hz': round(pico[1]), 't_pico_s': round(pico[0], 3),
+              'st': round(float(12 * np.log2(pico[1] / antes)), 1) if antes else None}
+    return {'subida_tonica': tonica, 'ultima_vogal': pv,'palavra': w, 'de_s': round(a, 3), 'ate_s': round(b, 3), 'f0_inicio_hz': round(ini), 'f0_min_hz': round(mn), 't_min_s': round(tmin, 3),
             'f0_fim_hz': round(fim), 'subida_st': round(float(st), 1), 'fim_vs_inicio_st': round(float(12 * np.log2(fim / ini)), 1),
             'sobe': bool(pv and pv['st'] >= 2.0),
             'contorno_hz': [round(f) if f else 0 for t, f in tr][::2]}
@@ -266,6 +274,8 @@ def medir():
         p = m.get('pergunta')
         if p and 'erro' not in p:
             v = p['ultima_vogal'] or {}
+            tq = p.get('subida_tonica') or {}
+            lin += f' · sobe até a tônica: {tq.get("f0_antes_hz")} Hz ("{tq.get("palavra_antes")}") → {tq.get("pico_hz")} Hz ({tq.get("st", 0):+.1f} st)'
             lin += (f' · "{p["palavra"]}" F0 {p["f0_inicio_hz"]}→mín {p["f0_min_hz"]}→fim {p["f0_fim_hz"]} Hz · última vogal {v.get("f0_inicio_hz")}→{v.get("f0_fim_hz")} Hz '
                     f'({v.get("st", 0):+.1f} st) {"SOBE" if p["sobe"] else "não sobe"}')
         for q in m.get('pertim', []):

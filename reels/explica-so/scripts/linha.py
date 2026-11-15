@@ -59,10 +59,10 @@ AP_LEITURA = 1.5              # e fica ao menos 1,5 s inteira na tela
 AP_PASSO = AP_ENTRA + AP_LEITURA + 0.08
 PRE, POS = 0.04, 0.30         # o que fica do áudio antes da 1ª letra e depois da última
 # duração total: 30–45 s na série; os episódios especiais têm o seu limite (o fecho, os apoios e a logo seguem iguais)
-LIMITES = {'historia-uaipertim': (60.0, 80.0), 'prazer-pertim': (15.0, 30.0), 'pedir-no-uaipertim': (35.0, 40.0), 'bateu-a-fome': (22.0, 26.0)}
+LIMITES = {'historia-uaipertim': (60.0, 80.0), 'prazer-pertim': (15.0, 30.0), 'pedir-no-uaipertim': (35.0, 40.0), 'bateu-a-fome': (22.0, 26.0), 'olha-ele-por-dentro': (24.0, 28.0)}
 DUR_MIN, DUR_MAX = LIMITES.get(EP, (30.0, 45.0))
 # o fecho: 6–8 s na série; os Reels com roteiro próprio têm o seu (a logo continua parada nos 3 últimos segundos)
-FECHOS = {'pedir-no-uaipertim': (4.0, 6.0), 'bateu-a-fome': (3.5, 5.5)}
+FECHOS = {'pedir-no-uaipertim': (4.0, 6.0), 'bateu-a-fome': (3.5, 5.5), 'olha-ele-por-dentro': (3.5, 6.0)}
 FECHO_MIN, FECHO_MAX = FECHOS.get(EP, (6.0, 8.0))
 LOGO_PRONTA = SCRIPT.get('logo_pronta', 0.9)   # a logo do fecho entra e para em até 0,9 s depois da palavra (src/anim.js, CENAS.fecho)
 # GRADE DE BATIDAS ("grade": true no roteiro; Reels no ritmo da trilha animada): sem a troca de 0,9 s; cada cena começa

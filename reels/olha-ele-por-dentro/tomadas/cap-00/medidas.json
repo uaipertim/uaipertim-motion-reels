@@ -1,0 +1,374 @@
+{
+ "episodio": "olha-ele-por-dentro",
+ "cap": 0,
+ "texto": "Psiu! Quer ver o UaiPertim por dentro?",
+ "voz": "Victor Pinho",
+ "perfil": "narracao",
+ "modelo": "eleven_v4",
+ "tomadas": [
+  {
+   "tomada": "A",
+   "arquivo": "A-seed42.mp3",
+   "seed": 42,
+   "texto_api": "Psiu! Quer ver o Uai pertím por dentro?",
+   "conferencia": "ok",
+   "ritmo_letras_s": 12.5,
+   "maior_pausa_s": 0.32,
+   "sobra_no_fim_s": 0.16,
+   "fala_s": 2.4,
+   "pergunta": {
+    "subida_tonica": {
+     "palavra_antes": "por",
+     "f0_antes_hz": 135,
+     "pico_hz": 217,
+     "t_pico_s": 2.2,
+     "st": 8.2
+    },
+    "ultima_vogal": null,
+    "palavra": "dentro?",
+    "de_s": 2.0,
+    "ate_s": 2.435,
+    "f0_inicio_hz": 116,
+    "f0_min_hz": 113,
+    "t_min_s": 2.09,
+    "f0_fim_hz": 213,
+    "subida_st": 11.0,
+    "fim_vs_inicio_st": 10.6,
+    "sobe": false,
+    "contorno_hz": [
+     0,
+     0,
+     0,
+     114,
+     116,
+     0,
+     0,
+     0,
+     211,
+     217,
+     213,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "pertim": [
+    {
+     "grafia": "Uai pertím",
+     "F1_PER_max_hz": null,
+     "E_aberto": false,
+     "vogal_PER": {
+      "dur": 0.04,
+      "f0": null
+     },
+     "vogal_TIM": {
+      "dur": 0.04,
+      "f0": null
+     },
+     "forca": "PER",
+     "F2_meio": 2427,
+     "F2_fim": 2451,
+     "fim": "in? (F2 alto)"
+    }
+   ]
+  },
+  {
+   "tomada": "B",
+   "arquivo": "B-seed1042.mp3",
+   "seed": 1042,
+   "texto_api": "Psiu! Quer ver o Uai pertím por dentro?",
+   "conferencia": "ok",
+   "ritmo_letras_s": 12.5,
+   "maior_pausa_s": 0.32,
+   "sobra_no_fim_s": 0.16,
+   "fala_s": 2.4,
+   "pergunta": {
+    "subida_tonica": {
+     "palavra_antes": "por",
+     "f0_antes_hz": 125,
+     "pico_hz": 225,
+     "t_pico_s": 2.21,
+     "st": 10.2
+    },
+    "ultima_vogal": null,
+    "palavra": "dentro?",
+    "de_s": 2.0,
+    "ate_s": 2.437,
+    "f0_inicio_hz": 129,
+    "f0_min_hz": 73,
+    "t_min_s": 2.37,
+    "f0_fim_hz": 73,
+    "subida_st": 0.1,
+    "fim_vs_inicio_st": -9.9,
+    "sobe": false,
+    "contorno_hz": [
+     0,
+     0,
+     0,
+     108,
+     116,
+     129,
+     0,
+     186,
+     208,
+     222,
+     223,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     73,
+     0,
+     0,
+     0
+    ]
+   },
+   "pertim": [
+    {
+     "grafia": "Uai pertím",
+     "F1_PER_max_hz": 2047,
+     "E_aberto": true,
+     "vogal_PER": {
+      "dur": 0.04,
+      "f0": null
+     },
+     "vogal_TIM": {
+      "dur": 0.04,
+      "f0": null
+     },
+     "forca": "PER",
+     "F2_meio": 2531,
+     "F2_fim": 2420,
+     "fim": "in? (F2 alto)"
+    }
+   ]
+  },
+  {
+   "tomada": "C",
+   "arquivo": "C-seed2042.mp3",
+   "seed": 2042,
+   "texto_api": "Psiu! Quer ver o Uai pertím por dentro?",
+   "conferencia": "ok",
+   "ritmo_letras_s": 12.9,
+   "maior_pausa_s": 0.4,
+   "sobra_no_fim_s": 0.24,
+   "fala_s": 2.32,
+   "pergunta": {
+    "subida_tonica": {
+     "palavra_antes": "por",
+     "f0_antes_hz": 131,
+     "pico_hz": 194,
+     "t_pico_s": 2.18,
+     "st": 6.8
+    },
+    "ultima_vogal": null,
+    "palavra": "dentro?",
+    "de_s": 2.0,
+    "ate_s": 2.412,
+    "f0_inicio_hz": 120,
+    "f0_min_hz": 71,
+    "t_min_s": 2.36,
+    "f0_fim_hz": 71,
+    "subida_st": 0.0,
+    "fim_vs_inicio_st": -9.0,
+    "sobe": false,
+    "contorno_hz": [
+     0,
+     0,
+     112,
+     116,
+     0,
+     0,
+     170,
+     187,
+     194,
+     192,
+     186,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     71,
+     0,
+     0
+    ]
+   },
+   "pertim": [
+    {
+     "grafia": "Uai pertím",
+     "F1_PER_max_hz": null,
+     "E_aberto": false,
+     "vogal_PER": {
+      "dur": 0.04,
+      "f0": null
+     },
+     "vogal_TIM": {
+      "dur": 0.04,
+      "f0": 147
+     },
+     "forca": "TIM",
+     "F2_meio": 2420,
+     "F2_fim": 1472,
+     "fim": "im (F2 cai)"
+    }
+   ]
+  },
+  {
+   "tomada": "D",
+   "arquivo": "D-seed3042.mp3",
+   "seed": 3042,
+   "texto_api": "Psiu! Quer ver o Uai pertím por dentro?",
+   "conferencia": "ok",
+   "ritmo_letras_s": 12.9,
+   "maior_pausa_s": 0.32,
+   "sobra_no_fim_s": 0.16,
+   "fala_s": 2.32,
+   "pergunta": {
+    "subida_tonica": {
+     "palavra_antes": "por",
+     "f0_antes_hz": 125,
+     "pico_hz": 210,
+     "t_pico_s": 2.12,
+     "st": 9.0
+    },
+    "ultima_vogal": null,
+    "palavra": "dentro?",
+    "de_s": 1.92,
+    "ate_s": 2.355,
+    "f0_inicio_hz": 180,
+    "f0_min_hz": 115,
+    "t_min_s": 2.01,
+    "f0_fim_hz": 198,
+    "subida_st": 9.4,
+    "fim_vs_inicio_st": 1.7,
+    "sobe": false,
+    "contorno_hz": [
+     0,
+     0,
+     0,
+     0,
+     118,
+     0,
+     0,
+     185,
+     202,
+     210,
+     201,
+     183,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "pertim": [
+    {
+     "grafia": "Uai pertím",
+     "F1_PER_max_hz": null,
+     "E_aberto": false,
+     "vogal_PER": {
+      "dur": 0.04,
+      "f0": null
+     },
+     "vogal_TIM": {
+      "dur": 0.04,
+      "f0": null
+     },
+     "forca": "PER",
+     "F2_meio": 2422,
+     "F2_fim": 2465,
+     "fim": "in? (F2 alto)"
+    }
+   ]
+  },
+  {
+   "tomada": "E",
+   "arquivo": "E-seed4042.mp3",
+   "seed": 4042,
+   "texto_api": "Psiu! Quer ver o Uai pertím por dentro?",
+   "conferencia": "ok",
+   "ritmo_letras_s": 12.5,
+   "maior_pausa_s": 0.32,
+   "sobra_no_fim_s": 0.16,
+   "fala_s": 2.4,
+   "pergunta": {
+    "subida_tonica": {
+     "palavra_antes": "por",
+     "f0_antes_hz": 121,
+     "pico_hz": 230,
+     "t_pico_s": 2.21,
+     "st": 11.0
+    },
+    "ultima_vogal": null,
+    "palavra": "dentro?",
+    "de_s": 2.0,
+    "ate_s": 2.436,
+    "f0_inicio_hz": 124,
+    "f0_min_hz": 115,
+    "t_min_s": 2.05,
+    "f0_fim_hz": 227,
+    "subida_st": 11.7,
+    "fim_vs_inicio_st": 10.5,
+    "sobe": false,
+    "contorno_hz": [
+     209,
+     0,
+     116,
+     127,
+     0,
+     0,
+     0,
+     214,
+     226,
+     228,
+     230,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "pertim": [
+    {
+     "grafia": "Uai pertím",
+     "F1_PER_max_hz": null,
+     "E_aberto": false,
+     "vogal_PER": {
+      "dur": 0.04,
+      "f0": null
+     },
+     "vogal_TIM": {
+      "dur": 0.04,
+      "f0": null
+     },
+     "forca": "PER",
+     "F2_meio": 2393,
+     "F2_fim": 1883,
+     "fim": "im (F2 cai)"
+    }
+   ]
+  }
+ ]
+}
