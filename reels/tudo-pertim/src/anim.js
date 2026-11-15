@@ -5523,6 +5523,138 @@
   };
 
   // =====================================================================
+  // A LEGENDA GRAVADA (o padrão da série desde o ep08; "legenda": false no JSON só nos episódios anteriores)
+  // =====================================================================
+  // O visual da legenda dos Reels do Instagram (src/personagem/Legenda.tsx, branch claude/explica-so), portado para o
+  // canvas: a pílula tinta a 85%, Poppins 800, o texto creme e a PALAVRA-CHAVE em amarelo (a mesma marcada com
+  // *asteriscos* no apoio do capítulo, quando ela está na fala). O texto é a FALA do capítulo na grafia da tela
+  // ("UaiPertim", "pertim", "do Glória"; nunca a grafia enviada à voz), no tempo das palavras de linha.json (o
+  // alinhamento das tomadas instaladas: nada de voz nova). Blocos de 3 a 6 palavras (no máx. 2 linhas): o bloco entra
+  // junto com a 1ª palavra e cada palavra acende quando é falada (as que ainda vêm ficam mais apagadas).
+  // A faixa: x 90–930, y 1470–1600, logo abaixo da cena (que termina em y 1450); centrada em x 510; nunca na coluna de
+  // botões. Some nas trocas de capítulo e, no fecho, antes dos 3 últimos segundos (logo parada): os blocos que
+  // terminariam depois disso ficam de fora (essa fala já está na tela, na assinatura e no chip do fecho).
+  const LEG = { cx: 510, topo: 1476, faixa: { x0: 90, y0: 1470, x1: 930, y1: 1600 }, size: 42, lh: 50, padX: 28, padY: 10, maxW: 740,
+    min: 3, max: 6, minDur: 0.8, antes: 0.05, depois: 0.6, apagada: 0.45 };
+  let LEGS = [], LEG_FORA = [];
+  const LEG_JUNTOS = new Set(['do|gloria', 'no|gloria', 'pertim|de', 'de|voce']);
+  const LEG_PREP = new Set(['de', 'do', 'da', 'dos', 'das', 'no', 'na', 'nos', 'nas', 'em']);
+  const LEG_CONJ = new Set(['e', 'ou', 'mas', 'que', 'porque']);
+  const legW = (ws) => tw(ws.map((w) => w.w).join(' '), LEG.size, 800);
+  // o custo de cortar a lista de palavras antes do índice k (Infinity = proibido)
+  function legCorte(ws, k) {
+    const a = norm(ws[k - 1].w), b = norm(ws[k].w);
+    if (CURTAS.has(a) && !/[.?!…,;:]["”’)]*$/.test(ws[k - 1].w)) return Infinity;   // palavra curta nunca sozinha no fim
+    if (LEG_JUNTOS.has(a + '|' + b)) return Infinity;                                 // "do Glória", "pertim de você"
+    return (LEG_PREP.has(b) ? 3 : 0) - (LEG_CONJ.has(b) ? 2 : 0);
+  }
+  // divide uma oração longa em pedaços de 3–6 palavras pelo menor custo (cortes bons + pedaços equilibrados)
+  function legDivide(ws) {
+    const n = ws.length, memo = new Map();
+    const melhor = (i) => {
+      if (i === n) return { c: 0, cortes: [] };
+      if (memo.has(i)) return memo.get(i);
+      let best = { c: Infinity, cortes: [] };
+      for (let L = LEG.min; L <= LEG.max && i + L <= n; L++) {
+        const j = i + L;
+        if (j < n && n - j < LEG.min) continue;
+        const cc = j < n ? legCorte(ws, j) : 0;
+        if (cc === Infinity) continue;
+        const r = melhor(j), c = cc + r.c + 0.4 * Math.abs(L - n / Math.ceil(n / LEG.max));
+        if (c < best.c) best = { c, cortes: [j, ...r.cortes] };
+      }
+      memo.set(i, best);
+      return best;
+    };
+    const r = melhor(0);
+    if (r.c === Infinity) { const out = []; for (let i = 0; i < n; i += LEG.max) out.push(ws.slice(i, i + LEG.max)); return out; }
+    const out = []; let i = 0;
+    r.cortes.forEach((j) => { out.push(ws.slice(i, j)); i = j; });
+    return out;
+  }
+  // as linhas do bloco: 1, ou 2 bem equilibradas (sem palavra curta no fim da 1ª e sem separar "do Glória")
+  function legLinhas(ws) {
+    if (legW(ws) <= LEG.maxW || ws.length < 2) return [ws];
+    let best = null;
+    for (let k = 1; k < ws.length; k++) {
+      const a = ws.slice(0, k), b = ws.slice(k), c = legCorte(ws, k);
+      if (c === Infinity || legW(a) > LEG.maxW || legW(b) > LEG.maxW) continue;
+      const s = Math.abs(legW(a) - legW(b)) - (/[,;:.?!…]$/.test(ws[k - 1].w) ? 120 : 0) + 40 * c;
+      if (!best || s < best.s) best = { s, l: [a, b] };
+    }
+    return best ? best.l : [ws];
+  }
+  function montaLegenda() {
+    LEGS = []; LEG_FORA = [];
+    if (!LN.legenda) return;
+    CAPS.forEach((cap, ci) => {
+      // a palavra-chave: os trechos *marcados* do apoio do capítulo que aparecem na fala
+      const ws = cap.palavras.map((w) => ({ w: w.w, n: w.n || norm(w.w), t0: w.t0, te: Math.max(w.t1, w.t0 + 0.08), chave: false }));
+      (cap.apoios || []).forEach((a) => (a.texto.match(/\*([^*]+)\*/g) || []).forEach((m) => {
+        const alvo = m.replace(/\*/g, '').split(/\s+/).map(norm).filter(Boolean);
+        for (let i = 0; i + alvo.length <= ws.length; i++) if (alvo.every((x, k) => ws[i + k].n === x)) for (let k = 0; k < alvo.length; k++) ws[i + k].chave = true;
+      }));
+      // as orações (cortadas na pontuação); as curtas (< 3 palavras) juntam com a vizinha, se couber em 6
+      let ors = [], cur = [];
+      ws.forEach((w, i) => { cur.push(w); if (/[.?!…:;,]["”’)]*$/.test(w.w) || i === ws.length - 1) { ors.push(cur); cur = []; } });
+      for (let guard = 0; guard < 40; guard++) {
+        const i = ors.findIndex((o) => o.length < LEG.min);
+        if (i < 0 || ors.length < 2) break;
+        if (i + 1 < ors.length && ors[i].length + ors[i + 1].length <= LEG.max) ors.splice(i, 2, ors[i].concat(ors[i + 1]));
+        else if (i > 0 && ors[i - 1].length + ors[i].length <= LEG.max) ors.splice(i - 1, 2, ors[i - 1].concat(ors[i]));
+        else break;
+      }
+      const pedacos = ors.flatMap((o) => (o.length > LEG.max ? legDivide(o) : [o]));
+      const fim = ci === NC - 1 ? DUR - 3.05 : cap.t1 - 0.05;          // nunca na troca; no fecho, nunca nos 3 últimos s
+      let B = pedacos.map((p) => ({ cap: ci, palavras: p, t0: Math.max(cap.t0, p[0].t0 - LEG.antes) }));
+      B.forEach((b, i) => { b.t1 = Math.min(fim, B[i + 1] ? B[i + 1].t0 : b.palavras[b.palavras.length - 1].te + LEG.depois); });
+      // no fecho: o bloco que ainda estaria sendo falado nos 3 últimos segundos fica de fora (e os seguintes)
+      const k = B.findIndex((b) => b.palavras[b.palavras.length - 1].te > fim);
+      if (k >= 0) { B.slice(k).forEach((b) => LEG_FORA.push(...b.palavras.map((w) => ({ cap: ci, w: w.w, t0: w.t0 })))); B = B.slice(0, k); if (B.length) B[B.length - 1].t1 = fim; }
+      // todo bloco ≥ 0,8 s na tela: o curto junta com o vizinho (se o resultado ainda couber em 2 linhas)
+      for (let guard = 0; guard < 40; guard++) {
+        const i = B.findIndex((b) => b.t1 - b.t0 < LEG.minDur);
+        if (i < 0 || B.length < 2) break;
+        const j = i + 1 < B.length ? i : i - 1, p = B[j].palavras.concat(B[j + 1].palavras);
+        if (legLinhas(p).length > 2 || legW(legLinhas(p)[0]) > LEG.maxW) break;
+        B.splice(j, 2, { cap: ci, palavras: p, t0: B[j].t0, t1: B[j + 1].t1 });
+      }
+      B.forEach((b) => {
+        b.linhas = legLinhas(b.palavras);
+        b.w = Math.max(...b.linhas.map(legW)) + 2 * LEG.padX; b.h = b.linhas.length * LEG.lh + 2 * LEG.padY;
+        b.x0 = LEG.cx - b.w / 2; b.y0 = LEG.topo;
+        LEGS.push(b);
+      });
+      if (ci === NC - 1 && B.length) FECHO.ultima = Math.max(FECHO.ultima, B[B.length - 1].t1);   // a legenda sumindo é a última mudança de texto
+    });
+  }
+  function drawLegenda(ctx, t) {
+    const b = LEGS.find((x) => t >= x.t0 && t < x.t1);
+    if (!b) return;
+    const a = clamp((t - b.t0) / 0.08) * clamp((b.t1 - t) / 0.06), sobe = 6 * (1 - clamp((t - b.t0) / 0.12));
+    ctx.save(); ctx.globalAlpha = a;
+    rr(ctx, b.x0, b.y0 + sobe, b.w, b.h, Math.min(22, b.h / 2)); ctx.fillStyle = 'rgba(34,28,25,0.85)'; ctx.fill();
+    const sp = tw(' ', LEG.size, 800);
+    b.linhas.forEach((l, li) => {
+      let x = LEG.cx - legW(l) / 2;
+      const y = b.y0 + sobe + LEG.padY + li * LEG.lh + LEG.lh / 2 + LEG.size * 0.36;
+      l.forEach((w) => {
+        const ww = tw(w.w, LEG.size, 800);
+        const al = t >= w.t0 - 0.02 ? 1 : LEG.apagada, [, nucleo, pont] = w.w.match(/^(.*?)([.?!…,;:"”’)]*)$/);
+        if (w.chave && nucleo) {                              // a palavra-chave em amarelo (a pontuação continua creme)
+          const wn = txt(ctx, nucleo, x, y, { size: LEG.size, weight: 800, color: C.amarelo, alpha: al });
+          if (pont) txt(ctx, pont, x + wn, y, { size: LEG.size, weight: 800, color: C.papel, alpha: al });
+        } else txt(ctx, w.w, x, y, { size: LEG.size, weight: 800, color: C.papel, alpha: al });
+        x += ww + sp;
+      });
+    });
+    ctx.restore();
+    const o = OFF; OFF = { dx: 0, dy: 0, n: b.cap };
+    BOX('legenda', b.x0, b.y0, b.x0 + b.w, b.y0 + b.h);
+    OFF = o;
+  }
+
+  // =====================================================================
   // O QUADRO
   // =====================================================================
   // o relógio grande do capítulo (opcional: "relogio": {h, m} no JSON): no canto de cima à direita da cena, entra com "plop"
@@ -5598,6 +5730,7 @@
     }
     OFF = { dx: 0, dy: 0, n: -1 };
     ctx.restore();
+    drawLegenda(ctx, t);                                  // a legenda gravada (some nas trocas e nos 3 s finais)
     brand(ctx, t);
   }
   let bufS = null, bufA = null;
@@ -5644,6 +5777,7 @@
       }
       cap.apoios.forEach((a, i) => { if (k > 0 || i > 0) cue(a.t, 'apoio'); });
     });
+    montaLegenda();                                       // a legenda gravada, no tempo das palavras (LN.legenda)
     CUES.sort((a, b) => a.t - b.t);
   }
 
@@ -5665,6 +5799,11 @@
     avisos: () => AVISOS.slice(),
     capa: () => { const c = CAPS[0]; return { tamanho: c.capaS, linhas: c.titulo.map((l) => tw(l, c.capaS, 900, -0.03 * c.capaS)) }; },
     caixas,
+    legenda: () => ({ ligada: !!LN.legenda, faixa: LEG.faixa, maxW: LEG.maxW, min: LEG.min, max: LEG.max,
+      blocos: LEGS.map((b) => ({ cap: b.cap, t0: b.t0, t1: b.t1, caixa: { x0: b.x0, y0: b.y0, x1: b.x0 + b.w, y1: b.y0 + b.h },
+        linhas: b.linhas.map((l) => ({ texto: l.map((w) => w.w).join(' '), largura: legW(l) })),
+        palavras: b.palavras.map((w) => ({ w: w.w, t0: w.t0, te: w.te, chave: w.chave })) })),
+      fora_no_fecho: LEG_FORA }),
     montagens: () => CAPS.map((c) => {
       const ts = Object.values(c.ev).flat().flatMap((v) => (typeof v === 'number' ? [v] : typeof v === 'object' && v ? Object.values(v).filter((x) => typeof x === 'number') : [])).filter((x) => x >= c.t0 - 0.5 && x <= c.t1 + 0.5);
       return { n: c.n, t0: c.t0, t1: c.t1, primeira: ts.length ? Math.min(...ts) : c.t0, ultima: ts.length ? Math.max(...ts) : c.t1 };

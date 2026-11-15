@@ -3,6 +3,7 @@
   "titulo": "Visita sem avisar",
   "marca": "@uaipertim",
   "bpm": 120,
+  "legenda": false,
   "transicao": "galinha",
   "capitulos": [
     {

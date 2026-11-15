@@ -3,6 +3,7 @@
   "titulo": "Churrasco de domingo",
   "marca": "@uaipertim",
   "bpm": 120,
+  "legenda": false,
   "voz": "v4",
   "transicao": "viralata",
   "capitulos": [

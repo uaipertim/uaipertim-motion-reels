@@ -4,6 +4,7 @@
  "marca": "@uaipertim",
  "bpm": 120,
  "transicao": "picole",
+ "legenda": true,
  "duracao": 50.25,
  "tr": 0.75,
  "ap_entra": 0.34,

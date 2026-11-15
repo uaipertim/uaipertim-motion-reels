@@ -3,6 +3,7 @@
   "titulo": "Sexta sem cozinhar?",
   "marca": "@uaipertim",
   "bpm": 120,
+  "legenda": false,
   "voz": "v4",
   "transicao": "pizza",
   "capitulos": [

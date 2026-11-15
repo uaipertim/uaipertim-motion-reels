@@ -42,7 +42,7 @@ A cara é **mais jovem, animada e viva**, com a marca em destaque. A pasta `reel
 | **tudo-pertim-05** | "Churrasco de domingo" (transição do vira-lata; voz v4) | 00 capa · 01 o causo · 02 o açougue · 03 o mercadim · 04 geladim · 05 chegou · 06 sua vez · 07 fecho | final com voz v4, 49,25 s, revisão aprovada: [`exports/tiktok/tudo-pertim/ep05/`](../../exports/tiktok/tudo-pertim/ep05) |
 | **tudo-pertim-06** | "Sexta sem cozinhar?" (transição da caixa de pizza; com o **Pertim**, o personagem oficial; voz v4) | 00 capa · 01 o causo · 02 a lanchonete · 03 a pizzaria · 04 geladim · 05 chegou · 06 sua vez · 07 fecho | final com voz v4, 52,5 s, revisão aprovada: [`exports/tiktok/tudo-pertim/ep06/`](../../exports/tiktok/tudo-pertim/ep06) |
 | **tudo-pertim-07** | "Faltou o bolo?" (transição dos balões de festa; com o **Pertim**; voz v4) | 00 capa · 01 o causo · 02 a padaria · 03 os docinhos · 04 a velinha · 05 chegou · 06 sua vez · 07 fecho | final com voz v4, 51,5 s, revisão aprovada: [`exports/tiktok/tudo-pertim/ep07/`](../../exports/tiktok/tudo-pertim/ep07) |
-| **tudo-pertim-08** | "Que calor, sô!" (transição do picolé derretendo; com o **Pertim** falando, de boca sincronizada; voz v4) | 00 capa · 01 o causo · 02 o açaí · 03 a sorveteria · 04 o gelo · 05 chegou · 06 sua vez · 07 fecho | final com voz v4, 50,25 s, revisão aprovada: [`exports/tiktok/tudo-pertim/ep08/`](../../exports/tiktok/tudo-pertim/ep08) |
+| **tudo-pertim-08** | "Que calor, sô!" (transição do picolé derretendo; com o **Pertim** falando, de boca sincronizada; voz v4; 1º com a **legenda gravada**) | 00 capa · 01 o causo · 02 o açaí · 03 a sorveteria · 04 o gelo · 05 chegou · 06 sua vez · 07 fecho | final com voz v4, 50,25 s, revisão aprovada: [`exports/tiktok/tudo-pertim/ep08/`](../../exports/tiktok/tudo-pertim/ep08) |
 
 O "Segunda sem coragem" e o "Churrasco de domingo" trocaram de número (o Segunda é o EP. 04 e o Churrasco, o EP. 05): JSON, pastas de áudio e de saída, exports e o adesivo da capa acompanham. O Churrasco foi para a voz v4 (no v2, o "Domingo" do começo da capa saía "DÓmingo").
 
@@ -105,6 +105,15 @@ A prévia (`--previa`) vai para `output/<id>/previa/`, fora do git. A cópia par
     - Conteúdo entre **x 80–940 e y 265–1456**. Nada em **x ≥ 940 entre y 1060 e 1560**: o motor recorta essa coluna, e a revisão confere caixa por caixa e pixel por pixel.
     - Essa área já fica dentro da interface do TikTok (≈ 130 px no topo, 380 px embaixo e 140 px à direita). A `zonas-seguras.jpg` desenha também esse contorno, em azul.
     - **Capa** = quadro 0: cada linha do título com ≤ 72% da largura (778 px), conteúdo entre y 285–1635, bloco (adesivo + título + motinha) centrado no recorte 3:4.
+12. **Legenda gravada (padrão da série desde o ep08).** Todo episódio novo sai com a legenda gravada no vídeo, no visual dos Reels do Instagram (o componente `src/personagem/Legenda.tsx` da branch `claude/explica-so`, portado para o canvas em `src/anim.js`, sem Remotion).
+    - **Visual:** pílula tinta a 85% (`rgba(34,28,25,0.85)`, cantos de até 22 px), Poppins 800 a 42 px (entrelinha 50), texto creme e a **palavra-chave em amarelo**: a mesma marcada com `*asteriscos*` no apoio do capítulo, quando ela está na fala (a pontuação continua creme). Sem apoio marcado (capa, fecho, ou um marcado que não está na fala, como "E aí, *qual é o seu*?"), nenhuma palavra fica amarela.
+    - **Texto:** a fala de cada capítulo (os `"texto"` do JSON), na grafia da tela: "UaiPertim", "pertim", "do/no Glória". Nunca a grafia enviada à voz ("Uai pertím").
+    - **Tempo:** o das palavras de `linha.json`, ou seja, o alinhamento das tomadas instaladas (`audio/<id>/voz/falas.json`). A legenda nunca gera voz nem chama a API. O bloco entra 0,05 s antes da 1ª palavra; cada palavra acende quando é falada (as que ainda vêm ficam a 45%).
+    - **Blocos:** cortados na pontuação. Orações com menos de 3 palavras juntam com a vizinha; as com mais de 6 são divididas no melhor lugar (nunca depois de palavra curta, nunca entre "do Glória"/"pertim de você", de preferência antes de "e"/"ou"). Ficam com 3 a 6 palavras, no máximo 2 linhas de até 740 px, e cada bloco fica ≥ 0,8 s na tela.
+    - **Faixa:** x 90–930, y 1470–1600, centrada em x 510, com o topo da pílula em y 1476: logo abaixo da cena (que termina em y 1450). Nunca na coluna de botões nem em cima de título, apoio, enquete ou Pertim, que ficam todos acima de y 1456. A legenda some nas trocas de capítulo e não aparece no quadro 0 (a capa não muda).
+    - **Fecho:** a legenda acompanha a fala e some **antes dos 3 últimos segundos** (a logo parada; a legenda sumindo conta como a última mudança de texto do fecho). O bloco que ainda estaria sendo falado nos 3 s finais fica de fora, junto com os seguintes; essa fala ("Tudo pertim de você. Segue a gente!") já está na tela, na assinatura e no chip. Para legendar o fecho inteiro, a fala dele precisa acabar 3 s antes do fim (`min` do fecho maior), o que muda os tempos.
+    - **Liga/desliga:** `"legenda": true` no JSON (o padrão quando o campo falta). Os episódios 01–07 têm `"legenda": false` para continuarem idênticos aos já publicados.
+    - **Revisão (`qa.py`, seção LEGENDA):** a legenda bate com a fala, na ordem e na grafia da tela; blocos de 3–6 palavras e ≤ 2 linhas; cada palavra na tela enquanto é falada; nunca nas trocas nem nos 3 s finais; a palavra-chave é a do apoio; a pílula sempre dentro da faixa e sem tocar em outra peça (caixas a cada 0,25 s). Na `zonas-seguras.jpg`, a faixa da legenda aparece em amarelo.
 
 ## Transição por episódio (opcional, desde o ep03)
 
@@ -211,6 +220,7 @@ A chave do ElevenLabs fica **só em Segredos de rede**: a rede da nuvem põe o c
   "marca": "@uaipertim",
   "bpm": 120,
   "voz": "v4",
+  "legenda": true,
   "capitulos": [
     { "rotulo": "TUDO PERTIM · EP. 02", "tom": "amarelo", "titulo": ["Tá chegando", "no Glória 👀"],
       "fala": [{ "texto": "Ô Glória, tem novidade chegando pertim docês!", "apoio": null }],
@@ -228,6 +238,7 @@ A chave do ElevenLabs fica **só em Segredos de rede**: a rede da nuvem põe o c
 
 - **Os capítulos:** o **capítulo 0 é a capa** (cena `capa`), e o seu `rotulo` ("TUDO PERTIM · EP. NN") vira o adesivo da capa. Cada capítulo 1… ganha um segmento na barra de progresso. O último é sempre o `fecho`, com `"min": 7.5`.
 - **`bpm`:** o andamento da trilha e da entrada dos títulos (118–124).
+- **`legenda`:** `true` (padrão desde o ep08; vale também sem o campo) grava a legenda da fala no vídeo; `false` só nos episódios 01–07. Veja "A cara da série", item 12.
 - **`voz`:** `"v4"` (padrão do ep04 em diante) ou sem o campo (a voz antiga v2 de ep01–ep03). Veja "Voz v2 × v4". No v4, o capítulo aceita `"pronuncia": "UaiPértim"`, `"Pértim"` ou `"sem-troca"` (plano B; o padrão é "Uai pertím").
 - **`fala`:** as frases do capítulo, na ordem. O texto falado é a junção delas e vai **inteiro numa geração só**.
 - **`apoio`:** a linha de apoio que entra com a frase (`null` = nenhuma). Aceita `*marcador amarelo*` e `~coral~`.
@@ -296,7 +307,7 @@ A chave do ElevenLabs fica **só em Segredos de rede**: a rede da nuvem põe o c
 - No `setup`, resolva os tempos com `at(cap, "palavra")` e registre os sons com `cue(t, 'tipo')`.
 - No `draw`, use as peças prontas: `lojinha` (com olhinhos, pulo na batida, olhar e sorriso), `moto` (com a sacola da marca), `casinha`, `coreto`, `selo`, `sticker` (estrela, coração, brilho, "UAI!"), `confete`, `olhos`, os `ITENS`, `chip` (com `ICONES`), `check`, `marker`, `hop` (o pulinho na batida), `enter`/`pop`/`ent`.
 - Marque as peças com `BOX(nome, …)` para a revisão.
-- O resto vem sozinho: rótulo em adesivo, título com soco, apoio, a troca com a motinha, a barra de progresso, a marca, as zonas seguras e as caixas da revisão. A cena vai de `cap.cenaTop` (o pé do apoio) até `PE` (y 1450).
+- O resto vem sozinho: rótulo em adesivo, título com soco, apoio, a troca com a motinha, a barra de progresso, a marca, a legenda gravada (abaixo da cena, em y 1470–1600: a cena não usa essa faixa), as zonas seguras e as caixas da revisão. A cena vai de `cap.cenaTop` (o pé do apoio) até `PE` (y 1450).
 
 ## Estrutura
 
@@ -313,7 +324,7 @@ scripts/linha.py          linha do tempo + narração montada sem cortes + mapa 
 scripts/audio.py          voz + trilha animada (bpm do episódio) com ducking + efeitos → audio/<id>/mix.wav (−14 LUFS)
 scripts/render.cjs        cues | info | capa | video | stills (Chromium headless, quadro a quadro; servidor na raiz do repo)
 scripts/revisao_capa.py   regra das capas (recorte 3:4, play, contador, y 285–1635, palavra-chave ≤ 72%)
-scripts/qa.py             revisão técnica → revisao/relatorio-tecnico.txt + zonas-seguras.jpg (com o contorno do TikTok)
+scripts/qa.py             revisão técnica → revisao/relatorio-tecnico.txt + zonas-seguras.jpg (com o contorno do TikTok e a faixa da legenda)
 scripts/storyboard.py     montagem + pronto, por capítulo
 src/anim.js               motor (window.TUDO): troca com a motinha (wipe), barra de progresso, adesivo + título com soco, apoio, cenas, marca
 src/index.html            página de render e de prévia no navegador (?ep=<id>, com som; ?previa para os tempos estimados)

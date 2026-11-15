@@ -3,6 +3,7 @@
   "titulo": "Segunda sem coragem",
   "marca": "@uaipertim",
   "bpm": 120,
+  "legenda": false,
   "voz": "v4",
   "transicao": "sacola",
   "capitulos": [

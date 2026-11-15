@@ -20,7 +20,11 @@ Confere:
     nada na coluna de botões (x ≥ 940, y 1060–1560); (pixels, 4 por segundo) nada além do fundo creme nessa coluna;
   • sem quadro vazio: em toda troca de capítulo há conteúdo na tela; sem trechos pretos nem imagem congelada ≥ 1,5 s;
   • a capa é o quadro 0 (o quadro 0 do vídeo bate com capa.png) e passa na regra das capas (revisao/capa.txt);
-  • o fecho: de 6 a 8 s; a LOGO OFICIAL presente e parada nos 3 últimos segundos; todo texto do fecho parado ≥ 3 s.
+  • o fecho: de 6 a 8 s; a LOGO OFICIAL presente e parada nos 3 últimos segundos; todo texto do fecho parado ≥ 3 s;
+  • a LEGENDA gravada (desde o ep08; "legenda" em linha.json): o texto bate com a fala de cada capítulo, na grafia da
+    tela e na ordem; blocos de 3–6 palavras e no máx. 2 linhas; cada palavra dentro do bloco que está na tela enquanto
+    ela é falada; nunca nas trocas nem nos 3 s finais; a palavra-chave é a marcada no apoio; e (caixas a cada 0,25 s)
+    a pílula sempre dentro da faixa x 90–930, y 1470–1600, fora da coluna de botões e sem tocar em outra peça.
 """
 import hashlib
 import json
@@ -55,6 +59,8 @@ FALAS = {} if PREVIA else json.load(open(os.path.join(AUD, 'voz', 'falas.json'))
 FONT = os.path.join(REPO, 'public', 'fonts', 'poppins-latin-800-normal.woff2')
 DUR = LN['duracao']
 SAFE = {'x0': 80, 'x1': 940, 'y0': 265, 'y1': 1456}
+LEG = MOT.get('legenda') or {'ligada': False}
+FAIXA = LEG.get('faixa') or {'x0': 90, 'y0': 1470, 'x1': 930, 'y1': 1600}   # a faixa da legenda gravada
 TIKTOK = {'topo': 130, 'base': 380, 'direita': 140}   # a interface do TikTok (em 1080x1920): só para a folha de revisão
 BTN = {'x': 940, 'y0': 1060, 'y1': 1560}
 report, fails = [], []
@@ -184,6 +190,8 @@ for s in CX:
         continue
     n_t += 1
     for b in s['caixas']:
+        if b['nome'] == 'legenda':
+            continue
         n_cx += 1
         x0_ok = b['nome'] == 'marca' or (b['x0'] >= SAFE['x0'] - 0.5 and b['x1'] <= SAFE['x1'] + 0.5)
         if b['y0'] < SAFE['y0'] - 0.5 or b['y1'] > SAFE['y1'] + 0.5 or not x0_ok:
@@ -200,7 +208,7 @@ for s in CX:
 ok(not fora, f'conteúdo entre x {SAFE["x0"]}–{SAFE["x1"]} e y {SAFE["y0"]}–{SAFE["y1"]}: {n_cx} caixas em {n_t} quadros fora das trocas' + ('' if not fora else ' · fora: ' + '; '.join(f'{t:.2f}s {b["nome"]} x {b["x0"]:.0f}–{b["x1"]:.0f} y {b["y0"]:.0f}–{b["y1"]:.0f}' for t, b in fora[:6])))
 ok(not botao, f'nenhuma caixa na coluna de botões (x ≥ {BTN["x"]}, y {BTN["y0"]}–{BTN["y1"]})' + ('' if not botao else ': ' + '; '.join(f'{t:.2f}s {b["nome"]}' for t, b in botao[:6])))
 ok(not sobre_peca, 'a linha de apoio nunca fica por cima de card, balão ou peça de cena' + ('' if not sobre_peca else ': ' + '; '.join(f'{t:.2f}s {a_} × {b_}' for t, a_, b_ in sobre_peca[:6])))
-ys = [b['y0'] for s in CX if not em_troca(s['t']) for b in s['caixas']] + [b['y1'] for s in CX if not em_troca(s['t']) for b in s['caixas']]
+ys = [b['y0'] for s in CX if not em_troca(s['t']) for b in s['caixas'] if b['nome'] != 'legenda'] + [b['y1'] for s in CX if not em_troca(s['t']) for b in s['caixas'] if b['nome'] != 'legenda']
 info(f'faixa usada pelo conteúdo: y {min(ys):.0f}–{max(ys):.0f}')
 vazios = []
 for a_, b_ in trocas:
@@ -280,9 +288,89 @@ mx = max(d for _, d in difs) if difs else 9
 ok(difs and mx < 3.0, f'fecho: {len(difs)} elementos (logo oficial, título, chip, seta, marca) iguais entre {DUR - 3:.2f} s e o fim (maior diferença média {mx:.2f} de 255)')
 info('elementos: ' + ', '.join(f'{n} {d:.2f}' for n, d in difs))
 
+
+# ---------------------------------------------------------------- a legenda gravada
+report += ['', 'LEGENDA (gravada no vídeo)']
+if not LEG.get('ligada'):
+    info('sem legenda (episódio anterior ao padrão da legenda, "legenda": false)')
+else:
+    caps = LN['capitulos']
+    blocos = LEG['blocos']
+    fora_fecho = LEG.get('fora_no_fecho', [])
+    # 1) o texto: a fala de cada capítulo, na grafia da tela e na ordem (no fecho, até o que cabe antes dos 3 s finais)
+    erros_txt = []
+    for c in caps:
+        tela = [w['w'] for w in c['palavras']]
+        leg = [w['w'] for b in blocos if b['cap'] == c['n'] for w in b['palavras']]
+        resto = [w['w'] for w in fora_fecho if w['cap'] == c['n']]
+        if leg + resto != tela:
+            erros_txt.append(f'cap {c["n"]:02d}: legenda "{" ".join(leg)}" ≠ fala "{" ".join(tela)}"')
+        if resto and c['n'] != len(caps) - 1:
+            erros_txt.append(f'cap {c["n"]:02d}: palavras sem legenda fora do fecho: {" ".join(resto)}')
+    api_grafia = [w['w'] for b in blocos for w in b['palavras'] if re.search(r'pert[íi]m-?i|pértim|pérr|Uai pert', w['w'], re.I) or w['w'] == 'pertím']
+    ok(not erros_txt, f'o texto da legenda é a fala de cada capítulo, na ordem ({sum(len(b["palavras"]) for b in blocos)} palavras em {len(blocos)} blocos)' + ('' if not erros_txt else ': ' + '; '.join(erros_txt[:4])))
+    txt_leg = ' '.join(w['w'] for b in blocos for w in b['palavras'])
+    ok(not api_grafia and not re.search(r'\bde Glória\b', txt_leg), 'grafia da tela na legenda ("UaiPertim", "pertim", "do/no Glória"; nunca a grafia enviada à voz)' + ('' if not api_grafia else ': ' + ', '.join(api_grafia)))
+    if fora_fecho:
+        t_ini = min(w['t0'] for w in fora_fecho)
+        ok(all(w['cap'] == len(caps) - 1 for w in fora_fecho), f'fecho: a legenda acompanha a fala até {DUR - 3.05:.2f} s e some nos 3 s finais; o trecho falado depois ("{" ".join(w["w"] for w in fora_fecho)}", a partir de {t_ini:.2f} s) já está na tela (assinatura e chip)')
+    # 2) os blocos: 3–6 palavras, no máx. 2 linhas de até maxW px
+    tam = [b for b in blocos if not (LEG['min'] <= len(b['palavras']) <= LEG['max']) and len([c for c in caps if c['n'] == b['cap']][0]['palavras']) >= LEG['min']]
+    lin = [b for b in blocos if len(b['linhas']) > 2 or any(l['largura'] > LEG['maxW'] + 0.5 for l in b['linhas'])]
+    ok(not tam, f'blocos de {LEG["min"]} a {LEG["max"]} palavras' + ('' if not tam else ': ' + '; '.join(' '.join(w['w'] for w in b['palavras']) for b in tam[:4])))
+    ok(not lin, f'no máximo 2 linhas por bloco, cada uma com até {LEG["maxW"]} px (maior: {max(l["largura"] for b in blocos for l in b["linhas"]):.0f} px)')
+    # 3) o tempo: cada palavra dentro do bloco que está na tela quando ela é falada; o bloco entra junto com a voz
+    #    (no máx. 0,15 s antes da 1ª palavra); nunca nas trocas; no fecho, nunca nos 3 s finais
+    tempo = []
+    for b in blocos:
+        c = [c for c in caps if c['n'] == b['cap']][0]
+        for w in b['palavras']:
+            if not (b['t0'] - 1e-6 <= w['t0'] < b['t1']):
+                tempo.append(f'"{w["w"]}" em {w["t0"]:.2f} s fora do bloco {b["t0"]:.2f}–{b["t1"]:.2f} s')
+        if b['t0'] < b['palavras'][0]['t0'] - 0.15:
+            tempo.append(f'bloco "{b["palavras"][0]["w"]}…" entra {b["palavras"][0]["t0"] - b["t0"]:.2f} s antes da voz')
+        if b['t0'] < c['t0'] - 1e-6 or b['t1'] > c['t1'] + 1e-6:
+            tempo.append(f'bloco "{b["palavras"][0]["w"]}…" passa da troca')
+        if b['cap'] == len(caps) - 1 and b['t1'] > DUR - 3.0:
+            tempo.append(f'bloco "{b["palavras"][0]["w"]}…" nos 3 s finais')
+    over = [(a, b) for a, b in zip(blocos, blocos[1:]) if b['t0'] < a['t1'] - 1e-6]
+    ok(not tempo and not over, 'tempo: cada palavra está na tela enquanto é falada; o bloco entra com a voz; nunca nas trocas nem nos 3 s finais; nunca dois blocos juntos' + ('' if not tempo else ': ' + '; '.join(tempo[:4])))
+    ok(blocos[0]['t0'] > 0, f'a capa (quadro 0) sem legenda: o 1º bloco entra em {blocos[0]["t0"]:.2f} s')
+    # 4) a palavra-chave: a marcada com *asteriscos* no apoio do capítulo (quando está na fala)
+    chaves = []
+    for c in caps:
+        marc = [m for a in c['apoios'] for m in re.findall(r'\*([^*]+)\*', a['texto'])]
+        cw = [w['w'] for b in blocos if b['cap'] == c['n'] for w in b['palavras'] if w['chave']]
+        alvo = [norm(x) for m in marc for x in m.split()]
+        if any(norm(w) not in alvo for w in cw):
+            chaves.append(f'cap {c["n"]:02d}: {cw} não é o marcado no apoio {marc}')
+        info(f'cap {c["n"]:02d} · palavra-chave: ' + (', '.join(cw) if cw else ('— (o marcado no apoio, "' + '", "'.join(marc) + '", não está na fala)' if marc else '— (sem apoio marcado)')))
+    ok(not chaves, 'a palavra-chave em amarelo é a marcada no apoio do capítulo' + ('' if not chaves else ': ' + '; '.join(chaves)))
+    # 5) as caixas (a cada 0,25 s): a pílula na faixa, fora da coluna de botões, sem tocar em outra peça; e sempre que
+    #    uma palavra é falada (fora o fim do fecho), a legenda está na tela
+    fora_f, toca, falta, n_l = [], [], [], 0
+    falando = lambda t: [w for b in blocos for w in b['palavras'] if w['t0'] <= t <= w['te']]
+    for s_ in CX:
+        lg = [b for b in s_['caixas'] if b['nome'] == 'legenda']
+        n_l += len(lg)
+        for b in lg:
+            if b['x0'] < FAIXA['x0'] - 0.5 or b['x1'] > FAIXA['x1'] + 0.5 or b['y0'] < FAIXA['y0'] - 0.5 or b['y1'] > FAIXA['y1'] + 0.5 or (b['x1'] > BTN['x'] and b['y1'] > BTN['y0'] and b['y0'] < BTN['y1']):
+                fora_f.append((s_['t'], b))
+            for o in s_['caixas']:
+                if o['nome'] != 'legenda' and min(b['x1'], o['x1']) > max(b['x0'], o['x0']) and min(b['y1'], o['y1']) > max(b['y0'], o['y0']):
+                    toca.append((s_['t'], o['nome']))
+        if falando(s_['t']) and not lg:
+            falta.append(s_['t'])
+    ok(not fora_f, f'a pílula da legenda sempre na faixa x {FAIXA["x0"]}–{FAIXA["x1"]}, y {FAIXA["y0"]}–{FAIXA["y1"]} e fora da coluna de botões ({n_l} caixas)' + ('' if not fora_f else ': ' + '; '.join(f'{t:.2f}s x {b["x0"]:.0f}–{b["x1"]:.0f} y {b["y0"]:.0f}–{b["y1"]:.0f}' for t, b in fora_f[:4])))
+    ok(not toca, 'a legenda nunca encosta em título, apoio, balão, cena ou no Pertim' + ('' if not toca else ': ' + '; '.join(f'{t:.2f}s × {n}' for t, n in toca[:4])))
+    ok(not falta, 'sempre que uma palavra é falada, a legenda dela está na tela (amostras a cada 0,25 s)' + ('' if not falta else ': sem legenda em ' + ', '.join(f'{t:.2f}s' for t in falta[:6])))
+    for b in blocos:
+        info(f'cap {b["cap"]:02d} {b["t0"]:6.2f}–{b["t1"]:6.2f} s · ' + ' / '.join(l['texto'] for l in b['linhas']))
+
 # ---------------------------------------------------------------- folha das zonas seguras
 font = ImageFont.truetype(FONT, 26)
 CHECK_T = [0.0] + [round(c['t1'] - 0.2, 2) for c in LN['capitulos']] + [round((x['t0'] + x['t1']) / 2, 2) for x in MOT['trocas']]
+CHECK_T += [round((b['t0'] + b['t1']) / 2, 2) for b in LEG.get('blocos', [])][::3] if LEG.get('ligada') else []
 CHECK_T = sorted(set(CHECK_T))
 with tempfile.TemporaryDirectory() as tmp:
     TW, TH, COLS = 300, 533, 6
@@ -298,6 +386,8 @@ with tempfile.TemporaryDirectory() as tmp:
         d.rectangle((0, SAFE['y0'], SAFE['x0'] - 1, SAFE['y1']), fill=(255, 40, 80, 30))
         # o contorno da área livre da interface do TikTok (topo 130, base 380, direita 140)
         d.rectangle((0, TIKTOK['topo'], 1079 - TIKTOK['direita'], 1919 - TIKTOK['base']), outline=(40, 200, 255, 255), width=5)
+        if LEG.get('ligada'):                              # a faixa da legenda gravada (amarelo)
+            d.rectangle((FAIXA['x0'], FAIXA['y0'], FAIXA['x1'], FAIXA['y1']), outline=(249, 178, 51, 255), width=5)
         im = Image.alpha_composite(im, ov).convert('RGB').resize((TW, TH), Image.LANCZOS)
         x0, y0 = 10 + (i % COLS) * (TW + 10), 10 + (i // COLS) * (TH + 44)
         sheet.paste(im, (x0, y0)); dr.text((x0, y0 + TH + 8), f'{t:05.2f}s', font=font, fill=(249, 178, 51))

@@ -3,6 +3,7 @@
   "titulo": "Que calor, sô!",
   "marca": "@uaipertim",
   "bpm": 120,
+  "legenda": true,
   "voz": "v4",
   "transicao": "picole",
   "capitulos": [

@@ -3,6 +3,7 @@
   "titulo": "Faltou o bolo?",
   "marca": "@uaipertim",
   "bpm": 120,
+  "legenda": false,
   "voz": "v4",
   "transicao": "baloes",
   "capitulos": [
