@@ -1,0 +1,191 @@
+{
+ "duracao": 50.25,
+ "apoios": [
+  {
+   "cap": 1,
+   "i": 1,
+   "texto": "O gelo acabou.",
+   "entra": 6.38,
+   "inteira_de": 6.72,
+   "ate": 10.5,
+   "linhas": [
+    "O gelo acabou."
+   ]
+  },
+  {
+   "cap": 2,
+   "i": 1,
+   "texto": "A loja de açaí faz.",
+   "entra": 13.83,
+   "inteira_de": 14.17,
+   "ate": 17,
+   "linhas": [
+    "A loja de açaí faz."
+   ]
+  },
+  {
+   "cap": 3,
+   "i": 1,
+   "texto": "Sorvete de pote.",
+   "entra": 17.3,
+   "inteira_de": 17.64,
+   "ate": 23.25,
+   "linhas": [
+    "Sorvete de pote."
+   ]
+  },
+  {
+   "cap": 4,
+   "i": 1,
+   "texto": "Refri trincando.",
+   "entra": 23.55,
+   "inteira_de": 23.89,
+   "ate": 29.5,
+   "linhas": [
+    "Refri trincando."
+   ]
+  },
+  {
+   "cap": 5,
+   "i": 1,
+   "texto": "Antes de derreter.",
+   "entra": 31.71,
+   "inteira_de": 32.050000000000004,
+   "ate": 35.75,
+   "linhas": [
+    "Antes de derreter."
+   ]
+  },
+  {
+   "cap": 6,
+   "i": 1,
+   "texto": "E aí, qual é o seu?",
+   "entra": 36.05,
+   "inteira_de": 36.39,
+   "ate": 42.75,
+   "linhas": [
+    "E aí, qual é o seu?"
+   ]
+  }
+ ],
+ "trocas": [
+  {
+   "de": 0,
+   "para": 1,
+   "t0": 3.5,
+   "t1": 4.25
+  },
+  {
+   "de": 1,
+   "para": 2,
+   "t0": 9.75,
+   "t1": 10.5
+  },
+  {
+   "de": 2,
+   "para": 3,
+   "t0": 16.25,
+   "t1": 17
+  },
+  {
+   "de": 3,
+   "para": 4,
+   "t0": 22.5,
+   "t1": 23.25
+  },
+  {
+   "de": 4,
+   "para": 5,
+   "t0": 28.75,
+   "t1": 29.5
+  },
+  {
+   "de": 5,
+   "para": 6,
+   "t0": 35,
+   "t1": 35.75
+  },
+  {
+   "de": 6,
+   "para": 7,
+   "t0": 42,
+   "t1": 42.75
+  }
+ ],
+ "montagens": [
+  {
+   "n": 0,
+   "t0": 0,
+   "t1": 3.5,
+   "primeira": 0.6,
+   "ultima": 3
+  },
+  {
+   "n": 1,
+   "t0": 4.25,
+   "t1": 9.75,
+   "primeira": 4.6333,
+   "ultima": 7.8833
+  },
+  {
+   "n": 2,
+   "t0": 10.5,
+   "t1": 16.25,
+   "primeira": 10.8167,
+   "ultima": 15.3667
+  },
+  {
+   "n": 3,
+   "t0": 17,
+   "t1": 22.5,
+   "primeira": 17.2,
+   "ultima": 20.6667
+  },
+  {
+   "n": 4,
+   "t0": 23.25,
+   "t1": 28.75,
+   "primeira": 24.7167,
+   "ultima": 26.9167
+  },
+  {
+   "n": 5,
+   "t0": 29.5,
+   "t1": 35,
+   "primeira": 29.8,
+   "ultima": 33.010000000000005
+  },
+  {
+   "n": 6,
+   "t0": 35.75,
+   "t1": 42,
+   "primeira": 38.8667,
+   "ultima": 40.6167
+  },
+  {
+   "n": 7,
+   "t0": 42.75,
+   "t1": 50.25,
+   "primeira": 43.95,
+   "ultima": 47.2
+  }
+ ],
+ "fecho": {
+  "ultima_mudanca_de_texto": 47.2,
+  "duracao": 50.25,
+  "logo": {
+   "entra": 45.6667,
+   "parada": 46.5667
+  },
+  "t0": 42.75,
+  "t1": 50.25
+ },
+ "capa": {
+  "tamanho": 150,
+  "linhas": [
+   758.5504760742188,
+   445.00018310546875
+  ]
+ },
+ "palavras_sem_peca": []
+}
