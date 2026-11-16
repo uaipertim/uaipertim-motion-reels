@@ -5820,7 +5820,8 @@
       return;
     }
     // 2) arrancada: o toco preso na barra (some logo) e a folha voando e girando, do jeito da troca
-    if (barraA > 0.01) { ctx.save(); ctx.globalAlpha *= barraA; ctx.translate(0, -60 * (1 - barraA)); barraCal(ctx, CAL.x0, CAL.y0, w, k, true); ctx.restore(); }
+    if (barraA > 0.01) { ctx.save(); ctx.globalAlpha *= barraA; ctx.translate(0, -60 * (1 - barraA)); barraCal(ctx, CAL.x0, CAL.y0, w, k, true); ctx.restore(); BOX('barra do calendário', CAL.x0, CAL.y0, CAL.x1, CAL.y0 + CAL.barra); }
+    if (ea < 0.75) BOX('folha voando', CAL.x0, CAL.y0, CAL.x1, CAL.y1);
     const e = E.inCubic(ea) * 0.85 + 0.15 * ea, dir = T.dir;
     ctx.save(); ctx.beginPath(); ctx.rect(0, CAL.y0 - 2, W, H); ctx.clip();
     let px, py, rot, sc = 1;
@@ -6015,7 +6016,7 @@
     const a = norm(ws[k - 1].w), b = norm(ws[k].w);
     if (CURTAS.has(a) && !/[.?!…,;:]["”’)]*$/.test(ws[k - 1].w)) return Infinity;   // palavra curta nunca sozinha no fim
     if (LEG_JUNTOS.has(a + '|' + b)) return Infinity;                                 // "do Glória", "pertim de você"
-    return (LEG_PREP.has(b) ? 3 : 0) - (LEG_CONJ.has(b) ? 2 : 0);
+    return (LEG_PREP.has(b) ? 3 : 0) - (LEG_CONJ.has(b) ? 2 : 0) - (/[.?!…,;:]["”’)]*$/.test(ws[k - 1].w) ? 3 : 0);
   }
   // divide uma oração longa em pedaços de 3–6 palavras pelo menor custo (cortes bons + pedaços equilibrados)
   function legDivide(ws) {
@@ -6069,9 +6070,9 @@
       for (let guard = 0; guard < 40; guard++) {
         const i = ors.findIndex((o) => o.length < LEG.min);
         if (i < 0 || ors.length < 2) break;
-        if (i + 1 < ors.length && ors[i].length + ors[i + 1].length <= LEG.max) ors.splice(i, 2, ors[i].concat(ors[i + 1]));
-        else if (i > 0 && ors[i - 1].length + ors[i].length <= LEG.max) ors.splice(i - 1, 2, ors[i - 1].concat(ors[i]));
-        else break;
+        const nx = i + 1 < ors.length ? ors[i].length + ors[i + 1].length : Infinity, pv = i > 0 ? ors[i - 1].length + ors[i].length : Infinity;
+        if (nx <= LEG.max || (nx <= pv && nx < Infinity)) ors.splice(i, 2, ors[i].concat(ors[i + 1]));   // com a seguinte (se couber, ou se der o menor)
+        else ors.splice(i - 1, 2, ors[i - 1].concat(ors[i]));                                             // com a anterior
       }
       const pedacos = ors.flatMap((o) => (o.length > LEG.max ? legDivide(o) : [o]));
       const fim = ci === NC - 1 ? DUR - 3.05 : cap.t1 - 0.05;          // nunca na troca; no fecho, nunca nos 3 últimos s
