@@ -77,7 +77,7 @@
         "",
         ""
       ],
-      "batidas": 22,
+      "batidas": 17,
       "inicio": 0.2,
       "segura": 0.1,
       "fala": [
@@ -107,10 +107,23 @@
           }
         ],
         "placas": [
-          "2 km",
-          "5 km",
-          "12 km",
-          "27 km"
+          {
+            "texto": "2 km",
+            "em": "+2.6"
+          },
+          {
+            "texto": "5 km",
+            "em": "+4.4"
+          },
+          {
+            "texto": "12 km",
+            "em": "reto"
+          },
+          {
+            "texto": "27 km",
+            "em": "+7.3",
+            "pendurada": "…mais um pouquinho"
+          }
         ],
         "segue": {
           "em": "reto"

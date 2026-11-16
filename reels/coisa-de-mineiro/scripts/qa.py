@@ -166,7 +166,7 @@ if ROTEIRO[0].rstrip().endswith('?'):
 sec('A SÉRIE (identidade e regras)')
 falado = ' '.join(ROTEIRO).lower()
 ok(not re.search(r'\bapp\b|aplicativo|celular|em breve|tá chegando|ta chegando', falado), 'a fala não fala do app (sem app, celular, "em breve", "tá chegando")')
-placas = [p for c in D['cenas'] for p in c['diagrama'].get('placas', [])]
+placas = [p['texto'] if isinstance(p, dict) else p for c in D['cenas'] for p in c['diagrama'].get('placas', [])]
 ok(all(re.fullmatch(r'\d+ km', p) for p in placas), f'placas só com km: {", ".join(placas) or "(nenhuma)"}')
 info(f'a marca entra em {D["marca_t"]:.2f} s ({DUR - D["marca_t"]:.2f} s finais)')
 

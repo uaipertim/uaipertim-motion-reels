@@ -219,12 +219,20 @@ const Vaca: React.FC<{ x: number; t: number; tc: number }> = ({ x, t, tc }) => {
     </div>
   );
 };
-const Placa: React.FC<{ x: number; texto: string; e: number }> = ({ x, texto, e }) =>
+const Placa: React.FC<{ x: number; texto: string; e: number; pendurada?: string; ep?: number; t?: number }> = ({ x, texto, e, pendurada, ep = 0, t = 0 }) =>
   e <= 0 ? null : (
     <div style={{ position: "absolute", left: x - 130, top: CHAO - 520, width: 260, height: 380, transform: `scaleY(${Math.min(1.15, e)})`, transformOrigin: "50% 100%" }}>
       <div style={{ position: "absolute", left: 117, top: 120, width: 26, height: 260, borderRadius: 6, background: "#7A5233" }} />
       <div style={{ position: "absolute", left: 0, top: 0, width: 260, height: 140, borderRadius: 22, background: VERDE, border: "8px solid #fff", boxShadow: "0 8px 0 rgba(34,28,25,0.25)",
         display: "flex", alignItems: "center", justifyContent: "center", fontFamily: FONT, fontWeight: W.black, fontSize: 70, color: "#fff", letterSpacing: -1, boxSizing: "border-box" }}>{texto}</div>
+      {/* a tabuinha pendurada embaixo da placa (a piada): cai e balança */}
+      {pendurada && ep > 0 && (
+        <div style={{ position: "absolute", left: 130 - 170, top: 140, width: 340, transform: `translateY(${(1 - Math.min(1, ep)) * -60}px) rotate(${Math.sin(t * 7) * 9 * Math.exp(-Math.max(0, ep - 1) * 1.2)}deg)`, transformOrigin: "50% 0%", opacity: Math.min(1, ep * 2) }}>
+          <svg width={340} height={40} style={{ position: "absolute", left: 0, top: 0 }}><line x1={95} y1={0} x2={80} y2={40} stroke="#6B5A4A" strokeWidth={4} /><line x1={245} y1={0} x2={260} y2={40} stroke="#6B5A4A" strokeWidth={4} /></svg>
+          <div style={{ position: "absolute", left: 20, top: 38, width: 300, padding: "10px 0 12px", borderRadius: 12, background: "#C9955E", border: "5px solid #7A5233", textAlign: "center",
+            fontFamily: FONT, fontWeight: W.black, fontSize: 34, lineHeight: 1.1, color: "#3A2C26", whiteSpace: "nowrap", boxShadow: "0 6px 0 rgba(34,28,25,0.2)" }}>{pendurada}</div>
+        </div>
+      )}
     </div>
   );
 const Casinha: React.FC<{ x: number; luz: number }> = ({ x, luz }) => (
@@ -241,6 +249,42 @@ const Casinha: React.FC<{ x: number; luz: number }> = ({ x, luz }) => (
     <circle cx={430} cy={250} r={14} fill="#FFE48A" opacity={luz} />
   </svg>
 );
+
+// ---- a câmera: o mundo (cenário + personagens, com o chão em y CHAO) ampliado e descido (layout.json → mundo)
+const MUNDO = (L as unknown as { mundo: { escala: number; desce: number } }).mundo;
+const Mundo: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <div style={{ position: "absolute", inset: 0, transform: `translateY(${MUNDO.desce}px) scale(${MUNDO.escala})`, transformOrigin: `540px ${CHAO}px` }}>{children}</div>
+);
+// o primeiro plano: tufos de capim, florzinhas e pedrinhas abaixo da estrada (rolam com a câmera); de noite, vaga-lumes
+const PrimeiroPlano: React.FC<{ off: number; hora: number; t: number }> = ({ off, hora, t }) => {
+  const noite = clamp01(hora - 1);
+  const tufo = interpolateColors(hora, [0, 1, 2], ["#5E9E42", "#7A8642", "#22332F"]);
+  const per = 1400;
+  return (
+    <svg width={1080} height={700} viewBox="0 0 1080 700" style={{ position: "absolute", left: 0, top: CHAO + 45, overflow: "visible" }}>
+      {Array.from({ length: 26 }).map((_, i) => {
+        const x = ((((random(`tufo-${i}`) * per - off * 1.15) % per) + per) % per) - 160;
+        const y = 30 + random(`tufoy-${i}`) * 440, s = 0.7 + random(`tufos-${i}`) * 0.8;
+        const flor = random(`flor-${i}`) > 0.6;
+        return (
+          <g key={i} transform={`translate(${x} ${y}) scale(${s})`}>
+            <path d="M0 0 Q-8 -30 -16 -42 M0 0 Q2 -36 4 -50 M0 0 Q10 -28 20 -38" stroke={tufo} strokeWidth={7} strokeLinecap="round" fill="none" />
+            {flor && noite < 0.5 && <><circle cx={4} cy={-52} r={7} fill={i % 3 ? AMARELO : "#fff"} /><circle cx={4} cy={-52} r={3} fill={C.coral} /></>}
+          </g>
+        );
+      })}
+      {Array.from({ length: 10 }).map((_, i) => {
+        const x = ((((random(`pd-${i}`) * per - off * 1.15) % per) + per) % per) - 100;
+        return <ellipse key={`p${i}`} cx={x} cy={60 + random(`pdy-${i}`) * 420} rx={14} ry={8} fill={interpolateColors(hora, [0, 2], ["#B7A58C", "#3C3A44"])} />;
+      })}
+      {noite > 0 && Array.from({ length: 14 }).map((_, i) => {
+        const x = 60 + random(`vg-${i}`) * 960 + 30 * Math.sin(t * 1.3 + i), y = 40 + random(`vgy-${i}`) * 420 + 20 * Math.cos(t * 1.1 + i * 2);
+        const br = 0.5 + 0.5 * Math.sin(t * 4 + i * 1.7);
+        return <circle key={`v${i}`} cx={x} cy={y} r={6} fill="#FFF3A0" opacity={noite * br} style={{ filter: "drop-shadow(0 0 8px #FFE97A)" }} />;
+      })}
+    </svg>
+  );
+};
 
 // ================================================================ o visitante: um pin genérico (azul), com o mapa na mão
 const Visitante: React.FC<{ cx: number; base: number; altura: number; t: number; anda?: number; estado?: "normal" | "perdido" | "cansado" | "dormindo"; olha?: number; pulo?: number; mapa?: boolean }> = ({
@@ -365,17 +409,19 @@ const PertimEm: React.FC<{
 // ================================================================ a câmera do caminho
 // o deslocamento da câmera (px do mundo): parada nas cenas da conversa; no caminho, anda no passo do visitante e acelera no "segue"
 const CHICOTE = 1500;
-const camEm = (t: number, cam: { t0: number; t1: number; segue: number }) => {
+const camEm = (t: number, cam: { t0: number; t1: number; segue: number; para: number }) => {
   const pulo = CHICOTE * inOut(entre(t, cam.t0 - 0.12, cam.t0 + 0.18));    // o chicote na batida do corte
   return pulo + anda(t, cam);
 };
-const anda = (t: number, cam: { t0: number; t1: number; segue: number }) => {
+const anda = (t: number, cam: { t0: number; t1: number; segue: number; para: number }) => {
   if (t <= cam.t0) return 0;
   const v1 = 560, v2 = 1500;
   const dt = 1 / 120;
   let x = 0;
   for (let s = cam.t0; s < Math.min(t, cam.t1); s += dt) {
-    const v = s < cam.t0 + 0.5 ? v1 * outCubic((s - cam.t0) / 0.5) : s < cam.segue ? v1 : v1 + (v2 - v1) * inOut(Math.min(1, (s - cam.segue) / 1.2));
+    let v = s < cam.t0 + 0.5 ? v1 * outCubic((s - cam.t0) / 0.5) : s < cam.segue ? v1 : v1 + (v2 - v1) * inOut(Math.min(1, (s - cam.segue) / 1.2));
+    // a câmera freia e PARA na última placa (a piada da placa precisa ficar na tela)
+    if (s > cam.para - 0.55) v *= Math.max(0, 1 - inOut((s - (cam.para - 0.55)) / 0.55));
     x += v * dt;
   }
   return x;
@@ -391,7 +437,10 @@ export const CoisaDeMineiro: React.FC<CoisaDeMineiroProps> = ({ dados }) => {
   const P = cena("pergunta"), R = cena("resposta"), CM = cena("caminho"), CH = cena("chegada"), F = cena("fecho");
   const PL = L.pertim, VS = L.visitante;
   const noiteDesde = CH ? CH.t0 : d.duracao + 1;
-  const camCfg = CM ? { t0: CM.t0, t1: CM.t1, segue: CM.diagrama.segue?.t ?? CM.t1 } : { t0: 1e9, t1: 1e9, segue: 1e9 };
+  // "para": a câmera para na última placa quando ela tem a tabuinha pendurada (a piada); senão, anda até o fim da cena
+  const ultPlaca = CM?.diagrama.placas?.[CM.diagrama.placas.length - 1];
+  const paraEm = CM && ultPlaca && typeof ultPlaca === "object" && ultPlaca.pendurada ? (CM.diagrama.placas_t as number[])[CM.diagrama.placas.length - 1] : 1e9;
+  const camCfg = CM ? { t0: CM.t0, t1: CM.t1, segue: CM.diagrama.segue?.t ?? CM.t1, para: paraEm } : { t0: 1e9, t1: 1e9, segue: 1e9, para: 1e9 };
   const camX = t < noiteDesde ? camEm(t, camCfg) : 0;
   // a hora do dia: dia até o "segue"; vira fim de tarde até o fim do caminho; noite na chegada e no fecho
   const hora = t >= noiteDesde ? 2 : CM ? 1.0 * entre(t, camCfg.segue, CM.t1) : 0;
@@ -400,7 +449,7 @@ export const CoisaDeMineiro: React.FC<CoisaDeMineiroProps> = ({ dados }) => {
   // ---- dia: a conversa e o caminho (um mundo só; a câmera anda para a direita)
   if (t < noiteDesde) {
     const objetos = (CM?.diagrama.objetos ?? []) as Array<{ tipo: string; t: number }>;
-    const placas = (CM?.diagrama.placas ?? []) as string[];
+    const placas = ((CM?.diagrama.placas ?? []) as Array<string | { texto: string; pendurada?: string }>).map((p) => (typeof p === "string" ? { texto: p } : p)) as Array<{ texto: string; pendurada?: string }>;
     const placasT = (CM?.diagrama.placas_t ?? []) as number[];
     const CENTRO = 560;
     const wObj = (tw: number) => camEm(tw, camCfg) + CENTRO;
@@ -418,10 +467,12 @@ export const CoisaDeMineiro: React.FC<CoisaDeMineiroProps> = ({ dados }) => {
       <AbsoluteFill key="dia">
         <Ceu hora={hora} t={t} />
         <Nuvens off={camX + t * 20} hora={hora} />
+        <Mundo>
         <Morros off={camX} hora={hora} />
         <Estrada off={camX} hora={hora} />
+        <PrimeiroPlano off={camX} hora={hora} t={t} />
         {/* as placas do outro lado da estrada (atrás) e os objetos */}
-        {placas.map((p, k) => <Placa key={`p${k}`} x={sx(wObj(placasT[k]) + 200)} texto={p} e={mola(t, placasT[k] - 0.35, 0.35, 2.6)} />)}
+        {placas.map((p, k) => <Placa key={`p${k}`} x={sx(wObj(placasT[k]) + (p.pendurada ? 120 : 200))} texto={p.texto} e={mola(t, placasT[k] - 0.35, 0.35, 2.6)} pendurada={p.pendurada} ep={mola(t, placasT[k] + 0.55, 0.45, 1.6)} t={t} />)}
         {objetos.filter((o) => o.tipo === "mangueira").map((o, k) => <Mangueira key={`m${k}`} x={sx(wObj(o.t) + 80)} t={t} tc={o.t} />)}
         {objetos.filter((o) => o.tipo === "mata-burro").map((o, k) => <MataBurro key={`b${k}`} x={sx(wObj(o.t))} />)}
         {objetos.filter((o) => o.tipo === "porteira").map((o, k) => <Porteira key={`g${k}`} x={sx(wObj(o.t))} abre={inOut(entre(t, o.t + (CENTRO - visX) / 560 - 0.55, o.t + (CENTRO - visX) / 560 - 0.15))} />)}
@@ -440,9 +491,9 @@ export const CoisaDeMineiro: React.FC<CoisaDeMineiroProps> = ({ dados }) => {
         {(() => {
           const ent = P ? interpolate(t, [P.t0, P.t0 + 1.0], [-260, VS.conversa.cx], { ...clamp, easing: (x) => outCubic(x) }) : VS.conversa.cx;
           const cx = t < (CM?.t0 ?? 1e9) ? ent : visCx;
-          const andando = t < (P?.t0 ?? 0) + 1.0 || (CM && t >= CM.t0) ? 1 : 0;
+          const andando = t < (P?.t0 ?? 0) + 1.0 || (CM && t >= CM.t0 && t < camCfg.para) ? 1 : 0;
           const est = CM && t > camCfg.segue + 1.5 ? "cansado" : P && t > P.t0 + 1.0 && t < (CM?.t0 ?? 1e9) ? "perdido" : "normal";
-          const olha = R && t >= R.t0 && t < (CM?.t0 ?? 1e9) ? 1 : 0;
+          const olha = (R && t >= R.t0 && t < (CM?.t0 ?? 1e9)) || t >= camCfg.para ? 1 : 0;
           return <Visitante cx={cx} base={VS.conversa.base + desvio} altura={(t < (CM?.t0 ?? 1e9) ? VS.conversa.altura : VS.caminho.altura) * (1 + desvio / 900)} t={t} anda={andando} estado={est} olha={olha} pulo={pulo} />;
         })()}
         {chicote > 0.02 && (
@@ -462,6 +513,7 @@ export const CoisaDeMineiro: React.FC<CoisaDeMineiroProps> = ({ dados }) => {
             <path d="M50 4 C54 34 66 46 96 50 C66 54 54 66 50 96 C46 66 34 54 4 50 C34 46 46 34 50 4 Z" fill={AMARELO} />
           </svg>
         )}
+        </Mundo>
       </AbsoluteFill>,
     );
   }
@@ -477,13 +529,16 @@ export const CoisaDeMineiro: React.FC<CoisaDeMineiroProps> = ({ dados }) => {
       <AbsoluteFill key="noite" style={{ opacity: t < CH.t0 ? 0 : 1 }}>
         <Ceu hora={2} t={t} />
         <Nuvens off={t * 20} hora={2} />
+        <Mundo>
         <div style={{ position: "absolute", inset: 0, transform: `scale(${1 + 0.18 * u})`, transformOrigin: `${PL.chegada.cx}px ${CHAO}px` }}>
           <Morros off={300} hora={2} />
           <Estrada off={0} hora={2} />
+          <PrimeiroPlano off={0} hora={2} t={t} />
           <Casinha x={900} luz={1} />
         </div>
-        <Visitante cx={caiu ? 300 - 140 * u : visEnt} base={CHAO + 10 * u} altura={VS.conversa.altura * (1 - 0.25 * u)} t={t} anda={caiu ? 0 : 1} estado={caiu ? (F && t >= F.t0 ? "dormindo" : "cansado") : "cansado"} mapa={!caiu || u < 0.5} />
+        <Visitante cx={caiu ? 300 - 60 * u : visEnt} base={CHAO + 10 * u} altura={VS.conversa.altura * (1 - 0.25 * u)} t={t} anda={caiu ? 0 : 1} estado={caiu ? (F && t >= F.t0 ? "dormindo" : "cansado") : "cansado"} mapa={!caiu || u < 0.5} />
         <PertimEm t={t} quadro={quadro} d={d} pose="parado" expr={piscando ? "piscadinha" : "sorrindo"} cx={pc.cx} base={pc.base} altura={pc.altura} chinelo cafe />
+        </Mundo>
       </AbsoluteFill>,
     );
   }

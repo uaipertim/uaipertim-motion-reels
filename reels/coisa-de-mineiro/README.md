@@ -5,7 +5,7 @@ faz o papel do mineiro em todas as cenas.
 
 | # | episódio | estreia | pasta | duração |
 |---|---|---|---|---|
-| 01 | "É logo ali, é pertim" | sex 20/11, 20h | [`01-e-logo-ali/`](01-e-logo-ali) | 28,00 s |
+| 01 | "É logo ali, é pertim" | sex 20/11, 20h | [`01-e-logo-ali/`](01-e-logo-ali) | 25,50 s |
 
 ## Identidade (diferente do Tudo Pertim e dos Reels do app)
 
@@ -16,6 +16,11 @@ faz o papel do mineiro em todas as cenas.
   - morros em 3 camadas com parallax e nuvens;
   - estrada de terra com sulcos e pedrinhas, e cerca de madeira;
   - objetos: porteira, mata-burro, vaca, pé de manga, placas de km e a casinha com a luz acesa.
+- **A câmera perto** (`layout.json` → `mundo`): o cenário e os personagens ficam 1,35× maiores, ancorados na linha do
+  chão, e descem 90 px.
+  - Os pés ficam em y 1390, a estrada no terço de baixo da tela, e o primeiro plano de capim (tufos, florzinhas e
+    pedrinhas; à noite, vaga-lumes) preenche a parte de baixo, sem faixa vazia.
+  - A legenda fica logo abaixo dos pés (y 1400–1520), acima da descrição do Instagram; o selo, no alto.
 - **O visitante:** um pin genérico azul (não é o Pertim), com o mapa aberto na mão. Fica perdido, cansado ou dormindo.
 - **Sem marca no meio:** nada de celular, telas do app, "em breve" ou "tá chegando". A marca só aparece nos
   `marca_s` segundos finais (2 s): a logo pequena e "Tudo pertim de você.", no céu.
@@ -61,7 +66,7 @@ A voz, a linha do tempo e a mixagem são as do pipeline do Explica, Sô! (`reels
 |---|---|---|
 | `pergunta` | o visitante entra pela esquerda com o mapa e fica perdido ("?"); o Pertim fala com o público | — |
 | `resposta` | o Pertim aponta a estrada, tranquilo, olhando para o visitante; em `camera`, olha para a câmera (com um brilho) | `camera: {em}` |
-| `caminho` | um chicote de câmera na batida e a câmera segue o visitante pela estrada. Cada objeto passa no centro da tela na palavra dele: a porteira abre antes de ele passar, cai uma manga, ele pula o mata-burro com cuidado e desvia da vaca ("Muuu!"). As placas de km pulam, espalhadas pela cena; no `segue`, o passo acelera e o dia vira fim de tarde | `objetos: [{tipo: porteira\|mangueira\|mata-burro\|vaca, em}]`, `placas: ["2 km", …]` (só km), `segue: {em}` |
+| `caminho` | um chicote de câmera na batida e a câmera segue o visitante pela estrada. Cada objeto passa no centro da tela na palavra dele: a porteira abre antes de ele passar, cai uma manga, ele pula o mata-burro com cuidado e desvia da vaca ("Muuu!"). As placas de km pulam; no `segue`, o passo acelera e o dia vira fim de tarde. Se a última placa tem `pendurada`, a câmera freia e PARA nela: o visitante para e olha, e a tabuinha cai e balança (a piada fecha a cena, sem trecho parado) | `objetos: [{tipo: porteira\|mangueira\|mata-burro\|vaca, em}]`; `placas: [{texto: "2 km", em, pendurada?}]` (só km no texto; sem `em`, espalhadas pela cena); `segue: {em}` |
 | `chegada` | a noite cai (o azul desce do alto) e o visitante chega exausto; o Pertim já está lá, de chinelo, tomando café, na frente da casinha | — |
 | `fecho` | a câmera chega mais perto do Pertim, que pisca para a câmera; o visitante dorme ("z z z"); nos `marca_s` s finais, a logo e "Tudo pertim de você." | `marca_s` (padrão 2) |
 
@@ -120,9 +125,17 @@ ElevenLabs nunca fica no repositório: nesta nuvem, a rede a põe no cabeçalho 
 |---|---|---|---|
 | 1 | pergunta | 0,0–3,0 s (0–6) | "Já perguntou pra um mineiro onde fica um lugar?" |
 | 2 | resposta | 3,0–7,0 s (6–14) | "Ah, é logo ali… é pertim!" (olha para a câmera em "pertim") |
-| 3 | caminho | 7,0–18,0 s (14–36) | "Passa a porteira, vira no pé de manga, atravessa o mata-burro… cuidado com a vaca… e segue reto." · porteira 7,72 · manga 9,20 · mata-burro 10,56 · vaca 12,08 · placas 2/5/12/27 km em 9,90 · 11,40 · 13,60 · 15,80 · "reto" 13,28 |
-| 4 | chegada | 18,0–22,5 s (36–45) | "Pertim pra mineiro é tudo que a vista alcança." |
-| 5 | fecho | 22,5–28,0 s (45–56) | "Marca aquele amigo que sempre fala que é pertim!" · a marca de 26,0 s ao fim |
+| 3 | caminho | 7,0–15,5 s (14–31) | "Passa a porteira, vira no pé de manga, atravessa o mata-burro… cuidado com a vaca… e segue reto." · porteira 7,72 · manga 9,20 · mata-burro 10,56 · vaca 12,08 · placas 2 km 9,60 · 5 km 11,40 · 12 km em "reto" (13,28) · 27 km 14,30, com "…mais um pouquinho" caindo em 14,85 e a câmera parada nela |
+| 4 | chegada | 15,5–20,0 s (31–40) | "Pertim pra mineiro é tudo que a vista alcança." |
+| 5 | fecho | 20,0–25,5 s (40–51) | "Marca aquele amigo que sempre fala que é pertim!" · a marca de 23,5 s ao fim |
+
+**Ajustes de 2026-11-16** (aprovado no conceito):
+
+- **A câmera mais perto:** tudo 1,35× maior, o chão preenchendo a parte de baixo e a legenda logo abaixo dos pés. Vale
+  para a composição da série.
+- **Sem buraco no caminho:** a cena encolheu de 11 s para 8,5 s. Depois de "e segue reto", a câmera acelera e para na
+  placa "27 km", com a tabuinha "…mais um pouquinho" caindo. O total foi de 28,0 s para 25,5 s.
+- Voz, tomadas, texto e capa não mudaram.
 
 - **Gancho:** tomada **E** (seed 4042, `01-e-logo-ali/tomadas/cap-00/E-seed4042.mp3`). A pergunta sobe até a tônica de
   "lugar" (o pico cai no "GA"): **+8,6 st** no `tomadas.py` e **+8,3 st** no QA (mínimo +8). Das 8 tomadas, só a E e a F
@@ -147,7 +160,6 @@ ElevenLabs nunca fica no repositório: nesta nuvem, a rede a põe no cabeçalho 
     em vez da que gerou o áudio salvo.
 - **As outras falas:** seed 42.
 - **Mixagem:** −14,0 LUFS, pico real −1,5 dBTP.
-- **Duração:** 28,00 s. A cena 3 tem 11 s de propósito: depois de "e segue reto", a estrada continua com as placas de km
-  subindo e o dia virando tarde.
+- **Duração:** 25,50 s.
 
 QA: `01-e-logo-ali/output/revisao/relatorio-tecnico.txt` (`RESULTADO: aprovado`).

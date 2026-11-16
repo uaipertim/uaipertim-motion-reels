@@ -1,20 +1,20 @@
 REVISÃO TÉCNICA · Coisa de mineiro #01 "É logo ali, é pertim" · reels/coisa-de-mineiro/01-e-logo-ali/output/uaipertim-coisa-de-mineiro-01.mp4
-28.00 s · 840 quadros a 30 fps
+25.50 s · 765 quadros a 30 fps
 
 FORMATO E SOM
 OK     vídeo h264 yuv420p 1080×1920
 OK     30 fps
-OK     duração 28.00 s (20–30 s)
+OK     duração 25.50 s (20–30 s)
 OK     áudio aac 48000 Hz, 2 canais
-OK     -14.0 LUFS integrados (alvo −14)
-OK     pico real -1.5 dBTP (≤ −1)
+OK     -14.1 LUFS integrados (alvo −14)
+OK     pico real -1.6 dBTP (≤ −1)
 
 RITMO (trilha animada, 120 BPM: uma batida a cada 0,5 s)
 OK     cena 1 pergunta: 0.00–3.00 s = batidas 0–6; fala 0.15–2.55 s dentro dela
 OK     cena 2 resposta: 3.00–7.00 s = batidas 6–14; fala 3.30–5.54 s dentro dela
-OK     cena 3 caminho: 7.00–18.00 s = batidas 14–36; fala 7.20–13.68 s dentro dela
-OK     cena 4 chegada: 18.00–22.50 s = batidas 36–45; fala 18.60–21.40 s dentro dela
-OK     cena 5 fecho: 22.50–28.00 s = batidas 45–56; fala 22.80–25.52 s dentro dela
+OK     cena 3 caminho: 7.00–15.50 s = batidas 14–31; fala 7.20–13.68 s dentro dela
+OK     cena 4 chegada: 15.50–20.00 s = batidas 31–40; fala 16.10–18.90 s dentro dela
+OK     cena 5 fecho: 20.00–25.50 s = batidas 40–51; fala 20.30–23.02 s dentro dela
 
 VOZ
 OK     o texto falado é o roteiro, cena a cena
@@ -37,19 +37,19 @@ OK     a pergunta sobe até a tônica: +8.3 st (mínimo +8 st)
 A SÉRIE (identidade e regras)
 OK     a fala não fala do app (sem app, celular, "em breve", "tá chegando")
 OK     placas só com km: 2 km, 5 km, 12 km, 27 km
-     a marca entra em 26.00 s (2.00 s finais)
+     a marca entra em 23.50 s (2.00 s finais)
 
 LEGENDA GRAVADA
 OK     13 blocos, até 2 linhas, cada um ≥ 0.8 s
 OK     a linha mais larga (622 px) cabe na faixa (x 112–908)
 OK     só o texto da tela ("pertim", nunca a grafia enviada à voz)
 OK     cobre a fala inteira, na ordem
-OK     sai em 25.92 s, antes da marca
+OK     sai em 23.42 s, antes da marca
 
 BOCA E PIXELS
 OK     nenhuma boca com menos de 2 quadros; A, E, O e M/B/P na fala (94 trechos)
-OK     o quadro muda a cada 0,1 s nos primeiros 0,5 s (diferença média 2.1, 6.0, 4.1, 3.9, 3.1)
-OK     o selo "COISA DE MINEIRO #01" aparece no começo, no meio e no fim (26663, 26720, 26719 px verdes)
-OK     a marca só aparece no fim: logo na caixa dela antes = 0 px coral, no fim = 15106 px
+OK     o quadro muda a cada 0,1 s nos primeiros 0,5 s (diferença média 2.2, 4.7, 3.9, 4.3, 4.5)
+OK     o selo "COISA DE MINEIRO #01" aparece no começo, no meio e no fim (26692, 26729, 26727 px verdes)
+OK     a marca só aparece no fim: logo na caixa dela antes = 0 px coral, no fim = 13085 px
 
 RESULTADO: aprovado

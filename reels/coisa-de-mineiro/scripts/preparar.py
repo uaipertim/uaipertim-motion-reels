@@ -85,7 +85,10 @@ for c in CAPS:
     resolve(c, dg)
     if dg['tipo'] == 'caminho':
         # as placas de km: espalhadas pela cena (a estrada que não acaba); o "segue" acelera o passo
-        n = len(dg.get('placas', []))
+        # placas com "em" (dict {texto, em, pendurada?}) têm o tempo delas; as só com texto são espalhadas pela cena
+        if dg.get('placas') and all(isinstance(p, dict) for p in dg['placas']):
+            dg['placas_t'] = [p['t'] for p in dg['placas']]
+        n = 0 if dg.get('placas_t') else len(dg.get('placas', []))
         objs = [o['t'] for o in dg.get('objetos', [])]
         pts = []
         for k in range(n):
@@ -93,7 +96,8 @@ for c in CAPS:
             while any(abs(t - o) < 0.6 for o in objs):          # nunca no mesmo instante de um objeto do caminho
                 t += 0.35
             pts.append(r3(t))
-        dg['placas_t'] = pts
+        if n:
+            dg['placas_t'] = pts
     cenas.append({'n': c['n'], 'tipo': dg['tipo'], 't0': c['t0'], 't1': c['t1'], 'voz_t0': c['voz_t0'], 'voz_t1': c['voz_t1'],
                   'texto': ' '.join(w['w'] for w in c['palavras']), 'diagrama': dg})
 fecho = cenas[-1]
@@ -126,6 +130,7 @@ for c in cenas:
         cues += [{'t': c['t0'], 'type': 'whoosh'}]
         cues += [{'t': o['t'], 'type': SOM.get(o['tipo'], 'pop')} for o in d.get('objetos', [])]
         cues += [{'t': t, 'type': 'pop', 'f': 600 + 120 * k} for k, t in enumerate(d.get('placas_t', []))]
+        cues += [{'t': t + 0.55, 'type': 'jump'} for p, t in zip(d.get('placas', []), d.get('placas_t', [])) if isinstance(p, dict) and p.get('pendurada')]
         if d.get('segue'):
             cues += [{'t': d['segue']['t'], 'type': 'rise'}]
     elif c['tipo'] == 'chegada':
