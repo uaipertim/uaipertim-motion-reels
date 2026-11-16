@@ -1,0 +1,70 @@
+{
+ "episodio": "coisa-de-mineiro/01-e-logo-ali",
+ "cap": 1,
+ "texto": "Ah, é logo ali… é pertim!",
+ "voz": "Victor Pinho",
+ "perfil": "narracao",
+ "modelo": "eleven_v4",
+ "tomadas": [
+  {
+   "tomada": "A",
+   "arquivo": "A-seed42.mp3",
+   "seed": 42,
+   "texto_api": "Ah, é logo ali… é pertím!",
+   "conferencia": "ritmo 7.9 letras/s",
+   "ritmo_letras_s": 7.9,
+   "maior_pausa_s": 0.32,
+   "sobra_no_fim_s": 0.16,
+   "fala_s": 2.16,
+   "pertim": [
+    {
+     "grafia": "pertím",
+     "F1_PER_max_hz": null,
+     "E_aberto": false,
+     "vogal_PER": {
+      "dur": 0.05,
+      "f0": null
+     },
+     "vogal_TIM": {
+      "dur": 0.12,
+      "f0": 212
+     },
+     "forca": "TIM",
+     "F2_meio": 2579,
+     "F2_fim": 2923,
+     "fim": "in? (F2 alto)"
+    }
+   ]
+  },
+  {
+   "tomada": "B",
+   "arquivo": "B-seed1042.mp3",
+   "seed": 1042,
+   "texto_api": "Ah, é logo ali… é pertím!",
+   "conferencia": "ritmo 7.6 letras/s",
+   "ritmo_letras_s": 7.6,
+   "maior_pausa_s": 0.32,
+   "sobra_no_fim_s": 0.24,
+   "fala_s": 2.24,
+   "pertim": [
+    {
+     "grafia": "pertím",
+     "F1_PER_max_hz": null,
+     "E_aberto": false,
+     "vogal_PER": {
+      "dur": 0.04,
+      "f0": null
+     },
+     "vogal_TIM": {
+      "dur": 0.16,
+      "f0": 187
+     },
+     "forca": "TIM",
+     "F2_meio": 2461,
+     "F2_fim": 1705,
+     "fim": "im (F2 cai)"
+    }
+   ]
+  }
+ ]
+}

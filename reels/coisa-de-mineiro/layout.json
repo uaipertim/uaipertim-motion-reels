@@ -1,0 +1,17 @@
+{
+  "_doc": "Layout da série 'Coisa de mineiro' (1080×1920, 30 fps), o mesmo para todos os episódios. Lido pela composição (src/coisa-de-mineiro/), por scripts/preparar.py e pelo QA. Caixas [x0, y0, x1, y1]. O chão (a estrada) fica em y 'chao'; os personagens pisam nele. A legenda fica na faixa de baixo, abaixo do chão; o selo da série no alto, à esquerda; a marca (logo pequena + 'Tudo pertim de você.') só nos últimos segundos do fecho, no céu.",
+  "W": 1080, "H": 1920, "fps": 30,
+  "seguro": [80, 265, 940, 1456],
+  "botoes": [940, 1060, 1080, 1560],
+  "legenda": { "faixa": [112, 1336, 908, 1456], "cx": 510, "base": 1456, "size": 42, "lh": 50, "padX": 28, "padY": 10, "maxW": 740, "minDur": 0.8, "maxPal": 6 },
+  "selo": { "x": 90, "y": 285, "size": 40, "rot": -4 },
+  "chao": 1300,
+  "horizonte": 1010,
+  "pertim": {
+    "conversa": { "cx": 760, "base": 1300, "altura": 600 },
+    "chegada": { "cx": 700, "base": 1295, "altura": 520 },
+    "fecho": { "cx": 560, "base": 1305, "altura": 640 }
+  },
+  "visitante": { "conversa": { "cx": 290, "base": 1300, "altura": 460 }, "caminho": { "cx": 360, "base": 1300, "altura": 440 } },
+  "marca": { "cx": 540, "cy": 480, "d": 170, "frase": { "cy": 630, "size": 58 } }
+}

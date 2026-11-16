@@ -1,0 +1,55 @@
+REVISÃO TÉCNICA · Coisa de mineiro #01 "É logo ali, é pertim" · reels/coisa-de-mineiro/01-e-logo-ali/output/uaipertim-coisa-de-mineiro-01.mp4
+28.00 s · 840 quadros a 30 fps
+
+FORMATO E SOM
+OK     vídeo h264 yuv420p 1080×1920
+OK     30 fps
+OK     duração 28.00 s (20–30 s)
+OK     áudio aac 48000 Hz, 2 canais
+OK     -14.0 LUFS integrados (alvo −14)
+OK     pico real -1.5 dBTP (≤ −1)
+
+RITMO (trilha animada, 120 BPM: uma batida a cada 0,5 s)
+OK     cena 1 pergunta: 0.00–3.00 s = batidas 0–6; fala 0.15–2.55 s dentro dela
+OK     cena 2 resposta: 3.00–7.00 s = batidas 6–14; fala 3.30–5.54 s dentro dela
+OK     cena 3 caminho: 7.00–18.00 s = batidas 14–36; fala 7.20–13.68 s dentro dela
+OK     cena 4 chegada: 18.00–22.50 s = batidas 36–45; fala 18.60–21.40 s dentro dela
+OK     cena 5 fecho: 22.50–28.00 s = batidas 45–56; fala 22.80–25.52 s dentro dela
+
+VOZ
+OK     o texto falado é o roteiro, cena a cena
+OK     voz oficial (Victor Pinho), perfil "narracao" (eleven_v4)
+OK     "Pertim/pertim" vai para a voz como "pertím" (grafia c); na tela, "pertim"
+     cena 1: seed 4042 · 2.40 s · enviado "Já perguntou pra um mineiro onde fica um lugar?" · reels/coisa-de-mineiro/01-e-logo-ali/tomadas/cap-00/E-seed4042.mp3 · conferência: ok
+     cena 2: seed 1042 · 2.24 s · enviado "Ah, é logo ali… é pertím!" · reels/coisa-de-mineiro/01-e-logo-ali/tomadas/cap-01/B-seed1042.mp3 · conferência: ritmo 7.6 letras/s
+     cena 3: seed 42 · 6.48 s · enviado "Passa a porteira, vira no pé de manga, atravessa o mata-burro… cuidado com a vaca… e segue reto." · voz.py, seed 42 · conferência: ok
+     cena 4: seed 42 · 2.80 s · enviado "pertím pra mineiro é tudo que a vista alcança." · voz.py, seed 42 · conferência: ok
+     cena 5: seed 42 · 2.72 s · enviado "Marca aquele amigo que sempre fala que é pertím!" · voz.py, seed 42 · conferência: ok
+OK     cada cena é UMA geração inteira, colocada sem cortes
+OK     nunca "de Glória"
+
+A PERGUNTA DO GANCHO ("Já perguntou pra um mineiro onde fica um lugar?")
+     tomada usada: reels/coisa-de-mineiro/01-e-logo-ali/tomadas/cap-00/E-seed4042.mp3 (seed 4042)
+     o F0 sobe de 138 Hz ("um") para 224 Hz em "lugar" (em 2.19 s)
+OK     a pergunta sobe até a tônica: +8.3 st (mínimo +8 st)
+     gráfico: output/revisao/f0-gancho.png
+
+A SÉRIE (identidade e regras)
+OK     a fala não fala do app (sem app, celular, "em breve", "tá chegando")
+OK     placas só com km: 2 km, 5 km, 12 km, 27 km
+     a marca entra em 26.00 s (2.00 s finais)
+
+LEGENDA GRAVADA
+OK     13 blocos, até 2 linhas, cada um ≥ 0.8 s
+OK     a linha mais larga (622 px) cabe na faixa (x 112–908)
+OK     só o texto da tela ("pertim", nunca a grafia enviada à voz)
+OK     cobre a fala inteira, na ordem
+OK     sai em 25.92 s, antes da marca
+
+BOCA E PIXELS
+OK     nenhuma boca com menos de 2 quadros; A, E, O e M/B/P na fala (94 trechos)
+OK     o quadro muda a cada 0,1 s nos primeiros 0,5 s (diferença média 2.1, 6.0, 4.1, 3.9, 3.1)
+OK     o selo "COISA DE MINEIRO #01" aparece no começo, no meio e no fim (26663, 26720, 26719 px verdes)
+OK     a marca só aparece no fim: logo na caixa dela antes = 0 px coral, no fim = 15106 px
+
+RESULTADO: aprovado

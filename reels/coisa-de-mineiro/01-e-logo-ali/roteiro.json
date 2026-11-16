@@ -1,0 +1,160 @@
+{
+  "id": "coisa-de-mineiro/01-e-logo-ali",
+  "serie": "coisa-de-mineiro",
+  "numero": 1,
+  "titulo": "É logo ali, é pertim",
+  "capa": {
+    "titulo": [
+      "É logo ali,",
+      "*é pertim*!"
+    ]
+  },
+  "marca": "@uaipertim",
+  "perfil_voz": "narracao",
+  "trilha": "animada",
+  "bpm": 120,
+  "legenda": true,
+  "grade": true,
+  "limites": [
+    20,
+    30
+  ],
+  "limites_fecho": [
+    3.5,
+    7.0
+  ],
+  "pronuncia": {
+    "Pertim": "pertím",
+    "pertim": "pertím"
+  },
+  "_doc": "Série 'Coisa de mineiro' (Instagram @uaipertim): humor de situação que todo mineiro reconhece; não fala do app. Episódio #01 'É logo ali, é pertim' (sex 20/11, 20h). A voz, a linha do tempo (todo corte numa batida da trilha animada) e a mixagem saem do pipeline do Explica, Sô! (voz.py, linha.py, audio.py; o id do episódio é o caminho 'coisa-de-mineiro/01-e-logo-ali'); o vídeo é a composição CoisaDeMineiro (src/coisa-de-mineiro/), lendo public/coisa-de-mineiro/<ep>/dados.json (scripts/preparar.py). Ver reels/coisa-de-mineiro/README.md.",
+  "_doc_pronuncia": "Grafia c (aprovada no 'Bateu a fome?'): 'Pertim'/'pertim' vai para a voz como 'pertím' (só o texto enviado; na tela e na legenda continua 'pertim'). Vale para todos os capítulos do episódio.",
+  "capitulos": [
+    {
+      "rotulo": "CENA 1 · a pergunta",
+      "titulo": [
+        "",
+        ""
+      ],
+      "batidas": 6,
+      "inicio": 0.15,
+      "segura": 0.1,
+      "fala": [
+        {
+          "texto": "Já perguntou pra um mineiro onde fica um lugar?",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "pergunta"
+      }
+    },
+    {
+      "rotulo": "CENA 2 · a resposta",
+      "titulo": [
+        "",
+        ""
+      ],
+      "batidas": 8,
+      "inicio": 0.3,
+      "segura": 0.3,
+      "fala": [
+        {
+          "texto": "Ah, é logo ali… é pertim!",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "resposta",
+        "camera": {
+          "em": "pertim"
+        }
+      }
+    },
+    {
+      "rotulo": "CENA 3 · o caminho",
+      "titulo": [
+        "",
+        ""
+      ],
+      "batidas": 22,
+      "inicio": 0.2,
+      "segura": 0.1,
+      "fala": [
+        {
+          "texto": "Passa a porteira, vira no pé de manga, atravessa o mata-burro… cuidado com a vaca… e segue reto.",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "caminho",
+        "objetos": [
+          {
+            "tipo": "porteira",
+            "em": "porteira"
+          },
+          {
+            "tipo": "mangueira",
+            "em": "manga"
+          },
+          {
+            "tipo": "mata-burro",
+            "em": "mata-burro"
+          },
+          {
+            "tipo": "vaca",
+            "em": "vaca"
+          }
+        ],
+        "placas": [
+          "2 km",
+          "5 km",
+          "12 km",
+          "27 km"
+        ],
+        "segue": {
+          "em": "reto"
+        }
+      }
+    },
+    {
+      "rotulo": "CENA 4 · a chegada",
+      "titulo": [
+        "",
+        ""
+      ],
+      "batidas": 9,
+      "inicio": 0.6,
+      "segura": 0.3,
+      "fala": [
+        {
+          "texto": "Pertim pra mineiro é tudo que a vista alcança.",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "chegada"
+      }
+    },
+    {
+      "rotulo": "FECHO",
+      "titulo": [
+        "",
+        ""
+      ],
+      "batidas": 8,
+      "inicio": 0.3,
+      "segura": 2.1,
+      "fala": [
+        {
+          "texto": "Marca aquele amigo que sempre fala que é pertim!",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "fecho",
+        "marca_s": 2.0
+      }
+    }
+  ]
+}

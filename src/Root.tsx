@@ -43,6 +43,7 @@ import { PRAZER, PertimBocaTeste, PrazerPertim, PrazerPertimCapa } from "./praze
 import { PEDIR, PedirNoUaiPertim } from "./pedir-no-uaipertim/PedirNoUaiPertim";
 import { BATEU, BateuAFome, caveatReady } from "./bateu-a-fome/BateuAFome";
 import { OLHA, OlhaElePorDentro } from "./olha-ele-por-dentro/OlhaElePorDentro";
+import { CapaCoisaDeMineiro, CoisaDeMineiro, CoisaDeMineiroProps, carregaEpisodio } from "./coisa-de-mineiro/CoisaDeMineiro";
 import facim02 from "../carrosseis/facim/02-como-vai-funcionar.json";
 import facim03 from "../carrosseis/facim/03-o-que-vai-ter.json";
 import facim04 from "../carrosseis/facim/04-quem-e-o-pertim.json";
@@ -249,6 +250,12 @@ export const RemotionRoot: React.FC = () => (
     <Composition id="BateuAFome" component={BateuAFome} durationInFrames={BATEU.duracao} fps={BATEU.fps} width={1080} height={1920} calculateMetadata={async () => { await fontsReady; await caveatReady; return {}; }} />
     {/* Reel "Olha ele por dentro!" (o app por dentro, narrado pelo Pertim; reels/olha-ele-por-dentro) */}
     <Composition id="OlhaElePorDentro" component={OlhaElePorDentro} durationInFrames={OLHA.duracao} fps={OLHA.fps} width={1080} height={1920} calculateMetadata={async () => { await fontsReady; return {}; }} />
+    {/* Série "Coisa de mineiro": UMA composição para todos os episódios (o episódio vem em --props={"ep": "01-e-logo-ali"};
+        os dados, de public/coisa-de-mineiro/<ep>/dados.json) e a capa de cada um (reels/coisa-de-mineiro) */}
+    <Composition id="CoisaDeMineiro" component={CoisaDeMineiro} durationInFrames={840} fps={30} width={1080} height={1920}
+      defaultProps={{ ep: "01-e-logo-ali" } as CoisaDeMineiroProps} calculateMetadata={async (a) => { await fontsReady; return carregaEpisodio(a); }} />
+    <Still id="CoisaDeMineiro-Capa" component={CapaCoisaDeMineiro} width={1080} height={1920}
+      defaultProps={{ ep: "01-e-logo-ali" } as CoisaDeMineiroProps} calculateMetadata={async (a) => { await fontsReady; const r = await carregaEpisodio(a); return { props: r.props }; }} />
     <Still id="Destaque-Capa" component={DestaqueCapa} width={1080} height={1920} defaultProps={{ icone: "conheca" as const }} />
   </>
 );

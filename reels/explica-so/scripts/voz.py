@@ -67,7 +67,8 @@ PARA = ('voice_not_found', 'invalid_api_key', 'unauthorized', 'missing_permissio
 def pron(c, t):
     """o texto enviado à API: primeiro as grafias só deste capítulo (campo "pronuncia" do capítulo no JSON, ex.:
     {"UaiPertim": "Uai perr-tím"}), depois a regra fixa de pronúncia (audio/voz_oficial.json → pronounce())"""
-    for k, v in sorted((c.get('pronuncia') or {}).items(), key=lambda kv: -len(kv[0])):
+    # as grafias do roteiro inteiro ("pronuncia" no topo do JSON, ex.: numa série) valem para todo capítulo; as do capítulo, por cima
+    for k, v in sorted({**(SCRIPT.get('pronuncia') or {}), **(c.get('pronuncia') or {})}.items(), key=lambda kv: -len(kv[0])):
         t = re.sub(rf'(?<![\wÀ-ÿ]){re.escape(k)}(?![\wÀ-ÿ])', v, t)
     return pronounce(t, PERFIL)
 
@@ -193,9 +194,11 @@ def gerar(refaz):
             ok, motivo, num = confere(x, al, api)
             hist.append({'seed': seed, 'texto_api': api, 'formato': fmt, 'resultado': motivo, **num, 'quando': time.strftime('%Y-%m-%d %H:%M')})
             print(f'  cap {key}: seed {seed} · {motivo} · {num["fala_s"]} s · {num["ritmo_letras_s"]} letras/s · maior pausa {num["maior_pausa_s"]} s')
-            if ok:
-                break
+            if ok or k + 1 == TENTATIVAS:
+                break                                   # (na última tentativa, a seed registrada é a do áudio salvo)
             seed += 1000
+        if not ok:
+            print(f'  ATENÇÃO cap {key}: nenhuma das {TENTATIVAS} gerações passou na conferência; ficou a última (seed {seed}): ouça ou escolha outra com scripts/tomadas.py')
         pcm = np.round(np.clip(x, -1, 1) * 32767).astype(np.int16)
         wavfile.write(os.path.join(OUT, f'cap-{key}.wav'), SR, pcm)
         ws = palavras(al)

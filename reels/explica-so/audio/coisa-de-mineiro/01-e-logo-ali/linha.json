@@ -1,0 +1,616 @@
+{
+ "episodio": "coisa-de-mineiro/01-e-logo-ali",
+ "titulo": "É logo ali, é pertim",
+ "marca": "@uaipertim",
+ "legenda": true,
+ "duracao": 28.0,
+ "tr": 0.0,
+ "grade": {
+  "bpm": 120.0,
+  "batida_s": 0.5
+ },
+ "ap_entra": 0.34,
+ "ap_leitura": 1.5,
+ "previa": false,
+ "capitulos": [
+  {
+   "n": 0,
+   "rotulo": "CENA 1 · a pergunta",
+   "tom": "creme",
+   "titulo": [
+    "",
+    ""
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "pergunta"
+   },
+   "t0": 0.0,
+   "t1": 3.0,
+   "voz_t0": 0.15,
+   "voz_t1": 2.55,
+   "palavras": [
+    {
+     "w": "Já",
+     "n": "ja",
+     "i0": 0,
+     "t0": 0.15,
+     "t1": 0.31
+    },
+    {
+     "w": "perguntou",
+     "n": "perguntou",
+     "i0": 3,
+     "t0": 0.39,
+     "t1": 0.79
+    },
+    {
+     "w": "pra",
+     "n": "pra",
+     "i0": 13,
+     "t0": 0.83,
+     "t1": 0.87
+    },
+    {
+     "w": "um",
+     "n": "um",
+     "i0": 17,
+     "t0": 0.95,
+     "t1": 0.99
+    },
+    {
+     "w": "mineiro",
+     "n": "mineiro",
+     "i0": 20,
+     "t0": 1.03,
+     "t1": 1.51
+    },
+    {
+     "w": "onde",
+     "n": "onde",
+     "i0": 28,
+     "t0": 1.59,
+     "t1": 1.83
+    },
+    {
+     "w": "fica",
+     "n": "fica",
+     "i0": 33,
+     "t0": 1.91,
+     "t1": 2.07
+    },
+    {
+     "w": "um",
+     "n": "um",
+     "i0": 38,
+     "t0": 2.11,
+     "t1": 2.15
+    },
+    {
+     "w": "lugar?",
+     "n": "lugar",
+     "i0": 41,
+     "t0": 2.19,
+     "t1": 2.55
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Já perguntou pra um mineiro onde fica um lugar?",
+     "apoio": null,
+     "t0": 0.15,
+     "t1": 2.55
+    }
+   ],
+   "apoios": [],
+   "seed": 4042
+  },
+  {
+   "n": 1,
+   "rotulo": "CENA 2 · a resposta",
+   "tom": "pessego",
+   "titulo": [
+    "",
+    ""
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "resposta",
+    "camera": {
+     "em": "pertim"
+    }
+   },
+   "t0": 3.0,
+   "t1": 7.0,
+   "voz_t0": 3.3,
+   "voz_t1": 5.54,
+   "palavras": [
+    {
+     "w": "Ah,",
+     "n": "ah",
+     "i0": 0,
+     "t0": 3.3,
+     "t1": 3.54
+    },
+    {
+     "w": "é",
+     "n": "e",
+     "i0": 4,
+     "t0": 3.82,
+     "t1": 3.86
+    },
+    {
+     "w": "logo",
+     "n": "logo",
+     "i0": 6,
+     "t0": 3.94,
+     "t1": 4.1
+    },
+    {
+     "w": "ali…",
+     "n": "ali",
+     "i0": 11,
+     "t0": 4.18,
+     "t1": 4.5
+    },
+    {
+     "w": "é",
+     "n": "e",
+     "i0": 16,
+     "t0": 4.82,
+     "t1": 4.9
+    },
+    {
+     "w": "pertim!",
+     "n": "pertim",
+     "i0": 18,
+     "t0": 5.06,
+     "t1": 5.54
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Ah, é logo ali… é pertim!",
+     "apoio": null,
+     "t0": 3.3,
+     "t1": 5.54
+    }
+   ],
+   "apoios": [],
+   "seed": 1042
+  },
+  {
+   "n": 2,
+   "rotulo": "CENA 3 · o caminho",
+   "tom": "amarelo",
+   "titulo": [
+    "",
+    ""
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "caminho",
+    "objetos": [
+     {
+      "tipo": "porteira",
+      "em": "porteira"
+     },
+     {
+      "tipo": "mangueira",
+      "em": "manga"
+     },
+     {
+      "tipo": "mata-burro",
+      "em": "mata-burro"
+     },
+     {
+      "tipo": "vaca",
+      "em": "vaca"
+     }
+    ],
+    "placas": [
+     "2 km",
+     "5 km",
+     "12 km",
+     "27 km"
+    ],
+    "segue": {
+     "em": "reto"
+    }
+   },
+   "t0": 7.0,
+   "t1": 18.0,
+   "voz_t0": 7.2,
+   "voz_t1": 13.68,
+   "palavras": [
+    {
+     "w": "Passa",
+     "n": "passa",
+     "i0": 0,
+     "t0": 7.2,
+     "t1": 7.467
+    },
+    {
+     "w": "a",
+     "n": "a",
+     "i0": 6,
+     "t0": 7.493,
+     "t1": 7.52
+    },
+    {
+     "w": "porteira,",
+     "n": "porteira",
+     "i0": 8,
+     "t0": 7.72,
+     "t1": 8.08
+    },
+    {
+     "w": "vira",
+     "n": "vira",
+     "i0": 18,
+     "t0": 8.48,
+     "t1": 8.72
+    },
+    {
+     "w": "no",
+     "n": "no",
+     "i0": 23,
+     "t0": 8.8,
+     "t1": 8.88
+    },
+    {
+     "w": "pé",
+     "n": "pe",
+     "i0": 26,
+     "t0": 8.92,
+     "t1": 8.96
+    },
+    {
+     "w": "de",
+     "n": "de",
+     "i0": 29,
+     "t0": 9.04,
+     "t1": 9.12
+    },
+    {
+     "w": "manga,",
+     "n": "manga",
+     "i0": 32,
+     "t0": 9.2,
+     "t1": 9.52
+    },
+    {
+     "w": "atravessa",
+     "n": "atravessa",
+     "i0": 39,
+     "t0": 9.88,
+     "t1": 10.4
+    },
+    {
+     "w": "o",
+     "n": "o",
+     "i0": 49,
+     "t0": 10.44,
+     "t1": 10.48
+    },
+    {
+     "w": "mata-burro…",
+     "n": "mataburro",
+     "i0": 51,
+     "t0": 10.56,
+     "t1": 11.2
+    },
+    {
+     "w": "cuidado",
+     "n": "cuidado",
+     "i0": 63,
+     "t0": 11.48,
+     "t1": 11.84
+    },
+    {
+     "w": "com",
+     "n": "com",
+     "i0": 71,
+     "t0": 11.92,
+     "t1": 11.96
+    },
+    {
+     "w": "a",
+     "n": "a",
+     "i0": 75,
+     "t0": 12.0,
+     "t1": 12.04
+    },
+    {
+     "w": "vaca…",
+     "n": "vaca",
+     "i0": 77,
+     "t0": 12.08,
+     "t1": 12.48
+    },
+    {
+     "w": "e",
+     "n": "e",
+     "i0": 83,
+     "t0": 12.8,
+     "t1": 12.88
+    },
+    {
+     "w": "segue",
+     "n": "segue",
+     "i0": 85,
+     "t0": 12.96,
+     "t1": 13.2
+    },
+    {
+     "w": "reto.",
+     "n": "reto",
+     "i0": 91,
+     "t0": 13.28,
+     "t1": 13.68
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Passa a porteira, vira no pé de manga, atravessa o mata-burro… cuidado com a vaca… e segue reto.",
+     "apoio": null,
+     "t0": 7.2,
+     "t1": 13.68
+    }
+   ],
+   "apoios": [],
+   "seed": 42
+  },
+  {
+   "n": 3,
+   "rotulo": "CENA 4 · a chegada",
+   "tom": "verde",
+   "titulo": [
+    "",
+    ""
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "chegada"
+   },
+   "t0": 18.0,
+   "t1": 22.5,
+   "voz_t0": 18.6,
+   "voz_t1": 21.4,
+   "palavras": [
+    {
+     "w": "Pertim",
+     "n": "pertim",
+     "i0": 0,
+     "t0": 18.6,
+     "t1": 19.0
+    },
+    {
+     "w": "pra",
+     "n": "pra",
+     "i0": 7,
+     "t0": 19.08,
+     "t1": 19.16
+    },
+    {
+     "w": "mineiro",
+     "n": "mineiro",
+     "i0": 11,
+     "t0": 19.32,
+     "t1": 19.72
+    },
+    {
+     "w": "é",
+     "n": "e",
+     "i0": 19,
+     "t0": 19.88,
+     "t1": 20.04
+    },
+    {
+     "w": "tudo",
+     "n": "tudo",
+     "i0": 21,
+     "t0": 20.08,
+     "t1": 20.36
+    },
+    {
+     "w": "que",
+     "n": "que",
+     "i0": 26,
+     "t0": 20.4,
+     "t1": 20.44
+    },
+    {
+     "w": "a",
+     "n": "a",
+     "i0": 30,
+     "t0": 20.52,
+     "t1": 20.56
+    },
+    {
+     "w": "vista",
+     "n": "vista",
+     "i0": 32,
+     "t0": 20.6,
+     "t1": 20.84
+    },
+    {
+     "w": "alcança.",
+     "n": "alcanca",
+     "i0": 38,
+     "t0": 20.92,
+     "t1": 21.4
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Pertim pra mineiro é tudo que a vista alcança.",
+     "apoio": null,
+     "t0": 18.6,
+     "t1": 21.4
+    }
+   ],
+   "apoios": [],
+   "seed": 42
+  },
+  {
+   "n": 4,
+   "rotulo": "FECHO",
+   "tom": "creme",
+   "titulo": [
+    "",
+    ""
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "fecho",
+    "marca_s": 2.0
+   },
+   "t0": 22.5,
+   "t1": 28.0,
+   "voz_t0": 22.8,
+   "voz_t1": 25.52,
+   "palavras": [
+    {
+     "w": "Marca",
+     "n": "marca",
+     "i0": 0,
+     "t0": 22.8,
+     "t1": 23.12
+    },
+    {
+     "w": "aquele",
+     "n": "aquele",
+     "i0": 6,
+     "t0": 23.2,
+     "t1": 23.36
+    },
+    {
+     "w": "amigo",
+     "n": "amigo",
+     "i0": 13,
+     "t0": 23.48,
+     "t1": 23.76
+    },
+    {
+     "w": "que",
+     "n": "que",
+     "i0": 19,
+     "t0": 23.88,
+     "t1": 24.0
+    },
+    {
+     "w": "sempre",
+     "n": "sempre",
+     "i0": 23,
+     "t0": 24.08,
+     "t1": 24.48
+    },
+    {
+     "w": "fala",
+     "n": "fala",
+     "i0": 30,
+     "t0": 24.56,
+     "t1": 24.72
+    },
+    {
+     "w": "que",
+     "n": "que",
+     "i0": 35,
+     "t0": 24.8,
+     "t1": 24.84
+    },
+    {
+     "w": "é",
+     "n": "e",
+     "i0": 39,
+     "t0": 24.88,
+     "t1": 24.96
+    },
+    {
+     "w": "pertim!",
+     "n": "pertim",
+     "i0": 41,
+     "t0": 25.12,
+     "t1": 25.52
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Marca aquele amigo que sempre fala que é pertim!",
+     "apoio": null,
+     "t0": 22.8,
+     "t1": 25.52
+    }
+   ],
+   "apoios": [],
+   "seed": 42
+  }
+ ],
+ "colocacao": [
+  {
+   "cap": 0,
+   "arquivo": "voz/cap-00.wav",
+   "de_s": 0.0,
+   "ate_s": 2.56,
+   "no_video_s": 0.15,
+   "amostras": 122880,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 1,
+   "arquivo": "voz/cap-01.wav",
+   "de_s": 0.0,
+   "ate_s": 2.48,
+   "no_video_s": 3.3,
+   "amostras": 119040,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 2,
+   "arquivo": "voz/cap-02.wav",
+   "de_s": 0.0,
+   "ate_s": 6.78,
+   "no_video_s": 7.2,
+   "amostras": 325440,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 3,
+   "arquivo": "voz/cap-03.wav",
+   "de_s": 0.0,
+   "ate_s": 3.1,
+   "no_video_s": 18.6,
+   "amostras": 148800,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 4,
+   "arquivo": "voz/cap-04.wav",
+   "de_s": 0.0,
+   "ate_s": 2.88,
+   "no_video_s": 22.8,
+   "amostras": 138240,
+   "fade_ms": [
+    8,
+    60
+   ]
+  }
+ ],
+ "mapa": {
+  "ok": true,
+  "falhas": []
+ }
+}

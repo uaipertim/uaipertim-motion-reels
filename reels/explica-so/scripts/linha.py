@@ -60,10 +60,11 @@ AP_PASSO = AP_ENTRA + AP_LEITURA + 0.08
 PRE, POS = 0.04, 0.30         # o que fica do áudio antes da 1ª letra e depois da última
 # duração total: 30–45 s na série; os episódios especiais têm o seu limite (o fecho, os apoios e a logo seguem iguais)
 LIMITES = {'historia-uaipertim': (60.0, 80.0), 'prazer-pertim': (15.0, 30.0), 'pedir-no-uaipertim': (35.0, 40.0), 'bateu-a-fome': (22.0, 26.0), 'olha-ele-por-dentro': (24.0, 28.0)}
-DUR_MIN, DUR_MAX = LIMITES.get(EP, (30.0, 45.0))
+# ou no próprio roteiro: "limites": [mín, máx] (ex.: os episódios de uma série)
+DUR_MIN, DUR_MAX = tuple(SCRIPT.get('limites') or LIMITES.get(EP, (30.0, 45.0)))
 # o fecho: 6–8 s na série; os Reels com roteiro próprio têm o seu (a logo continua parada nos 3 últimos segundos)
 FECHOS = {'pedir-no-uaipertim': (4.0, 6.0), 'bateu-a-fome': (3.5, 5.5), 'olha-ele-por-dentro': (3.5, 6.0)}
-FECHO_MIN, FECHO_MAX = FECHOS.get(EP, (6.0, 8.0))
+FECHO_MIN, FECHO_MAX = tuple(SCRIPT.get('limites_fecho') or FECHOS.get(EP, (6.0, 8.0)))
 LOGO_PRONTA = SCRIPT.get('logo_pronta', 0.9)   # a logo do fecho entra e para em até 0,9 s depois da palavra (src/anim.js, CENAS.fecho)
 # GRADE DE BATIDAS ("grade": true no roteiro; Reels no ritmo da trilha animada): sem a troca de 0,9 s; cada cena começa
 # exatamente onde a anterior termina, dura no mínimo `batidas` e termina sempre numa batida (60/bpm s): se a fala + `segura`
@@ -82,7 +83,8 @@ def na_batida(x):
 def pron(c, t):
     """o texto enviado à API: primeiro as grafias só deste capítulo (campo "pronuncia" do capítulo no JSON, ex.:
     {"UaiPertim": "Uai perr-tím"}), depois a regra fixa de pronúncia (audio/voz_oficial.json → pronounce())"""
-    for k, v in sorted((c.get('pronuncia') or {}).items(), key=lambda kv: -len(kv[0])):
+    # as grafias do roteiro inteiro ("pronuncia" no topo do JSON, ex.: numa série) valem para todo capítulo; as do capítulo, por cima
+    for k, v in sorted({**(SCRIPT.get('pronuncia') or {}), **(c.get('pronuncia') or {})}.items(), key=lambda kv: -len(kv[0])):
         t = re.sub(rf'(?<![\wÀ-ÿ]){re.escape(k)}(?![\wÀ-ÿ])', v, t)
     return pronounce(t, PERFIL)
 

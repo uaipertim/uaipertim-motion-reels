@@ -3,9 +3,9 @@ output/*/.video-only.mp4
 output/*/previa/
 output/*/stills/
 __pycache__/
-audio/*/previa/
-audio/*/mix.wav
-audio/*/musica.wav
-audio/*/sfx.wav
-audio/*/voz-tratada.wav
-audio/*/.medida.wav
+audio/**/previa/
+audio/**/mix.wav
+audio/**/musica.wav
+audio/**/sfx.wav
+audio/**/voz-tratada.wav
+audio/**/.medida.wav
