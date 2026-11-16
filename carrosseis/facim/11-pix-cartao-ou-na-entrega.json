@@ -1,0 +1,60 @@
+{
+  "numero": 11,
+  "chip": "FACIM FACIM",
+  "capa": "creme",
+  "capaNova": {
+    "ilustracao": "pagamento",
+    "fundo": "creme",
+    "cor": "verde",
+    "aviso": "Lojas e valores ilustrativos"
+  },
+  "_doc": "Facim Facim #11 (Semana UaiPertim, qua 18/11, 12h): o primeiro carrossel com telas do app (public/telas-app/celular/; ver o README de lá). Slides 'tela': o celular genérico com um RECORTE ampliado da tela ('recorte' = y inicial e final em px do PNG, 1170 de largura), 'destaque' = caixas [x0, y0, x1, y1] contornadas em coral, 'foco' = esmaece o resto, 'neutro' = na Checkout, tira a pré-seleção do Pix (as 3 formas aparecem iguais). Cartao.png não é usada.",
+  "slides": [
+    {
+      "tipo": "capa",
+      "titulo": "Pix, cartão ou *na entrega*? 💳",
+      "texto": ""
+    },
+    {
+      "tipo": "tela",
+      "titulo": "Na hora de fechar o pedido…",
+      "texto": "Você escolhe como quer pagar. Facim facim.",
+      "tela": "Checkout.png",
+      "recorte": [920, 2045],
+      "neutro": true
+    },
+    {
+      "tipo": "tela",
+      "titulo": "Pix na hora ⚡",
+      "texto": "O QR Code e o copia e cola aparecem no próprio app. Pagou, a loja já fica sabendo.",
+      "tela": "Pix.png",
+      "recorte": [585, 2015],
+      "destaque": [[776, 1850, 1102, 2008]]
+    },
+    {
+      "tipo": "tela",
+      "titulo": "Prefere cartão? 💳",
+      "texto": "Também dá: o pagamento com cartão é seguro.",
+      "tela": "Checkout.png",
+      "recorte": [920, 2045],
+      "neutro": true,
+      "destaque": [[48, 1548, 1122, 1782]],
+      "foco": true
+    },
+    {
+      "tipo": "tela",
+      "titulo": "Ou paga quando chegar 🤝",
+      "texto": "Dinheiro ou cartão na maquininha, na hora da entrega.",
+      "tela": "Checkout.png",
+      "recorte": [920, 2045],
+      "neutro": true,
+      "destaque": [[48, 1796, 1122, 2036]],
+      "foco": true
+    },
+    {
+      "tipo": "final",
+      "titulo": "Manda pra quem só vive no Pix 😅",
+      "texto": "Segue a gente pra saber quando abrir"
+    }
+  ]
+}

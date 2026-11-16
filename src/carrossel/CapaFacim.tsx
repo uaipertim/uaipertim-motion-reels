@@ -8,17 +8,20 @@ import { fitWrap, Wrapped } from "../dicionario/fit";
 import { Mao } from "../dicionario/CapaDicionario";
 import { Carrossel, Text, glue, measureSlide } from "./CarrosselFacim";
 import { Pertim } from "../personagem/Pertim";
+import { BEZEL, CorpoCelular, SeloIlustrativo, TelaRecortada } from "../components/CelularApp";
 
 // CAPAS NOVAS DOS CARROSSÉIS "FACIM FACIM" (só o slide-1; os slides 2–6 não mudam), no modelo das capas novas do
 // Dicionário (src/dicionario/CapaDicionario.tsx), em 1080×1350:
 //   selo "FACIM FACIM · #07" (número grande) → ilustração grande na metade de cima → o título atual (mesma palavra em
 //   coral com marcador amarelo, mesmas quebras, sem o emoji) → "arrasta pra ver →".
-// Tudo dentro do recorte 3:4 da grade: x 130–950 e y 90–1260. Sem logo, sem tela/celular.
+// Tudo dentro do recorte 3:4 da grade: x 130–950 e y 90–1260. Sem logo; tela/celular só na ilustração "pagamento" (#11),
+// com o aviso "Lojas e valores ilustrativos" (campo "aviso" da capaNova).
 // Dados no campo "capaNova" de cada carrosseis/facim/NN-tema.json: { ilustracao, fundo: creme | pessego, cor }.
 
-export type CapaNova = { ilustracao: Ilustracao; fundo: "creme" | "pessego"; cor: "coral" | "verde" | "amarelo" };
+// aviso (opcional): uma linha discreta logo abaixo da ilustração (ex.: "Lojas e valores ilustrativos", nas capas com telas do app)
+export type CapaNova = { ilustracao: Ilustracao; fundo: "creme" | "pessego"; cor: "coral" | "verde" | "amarelo"; aviso?: string };
 export type CapaFacimProps = Carrossel & { capaNova: CapaNova; layout?: { titulo: Wrapped; fonte: string } };
-type Ilustracao = "mao-vez" | "passos" | "sacola" | "loja-aberto" | "sino" | "moeda-coracao" | "geladeira" | "pertim" | "restaurante-balao" | "chuva-despensa";
+type Ilustracao = "mao-vez" | "passos" | "sacola" | "loja-aberto" | "sino" | "moeda-coracao" | "geladeira" | "pertim" | "restaurante-balao" | "chuva-despensa" | "pagamento";
 
 const H = 1350;
 const SAFE = { x0: 130, x1: 950, y0: 90, y1: 1260 };
@@ -390,9 +393,31 @@ const ChuvaDespensa: React.FC = () => (
   </Svg>
 );
 
+// 11 · Pix, cartão ou na entrega?: o celular genérico com o bloco "Como você quer pagar?" da Checkout.png (as 3 formas
+//      iguais, sem o Pix pré-selecionado) e o Pertim ao lado apontando para ele, com a piscadinha de esperto
+const Pagamento: React.FC = () => {
+  const celW = 330, telaW = celW * (1 - 2 * BEZEL), ph = 360, pw = (ph * 280) / 284;
+  return (
+    <>
+      <Svg abs>
+        <Sombra cx={380} rx={280} />
+        <Brilho x={110} y={70} s={44} c={C.coral} /><Brilho x={690} y={60} s={36} /><Brilho x={60} y={300} s={28} />
+      </Svg>
+      <div style={{ position: "absolute", left: 175 - pw / 2, top: 452 - ph }}>
+        <Pertim v={1} pose="apontando" expr="piscadinha" altura={ph} rig={{ olhar: [0, 0], centro: true, aceno: -16 }} />
+      </div>
+      <div style={{ position: "absolute", left: 470 - celW / 2, top: -10, width: celW, height: 480, transform: "rotate(5deg)", transformOrigin: "50% 100%" }}>
+        <CorpoCelular w={celW} h={480}>
+          <TelaRecortada tela="Checkout.png" recorte={[920, 2045]} neutro largura={telaW} alturaVisivel={480} />
+        </CorpoCelular>
+      </div>
+    </>
+  );
+};
+
 const ILUSTRACOES: Record<Ilustracao, React.FC> = {
   "mao-vez": MaoVez, passos: Passos, sacola: Sacola, "loja-aberto": LojaAberto, sino: Sino, "moeda-coracao": MoedaCoracao, geladeira: Geladeira,
-  pertim: PertimAcenando, "restaurante-balao": RestauranteBalao, "chuva-despensa": ChuvaDespensa,
+  pertim: PertimAcenando, "restaurante-balao": RestauranteBalao, "chuva-despensa": ChuvaDespensa, pagamento: Pagamento,
 };
 
 // ---------------------------------------------------------------- a capa
@@ -417,6 +442,11 @@ export const CapaFacim: React.FC<CapaFacimProps> = ({ numero, chip, capaNova, la
       <div style={{ position: "absolute", left: ILU.x, top: ILU.y, width: ILU.w, height: ILU.h }}>
         <Ilu />
       </div>
+      {capaNova.aviso && (
+        <div style={{ position: "absolute", top: ILU.y + ILU.h + 12, left: 0, right: 0, display: "flex", justifyContent: "center" }}>
+          <SeloIlustrativo size={22} />
+        </div>
+      )}
       <div style={{ position: "absolute", top: TITULO.cy - th / 2, left: SAFE.x0, right: 1080 - SAFE.x1 }}>
         <Text source={layout.fonte} wrapped={t} weight={W.black} />
       </div>

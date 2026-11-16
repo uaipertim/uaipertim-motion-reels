@@ -8,12 +8,17 @@ import { ShopChar, ShopCharKind } from "../components/Town";
 import { Pertim } from "../personagem/Pertim";
 import type { Expressao, Pose } from "../personagem/logica";
 import { fitWrap, Wrapped } from "../dicionario/fit";
+import { BEZEL, CorpoCelular, SeloIlustrativo, TelaRecortada } from "../components/CelularApp";
 
 // CARROSSEL "FACIM, FACIM" — modelo fixo, estático (1080×1350, 4:5). Cada carrossel é só um JSON
 // (carrosseis/facim/NN-tema.json); cada slide vira um PNG (scripts/carrossel.mjs).
 //   capa:     chip + pergunta grande (*palavra-chave* com marcador amarelo) + "arrasta →"
 //   conteudo: título curto + texto (até ~25 palavras) + ícone do tema + progresso (2/6)
 //   final:    "Manda pra quem…" grande + "Segue a gente pra saber quando abrir" + logo
+//   tela:     título + texto no alto e o celular genérico subindo do pé do slide, com um RECORTE ampliado de uma tela do
+//             app (public/telas-app/celular/): "tela" (arquivo), "recorte" [y0, y1] (px do PNG), "destaque" (caixas
+//             contornadas em coral), "foco" (esmaece o resto) e "neutro" (Checkout sem o Pix pré-selecionado); selo
+//             "Lojas e valores ilustrativos" logo acima do celular (src/components/CelularApp.tsx)
 // Margens laterais ≥ 80 px; na capa creme (C1–C4), ≥ 114 px; na capa coral (C5 em diante), ≥ 120 px — assim nada
 // encosta na borda no recorte 3:4 da grade (que corta ~34 px de cada lado).
 // CAPA: "coral" (fundo coral, título branco, destaque amarelo com marcador creme, chip invertido) ou "creme" (o modelo
@@ -26,7 +31,10 @@ export type Icone =
 // chuva: gotas caindo e um guarda-chuva amarelo preso na garupa da motinha (o desenho do Pertim não muda)
 export type PertimNoSlide = { pose: Pose; expr: Expressao; lojinhas?: ShopCharKind[]; chuva?: boolean };
 // quebra (opcional, na capa e no conteúdo): as linhas do título já definidas; o corpo diminui até todas caberem na margem
-export type Slide = { tipo: "capa" | "conteudo" | "final"; titulo: string; texto?: string; icone?: Icone; pertim?: PertimNoSlide; quebra?: string[] };
+export type Slide = {
+  tipo: "capa" | "conteudo" | "final" | "tela"; titulo: string; texto?: string; icone?: Icone; pertim?: PertimNoSlide; quebra?: string[];
+  tela?: string; recorte?: [number, number]; destaque?: number[][]; foco?: boolean; neutro?: boolean;
+};
 export type Carrossel = { numero: number; chip: string; capa?: "coral" | "creme"; slides: Slide[] };
 export type CarrosselProps = Carrossel & { slide: number; layout?: { titulo: Wrapped; texto?: Wrapped } };
 
@@ -65,6 +73,11 @@ export const measureSlide = (c: Carrossel, i: number) => {
     return {
       titulo: fitWrap(plain(s.titulo), W.black, SLIDE.width - 2 * M, [108, 100, 92, 84, 76], 4),
       texto: fitWrap(s.texto ?? "", W.extraBold, SLIDE.width - 2 * M, [46, 42, 38], 2),
+    };
+  if (s.tipo === "tela")
+    return {
+      titulo: fitWrap(plain(s.titulo), W.black, SLIDE.width - 2 * M, [74, 68, 62, 56], 2),
+      texto: fitWrap(s.texto ?? "", W.medium, SLIDE.width - 2 * M, [42, 40, 38, 36], 3),
     };
   const inner = CARD.right - CARD.left - 2 * CARD.pad;
   // quebra (opcional) também no título do slide de conteúdo: as linhas definidas, no maior tamanho em que todas cabem
@@ -380,7 +393,7 @@ export const CarrosselFacim: React.FC<CarrosselProps> = ({ numero, chip, capa, s
               acima da etiqueta (a última linha termina em y 84, 26 px antes do topo do chip em y 110; o 1º ponto começa
               na borda esquerda do chip, x 80); no final e na capa antiga, onde não há etiqueta no canto, fica como era */}
           <CremeBackground frame={0} rays raysCenter={[540, 600]} raysOpacity={0.1} enfeites={false} />
-          {s.tipo === "conteudo"
+          {s.tipo === "conteudo" || s.tipo === "tela"
             ? <DotGrid cols={5} rows={3} gap={26} r={6} style={{ left: 74, top: 13 }} frame={0} />
             : <DotGrid cols={5} rows={3} style={{ left: 60, top: 70 }} frame={0} />}
           <div style={{ position: "absolute", right: -170, top: -150, width: 420, height: 420, borderRadius: "50%", border: `5px solid ${C.coral}`, opacity: 0.85 }} />
@@ -450,6 +463,40 @@ export const CarrosselFacim: React.FC<CarrosselProps> = ({ numero, chip, capa, s
               <div style={{ width: 110, height: 14, borderRadius: 7, background: C.amarelo, margin: "20px 0 28px" }} />
               <Text source={s.texto ?? ""} wrapped={x} weight={W.medium} align="left" lineHeight={1.32} color="#3A302B" />
             </div>
+          </>
+        );
+      })()}
+
+      {s.tipo === "tela" && (() => {
+        const t = layout.titulo;
+        const x = layout.texto!;
+        const top = 196;
+        const fimTexto = top + t.lines.length * t.size * 1.1 + 18 + 12 + 22 + x.lines.length * x.size * 1.3;
+        // o celular sobe do pé do slide: a escala é a maior em que o recorte inteiro fica visível (e cabe na largura)
+        const topoCel = fimTexto + 86;
+        const [y0, y1] = s.recorte!;
+        const visivelMax = SLIDE.height - 24 - topoCel;
+        const larguraMax = SLIDE.width - 2 * 100;
+        const escala = Math.min((larguraMax * (1 - 2 * BEZEL)) / 1170, (visivelMax - larguraMax * BEZEL) / (y1 - y0));
+        const telaW = 1170 * escala, celW = telaW / (1 - 2 * BEZEL), bz = celW * BEZEL;
+        const celH = SLIDE.height + 200 - topoCel;
+        return (
+          <>
+            <div style={{ position: "absolute", top: 110, left: M }}>
+              <Chip text={chip} size={30} />
+            </div>
+            <div style={{ position: "absolute", top: 112, right: M, fontFamily: FONT, fontWeight: W.extraBold, fontSize: 34, color: C.tinta, opacity: 0.55, letterSpacing: 1, lineHeight: "58px" }}>
+              {slide + 1}/{total}
+            </div>
+            <div style={{ position: "absolute", top, left: M, right: M }}>
+              <Text source={s.titulo} wrapped={t} weight={W.black} align="left" lineHeight={1.1} />
+              <div style={{ width: 110, height: 12, borderRadius: 6, background: C.amarelo, margin: "18px 0 22px" }} />
+              <Text source={s.texto ?? ""} wrapped={x} weight={W.medium} align="left" lineHeight={1.3} color="#3A302B" />
+            </div>
+            <SeloIlustrativo size={22} style={{ position: "absolute", right: (SLIDE.width - celW) / 2 + 8, top: topoCel - 50 }} />
+            <CorpoCelular w={celW} h={celH} style={{ left: (SLIDE.width - celW) / 2, top: topoCel }}>
+              <TelaRecortada tela={s.tela!} recorte={s.recorte!} destaque={s.destaque} foco={s.foco} neutro={s.neutro} largura={telaW} alturaVisivel={SLIDE.height - topoCel - bz} />
+            </CorpoCelular>
           </>
         );
       })()}
