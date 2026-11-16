@@ -59,6 +59,8 @@ QUADROS.push(quadro("parado-pisca", { v: 1, pose: "parado", expr: "piscadinha" }
 for (const b of ["A", "E", "O", "MBP"] as const) {
   QUADROS.push(quadro(`moto-boca-${b}`, { v: 1, pose: "moto", expr: "sorrindo", mouth: b }, { centro: true, olhar: [0, 0] }));
   QUADROS.push(quadro(`parado-boca-${b}`, { v: 1, pose: "parado", expr: "sorrindo", mouth: b }, { centro: true, olhar: [0, 0] }));
+  // em pé com a sacola da marca, falando (o EP. 09: entrega falando)
+  QUADROS.push(quadro(`sacola-boca-${b}`, { v: 1, pose: "sacola", expr: "sorrindo", mouth: b }, { centro: true, olhar: [0, 0] }));
 }
 const mv = pertimVals({ v: 1, pose: "moto" }).vb;
 QUADROS.push({ nome: "moto-estacionada", svg: renderToStaticMarkup(<MotoEstacionada />), vb: mv, chao: [150, 284] });

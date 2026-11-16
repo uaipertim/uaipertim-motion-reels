@@ -1,0 +1,153 @@
+{
+  "id": "tudo-pertim-09",
+  "titulo": "Amanhã é feriado… quem vai cozinhar?",
+  "marca": "@uaipertim",
+  "bpm": 120,
+  "legenda": true,
+  "voz": "v4",
+  "transicao": "calendario",
+  "capitulos": [
+    {
+      "rotulo": "TUDO PERTIM · EP. 09",
+      "tom": "pessego",
+      "titulo": ["Amanhã é", "feriado! 🎉"],
+      "fala": [
+        { "texto": "Amanhã é feriado… e cê vai cozinhar?", "apoio": null }
+      ],
+      "diagrama": { "tipo": "capa", "cena": "feriado", "marcador": "feriado", "circula": { "em": "feriado" } }
+    },
+    {
+      "rotulo": "O CAUSO",
+      "tom": "amarelo",
+      "titulo": ["Ninguém quer", "cozinhar."],
+      "fala": [
+        { "texto": "Todo mundo em casa, a pia limpinha…", "apoio": null },
+        { "texto": "e ninguém quer encostar no fogão.", "apoio": "Ninguém quer o *fogão*." }
+      ],
+      "diagrama": {
+        "tipo": "semFogao",
+        "familia": { "em": "mundo" },
+        "pia": { "em": "limpinha" },
+        "ninguem": { "em": "ninguém" },
+        "fogao": { "em": "fogão" }
+      },
+      "segura": 0.6,
+      "min": 5.5
+    },
+    {
+      "rotulo": "A PADARIA",
+      "tom": "pessego",
+      "titulo": ["Café da", "manhã?"],
+      "fala": [
+        { "texto": "Pão francês quentinho e pão de queijo da padaria do Glória.", "apoio": "Direto da *padaria*." }
+      ],
+      "diagrama": {
+        "tipo": "balcao",
+        "tipoLoja": "padaria",
+        "itens": [
+          { "tipo": "paoFrances", "em": "Pão", "x": 660, "tam": 230 },
+          { "tipo": "paoQueijo", "em": "queijo", "x": 850, "tam": 150 }
+        ],
+        "loja": { "em": "padaria" },
+        "faz": { "em": "Glória" }
+      },
+      "segura": 0.6,
+      "min": 5.5
+    },
+    {
+      "rotulo": "O ALMOÇO",
+      "tom": "amarelo",
+      "titulo": ["E o", "almoço?"],
+      "fala": [
+        { "texto": "Marmitex caprichada ou aquela porção pra dividir.", "apoio": "Marmitex *caprichada*." }
+      ],
+      "diagrama": {
+        "tipo": "balcao",
+        "tipoLoja": "caseira",
+        "itens": [
+          { "tipo": "marmitex", "em": "Marmitex", "x": 640, "tam": 210 },
+          { "tipo": "porcao", "em": "porção", "x": 830, "tam": 190 }
+        ],
+        "loja": { "em": "caprichada" },
+        "faz": { "em": "dividir" }
+      },
+      "segura": 0.6,
+      "min": 5.5
+    },
+    {
+      "rotulo": "O MERCADIM",
+      "tom": "verde",
+      "titulo": ["Faltou algo", "do mercado?"],
+      "fala": [
+        { "texto": "Esqueceu o refri e o carvão? O mercadim manda.", "apoio": "O mercadim *manda*." }
+      ],
+      "diagrama": {
+        "tipo": "balcao",
+        "tipoLoja": "mercado",
+        "itens": [
+          { "tipo": "refri", "em": "refri", "x": 600, "tam": 150 },
+          { "tipo": "carvaoCheio", "em": "carvão", "x": 735, "tam": 170 },
+          { "tipo": "gelo2", "em": "mercadim", "x": 870, "tam": 130 }
+        ],
+        "loja": { "em": "mercadim" },
+        "faz": { "em": "manda" }
+      },
+      "segura": 0.6,
+      "min": 5.5
+    },
+    {
+      "rotulo": "CHEGOU",
+      "tom": "amarelo",
+      "titulo": ["Chegou e ninguém", "saiu de casa!"],
+      "fala": [
+        { "texto": "Chegou tudo pertim…", "apoio": null },
+        { "texto": "e ninguém precisou sair da rede.", "apoio": "Ninguém saiu da *rede*." }
+      ],
+      "diagrama": {
+        "tipo": "entregaRede",
+        "boca": true,
+        "moto": { "em": "Chegou" },
+        "desce": { "em": "pertim" },
+        "entrega": { "em": "precisou" },
+        "rede": { "em": "rede" }
+      },
+      "segura": 0.7,
+      "min": 5.5
+    },
+    {
+      "rotulo": "SUA VEZ",
+      "tom": "amarelo",
+      "titulo": ["Feriado é", "dia de quê?"],
+      "fala": [
+        { "texto": "Comenta aí: feriado é dia de quê? Dormir? Churrasco? Maratonar?", "apoio": "*Comenta* aí: qual é o seu?" }
+      ],
+      "diagrama": {
+        "tipo": "enquete",
+        "opcoes": [
+          { "t": "dormir até tarde", "em": "Dormir" },
+          { "t": "churrasco", "em": "Churrasco" },
+          { "t": "maratonar série", "em": "maratonar" }
+        ]
+      },
+      "segura": 0.8,
+      "min": 5.5
+    },
+    {
+      "rotulo": "PRA NÃO PERDER",
+      "tom": "amarelo",
+      "titulo": ["Em breve", "no Glória."],
+      "min": 7.5,
+      "fala": [
+        { "texto": "Bom feriado, sô! Relaxa, tem UaiPertim. Tudo pertim de você. Segue a gente!", "apoio": null }
+      ],
+      "diagrama": {
+        "tipo": "fecho",
+        "logo": { "em": "UaiPertim" },
+        "assinatura": { "t": "Tudo pertim de você.", "em": "Tudo" },
+        "chip": { "t": "Segue @uaipertim", "em": "Segue" },
+        "confete": { "em": "+1.2" },
+        "pertim": { "em": "UaiPertim", "pisca": "pertim" }
+      }
+    }
+  ]
+}

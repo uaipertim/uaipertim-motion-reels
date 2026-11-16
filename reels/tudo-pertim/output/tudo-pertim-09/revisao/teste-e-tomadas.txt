@@ -1,0 +1,8 @@
+Tomadas do capítulo 06 de tudo-pertim-09 (voz Victor Pinho, eleven_v4; texto enviado: "Comenta aí: feriado é dia de quê? É dormir até tarde? Churrasco? Maratonar série?"; contexto: previous_text sim, next_text sim) — 2026-11-16 17:18
+
+teste-e-p.mp3 · seed 42 · 6.24 s · conferência: ok · F0 mediano 184 Hz · tarde: sobe -4.7 st, termina -2.5 st, Churrasco: sobe -2.5 st, termina -8.8 st, série: sobe -6.6 st, termina -13.7 st
+teste-e-q.mp3 · seed 1042 · 6.32 s · conferência: ok · F0 mediano 184 Hz · tarde: sobe -3.7 st, termina -1.7 st, Churrasco: sobe +3.7 st, termina +7.5 st, série: sobe -7.0 st, termina -9.9 st
+teste-e-r.mp3 · seed 2042 · 6.16 s · conferência: fala cortada no fim · F0 mediano 198 Hz · tarde: sobe -2.4 st, termina -10.2 st, Churrasco: sobe +1.1 st, termina +4.2 st, série: sobe -8.7 st, termina -11.3 st
+
+NENHUMA tomada em que tarde, Churrasco, série terminem todas acima da mediana.
+

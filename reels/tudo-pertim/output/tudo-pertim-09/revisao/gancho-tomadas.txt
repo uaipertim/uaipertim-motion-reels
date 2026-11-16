@@ -1,0 +1,24 @@
+Tomadas do capítulo 00 de tudo-pertim-09 (voz Victor Pinho, eleven_v4; texto enviado: "Amanhã é feriado… e quem vai cozinhar?"; contexto: previous_text não, next_text sim) — 2026-11-16 17:13
+
+gancho-a.mp3 · seed 42 · 2.96 s · conferência: ok · F0 mediano 195 Hz · cozinhar: sobe -22.9 st, termina -14.8 st
+gancho-b.mp3 · seed 1042 · 3.04 s · conferência: ok · F0 mediano 197 Hz · cozinhar: sobe -18.8 st, termina -14.1 st
+gancho-c.mp3 · seed 2042 · 3.12 s · conferência: ok · F0 mediano 216 Hz · cozinhar: sobe -22.3 st, termina -16.6 st
+
+NENHUMA tomada em que cozinhar terminem todas acima da mediana.
+
+Tomadas do capítulo 00 de tudo-pertim-09 (voz Victor Pinho, eleven_v4; texto enviado: "Amanhã é feriado… e quem vai cozinhar?"; contexto: previous_text não, next_text não) — 2026-11-16 17:13
+
+gancho-d.mp3 · seed 3042 · 3.12 s · conferência: ok · F0 mediano 183 Hz · cozinhar: sobe +4.5 st, termina -7.9 st
+gancho-e.mp3 · seed 4042 · 3.12 s · conferência: ok · F0 mediano 201 Hz · cozinhar: sobe -20.9 st, termina -15.9 st
+gancho-f.mp3 · seed 5042 · 3.12 s · conferência: ok · F0 mediano 205 Hz · cozinhar: sobe -13.9 st, termina -7.7 st
+
+NENHUMA tomada em que cozinhar terminem todas acima da mediana.
+
+Tomadas do capítulo 00 de tudo-pertim-09 (voz Victor Pinho, eleven_v4; texto enviado: "Amanhã é feriado… e cê vai cozinhar?"; contexto: previous_text não, next_text sim) — 2026-11-16 17:17
+
+gancho-g.mp3 · seed 42 · 3.12 s · conferência: ok · F0 mediano 140 Hz · cozinhar: sobe -12.1 st, termina -1.8 st
+gancho-h.mp3 · seed 1042 · 3.04 s · conferência: ok · F0 mediano 137 Hz · cozinhar: sobe -3.0 st, termina +9.8 st
+gancho-i.mp3 · seed 2042 · 3.04 s · conferência: ok · F0 mediano 141 Hz · cozinhar: sobe -2.3 st, termina +8.0 st
+
+MELHOR: gancho-h.mp3 (seed 1042): a pior palavra termina +9.8 st da mediana (pergunta: acima); subida média -3.0 st · é a primeira em que cozinhar terminam acima da mediana
+

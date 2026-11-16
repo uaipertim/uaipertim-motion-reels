@@ -54,6 +54,7 @@ KEY = f'{N:02d}'
 TOM = os.path.join(ROOT, 'audio', EP, 'tomadas')
 REV = os.path.join(ROOT, 'output', EP, 'revisao')
 SR = voz.SR
+LETRAS = 'abcdefghijklmnopqrstuvwxyz'                  # as letras das tomadas (a 1ª rodada vai de a em diante)
 
 
 def norm(s):
@@ -138,7 +139,7 @@ def gerar():
     os.makedirs(TOM, exist_ok=True); os.makedirs(REV, exist_ok=True)
     res = []
     for j, seed in enumerate(seeds):
-        letra = 'abcdefghijkl'['abcdefghijkl'.index(str(OPT.get('desde', 'a'))) + j]
+        letra = LETRAS[LETRAS.index(str(OPT.get('desde', 'a'))) + j]
         x, al, fmt = voz.tts(api, prev, nxt, seed)
         ok, motivo, num = voz.confere(x, al, api)
         pcm = np.round(np.clip(x, -1, 1) * 32767).astype(np.int16)
@@ -157,7 +158,7 @@ def remedir():
     alvo = [w for w in str(OPT.get('palavras', '')).split(',') if w]
     nome = OPT.get('nome', f'cap-{KEY}')
     res, d = [], None
-    letras = str(OPT['letras']).split(',') if 'letras' in OPT else 'abcdefghijkl'
+    letras = str(OPT['letras']).split(',') if 'letras' in OPT else LETRAS
     for letra in letras:
         if not os.path.exists(os.path.join(TOM, f'cap-{KEY}-{letra}.json')):
             break

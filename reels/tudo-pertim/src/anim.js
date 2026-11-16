@@ -380,6 +380,10 @@
       ctx.fillStyle = C.madeira; ctx.beginPath(); ctx.moveTo(-13, -2); ctx.lineTo(13, -2); ctx.lineTo(0, 24); ctx.closePath(); ctx.fill();
       ctx.fillStyle = C.coralLight; ctx.beginPath(); ctx.arc(0, -8, 15, 0, TAU); ctx.fill();
       ctx.fillStyle = C.papel; ctx.beginPath(); ctx.arc(-5, -13, 4, 0, TAU); ctx.fill();
+    } else if (kind === 'caseira') {                   // a panela fumegando (comida caseira)
+      ctx.fillStyle = C.coral; rr(ctx, -20, -4, 40, 20, 6); ctx.fill(); ctx.fillRect(-26, -2, 6, 5); ctx.fillRect(20, -2, 6, 5);
+      ctx.fillStyle = C.coralDark; rr(ctx, -22, -9, 44, 7, 3); ctx.fill(); ctx.fillRect(-3, -14, 6, 5);
+      ctx.strokeStyle = C.cinza; ctx.lineWidth = 3; ctx.lineCap = 'round'; for (const sx of [-8, 8]) { ctx.beginPath(); ctx.moveTo(sx, -18); ctx.quadraticCurveTo(sx - 5, -23, sx, -28); ctx.stroke(); }
     } else if (kind === 'acai') {                      // o copinho de açaí com a granola e a colherzinha
       ctx.fillStyle = '#4B1F4E'; ctx.beginPath(); ctx.moveTo(-13, 19); ctx.lineTo(13, 19); ctx.lineTo(18, -5); ctx.lineTo(-18, -5); ctx.closePath(); ctx.fill();
       ctx.fillStyle = '#63285F'; ctx.beginPath(); ctx.moveTo(-18, -5); ctx.bezierCurveTo(-17, -19, 17, -19, 18, -5); ctx.closePath(); ctx.fill();
@@ -1305,6 +1309,7 @@
     if (TRANS === 'pizza') return travessiaPizza(k, u);
     if (TRANS === 'baloes') return travessiaBaloes(k, u);
     if (TRANS === 'picole') return travessiaPicole(k, u);
+    if (TRANS === 'calendario') return travessiaCalendario(k, u);
     const v = VARIA[k % VARIA.length], dir = k % 2 === 0 ? -1 : 1;
     const e = 0.75 * u + 0.25 * E.inOutSine(u);
     const x = lerp(dir > 0 ? -260 : W + 260, dir > 0 ? W + 260 : -260, e);
@@ -1597,6 +1602,7 @@
     if (TRANS === 'pizza') return drawWipePizza(ctx, t, k, u);
     if (TRANS === 'baloes') return drawWipeBaloes(ctx, t, k, u);
     if (TRANS === 'picole') return drawWipePicole(ctx, t, k, u);
+    if (TRANS === 'calendario') return drawWipeCalendario(ctx, t, k, u);
     const T = travessia(k, u);
     // a cortina: uma faixa creme macia ao longo da borda da varredura
     const g = ctx.createLinearGradient(T.borda - 80, 0, T.borda + 80, 0);
@@ -1907,7 +1913,7 @@
       const MS = 320;                                       // a motinha da capa
       // a altura do adesivo inclinado (a mesma conta de adesivo(): h 64, −4°, mais a folga da borda)
       const aw = 2 * 26 + tw(cap.rotulo, 26, 900, 3), rot = 4 * DEG;
-      const chipH = 2 * (32 * Math.cos(rot) + (aw / 2) * Math.sin(rot) + 5), ilH = d.cena === 'porta' || d.cena === 'churrasco' || d.cena === 'segunda' || d.cena === 'fogao' || d.cena === 'bolo' || d.cena === 'sol' ? 330 : MS * 1.0;
+      const chipH = 2 * (32 * Math.cos(rot) + (aw / 2) * Math.sin(rot) + 5), ilH = d.cena === 'porta' || d.cena === 'churrasco' || d.cena === 'segunda' || d.cena === 'fogao' || d.cena === 'bolo' || d.cena === 'sol' || d.cena === 'feriado' ? 330 : MS * 1.0;
       const titleH = 0.78 * S + 1.0 * S + 0.2 * S;
       const total = chipH + 44 + titleH + 56 + ilH;
       const top = 960 - total / 2;                          // o bloco centrado no recorte 3:4 (y 240–1680)
@@ -1922,6 +1928,13 @@
       cap.ev.confete = at(cap, d.confete && d.confete.em, cap.t0 + 1.2);
       cap.ev.buzina = Math.min(at(cap, d.buzina && d.buzina.em, cap.t1 - 1.4), cap.t1 - 0.95);
       cap.ev.sai = cap.t1 - 0.5;                            // a motinha arranca e sai pela esquerda
+      if (d.cena === 'feriado') {
+        // o calendário com o 20 circulado (o círculo pulsa e sai o confete na palavra) e a rede armada
+        cap.ev.circula = at(cap, d.circula && d.circula.em, cap.t0 + 0.8);
+        cap.ev.confete = null;
+        cue(cap.ev.circula, 'pop', { f: 760 }); cue(cap.ev.circula + 0.05, 'confete');
+        return;
+      }
       if (d.cena === 'sol') {
         // o sol de rachar (cansado, ofegando) e o termômetro, já estourando no quadro 0; na palavra, o estouro grande
         cap.ev.estoura = at(cap, d.estoura && d.estoura.em, cap.t0 + 1.6);
@@ -2012,6 +2025,7 @@
       if (d.cena === 'fogao') return CENAS.capa.fogao(ctx, cap, t);
       if (d.cena === 'bolo') return CENAS.capa.bolo(ctx, cap, t);
       if (d.cena === 'sol') return CENAS.capa.sol(ctx, cap, t);
+      if (d.cena === 'feriado') return CENAS.capa.feriado(ctx, cap, t);
       // a motinha (o mascote) chegando da direita: no quadro 0 está freando, inclinada, com fumaça e a marca do pneu
       const M = Ly.moto, MS = cap.motoS, u = p(t, 0, 0.75), us = p(t, ev.sai, cap.t1);
       const x = M.x + 34 * (1 - E.outCubic(u)) - 1000 * E.inCubic(us);
@@ -5522,6 +5536,461 @@
     },
   };
 
+  // ===================== peças do ep09 ("Amanhã é feriado… quem vai cozinhar?")
+
+  // ---- a sacola da marca (papel creme, alças e faixa coral, a logo oficial — o arquivo, nunca redesenhado).
+  //      (x, bot) = o pé no meio; w = largura
+  function sacolaMarca(ctx, x, bot, w) {
+    const k = w / 96, h = 86 * k, tp = bot - h;
+    ctx.save();
+    ctx.strokeStyle = C.coralDark; ctx.lineWidth = 6 * k; ctx.lineCap = 'round';
+    for (const dx of [-20, 20]) { ctx.beginPath(); ctx.moveTo(x + (dx - 11) * k, tp + 2 * k); ctx.bezierCurveTo(x + (dx - 11) * k, tp - 28 * k, x + (dx + 11) * k, tp - 28 * k, x + (dx + 11) * k, tp + 2 * k); ctx.stroke(); }
+    ctx.fillStyle = C.papel; ctx.beginPath(); ctx.moveTo(x - w / 2, tp); ctx.lineTo(x + w / 2, tp); ctx.lineTo(x + w / 2 + 5 * k, bot); ctx.lineTo(x - w / 2 - 5 * k, bot); ctx.closePath(); ctx.fill();
+    ctx.lineWidth = 2 * k; ctx.strokeStyle = C.cremeDeep; ctx.stroke();
+    ctx.fillStyle = C.coral; ctx.fillRect(x - w / 2, tp, w, 12 * k);
+    logo(ctx, x, tp + 12 * k + (h - 12 * k) / 2, 58 * k);
+    ctx.restore();
+  }
+
+  // ---- o calendário de parede do mês (capa do ep09): a grade de novembro com o 20 circulado em coral.
+  //      (x, base) = o pé no meio; w = largura. o: circulo 0..1 (o traço do marcador), pulso 0..1
+  const MES = { nome: 'NOVEMBRO', primeiro: 0, dias: 30, destaque: 20 };   // o dia 1 cai no domingo (coluna 0)
+  function calendarioMes(ctx, x, base, w, t, o = {}) {
+    const h = w * 1.02, x0 = x - w / 2, top = base - h;
+    ctx.save();
+    shadow(ctx, x, base + 4, w * 0.5, 7, 0.14);
+    ctx.fillStyle = C.papel; rr(ctx, x0, top, w, h, w * 0.05); ctx.fill(); ctx.lineWidth = Math.max(2, w * 0.012); ctx.strokeStyle = C.cremeDeep; ctx.stroke();
+    ctx.fillStyle = C.coral; rr(ctx, x0, top, w, h * 0.2, w * 0.05); ctx.fill(); ctx.fillRect(x0, top + h * 0.12, w, h * 0.08);
+    txt(ctx, MES.nome, x, top + h * 0.14, { size: w * 0.11, weight: 900, align: 'center', color: C.papel, ls: w * 0.006 });
+    for (const rx of [0.25, 0.75]) {                                                             // as argolas
+      ctx.fillStyle = C.tinta2; rr(ctx, x0 + w * rx - w * 0.02, top - h * 0.05, w * 0.04, h * 0.1, w * 0.02); ctx.fill();
+    }
+    const gx = x0 + w * 0.06, gw = w * 0.88, cw = gw / 7, gy = top + h * 0.27, chh = (h * 0.7) / 6;
+    'DSTQQSS'.split('').forEach((l, c) => txt(ctx, l, gx + cw * (c + 0.5), gy + chh * 0.5, { size: w * 0.055, weight: 900, align: 'center', color: C.coral }));
+    for (let d = 1; d <= MES.dias; d++) {
+      const i = MES.primeiro + d - 1, c = i % 7, r = Math.floor(i / 7), cx = gx + cw * (c + 0.5), cy = gy + chh * (r + 1.5);
+      txt(ctx, String(d), cx, cy + w * 0.022, { size: w * 0.06, weight: d === MES.destaque ? 900 : 800, align: 'center', color: d === MES.destaque ? C.coral : css(C.tinta2, 0.8) });
+      if (d === MES.destaque) {
+        const ci = clamp(o.circulo ?? 1), ks = 1 + 0.15 * (o.pulso || 0);
+        if (ci > 0) {
+          ctx.save(); ctx.translate(cx, cy); ctx.scale(ks, ks); ctx.rotate(-0.25);
+          ctx.strokeStyle = C.coral; ctx.lineWidth = w * 0.016; ctx.lineCap = 'round';
+          ctx.beginPath(); ctx.ellipse(0, 0, cw * 0.62, chh * 0.62, 0, -0.4, -0.4 + TAU * 1.1 * ci); ctx.stroke();
+          ctx.restore();
+        }
+      }
+    }
+    ctx.restore();
+  }
+
+  // ---- a rede de descanso armada entre dois esteios (listrada, com franjas), balançando de leve. (xa, xb) = os
+  //      esteios; base = o chão; yg = a altura dos ganchos. o: dentro (fn(cx, cy, ang) desenha quem está deitado,
+  //      antes do pano da frente), balanco (rad), almofada
+  const REDE_CORES = [C.coral, C.amarelo, C.verde, C.papel];
+  function rede(ctx, xa, xb, base, yg, t, o = {}) {
+    const sag = (xb - xa) * 0.34, bal = o.balanco ?? 0.04 * Math.sin(t * 1.6);
+    ctx.save();
+    shadow(ctx, (xa + xb) / 2, base, (xb - xa) * 0.42, 9, 0.12);
+    for (const px of [xa, xb]) { ctx.fillStyle = C.madeiraDark; rr(ctx, px - 9, yg - 30, 18, base - yg + 30, 6); ctx.fill(); ctx.fillStyle = C.madeira; rr(ctx, px - 9, yg - 30, 9, base - yg + 30, 4); ctx.fill(); }
+    // o pano: as pontas presas nas cordas; o meio cai e balança
+    const ax = xa + 46, bx = xb - 46, ay = yg + 30, mx = (ax + bx) / 2 + sag * 0.35 * Math.sin(bal * 8), my = ay + sag;
+    ctx.strokeStyle = C.tinta2; ctx.lineWidth = 3;
+    for (const [px, qx] of [[xa, ax], [xb, bx]]) for (let j = -1; j <= 1; j++) { ctx.beginPath(); ctx.moveTo(px, yg); ctx.lineTo(qx, ay + j * 12); ctx.stroke(); }
+    const borda = (s) => { ctx.moveTo(ax, ay - 10 * s); ctx.quadraticCurveTo(mx, my + 60 - 70 * s, bx, ay - 10 * s); };
+    if (o.dentro) o.dentro(mx, my - 30, Math.atan2(0, 1));
+    ctx.save();
+    ctx.beginPath(); ctx.moveTo(ax, ay - 14); ctx.quadraticCurveTo(mx, my - 20, bx, ay - 14); ctx.lineTo(bx, ay + 16); ctx.quadraticCurveTo(mx, my + 70, ax, ay + 16); ctx.closePath();
+    ctx.clip();
+    const n = 9;
+    for (let i = 0; i < n; i++) { ctx.fillStyle = REDE_CORES[i % 4]; ctx.fillRect(ax + (bx - ax) * i / n, ay - 80, (bx - ax) / n + 1, sag + 200); }
+    ctx.fillStyle = css(C.tinta, 0.08); ctx.fillRect(ax, my - 40, bx - ax, 200);
+    ctx.restore();
+    ctx.beginPath(); ctx.moveTo(ax, ay - 14); ctx.quadraticCurveTo(mx, my - 20, bx, ay - 14); ctx.lineWidth = 3; ctx.strokeStyle = css(C.tinta2, 0.6); ctx.stroke();
+    // as franjas
+    ctx.strokeStyle = C.amareloDark; ctx.lineWidth = 3; ctx.lineCap = 'round';
+    for (let i = 1; i < 18; i++) {
+      const u = i / 18, px = (1 - u) * (1 - u) * ax + 2 * u * (1 - u) * mx + u * u * bx, py = (1 - u) * (1 - u) * (ay + 16) + 2 * u * (1 - u) * (my + 70) + u * u * (ay + 16);
+      ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(px + 3 * Math.sin(t * 2 + i), py + 22); ctx.stroke();
+    }
+    if (o.almofada) { ctx.save(); ctx.translate(ax + 64, ay + 6); ctx.rotate(-0.35); ctx.fillStyle = C.amarelo; rr(ctx, -34, -22, 68, 44, 16); ctx.fill(); ctx.fillStyle = C.amareloDark; ctx.beginPath(); ctx.arc(0, 0, 4, 0, TAU); ctx.fill(); ctx.restore(); }
+    ctx.restore();
+    return { ax, bx, ay, mx, my };
+  }
+  // quem está deitado na rede (só a cabeça, o braço e os pés aparecem; o corpo fica dentro do pano). (hx, hy) = a
+  //      cabeça; (fx, fy) = os pés. o: braco 0..1 (o braço sai do pano), joia (o polegar pra cima), olhos ('dorme' | 'feliz')
+  function deitado(ctx, v, hx, hy, fx, fy, r, t, o = {}) {
+    ctx.save();
+    // os pés (de chinelo)
+    for (const d of [-0.5, 0.5]) { ctx.save(); ctx.translate(fx + d * r * 0.5, fy); ctx.rotate(0.5 + d * 0.3); ctx.fillStyle = v.pele; rr(ctx, -r * 0.18, -r * 0.42, r * 0.36, r * 0.55, r * 0.17); ctx.fill(); ctx.fillStyle = C.amarelo; rr(ctx, -r * 0.2, r * 0.02, r * 0.4, r * 0.14, r * 0.07); ctx.fill(); ctx.restore(); }
+    // o braço (sai do pano e pega a sacola / faz joia)
+    const br = clamp(o.braco || 0);
+    if (br > 0) {
+      const bx = hx + r * 1.4, by = hy + r * 0.9, ex = bx + r * 0.6, ey = by - r * 1.3 * br;
+      ctx.strokeStyle = v.corpo; ctx.lineWidth = r * 0.42; ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(bx, by); ctx.lineTo(ex, ey); ctx.stroke();
+      ctx.fillStyle = v.pele; ctx.beginPath(); ctx.arc(ex, ey, r * 0.26, 0, TAU); ctx.fill();
+      if (o.joia) { ctx.fillStyle = v.pele; rr(ctx, ex - r * 0.08, ey - r * 0.62, r * 0.17, r * 0.45, r * 0.08); ctx.fill(); }
+    }
+    // a cabeça deitada (de lado, no travesseiro da rede)
+    ctx.translate(hx, hy); ctx.rotate(-0.35);
+    if (v.tipo === 'coque') { ctx.fillStyle = v.cabelo; ctx.beginPath(); ctx.arc(-r * 0.95, -r * 0.2, r * 0.42, 0, TAU); ctx.fill(); }
+    ctx.fillStyle = v.pele; ctx.beginPath(); ctx.arc(0, 0, r, 0, TAU); ctx.fill();
+    ctx.fillStyle = v.cabelo; ctx.beginPath(); ctx.arc(0, -r * 0.1, r * 1.03, Math.PI * 1.05, Math.PI * 1.95); ctx.fill();
+    ctx.fillStyle = css(C.coral, 0.3); for (const sx of [-1, 1]) { ctx.beginPath(); ctx.ellipse(sx * r * 0.55, r * 0.32, r * 0.18, r * 0.11, 0, 0, TAU); ctx.fill(); }
+    ctx.strokeStyle = C.tinta; ctx.lineWidth = r * 0.09; ctx.lineCap = 'round';
+    for (const sx of [-1, 1]) { ctx.beginPath(); if (o.olhos === 'feliz') ctx.arc(sx * r * 0.36, -r * 0.02, r * 0.13, Math.PI * 1.1, Math.PI * 1.9); else ctx.arc(sx * r * 0.36, -r * 0.08, r * 0.13, Math.PI * 0.15, Math.PI * 0.85); ctx.stroke(); }
+    ctx.beginPath(); ctx.arc(0, r * 0.22, r * (o.olhos === 'feliz' ? 0.36 : 0.22), 0.15 * Math.PI, 0.85 * Math.PI); ctx.stroke();
+    ctx.restore();
+  }
+
+  // ---- a teia de aranha de brincadeira (no canto do fogão) com a aranhinha descendo no fio. (x, y) = o canto; s = tamanho
+  function teia(ctx, x, y, s, t, e = 1, desce = 0) {
+    if (e <= 0.01) return;
+    ctx.save(); ctx.globalAlpha *= clamp(e); ctx.strokeStyle = css(C.tinta2, 0.55); ctx.lineWidth = Math.max(1.5, s * 0.02); ctx.lineCap = 'round';
+    for (let i = 0; i <= 4; i++) { const a = Math.PI / 2 * i / 4; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + Math.cos(a) * s, y + Math.sin(a) * s); ctx.stroke(); }
+    for (const rr_ of [0.3, 0.55, 0.8]) { ctx.beginPath(); for (let i = 0; i <= 4; i++) { const a = Math.PI / 2 * i / 4, r2 = s * rr_ * (i % 2 ? 0.9 : 1); i ? ctx.lineTo(x + Math.cos(a) * r2, y + Math.sin(a) * r2) : ctx.moveTo(x + Math.cos(a) * r2, y + Math.sin(a) * r2); } ctx.stroke(); }
+    // a aranhinha (redondinha, de olhinhos) descendo no fio
+    const ax = x + s * 0.55, ay = y + s * 0.55 + s * 0.9 * desce + s * 0.06 * Math.sin(t * 3);
+    ctx.beginPath(); ctx.moveTo(ax, y + s * 0.45); ctx.lineTo(ax, ay); ctx.stroke();
+    ctx.strokeStyle = C.tinta; ctx.lineWidth = Math.max(1.5, s * 0.025);
+    for (const sx of [-1, 1]) for (let j = 0; j < 3; j++) { ctx.beginPath(); ctx.moveTo(ax, ay + s * 0.04); ctx.quadraticCurveTo(ax + sx * s * 0.12, ay - s * 0.02 + j * s * 0.05, ax + sx * s * 0.16, ay + s * 0.06 + j * s * 0.05); ctx.stroke(); }
+    ctx.fillStyle = C.tinta; ctx.beginPath(); ctx.arc(ax, ay + s * 0.05, s * 0.08, 0, TAU); ctx.fill();
+    ctx.fillStyle = C.branco; for (const sx of [-1, 1]) { ctx.beginPath(); ctx.arc(ax + sx * s * 0.03, ay + s * 0.035, s * 0.022, 0, TAU); ctx.fill(); }
+    ctx.restore();
+  }
+  // ---- a pia limpinha (bancada com a cuba e a torneira; os brilhos ficam por conta da cena). (x, base) = o pé; w = largura
+  function pia(ctx, x, base, w) {
+    const h = w * 0.9, x0 = x - w / 2, top = base - h;
+    ctx.save();
+    shadow(ctx, x, base, w * 0.55, 6, 0.14);
+    ctx.fillStyle = '#F1E9DE'; rr(ctx, x0, top + w * 0.12, w, h - w * 0.12, w * 0.05); ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = C.cremeDeep; ctx.stroke();
+    ctx.strokeStyle = C.cremeDeep; ctx.beginPath(); ctx.moveTo(x, top + w * 0.3); ctx.lineTo(x, base - 6); ctx.stroke();
+    ctx.fillStyle = C.cinza; for (const sx of [-1, 1]) { rr(ctx, x + sx * w * 0.08 - 3, top + w * 0.45, 6, w * 0.18, 3); ctx.fill(); }
+    ctx.fillStyle = C.madeira; rr(ctx, x0 - w * 0.04, top + w * 0.08, w * 1.08, w * 0.1, w * 0.03); ctx.fill();
+    ctx.fillStyle = '#C9D6DA'; ctx.beginPath(); ctx.ellipse(x, top + w * 0.11, w * 0.32, w * 0.04, 0, 0, TAU); ctx.fill();
+    ctx.strokeStyle = '#A9B6BA'; ctx.lineWidth = w * 0.045; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(x + w * 0.3, top + w * 0.08); ctx.lineTo(x + w * 0.3, top - w * 0.12); ctx.quadraticCurveTo(x + w * 0.3, top - w * 0.2, x + w * 0.16, top - w * 0.18); ctx.lineTo(x + w * 0.14, top - w * 0.12); ctx.stroke();
+    ctx.restore();
+  }
+
+  // ---- itens do ep09 (centrados em (x, y), largura ≈ s, como os ITENS; o pé fica em y + 0,3 s)
+  function itemPaoFrances(ctx, x, y, s, o = {}) {           // os pãezinhos franceses quentinhos (com a pestana e a fumacinha)
+    const k = s / 100;
+    ctx.save(); ctx.translate(x, y + s * 0.3); ctx.scale(k, k);
+    const pao = (px, py, rot) => {
+      ctx.save(); ctx.translate(px, py); ctx.rotate(rot);
+      ctx.fillStyle = '#D9913E'; ctx.beginPath(); ctx.ellipse(0, 0, 30, 15, 0, 0, TAU); ctx.fill();
+      ctx.fillStyle = '#E8A64A'; ctx.beginPath(); ctx.ellipse(-2, -3, 26, 10, 0, 0, TAU); ctx.fill();
+      ctx.strokeStyle = '#F6DCA6'; ctx.lineWidth = 4; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(-18, -2); ctx.quadraticCurveTo(0, -12, 18, -4); ctx.stroke();   // a pestana
+      ctx.restore();
+    };
+    shadow(ctx, 0, 0, 46, 4, 0.14);
+    pao(-22, -14, -0.08); pao(22, -14, 0.1); pao(0, -36, 0.02);
+    ctx.strokeStyle = css(C.cinza, 0.5); ctx.lineWidth = 3.5; ctx.lineCap = 'round';                              // a fumacinha do quentinho
+    for (const sx of [-14, 2, 18]) { ctx.beginPath(); ctx.moveTo(sx, -56); ctx.bezierCurveTo(sx - 7, -64, sx + 7, -72, sx, -82); ctx.stroke(); }
+    ctx.restore();
+  }
+  function itemMarmitex(ctx, x, y, s) {                     // a marmitex caprichada (alumínio, a tampa dobrada atrás, arroz, feijão, bife e salada)
+    const k = s / 100;
+    ctx.save(); ctx.translate(x, y + s * 0.3); ctx.scale(k, k);
+    shadow(ctx, 0, 0, 52, 4, 0.14);
+    ctx.fillStyle = '#C8CDD0'; ctx.beginPath(); ctx.moveTo(-50, -44); ctx.lineTo(50, -44); ctx.lineTo(44, -70); ctx.lineTo(-44, -70); ctx.closePath(); ctx.fill();   // a tampa, dobrada pra trás
+    ctx.fillStyle = '#E4E8EA'; ctx.fillRect(-44, -64, 88, 4);
+    ctx.fillStyle = '#B9BEC2'; ctx.beginPath(); ctx.moveTo(-48, -40); ctx.lineTo(48, -40); ctx.lineTo(40, 0); ctx.lineTo(-40, 0); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = '#D9DDE0'; ctx.beginPath(); ctx.moveTo(-48, -40); ctx.lineTo(48, -40); ctx.lineTo(46, -32); ctx.lineTo(-46, -32); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle = '#A3A8AC'; ctx.lineWidth = 2; for (let i = -3; i <= 3; i++) { ctx.beginPath(); ctx.moveTo(i * 12, -30); ctx.lineTo(i * 10.5, -2); ctx.stroke(); }
+    // a comida, caprichada (passando da borda)
+    ctx.fillStyle = C.branco; ctx.beginPath(); ctx.ellipse(-22, -44, 24, 12, 0, Math.PI, TAU); ctx.fill();                              // o arroz
+    ctx.fillStyle = '#EDE6DA'; for (let i = 0; i < 8; i++) { ctx.beginPath(); ctx.ellipse(-36 + i * 4, -48 - 4 * Math.sin(i), 2.2, 1.2, 0.5, 0, TAU); ctx.fill(); }
+    ctx.fillStyle = '#5A2A1A'; ctx.beginPath(); ctx.ellipse(6, -42, 18, 9, 0, Math.PI, TAU); ctx.fill();                                // o feijão
+    ctx.fillStyle = '#9A5B2E'; ctx.beginPath(); ctx.ellipse(28, -46, 18, 10, -0.25, 0, TAU); ctx.fill();                                // o bife
+    ctx.fillStyle = '#B9733A'; ctx.beginPath(); ctx.ellipse(26, -48, 10, 4, -0.25, 0, TAU); ctx.fill();
+    ctx.fillStyle = C.verde; ctx.beginPath(); ctx.ellipse(-6, -56, 9, 6, -0.4, 0, TAU); ctx.fill();                                    // a salada
+    ctx.fillStyle = C.coral; ctx.beginPath(); ctx.arc(4, -58, 5, 0, TAU); ctx.fill();
+    ctx.strokeStyle = css(C.cinza, 0.5); ctx.lineWidth = 3.5; ctx.lineCap = 'round';
+    for (const sx of [-16, 4, 22]) { ctx.beginPath(); ctx.moveTo(sx, -66); ctx.bezierCurveTo(sx - 7, -74, sx + 7, -82, sx, -92); ctx.stroke(); }
+    ctx.restore();
+  }
+  function itemPorcao(ctx, x, y, s) {                       // a porção pra dividir: a travessa com a batata frita, a calabresa e os palitinhos
+    const k = s / 100;
+    ctx.save(); ctx.translate(x, y + s * 0.3); ctx.scale(k, k);
+    shadow(ctx, 0, 0, 54, 4, 0.14);
+    ctx.fillStyle = C.cremeDeep; ctx.beginPath(); ctx.ellipse(0, -10, 54, 14, 0, 0, TAU); ctx.fill();
+    ctx.fillStyle = C.branco; ctx.beginPath(); ctx.ellipse(0, -14, 52, 12, 0, 0, TAU); ctx.fill();
+    ctx.fillStyle = '#F2C14E'; for (let i = 0; i < 11; i++) { ctx.save(); ctx.translate(-30 + 6 * i, -20 - 6 * Math.sin(i * 1.7)); ctx.rotate(-0.6 + 0.12 * i); rr(ctx, -3, -14, 6, 26, 2); ctx.fill(); ctx.restore(); }   // a batata frita
+    for (const [cx, cy] of [[-16, -28], [10, -32], [26, -24], [-4, -22]]) { ctx.fillStyle = '#B8473A'; ctx.beginPath(); ctx.arc(cx, cy, 8, 0, TAU); ctx.fill(); ctx.fillStyle = '#E58C7A'; ctx.beginPath(); ctx.arc(cx, cy, 4.5, 0, TAU); ctx.fill(); }   // a calabresa
+    ctx.strokeStyle = C.madeira; ctx.lineWidth = 2.5; for (const [cx, cy] of [[10, -32], [-16, -28]]) { ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + 4, cy - 26); ctx.stroke(); ctx.fillStyle = C.coral; ctx.beginPath(); ctx.moveTo(cx + 4, cy - 26); ctx.lineTo(cx + 16, cy - 22); ctx.lineTo(cx + 4, cy - 18); ctx.closePath(); ctx.fill(); }   // os palitinhos com bandeirinha
+    ctx.restore();
+  }
+  function itemCarvaoCheio(ctx, x, y, s) {                  // o saco de carvão cheio (papel pardo, a chaminha desenhada e o carvão aparecendo em cima)
+    const k = s / 100;
+    ctx.save(); ctx.translate(x, y + s * 0.3); ctx.scale(k, k);
+    shadow(ctx, 0, 0, 40, 4, 0.14);
+    ctx.fillStyle = '#2E2420'; for (const [cx, cy, r] of [[-18, -84, 11], [0, -90, 13], [18, -84, 11], [-8, -78, 9], [10, -76, 9]]) { ctx.beginPath(); ctx.moveTo(cx - r, cy); ctx.lineTo(cx - r * 0.3, cy - r); ctx.lineTo(cx + r, cy - r * 0.4); ctx.lineTo(cx + r * 0.6, cy + r * 0.8); ctx.closePath(); ctx.fill(); }
+    ctx.fillStyle = '#B98A55'; ctx.beginPath(); ctx.moveTo(-36, 0); ctx.lineTo(36, 0); ctx.lineTo(32, -80); ctx.lineTo(-32, -80); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = '#A0743F'; ctx.beginPath(); ctx.moveTo(-32, -80); ctx.lineTo(32, -80); ctx.lineTo(30, -72); ctx.lineTo(-30, -72); ctx.closePath(); ctx.fill();   // a dobra de cima
+    ctx.fillStyle = '#2E2420'; rr(ctx, -30, -60, 60, 40, 8); ctx.fill();                                                                    // a etiqueta preta com a chama
+    ctx.fillStyle = C.amarelo; ctx.beginPath(); ctx.moveTo(0, -26); ctx.quadraticCurveTo(-13, -40, 0, -56); ctx.quadraticCurveTo(13, -40, 0, -26); ctx.fill();
+    ctx.fillStyle = C.coral; ctx.beginPath(); ctx.moveTo(0, -30); ctx.quadraticCurveTo(-6, -38, 0, -46); ctx.quadraticCurveTo(6, -38, 0, -30); ctx.fill();
+    ctx.restore();
+  }
+  Object.assign(ITENS, { paoFrances: itemPaoFrances, marmitex: itemMarmitex, porcao: itemPorcao, carvaoCheio: itemCarvaoCheio,
+    gelo2: (ctx, x, y, s) => sacoGelo(ctx, x, y + s * 0.3, s * 0.88) });
+
+  // a lojinha de comida caseira (toldo verde): a cor e o ícone da placa (a panela fumegando)
+  LOOK.caseira = { wall: '#F7D9A8', wallDark: '#DDB277', a: C.verde, b: '#FFFFFF', door: C.coralDark };
+
+  // ===================== a transição da folha de calendário (episódio com "transicao": "calendario"; desde o ep09)
+  // Uma FOLHA DE CALENDÁRIO gigante (de bloquinho: a barra de argolas em cima, o mês na faixa coral, o dia enorme) cai
+  // do alto e cobre a área do capítulo com um "plof"; por baixo dela o próximo capítulo já está pronto; aí a folha é
+  // ARRANCADA (a beira de cima rasga em zigue-zague) e sai voando e girando, revelando a cena seguinte; o toco rasgado
+  // na barra some logo depois. A 1ª folha traz o "20 · FERIADO" em destaque (o 20 circulado); as outras, o mesmo 20
+  // com uma figurinha. Cada troca arranca de um jeito (ciclo de 4): pelo canto, voando para a direita; pelo outro
+  // canto, para a esquerda; puxada para cima, girando; amassada numa bolinha e jogada fora. Fica na área do conteúdo
+  // (x 80–928, y 392–1484): nunca cobre a marca do topo nem passa pela coluna de botões.
+  const CAL = { x0: 80, x1: 928, y0: 392, y1: 1484, barra: 56 };
+  const CAL_CAI = 0.32, CAL_TROCA = 0.4, CAL_ARRANCA = 0.46;
+  function travessiaCalendario(k, u) { return { dir: k % 2 === 0 ? 1 : -1, jeito: k % 4, lado: u < CAL_TROCA ? 0 : 1 }; }
+  // o zigue-zague da beira rasgada (de x0 a x1 em y; amp = altura do dente)
+  function rasgado(ctx, x0, x1, y, amp, seed, deVolta = false) {
+    const n = 26, pts = [];
+    for (let i = 0; i <= n; i++) pts.push([lerp(x0, x1, i / n), y + (i % 2 ? amp : -amp) * (0.5 + 0.5 * hash(i, seed))]);
+    (deVolta ? pts.reverse() : pts).forEach(([px, py]) => ctx.lineTo(px, py));
+  }
+  // a folha (sem a barra), com (0, 0) no canto de cima à esquerda; w × h; k = a troca
+  function folhaCal(ctx, w, h, k, t, rasga) {
+    const top = CAL.barra - 6;
+    ctx.save();
+    ctx.shadowColor = 'rgba(120,60,30,0.28)'; ctx.shadowBlur = 30; ctx.shadowOffsetY = 12;
+    ctx.beginPath(); ctx.moveTo(0, top);
+    if (rasga) rasgado(ctx, 0, w, top, 9, k + 31); else ctx.lineTo(w, top);
+    ctx.lineTo(w, h - 26); ctx.quadraticCurveTo(w, h, w - 26, h); ctx.lineTo(26, h); ctx.quadraticCurveTo(0, h, 0, h - 26); ctx.closePath();
+    ctx.fillStyle = C.papel; ctx.fill(); ctx.shadowColor = 'transparent';
+    ctx.lineWidth = 4; ctx.strokeStyle = C.cremeDeep; ctx.stroke();
+    ctx.save(); ctx.clip();
+    ctx.fillStyle = C.coral; ctx.fillRect(0, top - 20, w, 170);                                                     // a faixa do mês
+    txt(ctx, MES.nome, w / 2, top + 108, { size: 72, weight: 900, align: 'center', color: C.papel, ls: 6 });
+    txt(ctx, 'SEXTA-FEIRA', w / 2, top + 250, { size: 52, weight: 800, align: 'center', color: C.tinta2, ls: 3 });
+    const prim = k === 0;
+    txt(ctx, '20', w / 2, top + 690, { size: 470, weight: 900, align: 'center', color: prim ? C.coral : C.tinta, ls: -10 });
+    if (prim) {
+      ctx.save(); ctx.translate(w / 2, top + 520); ctx.rotate(-0.12);                                                 // o 20 circulado
+      ctx.strokeStyle = C.amarelo; ctx.lineWidth = 16; ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.ellipse(0, 0, 300, 205, 0, -0.3, -0.3 + TAU * 1.08); ctx.stroke();
+      ctx.restore();
+      const pw = 470, ph = 118, py = top + 800;                                                                       // o "FERIADO" em destaque
+      ctx.save(); ctx.translate(w / 2, py + ph / 2); ctx.rotate(-0.04);
+      rr(ctx, -pw / 2, -ph / 2, pw, ph, ph / 2); ctx.fillStyle = C.amarelo; ctx.fill(); ctx.lineWidth = 8; ctx.strokeStyle = C.branco; ctx.stroke();
+      txt(ctx, 'FERIADO', 0, 28, { size: 82, weight: 900, align: 'center', color: C.coral, ls: 4 });
+      ctx.restore();
+      const cores = [C.coral, C.amarelo, C.verde, C.coralLight];
+      for (let i = 0; i < 26; i++) { ctx.fillStyle = cores[i % 4]; ctx.save(); ctx.translate(40 + (w - 80) * hash(i, 71), top + 290 + (h - top - 330) * hash(i, 72)); ctx.rotate(hash(i, 73) * 6); if (Math.abs(40 + (w - 80) * hash(i, 71) - w / 2) > 250) ctx.fillRect(-9, -5, 18, 10); ctx.restore(); }
+    } else {
+      sticker(ctx, ['coracao', 'estrela', 'brilho', 'uai'][k % 4], w * 0.8, top + 860, 120, 1, 0);
+      ctx.strokeStyle = css(C.tinta2, 0.25); ctx.lineWidth = 4;                                                       // as linhas de anotação
+      for (let i = 0; i < 3; i++) { ctx.beginPath(); ctx.moveTo(70, top + 820 + i * 60); ctx.lineTo(w * 0.62, top + 820 + i * 60); ctx.stroke(); }
+    }
+    ctx.restore();
+    ctx.restore();
+  }
+  // a barra de argolas do bloquinho (em cima); toco = o papel rasgado que ficou preso
+  function barraCal(ctx, x0, y0, w, k, toco) {
+    ctx.save();
+    if (toco) {
+      ctx.beginPath(); ctx.moveTo(x0, y0 + CAL.barra - 8); ctx.lineTo(x0 + w, y0 + CAL.barra - 8);
+      ctx.lineTo(x0 + w, y0 + CAL.barra - 2); rasgado(ctx, x0, x0 + w, y0 + CAL.barra + 4, 9, k + 31, true); ctx.closePath();
+      ctx.fillStyle = C.papel; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = C.cremeDeep; ctx.stroke();
+    }
+    ctx.fillStyle = C.tinta2; rr(ctx, x0 + 10, y0 + 8, w - 20, CAL.barra - 18, 14); ctx.fill();
+    ctx.fillStyle = C.coralDark; rr(ctx, x0 + 10, y0 + 8, w - 20, 10, 5); ctx.fill();
+    for (let i = 0; i < 14; i++) { const rx = x0 + 50 + i * (w - 100) / 13; ctx.strokeStyle = '#B9B0A6'; ctx.lineWidth = 6; ctx.beginPath(); ctx.ellipse(rx, y0 + 20, 7, 20, 0, Math.PI * 0.9, Math.PI * 2.1); ctx.stroke(); }
+    ctx.restore();
+  }
+  function drawWipeCalendario(ctx, t, k, u) {
+    const T = travessiaCalendario(k, u), w = CAL.x1 - CAL.x0, h = CAL.y1 - CAL.y0;
+    // 1) a folha cai do alto e assenta ("plof", com um tremidinho)
+    const ec = p(u, 0, CAL_CAI), y = lerp(CAL.y0 - h - 120, CAL.y0, E.inCubic(ec)) + (ec >= 1 ? -10 * Math.sin(Math.PI * p(u, CAL_CAI, CAL_CAI + 0.08)) : 0);
+    const ea = p(u, CAL_ARRANCA, 1), barraA = 1 - p(u, 0.72, 0.92);
+    if (ea <= 0) {
+      ctx.save(); ctx.beginPath(); ctx.rect(0, CAL.y0 - 2, W, H); ctx.clip();
+      ctx.save(); ctx.translate(CAL.x0, y); folhaCal(ctx, w, h, k, t, false); ctx.restore();
+      barraCal(ctx, CAL.x0, y, w, k, false);
+      ctx.restore();
+      if (ec >= 1) BOX('folha do calendário', CAL.x0, CAL.y0, CAL.x1, CAL.y1);
+      return;
+    }
+    // 2) arrancada: o toco preso na barra (some logo) e a folha voando e girando, do jeito da troca
+    if (barraA > 0.01) { ctx.save(); ctx.globalAlpha *= barraA; ctx.translate(0, -60 * (1 - barraA)); barraCal(ctx, CAL.x0, CAL.y0, w, k, true); ctx.restore(); }
+    const e = E.inCubic(ea) * 0.85 + 0.15 * ea, dir = T.dir;
+    ctx.save(); ctx.beginPath(); ctx.rect(0, CAL.y0 - 2, W, H); ctx.clip();
+    let px, py, rot, sc = 1;
+    // (todos saem pela esquerda ou por cima, girando no sentido que mantém a folha longe da coluna de botões)
+    if (T.jeito === 0) {                                    // arrancada pelo canto de cima à esquerda: gira presa no outro canto e voa para a esquerda
+      px = CAL.x1; py = CAL.y0;
+      ctx.translate(px - 1500 * e, py - 260 * Math.sin(Math.PI * Math.min(1, e * 1.3)) + 200 * e * e);
+      rot = Math.min(Math.PI / 2, 0.3 * Math.sin(Math.PI * Math.min(1, ea * 2.5)) + 1.7 * e);
+      ctx.rotate(rot); ctx.translate(-px, -py);
+    } else if (T.jeito === 1) {                             // solta pelo canto da direita: fica pendurada no canto da esquerda, balança e cai para a esquerda
+      px = CAL.x0; py = CAL.y0;
+      ctx.translate(px - 1300 * E.inCubic(p(ea, 0.25, 1)), py + 700 * E.inCubic(p(ea, 0.25, 1)));
+      rot = Math.min(Math.PI / 2, 0.9 * E.outBack(p(ea, 0, 0.35), 2) + 0.6 * p(ea, 0.35, 1));
+      ctx.rotate(rot); ctx.translate(-px, -py);
+    } else if (T.jeito === 2) {                             // puxada para cima, girando e encolhendo
+      px = (CAL.x0 + CAL.x1) / 2; py = (CAL.y0 + CAL.y1) / 2;
+      sc = 1 - 0.55 * e;
+      ctx.translate(px - 200 * e, py - 1700 * e); ctx.rotate(-3.0 * e); ctx.scale(sc, sc); ctx.translate(-px, -py);
+    } else {                                                // amassada numa bolinha e jogada fora (para a esquerda)
+      px = (CAL.x0 + CAL.x1) / 2; py = (CAL.y0 + CAL.y1) / 2;
+      sc = Math.max(0.22, 1 - 1.4 * p(ea, 0, 0.55));
+      const vo = p(ea, 0.45, 1);
+      ctx.translate(px - 900 * E.inCubic(vo), py - 500 * Math.sin(Math.PI * vo) + 700 * vo * vo); ctx.rotate(-(0.6 * p(ea, 0, 0.5) + 8 * vo)); ctx.scale(sc, sc * (1 - 0.15 * Math.sin(ea * 30))); ctx.translate(-px, -py);
+    }
+    if (T.jeito === 3 && sc < 0.42) {                       // a bolinha de papel amassado
+      const r = h * 0.28;
+      ctx.fillStyle = C.papel; ctx.beginPath(); for (let i = 0; i <= 16; i++) { const a = i / 16 * TAU, r2 = r * (0.86 + 0.14 * hash(i, k + 5)); ctx.lineTo(px + Math.cos(a) * r2, py + Math.sin(a) * r2); } ctx.closePath(); ctx.fill();
+      ctx.lineWidth = 14; ctx.strokeStyle = C.cremeDeep; ctx.stroke();
+      ctx.strokeStyle = css(C.tinta2, 0.35); ctx.lineWidth = 10;
+      for (let i = 0; i < 9; i++) { const a = hash(i, k + 6) * TAU; ctx.beginPath(); ctx.moveTo(px + Math.cos(a) * r * 0.1, py + Math.sin(a) * r * 0.1); ctx.lineTo(px + Math.cos(a + 0.5) * r * 0.75, py + Math.sin(a + 0.5) * r * 0.75); ctx.stroke(); }
+    } else {
+      ctx.translate(CAL.x0, CAL.y0); folhaCal(ctx, w, h, k, t, true);
+    }
+    ctx.restore();
+    // o "RASG!" na hora de arrancar
+    const er = p(u, CAL_ARRANCA - 0.02, CAL_ARRANCA + 0.04) * (1 - p(u, CAL_ARRANCA + 0.16, CAL_ARRANCA + 0.26));
+    if (er > 0) {
+      const kk = E.outBack(clamp(er), 2.6), rx = T.jeito === 1 ? CAL.x1 - 230 : T.jeito === 0 ? CAL.x0 + 230 : (CAL.x0 + CAL.x1) / 2;   // onde rasga
+      ctx.save(); ctx.translate(rx, CAL.y0 + 150); ctx.rotate(-6 * DEG); ctx.scale(kk, kk);
+      ctx.beginPath(); for (let j = 0; j <= 24; j++) { const a = j / 24 * TAU, r2 = j % 2 ? 56 : 80; ctx.lineTo(Math.cos(a) * r2 * 1.6, Math.sin(a) * r2 * 0.8); }
+      ctx.closePath(); ctx.lineJoin = 'round'; ctx.lineWidth = 10; ctx.strokeStyle = C.branco; ctx.stroke(); ctx.fillStyle = C.amarelo; ctx.fill();
+      txt(ctx, 'RASG!', 0, 24, { size: 64, weight: 900, align: 'center', color: C.coral });
+      ctx.restore();
+    }
+  }
+
+  // ===================== cenas do ep09
+
+  // a capa do feriado (ep09): no quadro 0 o calendário do mês com o 20 circulado, o confete e a rede armada
+  CENAS.capa.feriado = function (ctx, cap, t) {
+    const Ly = cap.Ly, ev = cap.ev, B = Ly.bottom;
+    const pulso = Math.sin(Math.PI * p(t, ev.circula, ev.circula + 0.5));
+    calendarioMes(ctx, 290, B - 6, 300, t, { circulo: 1, pulso });
+    BOX('calendário', 140, B - 330, 440, B);
+    const cores = [C.coral, C.amarelo, C.verde, C.coralLight];
+    for (let i = 0; i < 16; i++) {                               // o confete parado em volta (no quadro 0 já está lá)
+      const cx = 120 + 790 * hash(i, 91), cy = B - 330 + 300 * hash(i, 92) + 6 * Math.sin(t * 2 + i);
+      if (cx > 135 && cx < 450 && cy > B - 330) continue;
+      ctx.save(); ctx.translate(cx, cy); ctx.rotate(hash(i, 93) * 6 + t); ctx.fillStyle = cores[i % 4]; ctx.fillRect(-8, -4, 16, 8); ctx.restore();
+    }
+    confete(ctx, t, ev.circula, 290, B - 200, 19, { n: 30, v: 800 });
+    rede(ctx, 500, 905, B - 6, B - 270, t);
+    BOX('rede', 490, B - 290, 915, B);
+  };
+
+  // ---- semFogao ("O CAUSO"): a família largada no sofá; a pia limpinha brilhando; no "ninguém", todo mundo balança a
+  //      cabeça que não; no "fogão", a teia de aranha de brincadeira aparece no fogão e a aranhinha desce
+  CENAS.semFogao = {
+    setup(cap) {
+      const d = cap.diagrama, ev = cap.ev;
+      ev.familia = at(cap, d.familia.em, cap.t0 + 0.3);
+      ev.pia = Math.max(at(cap, d.pia.em, ev.familia + 0.5), ev.familia + 0.3);
+      ev.ninguem = Math.max(at(cap, d.ninguem.em, ev.pia + 0.5), ev.pia + 0.3);
+      ev.fogao = Math.max(at(cap, d.fogao.em, ev.ninguem + 0.5), ev.ninguem + 0.3);
+      [0, 1, 2].forEach((i) => cue(ev.familia + i * 0.1, 'pop', { f: 480 + 60 * i }));
+      cue(ev.pia, 'shine'); cue(ev.ninguem, 'deny'); cue(ev.fogao, 'pop', { f: 360 }); cue(ev.fogao + 0.3, 'jump'); cue(ev.fogao + 0.9, 'zzz');
+    },
+    draw(ctx, cap, t) {
+      const ev = cap.ev, T = cap.cenaTop, base = PE - 10;
+      const SX = 285, SW = 390, k = SW / 300;
+      const es = ent(t, cap.t0 + 0.1, 0.45), nao = t > ev.ninguem && t < ev.ninguem + 0.9 ? Math.sin((t - ev.ninguem) * 22) * (1 - p(t, ev.ninguem, ev.ninguem + 0.9)) : 0;
+      enter(ctx, es, SX, base, () => {
+        sofa(ctx, SX, base, SW);
+        [[SX - 82, 0], [SX + 4, 2], [SX + 88, 1]].forEach(([x, vi], i) => {
+          const e = ent(t, ev.familia + i * 0.1, 0.35);
+          if (e <= 0) return;
+          ctx.save(); ctx.globalAlpha *= clamp(e * 2);
+          pessoa(ctx, VISITAS[vi], x + 6 * nao * (i % 2 ? -1 : 1), base - 40 * k + 14 + 12 * (1 - e), t, { k: 0.62, look: [0.5 * nao, 0.4], sorriso: 0.2, blink: t > ev.fogao + 0.6 ? 0.75 : blinkAt(t, 50 + i) });
+          ctx.restore();
+        });
+        ctx.save(); ctx.translate(SX, base); ctx.scale(k, k); ctx.fillStyle = C.coralBg; rr(ctx, -112, -66, 224, 48, 18); ctx.fill(); ctx.restore();
+        if (es >= 1) BOX('sofá', SX - 154 * k, base - 150 * k, SX + 154 * k, base);
+      });
+      // o fogão (com a cara cansada) e, no "fogão", a teia de brincadeira com a aranhinha
+      const FX = 640, FW = 250, ef = ent(t, cap.t0 + 0.2, 0.45);
+      enter(ctx, ef, FX, base, () => fogao(ctx, FX, base, FW, t, { suspiro: Math.sin(Math.PI * p(t, ev.fogao + 0.9, ev.fogao + 2.0)), pisca: blinkAt(t, 61) }));
+      if (ef >= 1) BOX('fogão', FX - FW * 0.56, base - FW * 1.14, FX + FW * 0.56, base);
+      const et = p(t, ev.fogao, ev.fogao + 0.35);
+      teia(ctx, FX - FW * 0.5 + 4, base - FW * 1.1 + 6, 140, t, et, E.outBack(p(t, ev.fogao + 0.25, ev.fogao + 0.9), 1.6));
+      // a pia limpinha (brilha na palavra)
+      const PX = 852, PW = 140, ep = ent(t, cap.t0 + 0.25, 0.45);
+      enter(ctx, ep, PX, base, () => pia(ctx, PX, base, PW));
+      if (ep >= 1) BOX('pia', PX - PW * 0.54, base - PW * 1.12, PX + PW * 0.54, base);
+      sticker(ctx, 'brilho', PX - 30, base - PW * 1.25, 46, p(t, ev.pia, ev.pia + 0.35), t);
+      sticker(ctx, 'brilho', PX + 40, base - PW * 0.9, 36, p(t, ev.pia + 0.12, ev.pia + 0.45), t);
+      interrog(ctx, FX + 10, T + 90, 36, p(t, ev.ninguem, ev.ninguem + 0.3), t, ev.ninguem);
+    },
+  };
+
+  // ---- entregaRede ("CHEGOU", ep09): o PERTIM chega pilotando a motinha (falando para a câmera, boca sincronizada),
+  //      desce com a sacola da marca e entrega para quem está deitado na rede — que NEM LEVANTA: só tira o braço do pano,
+  //      pega a sacola em cima da barriga e faz joia, de olho fechado (a piada). A rede balança; "Zzz" antes; corações
+  //      na palavra "rede"; a piscadinha do Pertim depois da fala
+  CENAS.entregaRede = {
+    setup(cap) {
+      const d = cap.diagrama, ev = cap.ev;
+      ev.moto = Math.min(at(cap, d.moto.em, cap.t0 + 0.3), cap.t0 + 0.3);
+      ev.para = ev.moto + 0.9;
+      ev.desce = Math.max(at(cap, d.desce.em, ev.para + 0.2), ev.para + 0.15);
+      ev.entrega = Math.max(at(cap, d.entrega.em, ev.desce + 0.6), ev.desce + 0.5);
+      ev.rede = Math.max(at(cap, d.rede.em, ev.entrega + 0.5), ev.entrega + 0.4);
+      ev.pisca = Math.max(cap.voz_t1 + 0.2, ev.rede + 0.6);
+      cue(ev.moto, 'moto', { d: 0.9 }); cue(ev.para, 'horn'); cue(ev.desce, 'jump'); cue(ev.entrega, 'whoosh'); cue(ev.entrega + 0.4, 'plop');
+      cue(cap.t0 + 0.2, 'zzz'); cue(ev.rede, 'heart'); cue(ev.rede + 0.05, 'confete'); cue(ev.pisca, 'blink'); cue(ev.pisca + 0.05, 'shine');
+    },
+    draw(ctx, cap, t) {
+      const ev = cap.ev, base = PE - 10;
+      // a rede com quem está deitado (a cabeça à esquerda, os pés à direita)
+      const XA = 600, XB = 920, YG = base - 290, v = VISITAS[3];
+      const er = ent(t, cap.t0 + 0.1, 0.45);
+      const pega = p(t, ev.entrega + 0.35, ev.entrega + 0.6), joia = t > ev.rede;
+      let G = null;
+      enter(ctx, er, (XA + XB) / 2, base, () => {
+        G = rede(ctx, XA, XB, base, YG, t, { dentro: (mx, my) => {
+          deitado(ctx, v, XA + 96, YG + 22, XB - 74, YG + 34, 40, t, { braco: joia ? 1 : pega, joia, olhos: joia ? 'feliz' : 'dorme' });
+        } });
+      });
+      if (er >= 1) BOX('rede', XA - 10, YG - 30, XB + 10, base);
+      // o "Zzz" (está dormindo na rede) até a sacola chegar
+      if (t < ev.entrega + 0.4) for (let i = 0; i < 3; i++) { const ph = ((t - cap.t0) * 0.6 + i / 3) % 1, a = Math.sin(Math.PI * ph) * clamp((t - cap.t0 - 0.3) * 3) * (1 - p(t, ev.entrega, ev.entrega + 0.4)); if (a > 0.02) txt(ctx, 'z', XA + 120 + 30 * i + 20 * ph, YG + 10 - 90 * ph, { size: 34 + 10 * i, weight: 900, color: C.tinta2, alpha: a }); }
+      // corações na palavra "rede"
+      for (let j = 0; j < 3; j++) { const u = p(t, ev.rede + j * 0.2, ev.rede + 1.3 + j * 0.2); if (u > 0 && u < 1) sticker(ctx, 'coracao', XA + 150 + 50 * j, YG - 10 - 110 * u, 36, Math.min(1, u * 5) * (1 - p(u, 0.8, 1)), t); }
+      confete(ctx, t, ev.rede + 0.05, 770, YG - 40, 97, { n: 22, v: 700, dur: 1.8 });
+      // a sacola: na mão do Pertim → voa até a barriga de quem está na rede e fica lá
+      const SB = { x: XA + 175, y: YG + 112 };
+      const ue = p(t, ev.entrega, ev.entrega + 0.45);
+      if (ue >= 1) { sacolaMarca(ctx, SB.x, SB.y + 4 * Math.sin(t * 1.6), 76); BOX('sacola entregue', SB.x - 46, SB.y - 96, SB.x + 46, SB.y); }
+      // o PERTIM (olhando para a câmera; a boca segue a voz)
+      if (t < ev.moto - 0.05) return;
+      const MX = 300, MH = 340, PX = 410, PH = 470;
+      const bc = bocaEm(cap, t), falando = bc !== 'R', pc = falando ? 0 : piscaQ(blinkAt(t, 19));
+      const um = p(t, ev.moto, ev.para), mx = lerp(-260, MX, E.outCubic(um));
+      if (t < ev.desce) {
+        const bump = um < 1 ? 5 * Math.abs(Math.sin(t * 22)) : 3 * hop(t);
+        pertimQ(ctx, falando ? `moto-boca-${BOCA_Q[bc]}` : `moto-p${pc}`, mx, base - bump, MH, { box: um >= 1 ? 'Pertim na moto' : null, mx0: 0.12 });
+        return;
+      }
+      pertimQ(ctx, 'moto-estacionada', MX, base, MH, { box: 'moto', mx0: 0.12 });
+      const ud = p(t, ev.desce, ev.desce + 0.35), x = lerp(MX + 40, PX, E.outCubic(ud)), pulo = 80 * Math.sin(Math.PI * ud), qq = 4 * hop(t) * (ud >= 1 ? 1 : 0);
+      if (ue > 0 && ue < 1) {                                   // a sacola voando para a rede
+        const sx = lerp(PX + 70, SB.x, E.inOutCubic(ue)), sy = lerp(base - 170, SB.y, ue) - 170 * Math.sin(Math.PI * ue);
+        ctx.save(); ctx.translate(sx, sy); ctx.rotate(0.6 * Math.sin(Math.PI * ue)); sacolaMarca(ctx, 0, 0, lerp(90, 76, ue)); ctx.restore();
+      }
+      const nome = t >= ev.pisca && t < ev.pisca + 1.0 ? 'parado-pisca'
+        : t < ev.entrega ? (falando ? `sacola-boca-${BOCA_Q[bc]}` : `sacola-p${pc}`)
+          : (falando ? `parado-boca-${BOCA_Q[bc]}` : `parado-p${pc}`);
+      pertimQ(ctx, nome, x, base - pulo - qq, PH, { box: ud >= 1 ? 'Pertim' : null, mx0: 0.1, mx1: 0.12 });
+    },
+  };
+
   // =====================================================================
   // A LEGENDA GRAVADA (o padrão da série desde o ep08; "legenda": false no JSON só nos episódios anteriores)
   // =====================================================================
@@ -5706,7 +6175,7 @@
     if (!w.trans) {
       OFF = { dx: 0, dy: 0, n: w.k };
       drawChap(ctx, CAPS[w.k], t);
-    } else if (TRANS === 'pizza' || TRANS === 'baloes' || TRANS === 'picole') {
+    } else if (TRANS === 'pizza' || TRANS === 'baloes' || TRANS === 'picole' || TRANS === 'calendario') {
       // a caixa de pizza / os balões / a calda do picolé: até a tela fechar, o capítulo atual por baixo; depois, o próximo
       const T = travessia(w.k, w.u), k = w.k + T.lado;
       OFF = { dx: 0, dy: 0, n: k };
@@ -5769,7 +6238,8 @@
         if (TRANS === 'sacola') cue(CAPS[k - 1].t1, 'sacola', { d: TR, k, dir: travessia(k - 1, 0).dir, nhac: nhacU(k - 1) * TR, jeito: (k - 1) % 4 });   // os pulos, o NHAC! e o ploc
         else if (TRANS === 'pizza') cue(CAPS[k - 1].t1, 'pizza', { d: TR, k });
         else if (TRANS === 'baloes') cue(CAPS[k - 1].t1, 'baloes', { d: TR, k });   // os balões subindo e o estouro
-        else if (TRANS === 'picole') cue(CAPS[k - 1].t1, 'picole', { d: TR, k, dir: travessia(k - 1, 0).dir });   // o picolé passando, a calda escorrendo e pingando
+        else if (TRANS === 'picole') cue(CAPS[k - 1].t1, 'picole', { d: TR, k, dir: travessia(k - 1, 0).dir });
+        else if (TRANS === 'calendario') cue(CAPS[k - 1].t1, 'calendario', { d: TR, k, jeito: (k - 1) % 4 });   // a folha caindo, o RASG! e ela voando   // o picolé passando, a calda escorrendo e pingando
         else cue(CAPS[k - 1].t1, { galinha: 'galinha', viralata: 'cachorro' }[TRANS] || 'trans', { d: TR, k, dir: travessia(k - 1, 0).dir });   // quem atravessa (o som anda junto)
         cue(rotuloT(cap), 'pop', { f: 820 });                                        // o "plop" do adesivo do rótulo
         tituloT(cap).forEach((x, i) => cue(x, 'punch', { i }));

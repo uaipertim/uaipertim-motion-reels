@@ -681,6 +681,20 @@ for c in CUES['cues']:
             tp = t + dd * (0.3 + 0.62 * j / 5) + 0.012 * rng.uniform(-1, 1)
             place(sfx, plic(650 + 450 * rng.uniform()), tp, 0.2 * (0.7 + 0.3 * rng.uniform()), rng.uniform(-0.6, 0.6))
         place(sfx, sparkle(), t + dd * 0.85, 0.08)
+    elif ty == 'calendario':
+        # a folha de calendário (ep09): o vento dela caindo, o "plof" de papel quando assenta, o RASG! (o papel rasgando:
+        # um chiado áspero, picotado) e o farfalhar dela voando
+        dd = max(0.3, d)
+        place(sfx, whoosh(dd * 0.3, 1600, 400, 0.5, 1.0), t, 0.16, 0.0)
+        plof = add(thump(0.18, 110, 0.04, 0.8) * 0.6, filt(noise(0.1), [500, 3000], 'band') * np.exp(-tt(0.1) / 0.025) * 0.7)
+        place(sfx, plof, t + dd * 0.32, 0.4, 0.0); place(send, plof, t + dd * 0.32, 0.05)
+        dr = dd * 0.18
+        tq = tt(dr)
+        rasg = filt(noise(dr), [1800, 9000], 'band') * (0.4 + 0.6 * (np.sin(2 * np.pi * 70 * tq) > 0.2)) * np.minimum(1, tq / 0.005) * np.clip((dr - tq) / 0.04, 0, 1)
+        place(sfx, rasg, t + dd * 0.45, 0.5, -0.2); place(send, rasg, t + dd * 0.45, 0.05)
+        tf = tt(dd * 0.45)
+        farf = filt(noise(dd * 0.45), [700, 4000], 'band') * (0.5 + 0.5 * np.sin(2 * np.pi * 16 * tf)) * np.sin(np.pi * np.clip(tf / (dd * 0.45), 0, 1))
+        place_pan(sfx, farf, t + dd * 0.55, 0.22, 0.0, -0.8)
     elif ty == 'plic':
         place(sfx, plic(820), t, 0.32, 0.2); place(send, plic(820), t, 0.06)
     elif ty == 'nevoa':

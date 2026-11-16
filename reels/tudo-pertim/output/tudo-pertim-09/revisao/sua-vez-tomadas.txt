@@ -1,0 +1,32 @@
+Tomadas do capítulo 06 de tudo-pertim-09 (voz Victor Pinho, eleven_v4; texto enviado: "Comenta aí: feriado é dia de quê? Dormir até tarde? Churrasco? Ou maratonar série?"; contexto: previous_text sim, next_text sim) — 2026-11-16 17:13
+
+sua-vez-a.mp3 · seed 42 · 6.48 s · conferência: ok · F0 mediano 213 Hz · tarde: sobe +5.5 st, termina -5.2 st, Churrasco: sobe +4.5 st, termina +6.4 st, série: sobe -6.3 st, termina -6.5 st
+sua-vez-b.mp3 · seed 1042 · 6.24 s · conferência: fala cortada no fim · F0 mediano 179 Hz · tarde: sobe -4.7 st, termina -2.4 st, Churrasco: sobe -5.6 st, termina -10.8 st, série: sobe -10.8 st, termina -12.5 st
+sua-vez-c.mp3 · seed 2042 · 6.32 s · conferência: ok · F0 mediano 212 Hz · tarde: sobe -5.4 st, termina -4.0 st, Churrasco: sobe -0.8 st, termina +8.7 st, série: sobe -0.9 st, termina -2.2 st
+
+NENHUMA tomada em que tarde, Churrasco, série terminem todas acima da mediana.
+
+Tomadas do capítulo 06 de tudo-pertim-09 (voz Victor Pinho, eleven_v4; texto enviado: "Comenta aí: feriado é dia de quê? Dormir até tarde? Churrasco? Ou maratonar série?"; contexto: previous_text sim, next_text não) — 2026-11-16 17:14
+
+sua-vez-d.mp3 · seed 3042 · 6.4 s · conferência: ok · F0 mediano 182 Hz · tarde: sobe -9.4 st, termina -4.0 st, Churrasco: sobe -4.4 st, termina -8.5 st, série: sobe -5.8 st, termina -4.2 st
+sua-vez-e.mp3 · seed 4042 · 6.24 s · conferência: ok · F0 mediano 187 Hz · tarde: sobe -3.2 st, termina +1.5 st, Churrasco: sobe -2.1 st, termina -7.4 st, série: sobe -6.9 st, termina -5.8 st
+sua-vez-f.mp3 · seed 5042 · 6.32 s · conferência: ok · F0 mediano 147 Hz · tarde: sobe -8.9 st, termina -11.4 st, Churrasco: sobe -4.4 st, termina -5.3 st, série: sobe -9.2 st, termina -9.5 st
+
+NENHUMA tomada em que tarde, Churrasco, série terminem todas acima da mediana.
+
+Tomadas do capítulo 06 de tudo-pertim-09 (voz Victor Pinho, eleven_v4; texto enviado: "Comenta aí: feriado é dia de quê? Dormir até tarde? Churrasco? Maratonar série?"; contexto: previous_text sim, next_text sim) — 2026-11-16 17:17
+
+sua-vez-g.mp3 · seed 42 · 6.0 s · conferência: fala cortada no fim · F0 mediano 205 Hz · tarde: sobe -3.5 st, termina -5.3 st, Churrasco: sobe +4.6 st, termina +5.6 st, série: sobe -10.4 st, termina -8.6 st
+sua-vez-h.mp3 · seed 1042 · 6.16 s · conferência: ok · F0 mediano 183 Hz · tarde: sobe -7.1 st, termina -2.4 st, Churrasco: sobe -4.4 st, termina -10.8 st, série: sobe -9.9 st, termina -7.6 st
+sua-vez-i.mp3 · seed 2042 · 6.16 s · conferência: ok · F0 mediano 219 Hz · tarde: sobe -8.6 st, termina -5.9 st, Churrasco: sobe +2.8 st, termina +5.1 st, série: sobe -16.5 st, termina -15.7 st
+
+NENHUMA tomada em que tarde, Churrasco, série terminem todas acima da mediana.
+
+Tomadas do capítulo 06 de tudo-pertim-09 (voz Victor Pinho, eleven_v4; texto enviado: "Comenta aí: feriado é dia de quê? Dormir até tarde? Churrasco? Maratonar série?"; contexto: previous_text sim, next_text não) — 2026-11-16 17:17
+
+sua-vez-j.mp3 · seed 3042 · 6.16 s · conferência: ok · F0 mediano 203 Hz · tarde: sobe -5.8 st, termina -5.6 st, Churrasco: sobe +5.7 st, termina +6.2 st, série: sobe +2.8 st, termina -1.7 st
+sua-vez-k.mp3 · seed 4042 · 6.16 s · conferência: ok · F0 mediano 214 Hz · tarde: sobe -16.8 st, termina -14.9 st, Churrasco: sobe +2.8 st, termina +4.3 st, série: sobe -11.9 st, termina -16.8 st
+sua-vez-l.mp3 · seed 5042 · 6.24 s · conferência: ok · F0 mediano 155 Hz · tarde: sobe -5.8 st, termina -10.6 st, Churrasco: sobe -4.7 st, termina -8.7 st, série: sobe -1.8 st, termina -6.1 st
+
+NENHUMA tomada em que tarde, Churrasco, série terminem todas acima da mediana.
+
