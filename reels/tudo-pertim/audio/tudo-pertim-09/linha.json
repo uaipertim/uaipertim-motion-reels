@@ -1,0 +1,1086 @@
+{
+ "episodio": "tudo-pertim-09",
+ "titulo": "Amanhã é feriado… quem vai cozinhar?",
+ "marca": "@uaipertim",
+ "bpm": 120,
+ "transicao": "calendario",
+ "legenda": true,
+ "duracao": 50.0,
+ "tr": 0.75,
+ "ap_entra": 0.34,
+ "ap_leitura": 1.5,
+ "previa": false,
+ "capitulos": [
+  {
+   "n": 0,
+   "rotulo": "TUDO PERTIM · EP. 09",
+   "tom": "pessego",
+   "titulo": [
+    "Amanhã é",
+    "feriado! 🎉"
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "capa",
+    "cena": "feriado",
+    "marcador": "feriado",
+    "circula": {
+     "em": "feriado"
+    }
+   },
+   "t0": 0.0,
+   "t1": 3.5,
+   "voz_t0": 0.1,
+   "voz_t1": 2.9,
+   "palavras": [
+    {
+     "w": "Amanhã",
+     "n": "amanha",
+     "i0": 0,
+     "t0": 0.1667,
+     "t1": 0.5
+    },
+    {
+     "w": "é",
+     "n": "e",
+     "i0": 7,
+     "t0": 0.6,
+     "t1": 0.58
+    },
+    {
+     "w": "feriado…",
+     "n": "feriado",
+     "i0": 9,
+     "t0": 0.7167,
+     "t1": 1.3
+    },
+    {
+     "w": "e",
+     "n": "e",
+     "i0": 18,
+     "t0": 1.8333,
+     "t1": 1.94
+    },
+    {
+     "w": "cê",
+     "n": "ce",
+     "i0": 20,
+     "t0": 2.2333,
+     "t1": 2.3
+    },
+    {
+     "w": "vai",
+     "n": "vai",
+     "i0": 23,
+     "t0": 2.4,
+     "t1": 2.42
+    },
+    {
+     "w": "cozinhar?",
+     "n": "cozinhar",
+     "i0": 27,
+     "t0": 2.5667,
+     "t1": 2.9
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Amanhã é feriado… e cê vai cozinhar?",
+     "apoio": null,
+     "t0": 0.1,
+     "t1": 2.9
+    }
+   ],
+   "apoios": [],
+   "seed": 1042
+  },
+  {
+   "n": 1,
+   "rotulo": "O CAUSO",
+   "tom": "amarelo",
+   "titulo": [
+    "Ninguém quer",
+    "cozinhar."
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "semFogao",
+    "familia": {
+     "em": "mundo"
+    },
+    "pia": {
+     "em": "limpinha"
+    },
+    "ninguem": {
+     "em": "ninguém"
+    },
+    "fogao": {
+     "em": "fogão"
+    }
+   },
+   "t0": 4.25,
+   "t1": 9.75,
+   "voz_t0": 4.5,
+   "voz_t1": 9.07,
+   "palavras": [
+    {
+     "w": "Todo",
+     "n": "todo",
+     "i0": 0,
+     "t0": 4.5667,
+     "t1": 4.74
+    },
+    {
+     "w": "mundo",
+     "n": "mundo",
+     "i0": 5,
+     "t0": 4.8833,
+     "t1": 4.98
+    },
+    {
+     "w": "em",
+     "n": "em",
+     "i0": 11,
+     "t0": 5.1167,
+     "t1": 5.14
+    },
+    {
+     "w": "casa,",
+     "n": "casa",
+     "i0": 14,
+     "t0": 5.2833,
+     "t1": 5.78
+    },
+    {
+     "w": "a",
+     "n": "a",
+     "i0": 20,
+     "t0": 5.9167,
+     "t1": 6.02
+    },
+    {
+     "w": "pia",
+     "n": "pia",
+     "i0": 22,
+     "t0": 6.1167,
+     "t1": 6.26
+    },
+    {
+     "w": "limpinha…",
+     "n": "limpinha",
+     "i0": 26,
+     "t0": 6.4833,
+     "t1": 7.22
+    },
+    {
+     "w": "e",
+     "n": "e",
+     "i0": 36,
+     "t0": 7.3833,
+     "t1": 7.38
+    },
+    {
+     "w": "ninguém",
+     "n": "ninguem",
+     "i0": 38,
+     "t0": 7.6,
+     "t1": 7.86
+    },
+    {
+     "w": "quer",
+     "n": "quer",
+     "i0": 46,
+     "t0": 8.0,
+     "t1": 8.02
+    },
+    {
+     "w": "encostar",
+     "n": "encostar",
+     "i0": 51,
+     "t0": 8.1667,
+     "t1": 8.5
+    },
+    {
+     "w": "no",
+     "n": "no",
+     "i0": 60,
+     "t0": 8.6333,
+     "t1": 8.66
+    },
+    {
+     "w": "fogão.",
+     "n": "fogao",
+     "i0": 63,
+     "t0": 8.7667,
+     "t1": 9.46
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Todo mundo em casa, a pia limpinha…",
+     "apoio": null,
+     "t0": 4.5,
+     "t1": 7.22
+    },
+    {
+     "texto": "e ninguém quer encostar no fogão.",
+     "apoio": "Ninguém quer o *fogão*.",
+     "t0": 7.327,
+     "t1": 9.46
+    }
+   ],
+   "apoios": [
+    {
+     "t": 7.207,
+     "texto": "Ninguém quer o *fogão*.",
+     "ate": 10.5
+    }
+   ],
+   "seed": 42
+  },
+  {
+   "n": 2,
+   "rotulo": "A PADARIA",
+   "tom": "pessego",
+   "titulo": [
+    "Café da",
+    "manhã?"
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "balcao",
+    "tipoLoja": "padaria",
+    "itens": [
+     {
+      "tipo": "paoFrances",
+      "em": "Pão",
+      "x": 660,
+      "tam": 230
+     },
+     {
+      "tipo": "paoQueijo",
+      "em": "queijo",
+      "x": 850,
+      "tam": 150
+     }
+    ],
+    "loja": {
+     "em": "padaria"
+    },
+    "faz": {
+     "em": "Glória"
+    }
+   },
+   "t0": 10.5,
+   "t1": 16.0,
+   "voz_t0": 10.75,
+   "voz_t1": 14.66,
+   "palavras": [
+    {
+     "w": "Pão",
+     "n": "pao",
+     "i0": 0,
+     "t0": 10.8167,
+     "t1": 10.91
+    },
+    {
+     "w": "francês",
+     "n": "frances",
+     "i0": 4,
+     "t0": 11.05,
+     "t1": 11.47
+    },
+    {
+     "w": "quentinho",
+     "n": "quentinho",
+     "i0": 12,
+     "t0": 11.6167,
+     "t1": 12.35
+    },
+    {
+     "w": "e",
+     "n": "e",
+     "i0": 22,
+     "t0": 12.4833,
+     "t1": 12.59
+    },
+    {
+     "w": "pão",
+     "n": "pao",
+     "i0": 24,
+     "t0": 12.7333,
+     "t1": 12.83
+    },
+    {
+     "w": "de",
+     "n": "de",
+     "i0": 28,
+     "t0": 12.9667,
+     "t1": 13.07
+    },
+    {
+     "w": "queijo",
+     "n": "queijo",
+     "i0": 31,
+     "t0": 13.2167,
+     "t1": 13.39
+    },
+    {
+     "w": "da",
+     "n": "da",
+     "i0": 38,
+     "t0": 13.5333,
+     "t1": 13.55
+    },
+    {
+     "w": "padaria",
+     "n": "padaria",
+     "i0": 41,
+     "t0": 13.7333,
+     "t1": 14.03
+    },
+    {
+     "w": "do",
+     "n": "do",
+     "i0": 49,
+     "t0": 14.1667,
+     "t1": 14.19
+    },
+    {
+     "w": "Glória.",
+     "n": "gloria",
+     "i0": 52,
+     "t0": 14.3667,
+     "t1": 14.99
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Pão francês quentinho e pão de queijo da padaria do Glória.",
+     "apoio": "Direto da *padaria*.",
+     "t0": 10.75,
+     "t1": 14.99
+    }
+   ],
+   "apoios": [
+    {
+     "t": 10.8,
+     "texto": "Direto da *padaria*.",
+     "ate": 16.75
+    }
+   ],
+   "seed": 42
+  },
+  {
+   "n": 3,
+   "rotulo": "O ALMOÇO",
+   "tom": "amarelo",
+   "titulo": [
+    "E o",
+    "almoço?"
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "balcao",
+    "tipoLoja": "caseira",
+    "itens": [
+     {
+      "tipo": "marmitex",
+      "em": "Marmitex",
+      "x": 640,
+      "tam": 210
+     },
+     {
+      "tipo": "porcao",
+      "em": "porção",
+      "x": 830,
+      "tam": 190
+     }
+    ],
+    "loja": {
+     "em": "caprichada"
+    },
+    "faz": {
+     "em": "dividir"
+    }
+   },
+   "t0": 16.75,
+   "t1": 22.25,
+   "voz_t0": 17.0,
+   "voz_t1": 20.35,
+   "palavras": [
+    {
+     "w": "Marmitex",
+     "n": "marmitex",
+     "i0": 0,
+     "t0": 17.0667,
+     "t1": 17.64
+    },
+    {
+     "w": "caprichada",
+     "n": "caprichada",
+     "i0": 9,
+     "t0": 17.8167,
+     "t1": 18.6
+    },
+    {
+     "w": "ou",
+     "n": "ou",
+     "i0": 20,
+     "t0": 18.7333,
+     "t1": 18.84
+    },
+    {
+     "w": "aquela",
+     "n": "aquela",
+     "i0": 23,
+     "t0": 19.0167,
+     "t1": 19.24
+    },
+    {
+     "w": "porção",
+     "n": "porcao",
+     "i0": 30,
+     "t0": 19.4167,
+     "t1": 19.64
+    },
+    {
+     "w": "pra",
+     "n": "pra",
+     "i0": 37,
+     "t0": 19.7833,
+     "t1": 19.8
+    },
+    {
+     "w": "dividir.",
+     "n": "dividir",
+     "i0": 41,
+     "t0": 19.9833,
+     "t1": 20.6
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Marmitex caprichada ou aquela porção pra dividir.",
+     "apoio": "Marmitex *caprichada*.",
+     "t0": 17.0,
+     "t1": 20.6
+    }
+   ],
+   "apoios": [
+    {
+     "t": 17.05,
+     "texto": "Marmitex *caprichada*.",
+     "ate": 23.0
+    }
+   ],
+   "seed": 42
+  },
+  {
+   "n": 4,
+   "rotulo": "O MERCADIM",
+   "tom": "verde",
+   "titulo": [
+    "Faltou algo",
+    "do mercado?"
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "balcao",
+    "tipoLoja": "mercado",
+    "itens": [
+     {
+      "tipo": "refri",
+      "em": "refri",
+      "x": 600,
+      "tam": 150
+     },
+     {
+      "tipo": "carvaoCheio",
+      "em": "carvão",
+      "x": 735,
+      "tam": 170
+     },
+     {
+      "tipo": "gelo2",
+      "em": "mercadim",
+      "x": 870,
+      "tam": 130
+     }
+    ],
+    "loja": {
+     "em": "mercadim"
+    },
+    "faz": {
+     "em": "manda"
+    }
+   },
+   "t0": 23.0,
+   "t1": 28.5,
+   "voz_t0": 23.25,
+   "voz_t1": 26.37,
+   "palavras": [
+    {
+     "w": "Esqueceu",
+     "n": "esqueceu",
+     "i0": 0,
+     "t0": 23.3167,
+     "t1": 23.73
+    },
+    {
+     "w": "o",
+     "n": "o",
+     "i0": 9,
+     "t0": 23.8167,
+     "t1": 23.783
+    },
+    {
+     "w": "refri",
+     "n": "refri",
+     "i0": 11,
+     "t0": 23.8667,
+     "t1": 24.21
+    },
+    {
+     "w": "e",
+     "n": "e",
+     "i0": 17,
+     "t0": 24.3,
+     "t1": 24.263
+    },
+    {
+     "w": "o",
+     "n": "o",
+     "i0": 19,
+     "t0": 24.35,
+     "t1": 24.37
+    },
+    {
+     "w": "carvão?",
+     "n": "carvao",
+     "i0": 21,
+     "t0": 24.55,
+     "t1": 24.85
+    },
+    {
+     "w": "O",
+     "n": "o",
+     "i0": 29,
+     "t0": 25.2667,
+     "t1": 25.25
+    },
+    {
+     "w": "mercadim",
+     "n": "mercadim",
+     "i0": 31,
+     "t0": 25.3833,
+     "t1": 25.89
+    },
+    {
+     "w": "manda.",
+     "n": "manda",
+     "i0": 40,
+     "t0": 26.1833,
+     "t1": 26.37
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Esqueceu o refri e o carvão? O mercadim manda.",
+     "apoio": "O mercadim *manda*.",
+     "t0": 23.25,
+     "t1": 26.37
+    }
+   ],
+   "apoios": [
+    {
+     "t": 23.3,
+     "texto": "O mercadim *manda*.",
+     "ate": 29.25
+    }
+   ],
+   "seed": 42
+  },
+  {
+   "n": 5,
+   "rotulo": "CHEGOU",
+   "tom": "amarelo",
+   "titulo": [
+    "Chegou e ninguém",
+    "saiu de casa!"
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "entregaRede",
+    "boca": true,
+    "moto": {
+     "em": "Chegou"
+    },
+    "desce": {
+     "em": "pertim"
+    },
+    "entrega": {
+     "em": "precisou"
+    },
+    "rede": {
+     "em": "rede"
+    }
+   },
+   "t0": 29.25,
+   "t1": 34.75,
+   "voz_t0": 29.5,
+   "voz_t1": 33.34,
+   "palavras": [
+    {
+     "w": "Chegou",
+     "n": "chegou",
+     "i0": 0,
+     "t0": 29.5667,
+     "t1": 29.9
+    },
+    {
+     "w": "tudo",
+     "n": "tudo",
+     "i0": 7,
+     "t0": 30.1167,
+     "t1": 30.38
+    },
+    {
+     "w": "pertim…",
+     "n": "pertim",
+     "i0": 12,
+     "t0": 30.6333,
+     "t1": 31.42
+    },
+    {
+     "w": "e",
+     "n": "e",
+     "i0": 20,
+     "t0": 31.5833,
+     "t1": 31.58
+    },
+    {
+     "w": "ninguém",
+     "n": "ninguem",
+     "i0": 22,
+     "t0": 31.8,
+     "t1": 32.06
+    },
+    {
+     "w": "precisou",
+     "n": "precisou",
+     "i0": 30,
+     "t0": 32.2,
+     "t1": 32.54
+    },
+    {
+     "w": "sair",
+     "n": "sair",
+     "i0": 39,
+     "t0": 32.6833,
+     "t1": 32.78
+    },
+    {
+     "w": "da",
+     "n": "da",
+     "i0": 44,
+     "t0": 32.9167,
+     "t1": 32.94
+    },
+    {
+     "w": "rede.",
+     "n": "rede",
+     "i0": 47,
+     "t0": 33.3667,
+     "t1": 33.66
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Chegou tudo pertim…",
+     "apoio": null,
+     "t0": 29.5,
+     "t1": 31.42
+    },
+    {
+     "texto": "e ninguém precisou sair da rede.",
+     "apoio": "Ninguém saiu da *rede*.",
+     "t0": 31.527,
+     "t1": 33.66
+    }
+   ],
+   "apoios": [
+    {
+     "t": 31.407,
+     "texto": "Ninguém saiu da *rede*.",
+     "ate": 35.5
+    }
+   ],
+   "seed": 42,
+   "boca": {
+    "fps": 60,
+    "t0": 29.45,
+    "bocas": "RRRRREEEEEEEEOOOOOOOOOOOOORRRRRRRRRRRROOOOOOOOOOOOOOORRRRRRRRRRRRRRRRRRRREEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRREEERRRRRRRRREEEEEEERRRROOOOOOMMMRRRRRRREEEEEEEEEEEEOOOOOOOOORRRRRAAAAAAAEEERRRRRAAAARRRRRRRRRRRRRRRRRRRRRRRRRRRR"
+   }
+  },
+  {
+   "n": 6,
+   "rotulo": "SUA VEZ",
+   "tom": "amarelo",
+   "titulo": [
+    "Feriado é",
+    "dia de quê?"
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "enquete",
+    "opcoes": [
+     {
+      "t": "dormir até tarde",
+      "em": "Dormir"
+     },
+     {
+      "t": "churrasco",
+      "em": "Churrasco"
+     },
+     {
+      "t": "maratonar série",
+      "em": "maratonar"
+     }
+    ]
+   },
+   "t0": 35.5,
+   "t1": 41.75,
+   "voz_t0": 35.75,
+   "voz_t1": 40.76,
+   "palavras": [
+    {
+     "w": "Comenta",
+     "n": "comenta",
+     "i0": 0,
+     "t0": 35.8167,
+     "t1": 36.15
+    },
+    {
+     "w": "aí:",
+     "n": "ai",
+     "i0": 8,
+     "t0": 36.2833,
+     "t1": 36.43
+    },
+    {
+     "w": "feriado",
+     "n": "feriado",
+     "i0": 12,
+     "t0": 36.6833,
+     "t1": 37.19
+    },
+    {
+     "w": "é",
+     "n": "e",
+     "i0": 20,
+     "t0": 37.4167,
+     "t1": 37.43
+    },
+    {
+     "w": "dia",
+     "n": "dia",
+     "i0": 22,
+     "t0": 37.6167,
+     "t1": 37.67
+    },
+    {
+     "w": "de",
+     "n": "de",
+     "i0": 26,
+     "t0": 37.8167,
+     "t1": 37.83
+    },
+    {
+     "w": "quê?",
+     "n": "que",
+     "i0": 29,
+     "t0": 37.9667,
+     "t1": 38.39
+    },
+    {
+     "w": "Dormir?",
+     "n": "dormir",
+     "i0": 34,
+     "t0": 38.5,
+     "t1": 39.11
+    },
+    {
+     "w": "Churrasco?",
+     "n": "churrasco",
+     "i0": 42,
+     "t0": 39.25,
+     "t1": 40.07
+    },
+    {
+     "w": "Maratonar?",
+     "n": "maratonar",
+     "i0": 53,
+     "t0": 40.2167,
+     "t1": 41.03
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Comenta aí: feriado é dia de quê? Dormir? Churrasco? Maratonar?",
+     "apoio": "*Comenta* aí: qual é o seu?",
+     "t0": 35.75,
+     "t1": 41.03
+    }
+   ],
+   "apoios": [
+    {
+     "t": 35.8,
+     "texto": "*Comenta* aí: qual é o seu?",
+     "ate": 42.5
+    }
+   ],
+   "seed": 1042
+  },
+  {
+   "n": 7,
+   "rotulo": "PRA NÃO PERDER",
+   "tom": "amarelo",
+   "titulo": [
+    "Em breve",
+    "no Glória."
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "fecho",
+    "logo": {
+     "em": "UaiPertim"
+    },
+    "assinatura": {
+     "t": "Tudo pertim de você.",
+     "em": "Tudo"
+    },
+    "chip": {
+     "t": "Segue @uaipertim",
+     "em": "Segue"
+    },
+    "confete": {
+     "em": "+1.2"
+    },
+    "pertim": {
+     "em": "UaiPertim",
+     "pisca": "pertim"
+    }
+   },
+   "t0": 42.5,
+   "t1": 50.0,
+   "voz_t0": 42.75,
+   "voz_t1": 48.75,
+   "palavras": [
+    {
+     "w": "Bom",
+     "n": "bom",
+     "i0": 0,
+     "t0": 42.8167,
+     "t1": 42.91
+    },
+    {
+     "w": "feriado,",
+     "n": "feriado",
+     "i0": 4,
+     "t0": 43.05,
+     "t1": 43.55
+    },
+    {
+     "w": "sô!",
+     "n": "so",
+     "i0": 13,
+     "t0": 43.7333,
+     "t1": 43.95
+    },
+    {
+     "w": "Relaxa,",
+     "n": "relaxa",
+     "i0": 17,
+     "t0": 44.4167,
+     "t1": 44.91
+    },
+    {
+     "w": "tem",
+     "n": "tem",
+     "i0": 25,
+     "t0": 45.2167,
+     "t1": 45.23
+    },
+    {
+     "w": "UaiPertim.",
+     "n": "uaipertim",
+     "i0": 29,
+     "t0": 45.3333,
+     "t1": 46.35
+    },
+    {
+     "w": "Tudo",
+     "n": "tudo",
+     "i0": 41,
+     "t0": 46.4667,
+     "t1": 46.67
+    },
+    {
+     "w": "pertim",
+     "n": "pertim",
+     "i0": 46,
+     "t0": 46.8833,
+     "t1": 47.07
+    },
+    {
+     "w": "de",
+     "n": "de",
+     "i0": 53,
+     "t0": 47.2167,
+     "t1": 47.23
+    },
+    {
+     "w": "você.",
+     "n": "voce",
+     "i0": 56,
+     "t0": 47.3333,
+     "t1": 47.95
+    },
+    {
+     "w": "Segue",
+     "n": "segue",
+     "i0": 62,
+     "t0": 48.1667,
+     "t1": 48.19
+    },
+    {
+     "w": "a",
+     "n": "a",
+     "i0": 68,
+     "t0": 48.2833,
+     "t1": 48.27
+    },
+    {
+     "w": "gente!",
+     "n": "gente",
+     "i0": 70,
+     "t0": 48.4167,
+     "t1": 48.75
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Bom feriado, sô! Relaxa, tem UaiPertim. Tudo pertim de você. Segue a gente!",
+     "apoio": null,
+     "t0": 42.75,
+     "t1": 48.75
+    }
+   ],
+   "apoios": [],
+   "seed": 42
+  }
+ ],
+ "colocacao": [
+  {
+   "cap": 0,
+   "arquivo": "voz/cap-00.wav",
+   "de_s": 0.0,
+   "ate_s": 3.04,
+   "no_video_s": 0.1,
+   "amostras": 145920,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 1,
+   "arquivo": "voz/cap-01.wav",
+   "de_s": 0.0,
+   "ate_s": 4.87,
+   "no_video_s": 4.5,
+   "amostras": 233760,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 2,
+   "arquivo": "voz/cap-02.wav",
+   "de_s": 0.0,
+   "ate_s": 4.21,
+   "no_video_s": 10.75,
+   "amostras": 202080,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 3,
+   "arquivo": "voz/cap-03.wav",
+   "de_s": 0.0,
+   "ate_s": 3.6,
+   "no_video_s": 17.0,
+   "amostras": 172800,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 4,
+   "arquivo": "voz/cap-04.wav",
+   "de_s": 0.0,
+   "ate_s": 3.36,
+   "no_video_s": 23.25,
+   "amostras": 161280,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 5,
+   "arquivo": "voz/cap-05.wav",
+   "de_s": 0.0,
+   "ate_s": 4.14,
+   "no_video_s": 29.5,
+   "amostras": 198720,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 6,
+   "arquivo": "voz/cap-06.wav",
+   "de_s": 0.0,
+   "ate_s": 5.28,
+   "no_video_s": 35.75,
+   "amostras": 253440,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 7,
+   "arquivo": "voz/cap-07.wav",
+   "de_s": 0.0,
+   "ate_s": 6.16,
+   "no_video_s": 42.75,
+   "amostras": 295680,
+   "fade_ms": [
+    8,
+    60
+   ]
+  }
+ ],
+ "mapa": {
+  "ok": true,
+  "falhas": []
+ }
+}

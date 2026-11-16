@@ -1,0 +1,122 @@
+TUDO PERTIM · tudo-pertim-09 — revisão técnica
+output/tudo-pertim-09/uaipertim-tudo-pertim-09.mp4
+
+FORMATO
+OK     vídeo h264 High yuv420p
+OK     resolução 1080x1920 (9:16)
+OK     60 fps, 3000 quadros
+OK     duração 50.00 s (alvo 45–60 s)
+OK     áudio aac 48000 Hz, 2 canais, 269 kb/s
+OK     vídeo e áudio com a mesma duração (Δ 0 ms)
+       arquivo 19.1 MB, 3.1 Mb/s
+       capítulos: 00 3.50 s · 01 5.50 s · 02 5.50 s · 03 5.50 s · 04 5.50 s · 05 5.50 s · 06 6.25 s · 07 7.50 s · trocas de 0.8 s
+
+SOM
+OK     loudness integrado -14.0 LUFS (alvo −14)
+OK     pico real -1.4 dBTP (limite −1)
+       a voz sozinha, na escala da mixagem: -13.6 LUFS
+       a trilha sozinha, na escala da mixagem: -26.6 LUFS
+       os efeitos sozinhos, na escala da mixagem: -21.8 LUFS
+
+VOZ (voz oficial, uma geração inteira por capítulo, nada emendado)
+       Victor Pinho (LuQ9eaWO9yCQrR73VQFa) · eleven_v4 · ajustes {"stability": 0.5, "similarity_boost": 0.75}
+OK     capítulo 00: 3.04 s contínuos da geração com seed 1042 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000025; 1 geração(ões) inteiras feitas)
+OK     capítulo 00: sem chiado depois da fala (pior janela depois da última letra: 2% em 4–10 kHz a -44.2 dB)
+OK     capítulo 00: "do/no Glória" (nunca "de Glória"); enviado à API: "Amanhã é feriado… e cê vai cozinhar?"
+OK     capítulo 01: 4.87 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000026; 1 geração(ões) inteiras feitas)
+OK     capítulo 01: sem chiado depois da fala (pior janela depois da última letra: 0% em 4–10 kHz a -120.0 dB)
+OK     capítulo 01: "do/no Glória" (nunca "de Glória"); enviado à API: "Todo mundo em casa, a pia limpinha… e ninguém quer encostar no fogão."
+OK     capítulo 02: 4.21 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000025; 1 geração(ões) inteiras feitas)
+OK     capítulo 02: sem chiado depois da fala (pior janela depois da última letra: 0% em 4–10 kHz a -120.0 dB)
+OK     capítulo 02: "do/no Glória" (nunca "de Glória"); enviado à API: "Pão francês quentinho e pão de queijo da padaria do Glória."
+OK     capítulo 03: 3.60 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000027; 1 geração(ões) inteiras feitas)
+OK     capítulo 03: sem chiado depois da fala (pior janela depois da última letra: 0% em 4–10 kHz a -120.0 dB)
+OK     capítulo 03: "do/no Glória" (nunca "de Glória"); enviado à API: "Marmitex caprichada ou aquela porção pra dividir."
+OK     capítulo 04: 3.36 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000024; 1 geração(ões) inteiras feitas)
+OK     capítulo 04: sem chiado depois da fala (pior janela depois da última letra: 0% em 4–10 kHz a -120.0 dB)
+OK     capítulo 04: "do/no Glória" (nunca "de Glória"); enviado à API: "Esqueceu o refri e o carvão? O mercadim manda."
+OK     capítulo 05: 4.14 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000025; 1 geração(ões) inteiras feitas)
+OK     capítulo 05: sem chiado depois da fala (pior janela depois da última letra: 0% em 4–10 kHz a -120.0 dB)
+OK     capítulo 05: "do/no Glória" (nunca "de Glória"); enviado à API: "Chegou tudo pertím… e ninguém precisou sair da rede."
+OK     capítulo 06: 5.28 s contínuos da geração com seed 1042 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000025; 1 geração(ões) inteiras feitas)
+OK     capítulo 06: sem chiado depois da fala (pior janela depois da última letra: 0% em 4–10 kHz a -120.0 dB)
+OK     capítulo 06: "do/no Glória" (nunca "de Glória"); enviado à API: "Comenta aí: feriado é dia de quê? Dormir? Churrasco? Maratonar?"
+OK     capítulo 07: 6.16 s contínuos da geração com seed 42 (arquivo íntegro: sim; diferença máxima vídeo × geração 0.000028; 1 geração(ões) inteiras feitas)
+OK     capítulo 07: sem chiado depois da fala (pior janela depois da última letra: 0% em 4–10 kHz a -120.0 dB)
+OK     capítulo 07: "do/no Glória" (nunca "de Glória"); enviado à API: "Bom feriado, sô! Relaxa, tem Uai pertím. Tudo pertím de você. Segue a gente!"
+
+MAPA DE TEMPOS E GATILHOS
+OK     mapa de tempos de linha.py (total 45–60 s, capítulos 5–7 s, apoios ≥ 1,5 s, fecho 6–8 s, logo nos 3 últimos s)
+OK     toda palavra "em" da cena está na fala
+
+LEITURA (linhas de apoio)
+       cap 01 · apoio 1: 2.95 s inteira · Ninguém quer o fogão.
+       cap 02 · apoio 1: 5.61 s inteira · Direto da padaria.
+       cap 03 · apoio 1: 5.61 s inteira · Marmitex caprichada.
+       cap 04 · apoio 1: 5.61 s inteira · O mercadim manda.
+       cap 05 · apoio 1: 3.75 s inteira · Ninguém saiu da rede.
+       cap 06 · apoio 1: 6.36 s inteira · Comenta aí: qual é o seu?
+OK     6 linhas de apoio, a mais curta fica 2.95 s inteira na tela (mínimo 1,5 s)
+OK     a linha de apoio anterior sai antes de a próxima entrar (nunca duas ao mesmo tempo)
+OK     quebras de linha: nunca separam as duas últimas palavras, "pertim de você", "do/no Glória" nem o emoji, e nunca deixam artigo/palavra curta no fim da linha
+
+ÁREAS SEGURAS E COMPOSIÇÃO
+OK     conteúdo entre x 80–940 e y 265–1456: 1213 caixas em 144 quadros fora das trocas
+OK     nenhuma caixa na coluna de botões (x ≥ 940, y 1060–1560)
+OK     a linha de apoio nunca fica por cima de card, balão ou peça de cena
+       faixa usada pelo conteúdo: y 305–1440
+OK     sem quadro vazio nas 7 trocas de capítulo (sempre há conteúdo na tela)
+OK     coluna de botões: 0 pixel de conteúdo em 200 quadros amostrados (só o fundo creme passa por ali)
+OK     sem trechos pretos
+OK     sem imagem congelada por 1,5 s ou mais
+
+CAPA E FECHO
+OK     a capa é o quadro 0 do vídeo (PSNR 41.0 dB entre capa.png e o 1º quadro)
+OK     regra das capas (revisao/capa.txt): dentro da regra das capas
+OK     fecho com 7.50 s (alvo 6–8 s)
+OK     fecho: a última mudança de texto é em 46.95 s; o texto fica parado 3.05 s até o fim (mínimo 3 s)
+OK     a logo oficial está na tela em todos os 12 quadros amostrados dos 3 últimos segundos (parada desde 46.23 s)
+OK     fecho: 9 elementos (logo oficial, título, chip, seta, marca) iguais entre 47.00 s e o fim (maior diferença média 0.57 de 255)
+       elementos: rótulo 0.01, título, linha 1 0.35, título, linha 2 0.20, logo oficial 0.00, Pertim 0.19, assinatura 0.44, chip Segue 0.09, seta 0.57, marca 0.35
+
+LEGENDA (gravada no vídeo)
+OK     o texto da legenda é a fala de cada capítulo, na ordem (72 palavras em 19 blocos)
+OK     grafia da tela na legenda ("UaiPertim", "pertim", "do/no Glória"; nunca a grafia enviada à voz)
+OK     fecho: a legenda acompanha a fala até 46.95 s e some nos 3 s finais; o trecho falado depois ("Tudo pertim de você. Segue a gente!", a partir de 46.47 s) já está na tela (assinatura e chip)
+OK     blocos de 3 a 6 palavras
+OK     no máximo 2 linhas por bloco, cada uma com até 740 px (maior: 709 px)
+OK     tempo: cada palavra está na tela enquanto é falada; o bloco entra com a voz; nunca nas trocas nem nos 3 s finais; nunca dois blocos juntos
+OK     a capa (quadro 0) sem legenda: o 1º bloco entra em 0.12 s
+       cap 00 · palavra-chave: — (sem apoio marcado)
+       cap 01 · palavra-chave: fogão.
+       cap 02 · palavra-chave: padaria
+       cap 03 · palavra-chave: caprichada
+       cap 04 · palavra-chave: manda.
+       cap 05 · palavra-chave: rede.
+       cap 06 · palavra-chave: Comenta
+       cap 07 · palavra-chave: — (sem apoio marcado)
+OK     a palavra-chave em amarelo é a marcada no apoio do capítulo
+OK     a pílula da legenda sempre na faixa x 90–930, y 1470–1600 e fora da coluna de botões (140 caixas)
+OK     a legenda nunca encosta em título, apoio, balão, cena ou no Pertim
+OK     sempre que uma palavra é falada, a legenda dela está na tela (amostras a cada 0,25 s)
+       cap 00   0.12–  1.78 s · Amanhã é feriado…
+       cap 00   1.78–  3.45 s · e cê vai cozinhar?
+       cap 01   4.52–  5.87 s · Todo mundo em casa,
+       cap 01   5.87–  7.33 s · a pia limpinha…
+       cap 01   7.33–  9.70 s · e ninguém quer / encostar no fogão.
+       cap 02  10.77– 12.43 s · Pão francês quentinho
+       cap 02  12.43– 13.48 s · e pão de queijo
+       cap 02  13.48– 15.59 s · da padaria do Glória.
+       cap 03  17.02– 18.97 s · Marmitex caprichada ou
+       cap 03  18.97– 21.20 s · aquela porção pra dividir.
+       cap 04  23.27– 25.22 s · Esqueceu o refri e o carvão?
+       cap 04  25.22– 26.97 s · O mercadim manda.
+       cap 05  29.52– 31.53 s · Chegou tudo pertim…
+       cap 05  31.53– 34.26 s · e ninguém precisou sair da rede.
+       cap 06  35.77– 37.37 s · Comenta aí: feriado
+       cap 06  37.37– 38.45 s · é dia de quê?
+       cap 06  38.45– 41.63 s · Dormir? Churrasco? Maratonar?
+       cap 07  42.77– 44.37 s · Bom feriado, sô!
+       cap 07  44.37– 46.95 s · Relaxa, tem UaiPertim.
+
+RESULTADO: aprovado
