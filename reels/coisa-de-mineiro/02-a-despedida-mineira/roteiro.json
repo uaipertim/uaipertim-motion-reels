@@ -1,0 +1,180 @@
+{
+  "id": "coisa-de-mineiro/02-a-despedida-mineira",
+  "serie": "coisa-de-mineiro",
+  "numero": 2,
+  "titulo": "A despedida mineira",
+  "capa": {
+    "titulo": [
+      "A despedida",
+      "*mineira*"
+    ],
+    "cena": "portao",
+    "relogio": "22:30"
+  },
+  "marca": "@uaipertim",
+  "perfil_voz": "narracao",
+  "trilha": "animada",
+  "bpm": 120,
+  "legenda": true,
+  "grade": true,
+  "limites": [
+    20,
+    30
+  ],
+  "limites_fecho": [
+    3.5,
+    7.0
+  ],
+  "pronuncia": {
+    "Pertim": "pertím",
+    "pertim": "pertím"
+  },
+  "_doc": "Série 'Coisa de mineiro' #02 'A despedida mineira' (sex 20/11, 20h): a despedida que começa na sala e termina uma hora depois no portão; um relógio no canto acompanha tudo e gira rápido a cada troca de cena. O Pertim é o anfitrião; a visita é o visitante azul do #01. 'falante' de cada capítulo: quem fala a linha (a boca que mexe): 'pertim' (padrão) ou 'visita' — a voz é a mesma (a voz oficial). 'relogio': a hora da cena (HH:MM). Ver reels/coisa-de-mineiro/README.md.",
+  "capitulos": [
+    {
+      "rotulo": "CENA 1 · a sala",
+      "titulo": [
+        "",
+        ""
+      ],
+      "batidas": 6,
+      "inicio": 0.15,
+      "segura": 0.1,
+      "fala": [
+        {
+          "texto": "Sabe quanto tempo dura uma despedida mineira?",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "sala",
+        "relogio": "21:00"
+      }
+    },
+    {
+      "rotulo": "CENA 2 · vou indo",
+      "titulo": [
+        "",
+        ""
+      ],
+      "batidas": 6,
+      "inicio": 0.15,
+      "segura": 0.15,
+      "falante": "visita",
+      "fala": [
+        {
+          "texto": "Bom, gente… vou indo, né?",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "sala",
+        "relogio": "21:00",
+        "levanta": {
+          "em": "Bom"
+        },
+        "pernas": {
+          "em": "indo"
+        }
+      }
+    },
+    {
+      "rotulo": "CENA 3 · a porta",
+      "titulo": [
+        "",
+        ""
+      ],
+      "batidas": 9,
+      "inicio": 0.2,
+      "segura": 0.15,
+      "fala": [
+        {
+          "texto": "Leva um pedaço de bolo! Ah, mas fica mais um pouquinho!",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "porta",
+        "relogio": "21:20",
+        "bolo": {
+          "em": "bolo"
+        },
+        "fica": {
+          "em": "fica"
+        }
+      }
+    },
+    {
+      "rotulo": "CENA 4 · o portão",
+      "titulo": [
+        "",
+        ""
+      ],
+      "batidas": 8,
+      "inicio": 0.2,
+      "segura": 0.2,
+      "fala": [
+        {
+          "texto": "E a sua mãe, como é que tá? E aquele seu primo?",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "portao",
+        "relogio": "21:50",
+        "cachorro": {
+          "em": "como"
+        },
+        "vizinho": {
+          "em": "+3.3"
+        }
+      }
+    },
+    {
+      "rotulo": "CENA 5 · o carro",
+      "titulo": [
+        "",
+        ""
+      ],
+      "batidas": 8,
+      "inicio": 1.2,
+      "segura": 0.2,
+      "falante": "visita",
+      "fala": [
+        {
+          "texto": "Ah, esqueci de te contar uma coisa…",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "carro",
+        "relogio": "22:30",
+        "vidro": {
+          "em": "Ah"
+        }
+      }
+    },
+    {
+      "rotulo": "FECHO",
+      "titulo": [
+        "",
+        ""
+      ],
+      "batidas": 8,
+      "inicio": 0.25,
+      "segura": 2.1,
+      "fala": [
+        {
+          "texto": "Marca aquele amigo que demora uma hora pra ir embora!",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "fecho",
+        "cenario": "portao",
+        "relogio": "22:30",
+        "marca_s": 2.0
+      }
+    }
+  ]
+}

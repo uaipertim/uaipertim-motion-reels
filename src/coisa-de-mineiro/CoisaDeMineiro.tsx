@@ -33,9 +33,9 @@ const CHAO = L.chao, HOR = L.horizonte;
 const VERDE = "#3E9E4E", AMARELO = "#F9B233";
 
 type Em = { em: string; t: number };
-type Cena = { n: number; tipo: string; t0: number; t1: number; voz_t0: number; voz_t1: number; texto: string; diagrama: Record<string, any> };
+type Cena = { n: number; tipo: string; falante?: string; t0: number; t1: number; voz_t0: number; voz_t1: number; texto: string; diagrama: Record<string, any> };
 export type DadosEpisodio = {
-  ep: string; numero: number; titulo: string; capa?: { titulo: string[] }; duracao: number; fps: number; quadros: number; batida: number;
+  ep: string; numero: number; titulo: string; capa?: { titulo: string[]; cena?: string; relogio?: string }; duracao: number; fps: number; quadros: number; batida: number;
   cenas: Cena[]; marca_t: number; piscadas: number[]; piscada_dur: number; visemas: string; legenda: LegendaDados;
 };
 export type CoisaDeMineiroProps = { ep: string; dados?: DadosEpisodio };
@@ -286,9 +286,30 @@ const PrimeiroPlano: React.FC<{ off: number; hora: number; t: number }> = ({ off
   );
 };
 
+// (#02) a boca da visita pelos visemas da voz, e o pote de bolo (em coordenadas do desenho de quem segura)
+const BocaVisita: React.FC<{ v: string }> = ({ v }) =>
+  v === "A" ? <ellipse cx={100} cy={120} rx={11} ry={13} fill={C.tinta} />
+    : v === "E" ? <ellipse cx={100} cy={119} rx={14} ry={7} fill={C.tinta} />
+    : v === "O" ? <ellipse cx={100} cy={120} rx={8} ry={10} fill={C.tinta} />
+    : v === "M" ? <path d="M90 119 H110" stroke={C.tinta} strokeWidth={4} strokeLinecap="round" />
+    : <path d="M88 118 Q100 126 112 118" stroke={C.tinta} strokeWidth={4} fill="none" strokeLinecap="round" />;
+const PoteDeBolo: React.FC<{ x: number; y: number; w: number }> = ({ x, y, w }) => {
+  const k = w / 60;
+  return (
+    <g transform={`translate(${x} ${y}) scale(${k})`}>
+      <rect x={-30} y={-18} width={60} height={36} rx={8} fill="#FFFFFF" fillOpacity={0.85} stroke="#9FB4C8" strokeWidth={2.5} />
+      <path d="M-22 10 V-4 L18 -12 V10 Z" fill="#F7C64D" /><path d="M-22 -4 L18 -12 L22 -10 L-18 -2 Z" fill="#8A4A1C" />
+      <rect x={-33} y={-26} width={66} height={11} rx={5} fill="#4F86C6" />
+    </g>
+  );
+};
+
 // ================================================================ o visitante: um pin genérico (azul), com o mapa na mão
-const Visitante: React.FC<{ cx: number; base: number; altura: number; t: number; anda?: number; estado?: "normal" | "perdido" | "cansado" | "dormindo"; olha?: number; pulo?: number; mapa?: boolean }> = ({
-  cx, base, altura, t, anda = 0, estado = "normal", olha = 0, pulo = 0, mapa = true,
+const Visitante: React.FC<{
+  cx: number; base: number; altura: number; t: number; anda?: number; estado?: "normal" | "perdido" | "cansado" | "dormindo"; olha?: number; pulo?: number; mapa?: boolean;
+  boca?: string; pote?: boolean;   // (#02) a boca da fala (visema R/A/E/O/M) e o pote de bolo nas mãos
+}> = ({
+  cx, base, altura, t, anda = 0, estado = "normal", olha = 0, pulo = 0, mapa = true, boca, pote,
 }) => {
   const k = altura / 260;
   const passo = Math.sin(t * 11) * anda;
@@ -323,7 +344,7 @@ const Visitante: React.FC<{ cx: number; base: number; altura: number; t: number;
               {estado === "perdido" && <path d="M106 74 Q118 66 130 74" stroke={C.tinta} strokeWidth={4} fill="none" strokeLinecap="round" />}
             </>
           )}
-          {cansado ? <ellipse cx={100} cy={122} rx={10} ry={12} fill={C.tinta} /> : dormindo ? <path d="M92 120 Q100 124 108 120" stroke={C.tinta} strokeWidth={4} fill="none" /> : <path d="M88 118 Q100 126 112 118" stroke={C.tinta} strokeWidth={4} fill="none" strokeLinecap="round" />}
+          {boca && !dormindo ? <BocaVisita v={boca} /> : cansado ? <ellipse cx={100} cy={122} rx={10} ry={12} fill={C.tinta} /> : dormindo ? <path d="M92 120 Q100 124 108 120" stroke={C.tinta} strokeWidth={4} fill="none" /> : <path d="M88 118 Q100 126 112 118" stroke={C.tinta} strokeWidth={4} fill="none" strokeLinecap="round" />}
           {/* os braços e o mapa aberto na frente */}
           <path d="M40 140 Q30 160 48 172" stroke={azul2} strokeWidth={12} strokeLinecap="round" fill="none" />
           <path d="M160 140 Q170 160 152 172" stroke={azul2} strokeWidth={12} strokeLinecap="round" fill="none" />
@@ -335,6 +356,7 @@ const Visitante: React.FC<{ cx: number; base: number; altura: number; t: number;
               <circle cx={48} cy={-20} r={6} fill={C.coral} />
             </g>
           )}
+          {pote && <PoteDeBolo x={100} y={176} w={86} />}
           <circle cx={46} cy={172} r={11} fill="#fff" /><circle cx={154} cy={172} r={11} fill="#fff" />
         </g>
         {cansado && [0, 1].map((i) => {
@@ -355,7 +377,7 @@ const VB: Record<string, number[]> = { parado: [0, 18, 240, 270], moto: [-24, 40
 const vbDe = (pose: string) => VB[pose] ?? [-20, 6, 280, 284];
 // chinelo e café: desenhados POR CIMA do Pertim oficial, no mesmo viewBox (o desenho dele não muda): o pé descalço com
 // o chinelo cobre o tênis; a xícara fica na luva de baixo (pose "parado")
-const Acessorios: React.FC<{ altura: number; pose: Pose; quique?: number; respira?: number; t: number; chinelo?: boolean; cafe?: boolean }> = ({ altura, pose, quique = 0, respira = 0, t, chinelo, cafe }) => {
+const Acessorios: React.FC<{ altura: number; pose: Pose; quique?: number; respira?: number; t: number; chinelo?: boolean; cafe?: boolean; pote?: boolean }> = ({ altura, pose, quique = 0, respira = 0, t, chinelo, cafe, pote }) => {
   const [vx, vy, vw, vh] = vbDe(pose);
   const corpoT = `translate(120 252) scale(${1 - respira * 0.006} ${1 + respira * 0.014}) translate(-120 -252)`;
   const Pe: React.FC<{ x: number; flip?: boolean }> = ({ x, flip }) => (
@@ -383,25 +405,27 @@ const Acessorios: React.FC<{ altura: number; pose: Pose; quique?: number; respir
             <ellipse cx={216} cy={187} rx={13} ry={3} fill="#6B3A1E" />
           </g>
         )}
+        {pote && pose === "parado" && <g transform={corpoT}><PoteDeBolo x={216} y={200} w={44} /></g>}
       </g>
     </svg>
   );
 };
 const PertimEm: React.FC<{
   t: number; quadro: number; d: DadosEpisodio; pose: Pose; expr: Expressao; cx: number; base: number; altura: number; olhar?: [number, number];
-  chinelo?: boolean; cafe?: boolean; rot?: number; aceno?: number;
-}> = ({ t, quadro, d, pose, expr, cx, base, altura, olhar = [0, 0], chinelo, cafe, rot = 0, aceno }) => {
-  const falando = d.cenas.some((c) => t >= c.voz_t0 - 0.02 && t <= c.voz_t1 + 0.04);
+  chinelo?: boolean; cafe?: boolean; rot?: number; aceno?: number; pote?: boolean; cansado?: number;
+}> = ({ t, quadro, d, pose, expr, cx, base, altura, olhar = [0, 0], chinelo, cafe, rot = 0, aceno, pote, cansado = 0 }) => {
+  // a boca mexe só nas falas DELE (o "falante" da cena; sem falante, é o Pertim)
+  const falando = d.cenas.some((c) => (c.falante ?? "pertim") === "pertim" && t >= c.voz_t0 - 0.02 && t <= c.voz_t1 + 0.04);
   const boca = bocaNoQuadro({ fps: d.fps, bocas: d.visemas, codigos: {} } as Visemas, quadro, falando);
   const [, , vw, vh] = vbDe(pose);
   const w = (altura * vw) / vh;
   const resp = respiracao(t);
-  const rig: PertimRig = { ...resp, piscada: piscadaEm(d.piscadas, t, d.piscada_dur), olhar, centro: true,
+  const rig: PertimRig = { ...resp, piscada: Math.max(cansado, piscadaEm(d.piscadas, t, d.piscada_dur)), olhar, centro: true,
     aceno: aceno ?? (pose === "acenando" ? 12 * Math.sin(t * 9) : pose === "apontando" ? -14 + 3 * Math.sin(t * 2.5) : 0) };
   return (
     <div style={{ position: "absolute", left: cx - w / 2, top: base - altura, width: w, height: altura, transform: `rotate(${rot}deg)`, transformOrigin: "50% 95%" }}>
       <Pertim v={1} pose={pose} expr={expr} mouth={boca ?? "auto"} altura={altura} rig={rig} />
-      {(chinelo || cafe) && <Acessorios altura={altura} pose={pose} respira={resp.respira} t={t} chinelo={chinelo} cafe={cafe} />}
+      {(chinelo || cafe || pote) && <Acessorios altura={altura} pose={pose} respira={resp.respira} t={t} chinelo={chinelo} cafe={cafe} pote={pote} />}
     </div>
   );
 };
@@ -427,6 +451,283 @@ const anda = (t: number, cam: { t0: number; t1: number; segue: number; para: num
   return x;
 };
 
+// ================================================================ #02 em diante: a casa (sala, porta, portão, carro) e o relógio
+// (blocos novos; os do #01 não mudam). Coordenadas do mundo (o chão em y CHAO), dentro do <Mundo>.
+const minutos = (h: string) => { const [a, b] = h.split(":").map(Number); return a * 60 + b; };
+const hhmm = (m: number) => `${String(Math.floor(m / 60) % 24).padStart(2, "0")}:${String(Math.floor(m % 60)).padStart(2, "0")}`;
+// o relógio do canto: mostra a hora da cena e, a cada troca de hora, os ponteiros dão uma volta a mais, rápido
+export const Relogio: React.FC<{ min: number; giro?: number; size?: number }> = ({ min, giro = 0, size = 128 }) => {
+  const r = size / 2;
+  const angM = min * 6 + giro * 360, angH = min * 0.5 + giro * 30;
+  return (
+    <div style={{ position: "relative", width: size, height: size + 58 }}>
+      <svg width={size} height={size} viewBox="-50 -50 100 100" style={{ filter: "drop-shadow(0 6px 10px rgba(0,0,0,0.3))" }}>
+        <circle r={47} fill="#FFF9F1" stroke={C.coral} strokeWidth={6} />
+        {Array.from({ length: 12 }).map((_, i) => { const a = (i / 12) * Math.PI * 2; return <line key={i} x1={Math.sin(a) * 36} y1={-Math.cos(a) * 36} x2={Math.sin(a) * (i % 3 ? 40 : 33)} y2={-Math.cos(a) * (i % 3 ? 40 : 33)} stroke={C.tinta} strokeWidth={i % 3 ? 2 : 4} strokeLinecap="round" />; })}
+        <line x1={0} y1={0} x2={0} y2={-22} stroke={C.tinta} strokeWidth={6} strokeLinecap="round" transform={`rotate(${angH})`} />
+        <line x1={0} y1={6} x2={0} y2={-34} stroke={C.coral} strokeWidth={4} strokeLinecap="round" transform={`rotate(${angM})`} />
+        <circle r={4.5} fill={C.tinta} />
+      </svg>
+      <div style={{ position: "absolute", left: "50%", top: size + 6, transform: "translateX(-50%)", padding: "4px 14px", borderRadius: 999, background: C.tinta, color: AMARELO,
+        fontFamily: FONT, fontWeight: W.black, fontSize: r * 0.5, lineHeight: 1.1, letterSpacing: 1, fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>{hhmm(min)}</div>
+    </div>
+  );
+};
+const relogioEm = (d: DadosEpisodio, t: number) => {
+  const cs = d.cenas.filter((c) => c.diagrama.relogio);
+  if (!cs.length) return null;
+  let k = 0;
+  cs.forEach((c, i) => { if (t >= c.t0 - 0.1) k = i; });
+  const atual = minutos(cs[k].diagrama.relogio), ant = k ? minutos(cs[k - 1].diagrama.relogio) : atual;
+  const u = ant === atual ? 1 : inOut(entre(t, cs[k].t0 - 0.1, cs[k].t0 + 0.45));
+  return { min: ant + (atual - ant) * u, giro: ant === atual ? 0 : u };
+};
+// o céu da noite de cidadezinha (a lua do lado esquerdo, longe do relógio)
+const NoiteCidade: React.FC<{ t: number; lua?: [number, number] }> = ({ t, lua = [520, 470] }) => (
+  <>
+    <AbsoluteFill style={{ background: "linear-gradient(to bottom, #16213E 0%, #2B3C68 60%, #3A4F82 100%)" }} />
+    {Array.from({ length: 26 }).map((_, i) => {
+      const x = random(`ec-x-${i}`) * 1080, y = 230 + random(`ec-y-${i}`) * 650, s = 3 + random(`ec-s-${i}`) * 5, br = 0.5 + 0.5 * Math.sin(t * 3 + i);
+      return <div key={i} style={{ position: "absolute", left: x, top: y, width: s, height: s, borderRadius: "50%", background: "#FFF6D8", opacity: 0.4 + 0.6 * br }} />;
+    })}
+    <div style={{ position: "absolute", left: lua[0], top: lua[1], width: 120, height: 120, borderRadius: "50%", background: "#FFF3C4", boxShadow: "0 0 60px 18px rgba(255,243,196,0.3)" }}>
+      <div style={{ position: "absolute", left: 24, top: 30, width: 22, height: 22, borderRadius: "50%", background: "#EADFB0" }} />
+    </div>
+  </>
+);
+// a parede e o chão de madeira da casa (sala e porta)
+const Interior: React.FC<{ porta?: boolean }> = ({ porta }) => (
+  <svg width={1080} height={1920} viewBox="0 0 1080 1920" style={{ position: "absolute", left: 0, top: 0 }}>
+    <rect x={0} y={0} width={1080} height={1180} fill="#F3E2C3" />
+    {Array.from({ length: 16 }).map((_, i) => <rect key={i} x={i * 70} y={0} width={30} height={1000} fill="#EAD3AE" opacity={0.6} />)}
+    <rect x={0} y={1000} width={1080} height={180} fill="#E8C27E" /><rect x={0} y={992} width={1080} height={16} fill="#C9955E" />
+    <rect x={0} y={1180} width={1080} height={740} fill="#C98B52" />
+    {Array.from({ length: 12 }).map((_, i) => <line key={i} x1={0} y1={1240 + i * 62} x2={1080} y2={1240 + i * 62} stroke="#B57A45" strokeWidth={5} />)}
+    {Array.from({ length: 30 }).map((_, i) => <line key={`j${i}`} x1={(i * 197) % 1080} y1={1180 + (i % 12) * 62} x2={(i * 197) % 1080} y2={1242 + (i % 12) * 62} stroke="#A86D3C" strokeWidth={4} />)}
+    <rect x={0} y={1172} width={1080} height={14} fill="#8A5A35" />
+    {porta ? (
+      <g>
+        {/* a porta da rua, aberta para a noite */}
+        <rect x={150} y={590} width={280} height={600} fill="#7A5233" />
+        <rect x={172} y={612} width={236} height={578} fill="#1E2A4A" />
+        <circle cx={330} cy={700} r={4} fill="#FFF6D8" /><circle cx={230} cy={760} r={3} fill="#FFF6D8" />
+        <path d="M172 1080 Q240 1010 300 1060 T408 1040 V1190 H172 Z" fill="#22332F" />
+        <path d="M172 612 L120 640 V1190 L172 1190 Z" fill="#9A6A3A" /><circle cx={150} cy={900} r={7} fill={AMARELO} />
+        <rect x={190} y={1186} width={220} height={22} rx={6} fill={C.coral} opacity={0.85} />
+        {/* o cabideiro com o chapéu */}
+        <rect x={905} y={640} width={14} height={540} rx={6} fill="#7A5233" />
+        <path d="M870 700 Q912 640 954 700 Z" fill="#C9955E" /><ellipse cx={912} cy={702} rx={50} ry={10} fill="#B07A44" />
+      </g>
+    ) : (
+      <g>
+        {/* a janela com a noite, as cortinas, o quadro de morro e o abajur */}
+        <rect x={160} y={520} width={240} height={290} rx={10} fill="#9A6A3A" />
+        <rect x={176} y={536} width={208} height={258} fill="#1E2A4A" /><circle cx={330} cy={600} r={26} fill="#FFF3C4" />
+        <circle cx={220} cy={580} r={3} fill="#FFF6D8" /><circle cx={260} cy={640} r={3} fill="#FFF6D8" />
+        <line x1={280} y1={536} x2={280} y2={794} stroke="#9A6A3A" strokeWidth={8} /><line x1={176} y1={665} x2={384} y2={665} stroke="#9A6A3A" strokeWidth={8} />
+        <path d="M150 510 Q190 660 150 830 H190 Q215 660 190 510 Z" fill={C.coral} /><path d="M410 510 Q370 660 410 830 H370 Q345 660 370 510 Z" fill={C.coral} />
+        <rect x={480} y={600} width={170} height={130} rx={6} fill="#9A6A3A" /><rect x={492} y={612} width={146} height={106} fill="#9ED8F5" />
+        <path d="M492 718 Q540 650 590 700 Q615 670 638 700 V718 Z" fill="#6FAF55" /><circle cx={605} cy={640} r={14} fill={AMARELO} />
+        <rect x={930} y={640} width={10} height={540} fill="#3A2C26" /><path d="M880 650 L990 650 L960 580 L910 580 Z" fill={AMARELO} />
+        <defs><radialGradient id="cm-brilho"><stop offset="0" stopColor="#FFD66B" stopOpacity={0.35} /><stop offset="1" stopColor="#FFD66B" stopOpacity={0} /></radialGradient></defs><circle cx={935} cy={680} r={220} fill="url(#cm-brilho)" />
+        <ellipse cx={540} cy={1340} rx={430} ry={50} fill="#E07B3C" opacity={0.75} />
+        {/* a mesinha com o café e o pão de queijo */}
+        <rect x={60} y={1050} width={130} height={14} rx={6} fill="#9A6A3A" /><rect x={90} y={1064} width={12} height={120} fill="#7A5233" /><rect x={150} y={1064} width={12} height={120} fill="#7A5233" />
+        <rect x={80} y={1022} width={26} height={28} rx={4} fill="#F4EFE8" stroke="#3A2C26" strokeWidth={2} /><ellipse cx={150} cy={1044} rx={30} ry={7} fill="#fff" />
+        {[[138, 1036], [156, 1032], [148, 1026]].map(([x, y], i) => <circle key={i} cx={x} cy={y} r={9} fill="#F2C063" />)}
+      </g>
+    )}
+  </svg>
+);
+// o primeiro plano da casa (perto da câmera, preenchendo a parte de baixo)
+const FrenteCasa: React.FC<{ porta?: boolean }> = ({ porta }) => (
+  <svg width={1080} height={1920} viewBox="0 0 1080 1920" style={{ position: "absolute", left: 0, top: 0 }}>
+    {porta ? (
+      <g>
+        <rect x={340} y={1590} width={420} height={60} rx={24} fill={C.coral} opacity={0.9} /><rect x={360} y={1604} width={380} height={32} rx={14} fill="none" stroke="#FFF3C4" strokeWidth={4} strokeDasharray="14 10" />
+        <path d="M80 1700 L110 1560 H250 L280 1700 Z" fill="#C0643A" /><rect x={100} y={1548} width={160} height={24} rx={8} fill="#A8532E" />
+        {[-70, -40, -10, 20, 50, 80].map((a, i) => <path key={i} d={`M180 1552 Q${180 + 2.4 * a} ${1440 - Math.abs(a)} ${180 + 3.4 * a} ${1480 + Math.abs(a) * 0.8}`} stroke="#3E9E4E" strokeWidth={16} fill="none" strokeLinecap="round" />)}
+        <path d="M800 1700 L830 1590 H990 L1020 1700 Z" fill="#7A5233" /><path d="M850 1590 Q850 1530 910 1530 Q970 1530 970 1590 Z" fill="#2F7A3A" />
+      </g>
+    ) : (
+      <g>
+        <rect x={250} y={1560} width={580} height={36} rx={14} fill="#9A6A3A" /><rect x={280} y={1596} width={520} height={110} fill="#7A5233" />
+        <rect x={330} y={1480} width={50} height={84} rx={10} fill="#C9302C" /><rect x={340} y={1466} width={30} height={20} rx={4} fill="#3A2C26" />
+        <rect x={420} y={1520} width={46} height={40} rx={6} fill="#F4EFE8" stroke="#3A2C26" strokeWidth={3} /><path d="M466 1530 q18 2 0 20" stroke="#3A2C26" strokeWidth={4} fill="none" />
+        <ellipse cx={620} cy={1556} rx={110} ry={16} fill="#F4EFE8" />
+        {[[560, 1540], [600, 1534], [640, 1540], [680, 1544], [580, 1522], [625, 1516], [660, 1524]].map(([x, y], i) => <circle key={i} cx={x} cy={y} r={20} fill="#F2C063" stroke="#D9A043" strokeWidth={3} />)}
+      </g>
+    )}
+  </svg>
+);
+// o sofá: o encosto (atrás de quem senta) e a frente do assento (na frente: esconde as pernas de quem está sentado)
+const SofaFundo: React.FC = () => (
+  <svg width={1080} height={1920} viewBox="0 0 1080 1920" style={{ position: "absolute", left: 0, top: 0 }}>
+    <rect x={200} y={890} width={680} height={290} rx={60} fill="#2F7A3A" />
+    <rect x={225} y={915} width={300} height={200} rx={40} fill="#3E9E4E" /><rect x={555} y={915} width={300} height={200} rx={40} fill="#3E9E4E" />
+  </svg>
+);
+const SofaFrente: React.FC = () => (
+  <svg width={1080} height={1920} viewBox="0 0 1080 1920" style={{ position: "absolute", left: 0, top: 0 }}>
+    <rect x={190} y={1180} width={700} height={150} rx={36} fill="#2F7A3A" />
+    <rect x={200} y={1180} width={680} height={46} rx={22} fill="#4FB15E" />
+    <rect x={150} y={1060} width={100} height={270} rx={44} fill="#3E9E4E" /><rect x={830} y={1060} width={100} height={270} rx={44} fill="#3E9E4E" />
+    <rect x={220} y={1326} width={24} height={26} rx={6} fill="#5B3A29" /><rect x={836} y={1326} width={24} height={26} rx={6} fill="#5B3A29" />
+  </svg>
+);
+// a rua à noite: a casa do vizinho (com a janela que apaga), o muro com o portão, a casa do Pertim, o poste, a calçada
+const Rua: React.FC<{ luzVizinho: number }> = ({ luzVizinho }) => (
+  <svg width={1080} height={1920} viewBox="0 0 1080 1920" style={{ position: "absolute", left: 0, top: 0 }}>
+    <defs><radialGradient id="cm-luz"><stop offset="0" stopColor="#FFD66B" stopOpacity={0.45} /><stop offset="1" stopColor="#FFD66B" stopOpacity={0} /></radialGradient></defs>
+    <rect x={110} y={700} width={380} height={420} fill="#8C7B6A" /><path d="M80 712 L300 560 L520 712 Z" fill="#6B3527" />
+    {luzVizinho > 0 && <circle cx={300} cy={830} r={190} fill="url(#cm-luz)" opacity={luzVizinho} />}
+    <rect x={240} y={770} width={120} height={110} rx={6} fill={interpolateColors(luzVizinho, [0, 1], ["#25304E", "#FFE48A"])} stroke="#4A3A30" strokeWidth={8} />
+    <line x1={300} y1={770} x2={300} y2={880} stroke="#4A3A30" strokeWidth={6} />
+    <rect x={720} y={680} width={360} height={460} fill="#D9BE96" /><path d="M690 692 L900 540 L1110 692 Z" fill="#8A3B26" />
+    <rect x={780} y={820} width={110} height={200} rx={6} fill="#FFD27A" stroke="#4A3A30" strokeWidth={8} /><circle cx={835} cy={900} r={170} fill="url(#cm-luz)" />
+    <rect x={940} y={780} width={100} height={90} rx={6} fill="#FFE48A" stroke="#4A3A30" strokeWidth={8} />
+    <rect x={0} y={1010} width={1080} height={170} fill="#6E6A78" /><rect x={0} y={996} width={1080} height={20} rx={6} fill="#86829A" />
+    <rect x={588} y={930} width={34} height={250} rx={6} fill="#7E7A90" /><rect x={762} y={930} width={34} height={250} rx={6} fill="#7E7A90" />
+    <rect x={622} y={1012} width={140} height={168} fill="#2A3558" />
+    {Array.from({ length: 5 }).map((_, i) => <line key={i} x1={600 - i * 7} y1={1020 + i * 4} x2={600 - i * 7} y2={1176} stroke="#2E6E3A" strokeWidth={8} />)}
+    <rect x={560} y={1016} width={48} height={10} fill="#2E6E3A" />
+    <rect x={1000} y={560} width={14} height={620} fill="#3A3A48" /><path d="M960 570 H1040 L1020 540 H980 Z" fill="#3A3A48" />
+    <circle cx={1007} cy={585} r={16} fill="#FFE48A" /><circle cx={1007} cy={600} r={200} fill="url(#cm-luz)" opacity={0.6} />
+    <rect x={0} y={1180} width={1080} height={140} fill="#5D5A68" /><rect x={0} y={1310} width={1080} height={16} fill="#7A7690" />
+    {/* os paralelepípedos (o primeiro plano da rua, até embaixo) */}
+    <rect x={0} y={1326} width={1080} height={600} fill="#3C4156" />
+    {Array.from({ length: 9 }).map((_, r) => Array.from({ length: 16 }).map((_, c) => (
+      <rect key={`${r}-${c}`} x={(c * 76 + (r % 2) * 38) - 30} y={1340 + r * 44} width={66} height={34} rx={10} fill={(r + c) % 3 ? "#4A5068" : "#535A74"} />
+    )))}
+  </svg>
+);
+// o cachorro: sentado → deita (u) → dorme (zz)
+const Cachorro: React.FC<{ x: number; u: number; dorme: number; t: number }> = ({ x, u, dorme, t }) => (
+  <div style={{ position: "absolute", left: x - 120, top: CHAO - 190, width: 240, height: 200 }}>
+    <svg width={240} height={200} viewBox="0 0 240 200" style={{ overflow: "visible" }}>
+      <ellipse cx={120} cy={194} rx={90} ry={8} fill="#000" opacity={0.2} />
+      <g transform={`translate(0 ${40 * u})`}>
+        <path d={`M60 ${170 - 40 * (1 - u)} Q50 ${120 - 30 * (1 - u)} 110 ${110 - 20 * (1 - u)} Q190 ${110 + 10 * u} 196 ${160} Q196 186 170 186 H70 Q50 186 60 ${170 - 40 * (1 - u)} Z`} fill="#B5753E" />
+        <path d={`M190 ${150} Q215 ${140 - 20 * (1 - u)} 210 ${120 - 30 * (1 - u)}`} stroke="#B5753E" strokeWidth={10} fill="none" strokeLinecap="round" transform={`rotate(${dorme > 0 ? 0 : 8 * Math.sin(t * 12)} 190 150)`} />
+        <g transform={`translate(${70 - 10 * u} ${90 - 30 * (1 - u) + 40 * u}) rotate(${-10 * u})`}>
+          <circle r={42} fill="#C9884A" />
+          <path d="M-36 -18 Q-62 10 -40 34 Q-30 12 -24 -8 Z" fill="#8A5530" /><path d="M36 -18 Q62 10 40 34 Q30 12 24 -8 Z" fill="#8A5530" />
+          <ellipse cx={0} cy={18} rx={18} ry={13} fill="#F2D5B0" /><ellipse cx={0} cy={10} rx={8} ry={6} fill="#2E2421" />
+          {dorme > 0 ? (<><path d="M-22 -6 q8 6 14 0" stroke="#2E2421" strokeWidth={4} fill="none" /><path d="M8 -6 q8 6 14 0" stroke="#2E2421" strokeWidth={4} fill="none" /></>)
+            : (<><circle cx={-15} cy={-6} r={6} fill="#2E2421" /><circle cx={15} cy={-6} r={6} fill="#2E2421" /></>)}
+        </g>
+      </g>
+    </svg>
+    {dorme > 0 && [0, 1, 2].map((i) => { const k = ((t * 0.7 + i / 3) % 1); return <div key={i} style={{ position: "absolute", left: 20 + 30 * k, top: 40 - 80 * k, fontFamily: FONT, fontWeight: W.black, fontSize: 30 + 12 * k, color: "#FFF3C4", opacity: dorme * (1 - k) }}>z</div>; })}
+  </div>
+);
+// o carro (genérico, de lado, virado para a esquerda): a janela da frente com o vidro que desce; a cabeça da visita lá dentro
+const Carro: React.FC<{ x: number; vidro: number; dentro: boolean; liga: number; t: number; boca?: string; bla?: number }> = ({ x, vidro, dentro, liga, t, boca, bla = 0 }) => {
+  const treme = liga > 0 ? Math.sin(t * 60) * 1.5 * liga : 0;
+  return (
+    <div style={{ position: "absolute", left: x - 230, top: CHAO - 300, width: 460, height: 320 }}>
+      <svg width={460} height={320} viewBox="0 0 460 320" style={{ overflow: "visible" }}>
+        <ellipse cx={230} cy={314} rx={200} ry={10} fill="#000" opacity={0.25} />
+        {liga > 0 && [0, 1, 2].map((i) => { const k = ((t * 1.8 + i / 3) % 1); return <circle key={i} cx={450 + 40 * k} cy={262 - 20 * k} r={10 + 16 * k} fill="#9A98A8" opacity={0.6 * (1 - k) * liga} />; })}
+        <g transform={`translate(0 ${treme})`}>
+          <path d="M40 250 Q30 190 70 180 L120 110 Q140 84 180 84 H300 Q336 84 356 112 L392 176 Q440 186 440 236 V258 Q440 272 424 272 H56 Q40 272 40 258 Z" fill="#2F9C95" />
+          <path d="M60 190 H430" stroke="#25807A" strokeWidth={6} />
+          {/* a janela da frente (a da visita) e a de trás */}
+          <clipPath id="cm-janela"><path d="M130 176 L162 112 Q170 100 186 100 H240 V176 Z" /></clipPath>
+          <path d="M130 176 L162 112 Q170 100 186 100 H240 V176 Z" fill="#1E2A4A" />
+          <g clipPath="url(#cm-janela)">
+            {dentro && (
+              <g transform="translate(196 150)">
+                <circle r={44} fill="#5A8FD8" /><circle cy={4} r={30} fill="#fff" />
+                <circle cx={-11} cy={0} r={7} fill={C.tinta} /><circle cx={11} cy={0} r={7} fill={C.tinta} />
+                {boca === "A" ? <ellipse cy={18} rx={7} ry={8} fill={C.tinta} /> : boca === "E" ? <ellipse cy={17} rx={9} ry={4.5} fill={C.tinta} /> : boca === "O" ? <ellipse cy={18} rx={5} ry={6} fill={C.tinta} />
+                  : <path d="M-8 16 Q0 22 8 16" stroke={C.tinta} strokeWidth={3} fill="none" strokeLinecap="round" />}
+              </g>
+            )}
+            <rect x={120} y={96 + 82 * vidro} width={130} height={84} fill="#A9C7E6" opacity={0.55} />
+          </g>
+          <path d="M252 176 V100 H296 Q318 100 330 120 L358 176 Z" fill="#1E2A4A" /><rect x={252} y={100} width={106} height={76} fill="#A9C7E6" opacity={0.55} />
+          <rect x={244} y={96} width={10} height={86} fill="#25807A" />
+          <rect x={60} y={210} width={30} height={12} rx={6} fill="#FFE48A" /><rect x={414} y={208} width={22} height={14} rx={6} fill="#E8503A" />
+          <rect x={210} y={196} width={30} height={8} rx={4} fill="#25807A" />
+        </g>
+        {[110, 350].map((cx) => <g key={cx}><circle cx={cx} cy={268} r={40} fill="#2E2A33" /><circle cx={cx} cy={268} r={18} fill="#9A98A8" /></g>)}
+      </svg>
+      {bla > 0 && (
+        <div style={{ position: "absolute", left: 200, top: -40, transform: `scale(${bla})`, transformOrigin: "0% 100%", background: "#fff", border: `5px solid ${C.tinta}`, borderRadius: 28, padding: "4px 20px",
+          fontFamily: FONT, fontWeight: W.black, fontSize: 40, color: C.tinta, whiteSpace: "nowrap" }}>blá blá blá…</div>
+      )}
+    </div>
+  );
+};
+// a cena da casa inteira, num instante t (sala, porta, portão, carro e o fecho no portão)
+const CasaEmCena: React.FC<{ t: number; quadro: number; d: DadosEpisodio }> = ({ t, quadro, d }) => {
+  const cenaEm = d.cenas.find((c) => t >= c.t0 - 1e-6 && t < c.t1) ?? d.cenas[d.cenas.length - 1];
+  const tipo = cenaEm.tipo === "fecho" ? (cenaEm.diagrama.cenario ?? "portao") : cenaEm.tipo;
+  const cena = (tp: string) => d.cenas.filter((c) => c.tipo === tp);
+  const falaVisita = d.cenas.some((c) => c.falante === "visita" && t >= c.voz_t0 - 0.02 && t <= c.voz_t1 + 0.04);
+  const bocaVisita = falaVisita ? d.visemas[Math.min(d.visemas.length - 1, quadro)] : undefined;
+  const empurra = cenaEm.n === 0
+    ? 1 + 0.14 * Math.pow(1 - entre(t, 0, 0.9), 1.4)                                  // a abertura: a câmera entra na sala sem parar
+    : 1 + 0.05 * (1 - outCubic(entre(t, cenaEm.t0, cenaEm.t0 + 0.35)));               // a câmera chega um tiquinho mais perto a cada corte
+  const S = L.pertim, V = L.visitante;
+  const conteudo: React.ReactNode[] = [];
+  if (tipo === "sala") {
+    const sc = cena("sala"), sl = sc.find((c) => c.diagrama.levanta) ?? null;
+    const lev = sl ? sl.diagrama.levanta.t : 1e9, per = sl?.diagrama.pernas?.t ?? 1e9;
+    const u = inOut(entre(t, lev, lev + 0.45));
+    const tap = Math.max(0, Math.sin(Math.PI * entre(t, per, per + 0.22))) + Math.max(0, Math.sin(Math.PI * entre(t, per + 0.22, per + 0.44)));
+    const visCx = interpolate(u, [0, 1], [380, 330]), visBase = interpolate(u, [0, 1], [CHAO - 70, CHAO + 10]);
+    const pertimSentado = <PertimEm key="p" t={t} quadro={quadro} d={d} pose="parado" expr="sorrindo" cx={690} base={CHAO - 60} altura={500} olhar={t >= sc[0].t1 ? [-1, 0.1] : [0, 0]} />;
+    const visita = <Visitante key="v" cx={visCx} base={visBase} altura={440} t={t} mapa={false} boca={bocaVisita} pulo={14 * tap} olha={-0.6} />;
+    conteudo.push(<Interior key="i" />, <SofaFundo key="sf" />, pertimSentado);
+    if (u < 0.5) conteudo.push(visita, <SofaFrente key="sfr" />);
+    else conteudo.push(<SofaFrente key="sfr" />, visita);
+    conteudo.push(<FrenteCasa key="fc" />);
+    if (tap > 0.05) conteudo.push(<svg key="tap" width={1080} height={1920} style={{ position: "absolute", left: 0, top: 0, opacity: Math.min(1, tap) }}>
+      {[[visCx - 110, CHAO - 120], [visCx + 110, CHAO - 120]].map(([x, y], i) => <g key={i} stroke={AMARELO} strokeWidth={8} strokeLinecap="round"><line x1={x - 20} y1={y} x2={x - 40} y2={y - 20} /><line x1={x + 20} y1={y} x2={x + 40} y2={y - 20} /><line x1={x} y1={y - 8} x2={x} y2={y - 36} /></g>)}
+    </svg>);
+  } else if (tipo === "porta") {
+    const pc = cena("porta")[0], tb = pc.diagrama.bolo?.t ?? 1e9, tf = pc.diagrama.fica?.t ?? 1e9;
+    const voa = entre(t, tb, tb + 0.4);
+    const pose: Pose = t >= tf ? "apontando" : "parado";
+    // a luva do Pertim (pose "parado": a luva de baixo em (201, 207) no viewBox 0 18 240 270) e as mãos da visita
+    const alt = 520, w = (alt * 240) / 270, gx = 700 - w / 2 + (201 / 240) * w, gy = CHAO - alt + ((207 - 18) / 270) * alt;
+    const k = 440 / 260, hx = 330, hy = CHAO - 260 * k + 176 * k;
+    conteudo.push(<Interior key="i" porta />);
+    conteudo.push(<PertimEm key="p" t={t} quadro={quadro} d={d} pose={pose} expr="sorrindo" cx={700} base={CHAO} altura={alt} olhar={[-1, 0.1]} pote={t < tb} />);
+    conteudo.push(<Visitante key="v" cx={330} base={CHAO} altura={440} t={t} mapa={false} pote={voa >= 1} olha={0.7} />, <FrenteCasa key="fc" porta />);
+    if (voa > 0 && voa < 1) {
+      const x = gx + (hx - gx) * outCubic(voa), y = gy + (hy - gy) * voa - 160 * Math.sin(Math.PI * voa);
+      conteudo.push(<svg key="voa" width={1080} height={1920} style={{ position: "absolute", left: 0, top: 0 }}><g transform={`rotate(${-200 * voa} ${x} ${y})`}><PoteDeBolo x={x} y={y} w={70} /></g></svg>);
+    }
+  } else {
+    // o portão, o carro e o fecho: a mesma rua
+    const pt = cena("portao")[0], cr = cena("carro")[0], fe = d.cenas.find((c) => c.tipo === "fecho");
+    const tv = pt?.diagrama.vizinho?.t ?? 1e9, tc = pt?.diagrama.cachorro?.t ?? 1e9;
+    const naCarro = cr && t >= cr.t0;
+    const anda = cr ? entre(t, cr.t0, cr.t0 + 0.5) : 0;
+    const dentro = cr ? t >= cr.t0 + 0.55 : false;
+    const vidroT = cr?.diagrama.vidro?.t ?? 1e9;
+    const vidro = inOut(entre(t, vidroT - 0.15, vidroT + 0.15));
+    const u = fe ? inOut(entre(t, fe.t0 - 0.15, fe.t0 + 0.35)) : 0;
+    // no carro: a câmera vai até a janela quando o vidro desce (a fala da visita) e volta no fecho
+    const zc = cr ? inOut(entre(t, vidroT - 0.25, vidroT + 0.45)) * (1 - inOut(entre(t, (fe?.t0 ?? 1e9) - 0.2, (fe?.t0 ?? 1e9) + 0.3))) : 0;
+    const bla = fe && t >= fe.t0 ? mola(t, fe.t0 + 0.4, 0.35, 2) * (0.92 + 0.08 * Math.sin(t * 8)) : 0;
+    conteudo.push(
+      <div key="rua" style={{ position: "absolute", inset: 0, transform: `scale(${1 + 0.1 * u}) scale(${1 + 0.3 * zc})`, transformOrigin: `${interpolate(zc, [0, 1], [700, 220])}px ${CHAO - 150 * zc}px` }}>
+        <Rua luzVizinho={1 - entre(t, tv, tv + 0.15)} />
+        <Cachorro x={690} u={inOut(entre(t, tc, tc + 0.45))} dorme={entre(t, tc + 0.7, tc + 0.9)} t={t} />
+        <Carro x={300} vidro={vidro} dentro={dentro} liga={cr ? entre(t, cr.t0 + 0.85, cr.t0 + 1.1) : 0} t={t} boca={dentro ? bocaVisita : undefined} bla={bla} />
+        {!dentro && <Visitante cx={interpolate(anda, [0, 1], [530, 360])} base={CHAO} altura={420} t={t} anda={anda > 0 && anda < 1 ? 1 : 0} mapa={false} pote boca={bocaVisita} olha={naCarro ? -0.8 : 0.7} />}
+        <PertimEm t={t} quadro={quadro} d={d} pose="parado" expr="sorrindo" cx={820} base={CHAO} altura={500} olhar={fe && t >= fe.t0 ? [0, 0] : [-1, 0.1]}
+          cansado={naCarro ? (fe && t >= fe.t0 ? 0.42 : 0.3) : 0} />
+      </div>,
+    );
+  }
+  return <div style={{ position: "absolute", inset: 0, transform: `scale(${empurra})`, transformOrigin: `540px ${CHAO}px` }}>{conteudo}</div>;
+};
+
 // ================================================================ a montagem
 export const CoisaDeMineiro: React.FC<CoisaDeMineiroProps> = ({ dados }) => {
   const quadro = useCurrentFrame();
@@ -447,7 +748,7 @@ export const CoisaDeMineiro: React.FC<CoisaDeMineiroProps> = ({ dados }) => {
   const camada: React.ReactNode[] = [];
 
   // ---- dia: a conversa e o caminho (um mundo só; a câmera anda para a direita)
-  if (t < noiteDesde) {
+  if ((P || R || CM) && t < noiteDesde) {
     const objetos = (CM?.diagrama.objetos ?? []) as Array<{ tipo: string; t: number }>;
     const placas = ((CM?.diagrama.placas ?? []) as Array<string | { texto: string; pendurada?: string }>).map((p) => (typeof p === "string" ? { texto: p } : p)) as Array<{ texto: string; pendurada?: string }>;
     const placasT = (CM?.diagrama.placas_t ?? []) as number[];
@@ -542,6 +843,19 @@ export const CoisaDeMineiro: React.FC<CoisaDeMineiroProps> = ({ dados }) => {
       </AbsoluteFill>,
     );
   }
+  // ---- #02 em diante: a casa (sala, porta, portão, carro); o fecho com "cenario" acontece nela
+  const temCasa = d.cenas.some((c) => ["sala", "porta", "portao", "carro"].includes(c.tipo));
+  if (temCasa) {
+    const ce = d.cenas.find((c) => t >= c.t0 - 1e-6 && t < c.t1) ?? d.cenas[d.cenas.length - 1];
+    const fora = !["sala", "porta"].includes(ce.tipo === "fecho" ? ce.diagrama.cenario ?? "portao" : ce.tipo);
+    camada.push(
+      <AbsoluteFill key="casa">
+        {fora ? <NoiteCidade t={t} /> : <AbsoluteFill style={{ background: "#F3E2C3" }} />}
+        <Mundo><CasaEmCena t={t} quadro={quadro} d={d} /></Mundo>
+      </AbsoluteFill>,
+    );
+  }
+  const rel = relogioEm(d, t);
   // a noite caindo (o corte do caminho para a chegada, na batida): o azul da noite desce do alto
   const cai = CH ? entre(t, CH.t0 - 0.25, CH.t0 + 0.1) : 0;
   const sai = CH ? entre(t, CH.t0 + 0.05, CH.t0 + 0.3) : 0;
@@ -569,6 +883,7 @@ export const CoisaDeMineiro: React.FC<CoisaDeMineiroProps> = ({ dados }) => {
       <div style={{ position: "absolute", left: L.selo.x, top: L.selo.y }}>
         <SeloSerie numero={d.numero} size={L.selo.size} e={outBack(Math.min(1, 0.35 + t / 0.45), 2.2)} />
       </div>
+      {rel && <div style={{ position: "absolute", left: 870 - 76, top: 292, transform: `scale(${outBack(Math.min(1, t / 0.4 + 0.3), 2)})` }}><Relogio min={rel.min} giro={rel.giro} size={152} /></div>}
       <Legenda t={t} dados={d.legenda} />
     </AbsoluteFill>
   );
@@ -578,6 +893,7 @@ export const CoisaDeMineiro: React.FC<CoisaDeMineiroProps> = ({ dados }) => {
 export const CapaCoisaDeMineiro: React.FC<CoisaDeMineiroProps> = ({ dados }) => {
   if (!dados) throw new Error("CapaCoisaDeMineiro: os dados do episódio são lidos no calculateMetadata");
   const titulo = dados.capa?.titulo ?? [dados.titulo];
+  if (dados.capa?.cena === "portao") return <CapaPortao dados={dados} titulo={titulo} />;
   // o recorte 3:4 da grade vai de y 240 a 1680: o selo e o título no céu (alto), a cena descida e maior (embaixo)
   return (
     <AbsoluteFill style={{ background: "#7FCBEF", overflow: "hidden" }}>
@@ -613,6 +929,38 @@ export const CapaCoisaDeMineiro: React.FC<CoisaDeMineiroProps> = ({ dados }) => 
     </AbsoluteFill>
   );
 };
+
+// a capa do #02 em diante (cena "portao"): a noite no portão, o Pertim e a visita, o relógio marcando a hora da capa
+const CapaPortao: React.FC<{ dados: DadosEpisodio; titulo: string[] }> = ({ dados, titulo }) => (
+  <AbsoluteFill style={{ background: "#16213E", overflow: "hidden" }}>
+    <NoiteCidade t={0.4} lua={[70, 790]} />
+    <div style={{ position: "absolute", inset: 0, transform: "translateY(230px)" }}>
+      <Rua luzVizinho={0} />
+      <Cachorro x={540} u={1} dorme={1} t={0.4} />
+      <Visitante cx={300} base={CHAO} altura={470} t={0} mapa={false} pote olha={0.7} boca="A" />
+      <PertimEm t={0.3} quadro={0} d={dados} pose="parado" expr="sorrindo" cx={760} base={CHAO + 10} altura={600} olhar={[-1, 0.1]} cansado={0.42} />
+    </div>
+    <div style={{ position: "absolute", top: 330, left: 0, right: 0, display: "flex", justifyContent: "center" }}>
+      <SeloSerie numero={dados.numero} size={46} />
+    </div>
+    <div style={{ position: "absolute", top: 480, left: 110, right: 110, textAlign: "center", fontFamily: FONT, fontWeight: W.black, fontSize: 124, lineHeight: 1.08, letterSpacing: -3, color: "#FFF9F1",
+      textShadow: "0 6px 24px rgba(0,0,0,0.45)" }}>
+      {titulo.map((l, i) => (
+        <div key={i}>
+          {l.split("*").map((p, j) => j % 2 ? (
+            <span key={j} style={{ position: "relative", display: "inline-block", color: VERDE, textShadow: "none" }}>
+              <svg viewBox="0 0 100 20" preserveAspectRatio="none" style={{ position: "absolute", left: -12, width: "calc(100% + 24px)", bottom: 4, height: 52, overflow: "visible" }}>
+                <path d="M4 13 C30 9, 62 16, 96 7" stroke={AMARELO} strokeWidth={40} strokeLinecap="round" fill="none" vectorEffect="non-scaling-stroke" />
+              </svg>
+              <span style={{ position: "relative" }}>{p}</span>
+            </span>
+          ) : <React.Fragment key={j}>{p}</React.Fragment>)}
+        </div>
+      ))}
+    </div>
+    <div style={{ position: "absolute", left: 830, top: 730 }}><Relogio min={minutos(dados.capa?.relogio ?? "22:30")} size={170} /></div>
+  </AbsoluteFill>
+);
 
 // o calculateMetadata: lê os dados do episódio em public/coisa-de-mineiro/<ep>/dados.json
 export const carregaEpisodio = async ({ props }: { props: CoisaDeMineiroProps }) => {

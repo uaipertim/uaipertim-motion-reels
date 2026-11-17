@@ -98,7 +98,7 @@ for c in CAPS:
             pts.append(r3(t))
         if n:
             dg['placas_t'] = pts
-    cenas.append({'n': c['n'], 'tipo': dg['tipo'], 't0': c['t0'], 't1': c['t1'], 'voz_t0': c['voz_t0'], 'voz_t1': c['voz_t1'],
+    cenas.append({'n': c['n'], 'tipo': dg['tipo'], 'falante': ROT['capitulos'][c['n']].get('falante', 'pertim'), 't0': c['t0'], 't1': c['t1'], 'voz_t0': c['voz_t0'], 'voz_t1': c['voz_t1'],
                   'texto': ' '.join(w['w'] for w in c['palavras']), 'diagrama': dg})
 fecho = cenas[-1]
 assert fecho['tipo'] == 'fecho', 'o último capítulo é o fecho'
@@ -137,6 +137,32 @@ for c in cenas:
         cues += [{'t': c['t0'], 'type': 'whoosh'}, {'t': c['t0'] + 0.3, 'type': 'shine'}, {'t': c['t0'] + 1.2, 'type': 'flop'}, {'t': c['voz_t1'] - 0.3, 'type': 'clink'}]
     elif c['tipo'] == 'fecho':
         cues += [{'t': c['t0'] + 0.15, 'type': 'shine'}]
+    # os tipos do #02 (a casa: sala, porta, portão, carro)
+    elif c['tipo'] == 'sala':
+        if d.get('levanta'):
+            cues += [{'t': d['levanta']['t'], 'type': 'whoosh'}]
+        if d.get('pernas'):
+            cues += [{'t': d['pernas']['t'], 'type': 'pop', 'f': 520}, {'t': d['pernas']['t'] + 0.22, 'type': 'pop', 'f': 560}]
+    elif c['tipo'] == 'porta':
+        if d.get('bolo'):
+            cues += [{'t': d['bolo']['t'], 'type': 'whoosh'}, {'t': d['bolo']['t'] + 0.4, 'type': 'plop'}]
+        if d.get('fica'):
+            cues += [{'t': d['fica']['t'], 'type': 'jump'}]
+    elif c['tipo'] == 'portao':
+        if d.get('cachorro'):
+            cues += [{'t': d['cachorro']['t'], 'type': 'flop'}]
+        if d.get('vizinho'):
+            cues += [{'t': d['vizinho']['t'], 'type': 'tick'}]
+    elif c['tipo'] == 'carro':
+        cues += [{'t': c['t0'] + 0.55, 'type': 'door'}, {'t': c['t0'] + 0.85, 'type': 'moto', 'd': 0.9}]
+        if d.get('vidro'):
+            cues += [{'t': d['vidro']['t'] - 0.15, 'type': 'slide'}]
+hora_ant = None
+for c in cenas:
+    h = c['diagrama'].get('relogio')
+    if h and hora_ant and h != hora_ant:
+        cues += [{'t': c['t0'] - 0.05, 'type': 'count', 'd': 0.45}]
+    hora_ant = h or hora_ant
 cues += [{'t': marca_t, 'type': 'logo'}]
 cues.sort(key=lambda x: x['t'])
 json.dump({'duration': DUR, 'cues': cues}, open(os.path.join(AUD, 'cues.json'), 'w'), ensure_ascii=False, indent=1)

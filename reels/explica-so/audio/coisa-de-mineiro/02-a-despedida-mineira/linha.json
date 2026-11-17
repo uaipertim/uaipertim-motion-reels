@@ -1,0 +1,662 @@
+{
+ "episodio": "coisa-de-mineiro/02-a-despedida-mineira",
+ "titulo": "A despedida mineira",
+ "marca": "@uaipertim",
+ "legenda": true,
+ "duracao": 24.5,
+ "tr": 0.0,
+ "grade": {
+  "bpm": 120.0,
+  "batida_s": 0.5
+ },
+ "ap_entra": 0.34,
+ "ap_leitura": 1.5,
+ "previa": false,
+ "capitulos": [
+  {
+   "n": 0,
+   "rotulo": "CENA 1 · a sala",
+   "tom": "creme",
+   "titulo": [
+    "",
+    ""
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "sala",
+    "relogio": "21:00"
+   },
+   "t0": 0.0,
+   "t1": 3.0,
+   "voz_t0": 0.15,
+   "voz_t1": 2.87,
+   "palavras": [
+    {
+     "w": "Sabe",
+     "n": "sabe",
+     "i0": 0,
+     "t0": 0.15,
+     "t1": 0.39
+    },
+    {
+     "w": "quanto",
+     "n": "quanto",
+     "i0": 5,
+     "t0": 0.55,
+     "t1": 0.87
+    },
+    {
+     "w": "tempo",
+     "n": "tempo",
+     "i0": 12,
+     "t0": 0.95,
+     "t1": 1.27
+    },
+    {
+     "w": "dura",
+     "n": "dura",
+     "i0": 18,
+     "t0": 1.35,
+     "t1": 1.59
+    },
+    {
+     "w": "uma",
+     "n": "uma",
+     "i0": 23,
+     "t0": 1.67,
+     "t1": 1.75
+    },
+    {
+     "w": "despedida",
+     "n": "despedida",
+     "i0": 27,
+     "t0": 1.87,
+     "t1": 2.31
+    },
+    {
+     "w": "mineira?",
+     "n": "mineira",
+     "i0": 37,
+     "t0": 2.39,
+     "t1": 2.87
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Sabe quanto tempo dura uma despedida mineira?",
+     "apoio": null,
+     "t0": 0.15,
+     "t1": 2.87
+    }
+   ],
+   "apoios": [],
+   "seed": 14042
+  },
+  {
+   "n": 1,
+   "rotulo": "CENA 2 · vou indo",
+   "tom": "pessego",
+   "titulo": [
+    "",
+    ""
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "sala",
+    "relogio": "21:00",
+    "levanta": {
+     "em": "Bom"
+    },
+    "pernas": {
+     "em": "indo"
+    }
+   },
+   "t0": 3.0,
+   "t1": 6.0,
+   "voz_t0": 3.15,
+   "voz_t1": 5.15,
+   "palavras": [
+    {
+     "w": "Bom,",
+     "n": "bom",
+     "i0": 0,
+     "t0": 3.15,
+     "t1": 3.39
+    },
+    {
+     "w": "gente…",
+     "n": "gente",
+     "i0": 5,
+     "t0": 3.51,
+     "t1": 4.11
+    },
+    {
+     "w": "vou",
+     "n": "vou",
+     "i0": 12,
+     "t0": 4.43,
+     "t1": 4.59
+    },
+    {
+     "w": "indo,",
+     "n": "indo",
+     "i0": 16,
+     "t0": 4.71,
+     "t1": 4.83
+    },
+    {
+     "w": "né?",
+     "n": "ne",
+     "i0": 22,
+     "t0": 5.03,
+     "t1": 5.15
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Bom, gente… vou indo, né?",
+     "apoio": null,
+     "t0": 3.15,
+     "t1": 5.15
+    }
+   ],
+   "apoios": [],
+   "seed": 42
+  },
+  {
+   "n": 2,
+   "rotulo": "CENA 3 · a porta",
+   "tom": "amarelo",
+   "titulo": [
+    "",
+    ""
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "porta",
+    "relogio": "21:20",
+    "bolo": {
+     "em": "bolo"
+    },
+    "fica": {
+     "em": "fica"
+    }
+   },
+   "t0": 6.0,
+   "t1": 10.5,
+   "voz_t0": 6.2,
+   "voz_t1": 9.8,
+   "palavras": [
+    {
+     "w": "Leva",
+     "n": "leva",
+     "i0": 0,
+     "t0": 6.2,
+     "t1": 6.44
+    },
+    {
+     "w": "um",
+     "n": "um",
+     "i0": 5,
+     "t0": 6.48,
+     "t1": 6.52
+    },
+    {
+     "w": "pedaço",
+     "n": "pedaco",
+     "i0": 8,
+     "t0": 6.64,
+     "t1": 6.92
+    },
+    {
+     "w": "de",
+     "n": "de",
+     "i0": 15,
+     "t0": 7.0,
+     "t1": 7.08
+    },
+    {
+     "w": "bolo!",
+     "n": "bolo",
+     "i0": 18,
+     "t0": 7.16,
+     "t1": 7.72
+    },
+    {
+     "w": "Ah,",
+     "n": "ah",
+     "i0": 24,
+     "t0": 7.88,
+     "t1": 8.12
+    },
+    {
+     "w": "mas",
+     "n": "mas",
+     "i0": 28,
+     "t0": 8.28,
+     "t1": 8.36
+    },
+    {
+     "w": "fica",
+     "n": "fica",
+     "i0": 32,
+     "t0": 8.4,
+     "t1": 8.6
+    },
+    {
+     "w": "mais",
+     "n": "mais",
+     "i0": 37,
+     "t0": 8.64,
+     "t1": 8.76
+    },
+    {
+     "w": "um",
+     "n": "um",
+     "i0": 42,
+     "t0": 8.8,
+     "t1": 8.84
+    },
+    {
+     "w": "pouquinho!",
+     "n": "pouquinho",
+     "i0": 45,
+     "t0": 8.92,
+     "t1": 9.8
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Leva um pedaço de bolo! Ah, mas fica mais um pouquinho!",
+     "apoio": null,
+     "t0": 6.2,
+     "t1": 9.8
+    }
+   ],
+   "apoios": [],
+   "seed": 42
+  },
+  {
+   "n": 3,
+   "rotulo": "CENA 4 · o portão",
+   "tom": "verde",
+   "titulo": [
+    "",
+    ""
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "portao",
+    "relogio": "21:50",
+    "cachorro": {
+     "em": "como"
+    },
+    "vizinho": {
+     "em": "+3.3"
+    }
+   },
+   "t0": 10.5,
+   "t1": 14.5,
+   "voz_t0": 10.7,
+   "voz_t1": 13.42,
+   "palavras": [
+    {
+     "w": "E",
+     "n": "e",
+     "i0": 0,
+     "t0": 10.7,
+     "t1": 10.74
+    },
+    {
+     "w": "a",
+     "n": "a",
+     "i0": 2,
+     "t0": 10.78,
+     "t1": 10.86
+    },
+    {
+     "w": "sua",
+     "n": "sua",
+     "i0": 4,
+     "t0": 10.9,
+     "t1": 11.02
+    },
+    {
+     "w": "mãe,",
+     "n": "mae",
+     "i0": 8,
+     "t0": 11.1,
+     "t1": 11.34
+    },
+    {
+     "w": "como",
+     "n": "como",
+     "i0": 13,
+     "t0": 11.66,
+     "t1": 11.74
+    },
+    {
+     "w": "é",
+     "n": "e",
+     "i0": 18,
+     "t0": 11.767,
+     "t1": 11.793
+    },
+    {
+     "w": "que",
+     "n": "que",
+     "i0": 20,
+     "t0": 11.82,
+     "t1": 11.9
+    },
+    {
+     "w": "tá?",
+     "n": "ta",
+     "i0": 24,
+     "t0": 12.02,
+     "t1": 12.14
+    },
+    {
+     "w": "E",
+     "n": "e",
+     "i0": 28,
+     "t0": 12.54,
+     "t1": 12.62
+    },
+    {
+     "w": "aquele",
+     "n": "aquele",
+     "i0": 30,
+     "t0": 12.7,
+     "t1": 12.86
+    },
+    {
+     "w": "seu",
+     "n": "seu",
+     "i0": 37,
+     "t0": 12.94,
+     "t1": 13.06
+    },
+    {
+     "w": "primo?",
+     "n": "primo",
+     "i0": 41,
+     "t0": 13.1,
+     "t1": 13.42
+    }
+   ],
+   "frases": [
+    {
+     "texto": "E a sua mãe, como é que tá? E aquele seu primo?",
+     "apoio": null,
+     "t0": 10.7,
+     "t1": 13.42
+    }
+   ],
+   "apoios": [],
+   "seed": 42
+  },
+  {
+   "n": 4,
+   "rotulo": "CENA 5 · o carro",
+   "tom": "creme",
+   "titulo": [
+    "",
+    ""
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "carro",
+    "relogio": "22:30",
+    "vidro": {
+     "em": "Ah"
+    }
+   },
+   "t0": 14.5,
+   "t1": 18.5,
+   "voz_t0": 15.7,
+   "voz_t1": 17.7,
+   "palavras": [
+    {
+     "w": "Ah,",
+     "n": "ah",
+     "i0": 0,
+     "t0": 15.7,
+     "t1": 15.86
+    },
+    {
+     "w": "esqueci",
+     "n": "esqueci",
+     "i0": 4,
+     "t0": 16.18,
+     "t1": 16.58
+    },
+    {
+     "w": "de",
+     "n": "de",
+     "i0": 12,
+     "t0": 16.62,
+     "t1": 16.66
+    },
+    {
+     "w": "te",
+     "n": "te",
+     "i0": 15,
+     "t0": 16.7,
+     "t1": 16.74
+    },
+    {
+     "w": "contar",
+     "n": "contar",
+     "i0": 18,
+     "t0": 16.82,
+     "t1": 17.06
+    },
+    {
+     "w": "uma",
+     "n": "uma",
+     "i0": 25,
+     "t0": 17.18,
+     "t1": 17.3
+    },
+    {
+     "w": "coisa…",
+     "n": "coisa",
+     "i0": 29,
+     "t0": 17.38,
+     "t1": 17.7
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Ah, esqueci de te contar uma coisa…",
+     "apoio": null,
+     "t0": 15.7,
+     "t1": 17.7
+    }
+   ],
+   "apoios": [],
+   "seed": 42
+  },
+  {
+   "n": 5,
+   "rotulo": "FECHO",
+   "tom": "pessego",
+   "titulo": [
+    "",
+    ""
+   ],
+   "risca_titulo": null,
+   "diagrama": {
+    "tipo": "fecho",
+    "cenario": "portao",
+    "relogio": "22:30",
+    "marca_s": 2.0
+   },
+   "t0": 18.5,
+   "t1": 24.5,
+   "voz_t0": 18.75,
+   "voz_t1": 21.95,
+   "palavras": [
+    {
+     "w": "Marca",
+     "n": "marca",
+     "i0": 0,
+     "t0": 18.75,
+     "t1": 19.07
+    },
+    {
+     "w": "aquele",
+     "n": "aquele",
+     "i0": 6,
+     "t0": 19.15,
+     "t1": 19.31
+    },
+    {
+     "w": "amigo",
+     "n": "amigo",
+     "i0": 13,
+     "t0": 19.39,
+     "t1": 19.71
+    },
+    {
+     "w": "que",
+     "n": "que",
+     "i0": 19,
+     "t0": 19.79,
+     "t1": 19.87
+    },
+    {
+     "w": "demora",
+     "n": "demora",
+     "i0": 23,
+     "t0": 19.95,
+     "t1": 20.35
+    },
+    {
+     "w": "uma",
+     "n": "uma",
+     "i0": 30,
+     "t0": 20.43,
+     "t1": 20.75
+    },
+    {
+     "w": "hora",
+     "n": "hora",
+     "i0": 34,
+     "t0": 20.83,
+     "t1": 21.07
+    },
+    {
+     "w": "pra",
+     "n": "pra",
+     "i0": 39,
+     "t0": 21.15,
+     "t1": 21.23
+    },
+    {
+     "w": "ir",
+     "n": "ir",
+     "i0": 43,
+     "t0": 21.31,
+     "t1": 21.47
+    },
+    {
+     "w": "embora!",
+     "n": "embora",
+     "i0": 46,
+     "t0": 21.59,
+     "t1": 21.95
+    }
+   ],
+   "frases": [
+    {
+     "texto": "Marca aquele amigo que demora uma hora pra ir embora!",
+     "apoio": null,
+     "t0": 18.75,
+     "t1": 21.95
+    }
+   ],
+   "apoios": [],
+   "seed": 42
+  }
+ ],
+ "colocacao": [
+  {
+   "cap": 0,
+   "arquivo": "voz/cap-00.wav",
+   "de_s": 0.0,
+   "ate_s": 2.88,
+   "no_video_s": 0.15,
+   "amostras": 138240,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 1,
+   "arquivo": "voz/cap-01.wav",
+   "de_s": 0.0,
+   "ate_s": 2.3,
+   "no_video_s": 3.15,
+   "amostras": 110400,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 2,
+   "arquivo": "voz/cap-02.wav",
+   "de_s": 0.0,
+   "ate_s": 3.6,
+   "no_video_s": 6.2,
+   "amostras": 172800,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 3,
+   "arquivo": "voz/cap-03.wav",
+   "de_s": 0.0,
+   "ate_s": 3.02,
+   "no_video_s": 10.7,
+   "amostras": 144960,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 4,
+   "arquivo": "voz/cap-04.wav",
+   "de_s": 0.0,
+   "ate_s": 2.3,
+   "no_video_s": 15.7,
+   "amostras": 110400,
+   "fade_ms": [
+    8,
+    60
+   ]
+  },
+  {
+   "cap": 5,
+   "arquivo": "voz/cap-05.wav",
+   "de_s": 0.0,
+   "ate_s": 3.44,
+   "no_video_s": 18.75,
+   "amostras": 165120,
+   "fade_ms": [
+    8,
+    60
+   ]
+  }
+ ],
+ "mapa": {
+  "ok": true,
+  "falhas": []
+ }
+}
