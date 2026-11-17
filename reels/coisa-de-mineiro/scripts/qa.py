@@ -15,7 +15,10 @@ Confere o MP4 (reels/coisa-de-mineiro/<ep>/output/uaipertim-coisa-de-mineiro-NN.
   • a série: sem app, celular, "em breve" ou "tá chegando" no roteiro; placas só com km; o selo "COISA DE MINEIRO #NN"
     no começo, no meio e no fim (pixels); a marca (logo + "Tudo pertim de você.") só nos segundos finais (pixels);
   • legenda: só o texto da tela, até 2 linhas, cada bloco ≥ 0,8 s, na faixa, cobre a fala e sai antes da marca;
-  • boca: nenhuma boca menos de 2 quadros; gancho: o quadro muda a cada 0,1 s nos primeiros 0,5 s.
+  • boca: nenhuma boca menos de 2 quadros; gancho: o quadro muda a cada 0,1 s nos primeiros 0,5 s;
+  • personagens na tela (render.mjs mascara: só os personagens e o carro, cada um numa cor, 10 quadros/s): parado, ninguém
+    fica cortado pela borda nem a menos de 60 px dela (entrando ou saindo de cena, em movimento, pode); o rosto do Pertim
+    nunca na coluna de botões do Instagram (x ≥ 940 entre y 1060 e 1560).
 Termina em "RESULTADO: aprovado" ou "RESULTADO: ajustar".
 """
 import json
@@ -215,6 +218,62 @@ with tempfile.TemporaryDirectory() as tmp:
     antes = [coral(quadro(t)) for t in (1.0, DUR * 0.5, D['marca_t'] - 0.3)]
     depois = coral(quadro(DUR - 0.3))
     ok(max(antes) < 300 < depois, f'a marca só aparece no fim: logo na caixa dela antes = {max(antes)} px coral, no fim = {depois} px')
+
+# ---------------------------------------------------------------- personagens na tela
+sec('PERSONAGENS NA TELA (máscara: render.mjs mascara)')
+subprocess.run(['node', os.path.join(AQUI, 'render.mjs'), 'mascara', EP], check=True, capture_output=True, cwd=REPO)
+MDIR = os.path.join(REV, 'mascara')
+mq = sorted(os.listdir(MDIR))
+ESC, FOLGA = 0.5, 60                                   # a máscara sai em meia resolução, 1 quadro a cada 3 (10 por segundo)
+COR = {'pertim': lambda r, g, b: (r > 128) & (g < 100), 'visita': lambda r, g, b: (g > 128) & (r < 100) & (b < 100),
+       'carro': lambda r, g, b: (b > 128) & (r < 100) & (g < 100), 'cachorro': lambda r, g, b: (r > 128) & (g > 128) & (b < 100),
+       'vaca': lambda r, g, b: (g > 128) & (b > 128) & (r < 100)}
+rosto = lambda r, g, b: (r > 128) & (b > 128) & (g < 100)
+caixas, rostos = {k: [] for k in COR}, []
+for nome in mq:
+    q = np.asarray(Image.open(os.path.join(MDIR, nome)).convert('RGB')).astype(np.int16)
+    r, g, b = q[..., 0], q[..., 1], q[..., 2]
+    H_, W_ = r.shape
+    for k, fn in COR.items():
+        ys, xs = np.nonzero(fn(r, g, b))
+        caixas[k].append((xs.min(), ys.min(), xs.max(), ys.max()) if len(xs) > 30 else None)
+    m = rosto(r, g, b)
+    zona = m[int(1060 * ESC):int(1560 * ESC), int(940 * ESC):]
+    rostos.append(int(zona.sum()))
+tq = lambda i: i * 3 / FPS
+def faixas(ts):
+    """os instantes (s) em trechos: "14.0–14.5 s" """
+    out, ini, ant = [], None, None
+    for x in ts:
+        if ini is None or x - ant > 0.11:
+            if ini is not None:
+                out.append(f'{ini:.1f}–{ant:.1f} s')
+            ini = x
+        ant = x
+    if ini is not None:
+        out.append(f'{ini:.1f}–{ant:.1f} s')
+    return ', '.join(out)
+for k, cx in caixas.items():
+    vistos = [i for i, c in enumerate(cx) if c]
+    if not vistos:
+        continue
+    cortado, apertado = [], []
+    for i in vistos:
+        c = cx[i]
+        viz = [cx[j] for j in (i - 1, i + 1) if 0 <= j < len(cx)]
+        movendo = any(v is None or max(abs(a_ - b_) for a_, b_ in zip(c, v)) > 4 for v in viz)   # > 8 px por 0,1 s
+        if movendo:
+            continue
+        x0, y0, x1, y1 = c
+        borda = min(x0, y0, W_ - 1 - x1, H_ - 1 - y1)
+        if borda <= 1:
+            cortado.append(tq(i))
+        elif borda < FOLGA * ESC:
+            apertado.append(tq(i))
+    ok(not cortado, f'{k}: nunca cortado pela borda' + (f' (cortado em {faixas(cortado)})' if cortado else ''))
+    ok(not apertado, f'{k}: parado, sempre a ≥ {FOLGA} px das bordas' + (f' (mais perto em {faixas(apertado)})' if apertado else ''))
+col = [tq(i) for i, n in enumerate(rostos) if n > 0]
+ok(not col, 'o rosto do Pertim nunca na coluna de botões do Instagram (x ≥ 940, y 1060–1560)' + (f' (está em {faixas(col)})' if col else ''))
 
 sec(f'RESULTADO: {"aprovado" if not fails else "ajustar"}')
 if fails:

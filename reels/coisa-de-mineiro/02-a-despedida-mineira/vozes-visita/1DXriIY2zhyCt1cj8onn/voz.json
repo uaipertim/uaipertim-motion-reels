@@ -1,0 +1,10 @@
+{
+ "voice_id": "1DXriIY2zhyCt1cj8onn",
+ "nome": "Cirilo - Firm, Medium-low pitch",
+ "modelo": "eleven_v4",
+ "ajustes": {
+  "stability": 0.5,
+  "similarity_boost": 0.75
+ },
+ "seed": 42
+}

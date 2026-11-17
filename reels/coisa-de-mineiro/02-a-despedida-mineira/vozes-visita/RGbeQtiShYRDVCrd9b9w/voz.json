@@ -1,0 +1,10 @@
+{
+ "voice_id": "RGbeQtiShYRDVCrd9b9w",
+ "nome": "Sergio - Friendly and Encouraging",
+ "modelo": "eleven_v4",
+ "ajustes": {
+  "stability": 0.5,
+  "similarity_boost": 0.75
+ },
+ "seed": 42
+}

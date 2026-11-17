@@ -1,0 +1,10 @@
+{
+ "voice_id": "mBxe7tYxRAMLpIP3fPEp",
+ "nome": "Papai Noel - Confident and Optimistic",
+ "modelo": "eleven_v4",
+ "ajustes": {
+  "stability": 0.5,
+  "similarity_boost": 0.75
+ },
+ "seed": 42
+}

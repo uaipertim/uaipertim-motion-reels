@@ -1,0 +1,10 @@
+{
+ "voice_id": "VTOydm0boYf1E4rUz1Qx",
+ "nome": "Vilaca - Energetic",
+ "modelo": "eleven_v4",
+ "ajustes": {
+  "stability": 0.5,
+  "similarity_boost": 0.75
+ },
+ "seed": 42
+}

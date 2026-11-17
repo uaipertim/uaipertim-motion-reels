@@ -1,0 +1,10 @@
+{
+ "voice_id": "hwnuNyWkl9DjdTFykrN6",
+ "nome": "Adriano - Deep, Gravelly and Rugged",
+ "modelo": "eleven_v4",
+ "ajustes": {
+  "stability": 0.5,
+  "similarity_boost": 0.75
+ },
+ "seed": 42
+}

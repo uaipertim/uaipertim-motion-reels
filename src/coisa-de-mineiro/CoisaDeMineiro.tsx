@@ -38,7 +38,28 @@ export type DadosEpisodio = {
   ep: string; numero: number; titulo: string; capa?: { titulo: string[]; cena?: string; relogio?: string }; duracao: number; fps: number; quadros: number; batida: number;
   cenas: Cena[]; marca_t: number; piscadas: number[]; piscada_dur: number; visemas: string; legenda: LegendaDados;
 };
-export type CoisaDeMineiroProps = { ep: string; dados?: DadosEpisodio };
+export type CoisaDeMineiroProps = { ep: string; dados?: DadosEpisodio; mascara?: boolean };
+// a máscara do QA (render.mjs mascara): só os personagens e o carro, cada um numa cor chapada, sobre o preto; o resto
+// fica invisível. O qa.py lê as cores para ver se alguém fica cortado pela borda (e onde está o rosto do Pertim).
+const MascaraCtx = React.createContext(false);
+export const CORES_MASCARA: Record<string, string> = { pertim: "#FF0000", rosto: "#FF00FF", visita: "#00FF00", carro: "#0000FF", cachorro: "#FFFF00", vaca: "#00FFFF" };
+const Ator: React.FC<{ nome: string; children: React.ReactNode }> = ({ nome, children }) => {
+  const m = React.useContext(MascaraCtx);
+  if (!m) return <>{children}</>;
+  return <div style={{ position: "absolute", inset: 0, visibility: "visible", filter: `url(#cm-mascara-${nome})` }}>{children}</div>;
+};
+const FiltrosMascara: React.FC = () => (
+  <svg width={0} height={0} style={{ position: "absolute" }}>
+    <defs>
+      {Object.entries(CORES_MASCARA).map(([n, cor]) => (
+        <filter key={n} id={`cm-mascara-${n}`} x="-50%" y="-50%" width="200%" height="200%" colorInterpolationFilters="sRGB">
+          <feFlood floodColor={cor} result="c" /><feComponentTransfer in="SourceAlpha" result="a"><feFuncA type="linear" slope={4} /></feComponentTransfer>
+          <feComposite in="c" in2="a" operator="in" />
+        </filter>
+      ))}
+    </defs>
+  </svg>
+);
 
 // ================================================================ o selo da série (adesivo verde e amarelo)
 export const SeloSerie: React.FC<{ numero: number; size?: number; e?: number; style?: React.CSSProperties }> = ({ numero, size = 40, e = 1, style }) => (
@@ -191,7 +212,7 @@ const Vaca: React.FC<{ x: number; t: number; tc: number }> = ({ x, t, tc }) => {
   const olha = interpolate(t, [tc - 0.3, tc], [0, 1], clamp);
   const muu = t > tc + 0.05 && t < tc + 1.2 ? mola(t, tc + 0.05, 0.3, 2.4) * (1 - entre(t, tc + 1.0, tc + 1.2)) : 0;
   return (
-    <div style={{ position: "absolute", left: x - 230, top: CHAO - 330, width: 460, height: 340 }}>
+    <Ator nome="vaca"><div style={{ position: "absolute", left: x - 230, top: CHAO - 330, width: 460, height: 340 }}>
       <svg width={460} height={340} viewBox="0 0 460 340" style={{ overflow: "visible" }}>
         <ellipse cx={230} cy={326} rx={170} ry={12} fill="#000" opacity={0.12} />
         {[110, 160, 300, 350].map((lx, i) => <g key={i}><rect x={lx} y={220} width={30} height={100} rx={12} fill="#F4EFE8" /><rect x={lx} y={300} width={30} height={22} rx={8} fill="#3A2C26" /></g>)}
@@ -216,7 +237,7 @@ const Vaca: React.FC<{ x: number; t: number; tc: number }> = ({ x, t, tc }) => {
         <div style={{ position: "absolute", left: 300, top: -110, transform: `scale(${muu})`, transformOrigin: "20% 100%", background: "#fff", border: `5px solid ${C.tinta}`, borderRadius: 30, padding: "8px 26px",
           fontFamily: FONT, fontWeight: W.black, fontSize: 52, color: C.tinta, whiteSpace: "nowrap" }}>Muuu!</div>
       )}
-    </div>
+    </div></Ator>
   );
 };
 const Placa: React.FC<{ x: number; texto: string; e: number; pendurada?: string; ep?: number; t?: number }> = ({ x, texto, e, pendurada, ep = 0, t = 0 }) =>
@@ -318,7 +339,7 @@ const Visitante: React.FC<{
   const azul = "#5A8FD8", azul2 = "#3F6DB3";
   const sentado = dormindo;
   return (
-    <div style={{ position: "absolute", left: cx - 100 * k, top: base - 260 * k - pulo + bob, width: 200 * k, height: 260 * k }}>
+    <Ator nome="visita"><div style={{ position: "absolute", left: cx - 100 * k, top: base - 260 * k - pulo + bob, width: 200 * k, height: 260 * k }}>
       <svg width={200 * k} height={260 * k} viewBox="0 0 200 260" style={{ overflow: "visible" }}>
         <ellipse cx={100} cy={256 + pulo / k} rx={60} ry={7} fill="#000" opacity={0.12} />
         {!sentado && (
@@ -368,7 +389,7 @@ const Visitante: React.FC<{
         const u = ((t * 0.6 + i / 3) % 1);
         return <div key={i} style={{ position: "absolute", left: 150 * k + 40 * u, top: 20 * k - 90 * u, fontFamily: FONT, fontWeight: W.black, fontSize: 34 + 14 * u, color: "#FFF3C4", opacity: 1 - u }}>z</div>;
       })}
-    </div>
+    </div></Ator>
   );
 };
 
@@ -422,11 +443,19 @@ const PertimEm: React.FC<{
   const resp = respiracao(t);
   const rig: PertimRig = { ...resp, piscada: Math.max(cansado, piscadaEm(d.piscadas, t, d.piscada_dur)), olhar, centro: true,
     aceno: aceno ?? (pose === "acenando" ? 12 * Math.sin(t * 9) : pose === "apontando" ? -14 + 3 * Math.sin(t * 2.5) : 0) };
+  const [vx, vy] = vbDe(pose), mascara = React.useContext(MascaraCtx);
   return (
-    <div style={{ position: "absolute", left: cx - w / 2, top: base - altura, width: w, height: altura, transform: `rotate(${rot}deg)`, transformOrigin: "50% 95%" }}>
-      <Pertim v={1} pose={pose} expr={expr} mouth={boca ?? "auto"} altura={altura} rig={rig} />
-      {(chinelo || cafe || pote) && <Acessorios altura={altura} pose={pose} respira={resp.respira} t={t} chinelo={chinelo} cafe={cafe} pote={pote} />}
-    </div>
+    <>
+      <Ator nome="pertim">
+        <div style={{ position: "absolute", left: cx - w / 2, top: base - altura, width: w, height: altura, transform: `rotate(${rot}deg)`, transformOrigin: "50% 95%" }}>
+          <Pertim v={1} pose={pose} expr={expr} mouth={boca ?? "auto"} altura={altura} rig={rig} />
+          {(chinelo || cafe || pote) && <Acessorios altura={altura} pose={pose} respira={resp.respira} t={t} chinelo={chinelo} cafe={cafe} pote={pote} />}
+        </div>
+      </Ator>
+      {/* (só na máscara) o rosto: olhos, bochechas e boca, de x 70 a 170 e y 128 a 208 no desenho */}
+      {mascara && <Ator nome="rosto"><div style={{ position: "absolute", left: cx - w / 2 + ((70 - vx) / vw) * w, top: base - altura + ((128 - vy) / vh) * altura,
+        width: (100 / vw) * w, height: (80 / vh) * altura, background: "#fff" }} /></Ator>}
+    </>
   );
 };
 
@@ -576,9 +605,16 @@ const SofaFrente: React.FC = () => (
   </svg>
 );
 // a rua à noite: a casa do vizinho (com a janela que apaga), o muro com o portão, a casa do Pertim, o poste, a calçada
+// (desenhada de x −1400 a 2400 e até y 2600: a câmera afastada do carro e do fecho mostra mais dos lados e de baixo)
 const Rua: React.FC<{ luzVizinho: number }> = ({ luzVizinho }) => (
-  <svg width={1080} height={1920} viewBox="0 0 1080 1920" style={{ position: "absolute", left: 0, top: 0 }}>
+  <svg width={3800} height={2600} viewBox="-1400 0 3800 2600" style={{ position: "absolute", left: -1400, top: 0 }}>
     <defs><radialGradient id="cm-luz"><stop offset="0" stopColor="#FFD66B" stopOpacity={0.45} /><stop offset="1" stopColor="#FFD66B" stopOpacity={0} /></radialGradient></defs>
+    {/* mais casas dos lados (só aparecem com a câmera afastada) */}
+    <rect x={-700} y={700} width={680} height={420} fill="#9C7F6C" /><path d="M-740 712 L-360 540 L-10 712 Z" fill="#5E3A2E" />
+    <rect x={-530} y={780} width={130} height={110} rx={6} fill="#25304E" stroke="#4A3A30" strokeWidth={8} /><line x1={-465} y1={780} x2={-465} y2={890} stroke="#4A3A30" strokeWidth={6} />
+    <rect x={-260} y={790} width={110} height={100} rx={6} fill="#25304E" stroke="#4A3A30" strokeWidth={8} />
+    <rect x={1080} y={720} width={520} height={420} fill="#B9A58C" /><path d="M1050 732 L1340 580 L1630 732 Z" fill="#6B3527" />
+    <rect x={1200} y={800} width={120} height={100} rx={6} fill="#25304E" stroke="#4A3A30" strokeWidth={8} />
     <rect x={110} y={700} width={380} height={420} fill="#8C7B6A" /><path d="M80 712 L300 560 L520 712 Z" fill="#6B3527" />
     {luzVizinho > 0 && <circle cx={300} cy={830} r={190} fill="url(#cm-luz)" opacity={luzVizinho} />}
     <rect x={240} y={770} width={120} height={110} rx={6} fill={interpolateColors(luzVizinho, [0, 1], ["#25304E", "#FFE48A"])} stroke="#4A3A30" strokeWidth={8} />
@@ -586,24 +622,32 @@ const Rua: React.FC<{ luzVizinho: number }> = ({ luzVizinho }) => (
     <rect x={720} y={680} width={360} height={460} fill="#D9BE96" /><path d="M690 692 L900 540 L1110 692 Z" fill="#8A3B26" />
     <rect x={780} y={820} width={110} height={200} rx={6} fill="#FFD27A" stroke="#4A3A30" strokeWidth={8} /><circle cx={835} cy={900} r={170} fill="url(#cm-luz)" />
     <rect x={940} y={780} width={100} height={90} rx={6} fill="#FFE48A" stroke="#4A3A30" strokeWidth={8} />
-    <rect x={0} y={1010} width={1080} height={170} fill="#6E6A78" /><rect x={0} y={996} width={1080} height={20} rx={6} fill="#86829A" />
+    <rect x={-1400} y={1010} width={3800} height={170} fill="#6E6A78" /><rect x={-1400} y={996} width={3800} height={20} rx={6} fill="#86829A" />
     <rect x={588} y={930} width={34} height={250} rx={6} fill="#7E7A90" /><rect x={762} y={930} width={34} height={250} rx={6} fill="#7E7A90" />
     <rect x={622} y={1012} width={140} height={168} fill="#2A3558" />
     {Array.from({ length: 5 }).map((_, i) => <line key={i} x1={600 - i * 7} y1={1020 + i * 4} x2={600 - i * 7} y2={1176} stroke="#2E6E3A" strokeWidth={8} />)}
     <rect x={560} y={1016} width={48} height={10} fill="#2E6E3A" />
     <rect x={1000} y={560} width={14} height={620} fill="#3A3A48" /><path d="M960 570 H1040 L1020 540 H980 Z" fill="#3A3A48" />
     <circle cx={1007} cy={585} r={16} fill="#FFE48A" /><circle cx={1007} cy={600} r={200} fill="url(#cm-luz)" opacity={0.6} />
-    <rect x={0} y={1180} width={1080} height={140} fill="#5D5A68" /><rect x={0} y={1310} width={1080} height={16} fill="#7A7690" />
+    <rect x={-1400} y={1180} width={3800} height={140} fill="#5D5A68" /><rect x={-1400} y={1310} width={3800} height={16} fill="#7A7690" />
     {/* os paralelepípedos (o primeiro plano da rua, até embaixo) */}
-    <rect x={0} y={1326} width={1080} height={600} fill="#3C4156" />
-    {Array.from({ length: 9 }).map((_, r) => Array.from({ length: 16 }).map((_, c) => (
-      <rect key={`${r}-${c}`} x={(c * 76 + (r % 2) * 38) - 30} y={1340 + r * 44} width={66} height={34} rx={10} fill={(r + c) % 3 ? "#4A5068" : "#535A74"} />
+    <rect x={-1400} y={1326} width={3800} height={1274} fill="#3C4156" />
+    {/* (lá embaixo, só com a câmera afastada) a calçada do outro lado da rua, com o meio-fio e o capim */}
+    {Array.from({ length: 29 }).map((_, r) => Array.from({ length: 55 }).map((_, c) => (
+      <rect key={`${r}-${c}`} x={((c - 19) * 76 + (r % 2) * 38) - 30} y={1340 + r * 44} width={66} height={34} rx={10} fill={(r + c + 2) % 3 ? "#4A5068" : "#535A74"} />
     )))}
+    <rect x={-1400} y={1700} width={3800} height={30} fill="#8E8AA2" /><rect x={-1400} y={1730} width={3800} height={900} fill="#5D5A68" />
+    <rect x={-1400} y={1800} width={3800} height={800} fill="#2E5A3A" />
+    {Array.from({ length: 60 }).map((_, i) => {
+      const x = -1400 + i * 64 + 30 * random(`cg-${i}`), y = 1805 + 30 * random(`cgy-${i}`), hh = 70 + 70 * random(`cgh-${i}`);
+      return <path key={i} d={`M${x - 26} ${y + 10} Q${x - 12} ${y - hh} ${x} ${y + 10} Q${x + 14} ${y - hh * 0.8} ${x + 28} ${y + 10} Z`} fill={i % 2 ? "#3E7A4A" : "#4C8F57"} />;
+    })}
+    {Array.from({ length: 18 }).map((_, i) => <circle key={`f${i}`} cx={-1300 + i * 210 + 60 * random(`cf-${i}`)} cy={1790 + 30 * random(`cfy-${i}`)} r={16} fill={i % 3 ? "#FFE48A" : "#F7A6B5"} />)}
   </svg>
 );
 // o cachorro: sentado → deita (u) → dorme (zz)
-const Cachorro: React.FC<{ x: number; u: number; dorme: number; t: number }> = ({ x, u, dorme, t }) => (
-  <div style={{ position: "absolute", left: x - 120, top: CHAO - 190, width: 240, height: 200 }}>
+const Cachorro: React.FC<{ x: number; u: number; dorme: number; t: number; base?: number }> = ({ x, u, dorme, t, base = CHAO }) => (
+  <Ator nome="cachorro"><div style={{ position: "absolute", left: x - 120, top: base - 190, width: 240, height: 200 }}>
     <svg width={240} height={200} viewBox="0 0 240 200" style={{ overflow: "visible" }}>
       <ellipse cx={120} cy={194} rx={90} ry={8} fill="#000" opacity={0.2} />
       <g transform={`translate(0 ${40 * u})`}>
@@ -619,45 +663,55 @@ const Cachorro: React.FC<{ x: number; u: number; dorme: number; t: number }> = (
       </g>
     </svg>
     {dorme > 0 && [0, 1, 2].map((i) => { const k = ((t * 0.7 + i / 3) % 1); return <div key={i} style={{ position: "absolute", left: 20 + 30 * k, top: 40 - 80 * k, fontFamily: FONT, fontWeight: W.black, fontSize: 30 + 12 * k, color: "#FFF3C4", opacity: dorme * (1 - k) }}>z</div>; })}
-  </div>
+  </div></Ator>
 );
-// o carro (genérico, de lado, virado para a esquerda): a janela da frente com o vidro que desce; a cabeça da visita lá dentro
-const Carro: React.FC<{ x: number; vidro: number; dentro: boolean; liga: number; t: number; boca?: string; bla?: number }> = ({ x, vidro, dentro, liga, t, boca, bla = 0 }) => {
-  const treme = liga > 0 ? Math.sin(t * 60) * 1.5 * liga : 0;
+// o carro (genérico, de lado, virado para a esquerda) em ESCALA dos personagens: 940 × 540 no mundo (o teto fica acima da
+// cabeça do Pertim em pé, que tem 500; a visita cabe sentada, com a cabeça na janela da frente; o cachorro é bem menor).
+// Em camadas: o interior escuro → a visita sentada (children) → a lataria com as janelas vazadas, o vidro, as rodas.
+export const CARRO = { w: 940, h: 540, janela: { cx: 432, cy: 196 } };   // (coordenadas do carro: o chão em y 540)
+const CORPO_CARRO = "M40 290 Q20 292 18 320 L18 440 Q18 470 48 470 L112 470 A80 80 0 0 1 268 470 L672 470 A80 80 0 0 1 828 470 L896 470 Q926 470 926 440 L926 300 Q926 270 900 262 L864 52 Q852 4 800 2 L420 2 Q378 2 356 34 L246 280 Z";
+const JANELA_FRENTE = "M268 290 L362 66 Q374 40 404 40 L560 40 L560 290 Z";
+const JANELA_TRAS = "M592 40 L792 40 Q820 40 828 70 L860 290 L592 290 Z";
+const CarroCena: React.FC<{ x0: number; t: number; vidro: number; liga: number; bla?: number; children?: React.ReactNode }> = ({ x0, t, vidro, liga, bla = 0, children }) => {
+  const treme = liga > 0 ? Math.sin(t * 60) * 2 * liga : 0;
+  const caixa: React.CSSProperties = { position: "absolute", left: x0, top: CHAO - CARRO.h + treme, width: CARRO.w, height: CARRO.h };
   return (
-    <div style={{ position: "absolute", left: x - 230, top: CHAO - 300, width: 460, height: 320 }}>
-      <svg width={460} height={320} viewBox="0 0 460 320" style={{ overflow: "visible" }}>
-        <ellipse cx={230} cy={314} rx={200} ry={10} fill="#000" opacity={0.25} />
-        {liga > 0 && [0, 1, 2].map((i) => { const k = ((t * 1.8 + i / 3) % 1); return <circle key={i} cx={450 + 40 * k} cy={262 - 20 * k} r={10 + 16 * k} fill="#9A98A8" opacity={0.6 * (1 - k) * liga} />; })}
-        <g transform={`translate(0 ${treme})`}>
-          <path d="M40 250 Q30 190 70 180 L120 110 Q140 84 180 84 H300 Q336 84 356 112 L392 176 Q440 186 440 236 V258 Q440 272 424 272 H56 Q40 272 40 258 Z" fill="#2F9C95" />
-          <path d="M60 190 H430" stroke="#25807A" strokeWidth={6} />
-          {/* a janela da frente (a da visita) e a de trás */}
-          <clipPath id="cm-janela"><path d="M130 176 L162 112 Q170 100 186 100 H240 V176 Z" /></clipPath>
-          <path d="M130 176 L162 112 Q170 100 186 100 H240 V176 Z" fill="#1E2A4A" />
-          <g clipPath="url(#cm-janela)">
-            {dentro && (
-              <g transform="translate(196 150)">
-                <circle r={44} fill="#5A8FD8" /><circle cy={4} r={30} fill="#fff" />
-                <circle cx={-11} cy={0} r={7} fill={C.tinta} /><circle cx={11} cy={0} r={7} fill={C.tinta} />
-                {boca === "A" ? <ellipse cy={18} rx={7} ry={8} fill={C.tinta} /> : boca === "E" ? <ellipse cy={17} rx={9} ry={4.5} fill={C.tinta} /> : boca === "O" ? <ellipse cy={18} rx={5} ry={6} fill={C.tinta} />
-                  : <path d="M-8 16 Q0 22 8 16" stroke={C.tinta} strokeWidth={3} fill="none" strokeLinecap="round" />}
-              </g>
-            )}
-            <rect x={120} y={96 + 82 * vidro} width={130} height={84} fill="#A9C7E6" opacity={0.55} />
+    <>
+      <Ator nome="carro"><div style={caixa}><svg width={CARRO.w} height={CARRO.h} viewBox={`0 0 ${CARRO.w} ${CARRO.h}`} style={{ overflow: "visible" }}>
+        <path d={JANELA_FRENTE} fill="#1E2A4A" /><path d={JANELA_TRAS} fill="#1E2A4A" />
+        {/* o encosto do banco */}
+        <path d="M470 150 Q520 140 540 170 L548 290 H470 Z" fill="#15203A" />
+      </svg></div></Ator>
+      <div style={{ position: "absolute", left: 0, top: treme, width: 0, height: 0 }}>{children}</div>
+      <Ator nome="carro"><div style={caixa}><svg width={CARRO.w} height={CARRO.h} viewBox={`0 0 ${CARRO.w} ${CARRO.h}`} style={{ overflow: "visible" }}>
+        <defs><clipPath id="cm-janela-frente"><path d={JANELA_FRENTE} /></clipPath></defs>
+        <ellipse cx={470} cy={536} rx={450} ry={14} fill="#000" opacity={0.28} transform={`translate(0 ${-treme})`} />
+        {liga > 0 && [0, 1, 2].map((i) => { const k = ((t * 1.6 + i / 3) % 1); return <circle key={i} cx={938 + 70 * k} cy={452 - 36 * k} r={16 + 26 * k} fill="#9A98A8" opacity={0.6 * (1 - k) * liga} />; })}
+        {/* a lataria, com as duas janelas vazadas (a de trás, escura; a da frente mostra quem está sentado) */}
+        <path d={`${CORPO_CARRO} ${JANELA_FRENTE} ${JANELA_TRAS}`} fillRule="evenodd" fill="#2F9C95" />
+        <path d="M30 330 H920" stroke="#25807A" strokeWidth={8} />
+        <path d="M250 300 V462 M576 40 V462 M862 300 V462" stroke="#25807A" strokeWidth={6} />
+        <path d="M560 40 H592 V290 H560 Z" fill="#25807A" />
+        <path d="M420 10 H800 Q838 12 850 40" stroke="#5FC2BA" strokeWidth={8} fill="none" strokeLinecap="round" />
+        <rect x={500} y={344} width={50} height={12} rx={6} fill="#1F6B66" /><rect x={790} y={344} width={50} height={12} rx={6} fill="#1F6B66" />
+        <path d="M250 286 L226 280 Q214 296 226 310 L252 306 Z" fill="#25807A" />
+        <rect x={18} y={340} width={46} height={30} rx={10} fill="#FFE48A" /><rect x={904} y={312} width={24} height={44} rx={8} fill="#E8503A" />
+        <rect x={10} y={418} width={70} height={34} rx={12} fill="#8C8A98" /><rect x={880} y={418} width={56} height={34} rx={12} fill="#8C8A98" />
+        {/* o vidro da janela da frente: desce para dentro da porta */}
+        <g clipPath="url(#cm-janela-frente)"><rect x={250} y={36 + 262 * vidro} width={320} height={262} fill="#A9C7E6" opacity={0.5} />
+          <rect x={250} y={36 + 262 * vidro} width={320} height={8} fill="#DDEBF7" opacity={0.8} /></g>
+        <path d={JANELA_TRAS} fill="#A9C7E6" opacity={0.45} />
+        {[190, 750].map((cx) => (
+          <g key={cx} transform={`translate(0 ${-treme})`}>
+            <circle cx={cx} cy={468} r={72} fill="#2E2A33" /><circle cx={cx} cy={468} r={38} fill="#9A98A8" /><circle cx={cx} cy={468} r={12} fill="#5D5A68" />
           </g>
-          <path d="M252 176 V100 H296 Q318 100 330 120 L358 176 Z" fill="#1E2A4A" /><rect x={252} y={100} width={106} height={76} fill="#A9C7E6" opacity={0.55} />
-          <rect x={244} y={96} width={10} height={86} fill="#25807A" />
-          <rect x={60} y={210} width={30} height={12} rx={6} fill="#FFE48A" /><rect x={414} y={208} width={22} height={14} rx={6} fill="#E8503A" />
-          <rect x={210} y={196} width={30} height={8} rx={4} fill="#25807A" />
-        </g>
-        {[110, 350].map((cx) => <g key={cx}><circle cx={cx} cy={268} r={40} fill="#2E2A33" /><circle cx={cx} cy={268} r={18} fill="#9A98A8" /></g>)}
-      </svg>
+        ))}
+      </svg></div></Ator>
       {bla > 0 && (
-        <div style={{ position: "absolute", left: 200, top: -40, transform: `scale(${bla})`, transformOrigin: "0% 100%", background: "#fff", border: `5px solid ${C.tinta}`, borderRadius: 28, padding: "4px 20px",
-          fontFamily: FONT, fontWeight: W.black, fontSize: 40, color: C.tinta, whiteSpace: "nowrap" }}>blá blá blá…</div>
+        <div style={{ position: "absolute", left: x0 + 150, top: CHAO - CARRO.h - 190, transform: `scale(${bla})`, transformOrigin: "30% 100%", background: "#fff", border: `9px solid ${C.tinta}`,
+          borderRadius: 50, padding: "6px 40px", fontFamily: FONT, fontWeight: W.black, fontSize: 84, color: C.tinta, whiteSpace: "nowrap" }}>blá blá blá…</div>
       )}
-    </div>
+    </>
   );
 };
 // a cena da casa inteira, num instante t (sala, porta, portão, carro e o fecho no portão)
@@ -667,7 +721,8 @@ const CasaEmCena: React.FC<{ t: number; quadro: number; d: DadosEpisodio }> = ({
   const cena = (tp: string) => d.cenas.filter((c) => c.tipo === tp);
   const falaVisita = d.cenas.some((c) => c.falante === "visita" && t >= c.voz_t0 - 0.02 && t <= c.voz_t1 + 0.04);
   const bocaVisita = falaVisita ? d.visemas[Math.min(d.visemas.length - 1, quadro)] : undefined;
-  const empurra = cenaEm.n === 0
+  const tomadaCarro = d.cenas.some((c) => c.tipo === "carro") && (cenaEm.tipo === "carro" || (cenaEm.tipo === "fecho" && (cenaEm.diagrama.cenario ?? "portao") === "portao"));
+  const empurra = tomadaCarro ? 1 : cenaEm.n === 0
     ? 1 + 0.14 * Math.pow(1 - entre(t, 0, 0.9), 1.4)                                  // a abertura: a câmera entra na sala sem parar
     : 1 + 0.05 * (1 - outCubic(entre(t, cenaEm.t0, cenaEm.t0 + 0.35)));               // a câmera chega um tiquinho mais perto a cada corte
   const S = L.pertim, V = L.visitante;
@@ -692,44 +747,66 @@ const CasaEmCena: React.FC<{ t: number; quadro: number; d: DadosEpisodio }> = ({
     const voa = entre(t, tb, tb + 0.4);
     const pose: Pose = t >= tf ? "apontando" : "parado";
     // a luva do Pertim (pose "parado": a luva de baixo em (201, 207) no viewBox 0 18 240 270) e as mãos da visita
-    const alt = 520, w = (alt * 240) / 270, gx = 700 - w / 2 + (201 / 240) * w, gy = CHAO - alt + ((207 - 18) / 270) * alt;
-    const k = 440 / 260, hx = 330, hy = CHAO - 260 * k + 176 * k;
+    const PX = 650, alt = 520, w = (alt * 240) / 270, gx = PX - w / 2 + (201 / 240) * w, gy = CHAO - alt + ((207 - 18) / 270) * alt;
+    const k = 440 / 260, hx = 310, hy = CHAO - 260 * k + 176 * k;
     conteudo.push(<Interior key="i" porta />);
-    conteudo.push(<PertimEm key="p" t={t} quadro={quadro} d={d} pose={pose} expr="sorrindo" cx={700} base={CHAO} altura={alt} olhar={[-1, 0.1]} pote={t < tb} />);
-    conteudo.push(<Visitante key="v" cx={330} base={CHAO} altura={440} t={t} mapa={false} pote={voa >= 1} olha={0.7} />, <FrenteCasa key="fc" porta />);
+    conteudo.push(<PertimEm key="p" t={t} quadro={quadro} d={d} pose={pose} expr="sorrindo" cx={PX} base={CHAO} altura={alt} olhar={[-1, 0.1]} pote={t < tb} />);
+    conteudo.push(<Visitante key="v" cx={310} base={CHAO} altura={440} t={t} mapa={false} pote={voa >= 1} olha={0.7} />, <FrenteCasa key="fc" porta />);
     if (voa > 0 && voa < 1) {
       const x = gx + (hx - gx) * outCubic(voa), y = gy + (hy - gy) * voa - 160 * Math.sin(Math.PI * voa);
       conteudo.push(<svg key="voa" width={1080} height={1920} style={{ position: "absolute", left: 0, top: 0 }}><g transform={`rotate(${-200 * voa} ${x} ${y})`}><PoteDeBolo x={x} y={y} w={70} /></g></svg>);
     }
   } else {
-    // o portão, o carro e o fecho: a mesma rua
+    // o portão, o carro e o fecho: a mesma rua. No portão, a câmera de sempre (o carro fica fora do quadro); no carro e
+    // no fecho, a câmera se afasta para mostrar o carro e o Pertim INTEIROS (folga de ≥ 60 px das bordas; o rosto do
+    // Pertim à esquerda da coluna de botões do Instagram, x < 940)
     const pt = cena("portao")[0], cr = cena("carro")[0], fe = d.cenas.find((c) => c.tipo === "fecho");
     const tv = pt?.diagrama.vizinho?.t ?? 1e9, tc = pt?.diagrama.cachorro?.t ?? 1e9;
-    const naCarro = cr && t >= cr.t0;
-    const anda = cr ? entre(t, cr.t0, cr.t0 + 0.5) : 0;
-    const dentro = cr ? t >= cr.t0 + 0.55 : false;
-    const vidroT = cr?.diagrama.vidro?.t ?? 1e9;
-    const vidro = inOut(entre(t, vidroT - 0.15, vidroT + 0.15));
-    const u = fe ? inOut(entre(t, fe.t0 - 0.15, fe.t0 + 0.35)) : 0;
-    // no carro: a câmera vai até a janela quando o vidro desce (a fala da visita) e volta no fecho
-    const zc = cr ? inOut(entre(t, vidroT - 0.25, vidroT + 0.45)) * (1 - inOut(entre(t, (fe?.t0 ?? 1e9) - 0.2, (fe?.t0 ?? 1e9) + 0.3))) : 0;
-    const bla = fe && t >= fe.t0 ? mola(t, fe.t0 + 0.4, 0.35, 2) * (0.92 + 0.08 * Math.sin(t * 8)) : 0;
-    conteudo.push(
-      <div key="rua" style={{ position: "absolute", inset: 0, transform: `scale(${1 + 0.1 * u}) scale(${1 + 0.3 * zc})`, transformOrigin: `${interpolate(zc, [0, 1], [700, 220])}px ${CHAO - 150 * zc}px` }}>
-        <Rua luzVizinho={1 - entre(t, tv, tv + 0.15)} />
-        <Cachorro x={690} u={inOut(entre(t, tc, tc + 0.45))} dorme={entre(t, tc + 0.7, tc + 0.9)} t={t} />
-        <Carro x={300} vidro={vidro} dentro={dentro} liga={cr ? entre(t, cr.t0 + 0.85, cr.t0 + 1.1) : 0} t={t} boca={dentro ? bocaVisita : undefined} bla={bla} />
-        {!dentro && <Visitante cx={interpolate(anda, [0, 1], [530, 360])} base={CHAO} altura={420} t={t} anda={anda > 0 && anda < 1 ? 1 : 0} mapa={false} pote boca={bocaVisita} olha={naCarro ? -0.8 : 0.7} />}
-        <PertimEm t={t} quadro={quadro} d={d} pose="parado" expr="sorrindo" cx={820} base={CHAO} altura={500} olhar={fe && t >= fe.t0 ? [0, 0] : [-1, 0.1]}
-          cansado={naCarro ? (fe && t >= fe.t0 ? 0.42 : 0.3) : 0} />
-      </div>,
-    );
+    const luz = 1 - entre(t, tv, tv + 0.15);
+    if (cenaEm.tipo === "portao" || !cr) {
+      conteudo.push(
+        <div key="rua" style={{ position: "absolute", inset: 0 }}>
+          <Rua luzVizinho={luz} />
+          <Visitante cx={390} base={CHAO} altura={420} t={t} mapa={false} pote boca={bocaVisita} olha={0.7} />
+          <PertimEm t={t} quadro={quadro} d={d} pose="parado" expr="sorrindo" cx={710} base={CHAO} altura={500} olhar={[-1, 0.1]} />
+          <Cachorro x={555} base={CHAO + 15} u={inOut(entre(t, tc, tc + 0.45))} dorme={entre(t, tc + 0.7, tc + 0.9)} t={t} />
+        </div>,
+      );
+    } else {
+      const PX = 700, x0 = PX - 222 + 50 - CARRO.w, ox = (x0 + PX + 222) / 2;   // o Pertim no portão; o carro logo à esquerda dele
+      const noFecho = fe && t >= fe.t0;
+      const z = noFecho ? interpolate(t, [fe!.t0, fe!.t0 + 1.2], [0.515, 0.528], { ...clamp, easing: inOut }) : interpolate(t, [cr.t0, cr.t1], [0.495, 0.515], clamp);
+      const kV = 420 / 260, janX = x0 + CARRO.janela.cx, sentadaBase = CHAO - CARRO.h + CARRO.janela.cy + (260 - 98) * kV;
+      const anda = entre(t, cr.t0, cr.t0 + 0.4), dentro = t >= cr.t0 + 0.5;
+      const vidroT = cr.diagrama.vidro?.t ?? 1e9;
+      const vidro = inOut(entre(t, vidroT - 0.15, vidroT + 0.15));
+      const bla = noFecho ? mola(t, fe!.t0 + 0.4, 0.35, 2) * (0.92 + 0.08 * Math.sin(t * 8)) : 0;
+      conteudo.push(
+        <div key="rua" style={{ position: "absolute", inset: 0, transform: `translate(${540 - ox}px, 0px) scale(${z})`, transformOrigin: `${ox}px ${CHAO}px` }}>
+          <Rua luzVizinho={luz} />
+          <CarroCena x0={x0} t={t} vidro={vidro} liga={entre(t, cr.t0 + 0.85, cr.t0 + 1.1)} bla={bla}>
+            {dentro && <Visitante cx={janX} base={sentadaBase} altura={420} t={t} mapa={false} boca={vidro > 0.5 ? bocaVisita : undefined} olha={0.8} />}
+          </CarroCena>
+          <Cachorro x={x0 + 470} base={CHAO + 20} u={1} dorme={1} t={t} />
+          {!dentro && <Visitante cx={interpolate(anda, [0, 1], [janX + 130, janX])} base={CHAO} altura={420} t={t} anda={anda < 1 ? 1 : 0} mapa={false} pote olha={-0.8} />}
+          <PertimEm t={t} quadro={quadro} d={d} pose="parado" expr="sorrindo" cx={PX} base={CHAO} altura={500} olhar={noFecho ? [0, 0] : [-1, 0.1]} cansado={noFecho ? 0.42 : 0.3} />
+        </div>,
+      );
+    }
   }
   return <div style={{ position: "absolute", inset: 0, transform: `scale(${empurra})`, transformOrigin: `540px ${CHAO}px` }}>{conteudo}</div>;
 };
 
 // ================================================================ a montagem
-export const CoisaDeMineiro: React.FC<CoisaDeMineiroProps> = ({ dados }) => {
+export const CoisaDeMineiro: React.FC<CoisaDeMineiroProps> = (props) => props.mascara ? (
+  <MascaraCtx.Provider value={true}>
+    <AbsoluteFill style={{ background: "#000" }}>
+      <FiltrosMascara />
+      <AbsoluteFill style={{ visibility: "hidden" }}><Montagem {...props} /></AbsoluteFill>
+    </AbsoluteFill>
+  </MascaraCtx.Provider>
+) : <Montagem {...props} />;
+const Montagem: React.FC<CoisaDeMineiroProps> = ({ dados }) => {
   const quadro = useCurrentFrame();
   if (!dados) throw new Error("CoisaDeMineiro: os dados do episódio são lidos no calculateMetadata");
   const d = dados;

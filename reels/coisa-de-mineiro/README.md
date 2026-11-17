@@ -75,8 +75,8 @@ A voz, a linha do tempo e a mixagem são as do pipeline do Explica, Sô! (`reels
 | `fecho` | a câmera chega mais perto do Pertim, que pisca para a câmera; o visitante dorme ("z z z"); nos `marca_s` s finais, a logo e "Tudo pertim de você." Com `cenario` (#02), acontece na casa: o Pertim olha para a câmera, cansado mas sorrindo, e a visita continua no carro ("blá blá blá…") | `marca_s` (padrão 2); `cenario: "portao"` |
 | `sala` (#02) | a sala de noite (janela, quadro, abajur, sofá verde, mesinha de centro com café e pão de queijo no primeiro plano); o Pertim e a visita sentados. Em `levanta`, a visita se levanta; em `pernas`, bate nas pernas | `levanta: {em}`, `pernas: {em}` |
 | `porta` (#02) | a porta da rua aberta para a noite, cabideiro, capacho e vasos no primeiro plano. Em `bolo`, o pote de bolo voa da mão do Pertim para a da visita; em `fica`, o Pertim aponta de volta para a sala | `bolo: {em}`, `fica: {em}` |
-| `portao` (#02) | a rua de noite: a casa do vizinho com a janela acesa, o muro com o portão, a casa do Pertim, o poste e os paralelepípedos no primeiro plano; o carro da visita estacionado. Em `cachorro`, o cachorro deita e dorme; em `vizinho`, a janela do vizinho apaga | `cachorro: {em}`, `vizinho: {em}` |
-| `carro` (#02) | a visita entra no carro e liga o motor (fumacinha); em `vidro`, o vidro desce e a câmera vai até a janela | `vidro: {em}` |
+| `portao` (#02) | a rua de noite: a casa do vizinho com a janela acesa, o muro com o portão, a casa do Pertim, o poste e os paralelepípedos no primeiro plano (o carro fica fora do quadro). Em `cachorro`, o cachorro deita e dorme; em `vizinho`, a janela do vizinho apaga | `cachorro: {em}`, `vizinho: {em}` |
+| `carro` (#02) | a câmera se afasta para o carro e o Pertim aparecerem INTEIROS. O carro tem a escala dos personagens (940 × 540 no mundo: o teto acima da cabeça do Pertim, de 500; a visita sentada com a cabeça na janela; o cachorro bem menor). A visita entra e liga o motor (fumacinha); em `vidro`, o vidro desce. O fecho com `cenario: "portao"` continua nessa mesma tomada | `vidro: {em}` |
 
 **O relógio** (#02): todo capítulo com `relogio: "HH:MM"` no diagrama mostra um relógio no alto à direita, ao lado do
 selo. A cada troca de hora, os ponteiros dão uma volta rápida e o mostrador digital conta até a hora nova, na batida do
@@ -128,7 +128,14 @@ python3 reels/coisa-de-mineiro/scripts/qa.py NN-tema                      # RESU
 python3 reels/coisa-de-mineiro/scripts/storyboard.py NN-tema              # quadros/ + storyboard.png
 ```
 
-`render.mjs quadros NN-tema <pasta> <seg> …` renderiza quadros soltos para conferir antes do render inteiro. A chave do
+`render.mjs quadros NN-tema <pasta> <seg> …` renderiza quadros soltos para conferir antes do render inteiro.
+
+**Personagens na tela (QA):** o `qa.py` roda `render.mjs mascara NN-tema`, que renderiza só os personagens e o carro, cada
+um numa cor chapada (10 quadros/s, meia resolução, em `output/revisao/mascara/`, fora do git). Com isso ele confere:
+
+- parado, nenhum personagem (Pertim, visita/visitante, cachorro, vaca) nem o carro fica cortado pela borda, nem a menos
+  de 60 px dela (entrando ou saindo de cena, em movimento, pode);
+- o rosto do Pertim nunca fica na coluna de botões do Instagram (x ≥ 940 entre y 1060 e 1560). A chave do
 ElevenLabs nunca fica no repositório: nesta nuvem, a rede a põe no cabeçalho `xi-api-key`.
 
 ## #02 "A despedida mineira" — decisões e tomadas

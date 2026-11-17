@@ -3,9 +3,11 @@
 //   node reels/coisa-de-mineiro/scripts/render.mjs video 01-e-logo-ali     -> reels/coisa-de-mineiro/01-e-logo-ali/output/uaipertim-coisa-de-mineiro-01.mp4
 //   node reels/coisa-de-mineiro/scripts/render.mjs capa 01-e-logo-ali      -> output/capa.png + output/capa-3x4.png (o recorte da grade)
 //   node reels/coisa-de-mineiro/scripts/render.mjs quadros 01-e-logo-ali <dir> <seg> [seg …]   (para conferir antes do render inteiro)
+//   node reels/coisa-de-mineiro/scripts/render.mjs mascara 01-e-logo-ali   -> output/revisao/mascara/ (para o qa.py: só os
+//        personagens e o carro, cada um numa cor chapada, 10 quadros por segundo, em meia resolução)
 // O áudio é a mixagem do pipeline do Explica, Sô! (reels/explica-so/audio/coisa-de-mineiro/<ep>/mix.wav).
 import { bundle } from "@remotion/bundler";
-import { openBrowser, renderMedia, renderStill, selectComposition } from "@remotion/renderer";
+import { openBrowser, renderFrames, renderMedia, renderStill, selectComposition } from "@remotion/renderer";
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
@@ -15,7 +17,7 @@ const CANDIDATOS = [process.env.REMOTION_BROWSER, "/opt/pw-browsers/chromium_hea
 const browserExecutable = CANDIDATOS.find((p) => fs.existsSync(p)) ?? null;
 const [modo, ep, ...resto] = process.argv.slice(2);
 if (!modo || !ep) throw new Error("uso: render.mjs video|capa|quadros <ep> [...]");
-const inputProps = { ep };
+const inputProps = modo === "mascara" ? { ep, mascara: true } : { ep };
 const OUT = path.resolve("reels/coisa-de-mineiro", ep, "output");
 const AUD = path.resolve("reels/explica-so/audio/coisa-de-mineiro", ep);
 const numero = JSON.parse(fs.readFileSync(path.resolve("reels/coisa-de-mineiro", ep, "roteiro.json"), "utf-8")).numero;
@@ -46,6 +48,14 @@ if (modo === "video") {
   await renderStill({ composition, serveUrl, inputProps, frame: 0, output: png, puppeteerInstance: browser, browserExecutable });
   ff("-i", png, "-vf", "crop=1080:1440:0:240", path.join(OUT, "capa-3x4.png"));
   console.log("ok", path.relative(process.cwd(), png), "+ capa-3x4.png");
+} else if (modo === "mascara") {
+  const composition = await comp("CoisaDeMineiro");
+  const outputDir = path.join(OUT, "revisao", "mascara");
+  fs.rmSync(outputDir, { recursive: true, force: true });
+  fs.mkdirSync(outputDir, { recursive: true });
+  await renderFrames({ composition, serveUrl, inputProps, outputDir, imageFormat: "png", everyNthFrame: 3, scale: 0.5, concurrency: 4,
+    puppeteerInstance: browser, browserExecutable, onStart: () => {}, onFrameUpdate: () => {} });
+  console.log("ok", path.relative(process.cwd(), outputDir), fs.readdirSync(outputDir).length, "quadros");
 } else if (modo === "quadros") {
   const [dir, ...segs] = resto;
   fs.mkdirSync(dir, { recursive: true });

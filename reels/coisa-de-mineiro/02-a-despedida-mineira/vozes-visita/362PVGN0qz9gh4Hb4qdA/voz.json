@@ -1,0 +1,10 @@
+{
+ "voice_id": "362PVGN0qz9gh4Hb4qdA",
+ "nome": "Jairo Moraes",
+ "modelo": "eleven_v4",
+ "ajustes": {
+  "stability": 0.5,
+  "similarity_boost": 0.75
+ },
+ "seed": 42
+}
