@@ -5,6 +5,11 @@ Série "Coisa de mineiro": as vozes candidatas da VISITA (o personagem fixo que 
     python3 reels/coisa-de-mineiro/scripts/vozes_visita.py gerar <ep> <voice_id>[:Nome] ...   (usa a API)
     python3 reels/coisa-de-mineiro/scripts/vozes_visita.py medir <ep>                          (sem API)
     python3 reels/coisa-de-mineiro/scripts/vozes_visita.py comparativo <ep> <voice_id> ...      (sem API; na ordem dada)
+    python3 reels/coisa-de-mineiro/scripts/vozes_visita.py instalar <ep> <voice_id>             (sem API)
+
+"instalar": confere as tomadas da voz escolhida (as mesmas regras do voz.py: ritmo, pausa interna, fim inteiro) e as
+põe nas falas da visita do episódio (voz/cap-NN.wav + falas.json, com "voz" e "voice_id" da fala). O roteiro precisa ter
+"vozes": {"visita": {"name", "voiceId"}} com essa voz, para o voz.py não gerar de novo com a voz oficial.
 
 Gera, com cada voz, as falas da visita do episódio (os capítulos com "falante": "visita"), cada uma UMA geração inteira
 (eleven_v4, os mesmos ajustes do perfil "narracao" da voz oficial, seed 42, o texto vizinho como contexto, como no
@@ -157,3 +162,50 @@ if modo == 'comparativo':
         f'Comparativo da voz da visita ({EP}): {falas}\nentre as vozes: 1 s de silêncio e um bip\n\n' + '\n'.join(linhas) + '\n')
     print('\n'.join(linhas))
     print(f'ok {os.path.relpath(mp3, REPO)} ({len(y) / SR:.1f} s)')
+
+if modo == 'instalar':
+    import hashlib
+    import time
+    voice = ARGS[0]
+    assert ROT.get('vozes', {}).get('visita', {}).get('voiceId') == voice, 'o roteiro precisa de "vozes": {"visita": {"voiceId": "%s"}}' % voice
+    path = os.path.join(VOZ_PERTIM, 'falas.json')
+    D = json.load(open(path))
+    for n in VISITA:
+        j = json.load(open(os.path.join(OUT, voice, f'cap-{n:02d}.json')))
+        sr, pcm = wavfile.read(os.path.join(OUT, voice, f'cap-{n:02d}.wav'))
+        x = pcm.astype(np.float32) / 32768
+        al = j['alinhamento']
+        ch, st_, en = al['characters'], al['character_start_times_seconds'], al['character_end_times_seconds']
+        ws, cur = [], None
+        for c, a_, b_ in zip(ch, st_, en):
+            if c.isspace():
+                if cur:
+                    ws.append(cur); cur = None
+                continue
+            cur = cur or {'t0': a_, 'fim': None}
+            if c.isalnum():
+                cur['fim'] = b_
+        if cur:
+            ws.append(cur)
+        ws = [w for w in ws if w['fim'] is not None]
+        ini, fim = ws[0]['t0'], ws[-1]['fim']
+        letras = sum(c.isalnum() for c in j['texto'])
+        ritmo = letras / (fim - ini)
+        pausa = max((b_['t0'] - a_['fim'] for a_, b_ in zip(ws, ws[1:])), default=0)
+        cauda = 20 * np.log10(np.sqrt(np.mean(x[-int(0.03 * sr):] ** 2)) / np.abs(x).max() + 1e-9)
+        # (fala curta com "…": o ritmo mínimo do voz.py, 8 letras/s, não vale para ela; aqui o mínimo é 6)
+        ok_ = 6 <= ritmo <= 19 and pausa <= 0.94 and (len(x) / sr - fim >= 0.01 or cauda < -40)
+        print(f'  cap {n:02d}: {fim - ini:.2f} s · {ritmo:.1f} letras/s · maior pausa {pausa:.2f} s · fim do áudio {cauda:.0f} dB · {"ok" if ok_ else "REPROVADA"}')
+        if not ok_:
+            raise SystemExit('tomada reprovada: gere outras seeds')
+        wavfile.write(os.path.join(VOZ_PERTIM, f'cap-{n:02d}.wav'), sr, pcm)
+        D['capitulos'][f'{n:02d}'] = {'n': n, 'voz': ROT['vozes']['visita']['name'], 'voice_id': voice, 'falante': 'visita', 'texto': j['texto'], 'texto_api': j['texto'],
+                                      'perfil': 'narracao', 'modelo': PV['model'], 'seed': j['seed'], 'formato': j['formato'], 'duracao_audio': round(len(x) / sr, 3),
+                                      'inicio_da_fala': round(ini, 3), 'fim_da_fala': round(fim, 3), 'sha1_audio': hashlib.sha1(pcm.tobytes()).hexdigest(),
+                                      'geracoes': 1, 'tomada': {'arquivo': os.path.relpath(os.path.join(OUT, voice, f'cap-{n:02d}.wav'), REPO), 'escolhida': 'de ouvido (comparativo)'},
+                                      'historico': [{'seed': j['seed'], 'texto_api': j['texto'], 'formato': j['formato'], 'resultado': 'ok', 'ritmo_letras_s': round(ritmo, 1),
+                                                     'maior_pausa_s': round(pausa, 2), 'fala_s': round(fim - ini, 2), 'quando': time.strftime('%Y-%m-%d %H:%M')}],
+                                      'alinhamento': al}
+    D['vozes_por_falante'] = {'pertim': {'name': D['voz'], 'voice_id': D['voice_id']}, 'visita': {'name': ROT['vozes']['visita']['name'], 'voice_id': voice}}
+    json.dump(D, open(path, 'w'), ensure_ascii=False, indent=1)
+    print(f'ok: a voz da visita ({ROT["vozes"]["visita"]["name"]}) nas falas {", ".join(str(n + 1) for n in VISITA)}')

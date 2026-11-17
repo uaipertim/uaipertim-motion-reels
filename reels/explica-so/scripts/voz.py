@@ -57,6 +57,15 @@ SCRIPT = json.load(open(_EPJ, encoding='utf-8'))
 PERFIL = SCRIPT.get('perfil_voz', 'narracao')
 VOZ = perfil(PERFIL)
 VOICE, MODEL, SETTINGS, SEED0 = VOZ['voiceId'], VOZ['model'], VOZ['voiceSettings'], VOZ.get('seed', 42)
+# um 2º personagem com voz própria (ex.: a visita da série "Coisa de mineiro"): "vozes": {"<falante>": {"name", "voiceId"}}
+# no topo do roteiro e "falante": "<falante>" no capítulo. Sem falante (ou sem voz para ele), a voz oficial.
+VOZES = SCRIPT.get('vozes', {})
+
+
+def voz_de(c):
+    v = VOZES.get(c.get('falante', ''), None)
+    return (v['voiceId'], v['name']) if v else (VOICE, VOZ['name'])
+
 # o alinhamento do eleven_v4 vem em degraus de ~40 ms: as conferências de pausa e de fim cortado têm essa folga
 PASSO = 0.04 if MODEL == 'eleven_v4' else 0.0
 TENTATIVAS = 4
@@ -82,7 +91,8 @@ def confere_texto(t):
         raise SystemExit(f'o texto diz "de Glória" (o certo é "do Glória"/"no Glória"): {t}')
 
 
-def tts(text, prev, nxt, seed):
+def tts(text, prev, nxt, seed, voice=None):
+    voice = voice or VOICE
     body = {'text': text, 'model_id': MODEL, 'voice_settings': SETTINGS, 'seed': seed, 'previous_text': prev, 'next_text': nxt}
     headers = {'Content-Type': 'application/json', 'Accept': 'application/json'}
     key = os.environ.get('ELEVENLABS_API_KEY') or os.environ.get('XI_API_KEY')
@@ -90,7 +100,7 @@ def tts(text, prev, nxt, seed):
         headers['xi-api-key'] = key                    # nunca impresso nem gravado
     ultimo = VOZ.get('outputFormat') or 'mp3_44100_128'
     for fmt in ('pcm_44100', 'mp3_44100_192', ultimo):  # o melhor que o plano liberar
-        req = urllib.request.Request(API.format(voice=VOICE, fmt=fmt), data=json.dumps(body).encode(), headers=headers, method='POST')
+        req = urllib.request.Request(API.format(voice=voice, fmt=fmt), data=json.dumps(body).encode(), headers=headers, method='POST')
         try:
             with urllib.request.urlopen(req, timeout=180) as r:
                 d = json.load(r)
@@ -102,7 +112,7 @@ def tts(text, prev, nxt, seed):
             status = det.get('status', '') if isinstance(det, dict) else ''
             msg = det.get('message', '') if isinstance(det, dict) else str(det)
             if e.code in (401, 404) or status in PARA:
-                raise SystemExit(f'PARADO: a API recusou a voz oficial ({VOZ["name"]}, {VOICE}): HTTP {e.code} {status} — {msg}\n'
+                raise SystemExit(f'PARADO: a API recusou a voz ({voice}): HTTP {e.code} {status} — {msg}\n'
                                  '  A voz não é trocada. Confira a chave em Segredos de rede (xi-api-key) e se a voz está em My Voices.')
             if e.code in (400, 403, 422) and fmt != ultimo:
                 continue                                # formato não liberado no plano: tenta o próximo
@@ -181,6 +191,7 @@ def gerar(refaz):
         # o capítulo já gerado vale se o texto, a grafia enviada e o perfil forem os mesmos (sem "perfil" = gerado antes
         # dos perfis, com a configuração que hoje é a do "pausas")
         if (atual and atual['texto'] == texto and atual.get('texto_api') == api and atual.get('perfil', 'pausas') == PERFIL
+                and atual.get('voice_id', VOICE) == voz_de(c)[0]
                 and n not in refaz and os.path.exists(os.path.join(OUT, f'cap-{key}.wav'))):
             continue
         prev = pron(caps[n - 1], texto_cap(caps[n - 1])) if n else None
@@ -190,7 +201,7 @@ def gerar(refaz):
         # recomeça da seed de partida; o histórico das grafias anteriores fica registrado
         seed = c.get('seed', SEED0) + 1000 * sum(1 for h in hist if h.get('texto_api') == api)
         for k in range(TENTATIVAS):
-            x, al, fmt = tts(api, prev, nxt, seed)
+            x, al, fmt = tts(api, prev, nxt, seed, voz_de(c)[0])
             ok, motivo, num = confere(x, al, api)
             hist.append({'seed': seed, 'texto_api': api, 'formato': fmt, 'resultado': motivo, **num, 'quando': time.strftime('%Y-%m-%d %H:%M')})
             print(f'  cap {key}: seed {seed} · {motivo} · {num["fala_s"]} s · {num["ritmo_letras_s"]} letras/s · maior pausa {num["maior_pausa_s"]} s')
@@ -202,7 +213,7 @@ def gerar(refaz):
         pcm = np.round(np.clip(x, -1, 1) * 32767).astype(np.int16)
         wavfile.write(os.path.join(OUT, f'cap-{key}.wav'), SR, pcm)
         ws = palavras(al)
-        D['capitulos'][key] = {'n': n, 'texto': texto, 'texto_api': api, 'perfil': PERFIL, 'modelo': MODEL, 'seed': seed, 'formato': fmt, 'duracao_audio': round(len(x) / SR, 3),
+        D['capitulos'][key] = {'n': n, 'voz': voz_de(c)[1], 'voice_id': voz_de(c)[0], 'texto': texto, 'texto_api': api, 'perfil': PERFIL, 'modelo': MODEL, 'seed': seed, 'formato': fmt, 'duracao_audio': round(len(x) / SR, 3),
                                'inicio_da_fala': round(ws[0]['t0'], 3), 'fim_da_fala': round(ws[-1]['fim_letra'], 3),
                                'sha1_audio': hashlib.sha1(pcm.tobytes()).hexdigest(), 'geracoes': len(hist), 'historico': hist,
                                'alinhamento': al}

@@ -9,7 +9,8 @@ Confere o MP4 (reels/coisa-de-mineiro/<ep>/output/uaipertim-coisa-de-mineiro-NN.
 <ep>/output/revisao/f0-gancho.png:
   • formato: h264 yuv420p 1080×1920 a 30 fps, 20–30 s, AAC 48 kHz estéreo; −14 LUFS (±0,5), pico real ≤ −1 dBTP;
   • ritmo: todo corte de cena numa batida (120 BPM); a fala de cada cena dentro dela;
-  • voz: o roteiro exato, perfil "narracao" (eleven_v4), "Pertim/pertim" enviado como "pertím" (grafia c) e a tela sem
+  • voz: o roteiro exato, perfil "narracao" (eleven_v4), cada fala com a voz de quem fala (o Pertim com a voz oficial,
+    a visita com a de "vozes" no roteiro), "Pertim/pertim" enviado como "pertím" (grafia c) e a tela sem
     troca; cada cena UMA geração inteira; nunca "de Glória";
   • a pergunta do gancho (se a 1ª fala termina em "?"): o F0 sobe ≥ +8 st da palavra anterior até o pico na última;
   • a série: sem app, celular, "em breve" ou "tá chegando" no roteiro; placas só com km; o selo "COISA DE MINEIRO #NN"
@@ -98,7 +99,15 @@ for c in D['cenas']:
 sec('VOZ')
 caps = FALAS['capitulos']
 ok([caps[f'{i:02d}']['texto'] for i in range(len(ROTEIRO))] == ROTEIRO, 'o texto falado é o roteiro, cena a cena')
-ok(all(caps[k]['perfil'] == 'narracao' and caps[k]['modelo'] == 'eleven_v4' for k in caps) and FALAS['voz'] == 'Victor Pinho', 'voz oficial (Victor Pinho), perfil "narracao" (eleven_v4)')
+ok(all(caps[k]['perfil'] == 'narracao' and caps[k]['modelo'] == 'eleven_v4' for k in caps) and FALAS['voz'] == 'Victor Pinho', 'perfil "narracao" (eleven_v4); a voz oficial (Victor Pinho) é a do Pertim')
+# cada fala com a voz de quem fala: o Pertim com a voz oficial; a visita (e outro falante com "vozes" no roteiro) com a dela
+VOZES = ROT.get('vozes', {})
+for n, c in enumerate(ROT['capitulos']):
+    fal = c.get('falante', 'pertim')
+    quer = VOZES[fal]['voiceId'] if fal in VOZES else FALAS['voice_id']
+    tem = caps[f'{n:02d}'].get('voice_id', FALAS['voice_id'])
+    nome = VOZES[fal]['name'] if fal in VOZES else FALAS['voz']
+    ok(tem == quer, f'cena {n + 1} ({fal}): voz {nome} ({quer})')
 api = ' '.join(caps[k]['texto_api'] for k in sorted(caps))
 tela = ' '.join(ROTEIRO)
 if re.search(r'pertim', tela, re.I):

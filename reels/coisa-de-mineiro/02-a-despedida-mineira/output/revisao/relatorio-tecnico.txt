@@ -1,30 +1,36 @@
 REVISÃO TÉCNICA · Coisa de mineiro #02 "A despedida mineira" · reels/coisa-de-mineiro/02-a-despedida-mineira/output/uaipertim-coisa-de-mineiro-02.mp4
-24.50 s · 735 quadros a 30 fps
+25.00 s · 750 quadros a 30 fps
 
 FORMATO E SOM
 OK     vídeo h264 yuv420p 1080×1920
 OK     30 fps
-OK     duração 24.50 s (20–30 s)
+OK     duração 25.00 s (20–30 s)
 OK     áudio aac 48000 Hz, 2 canais
 OK     -14.0 LUFS integrados (alvo −14)
-OK     pico real -1.4 dBTP (≤ −1)
+OK     pico real -1.5 dBTP (≤ −1)
 
 RITMO (trilha animada, 120 BPM: uma batida a cada 0,5 s)
 OK     cena 1 sala: 0.00–3.00 s = batidas 0–6; fala 0.15–2.87 s dentro dela
-OK     cena 2 sala: 3.00–6.00 s = batidas 6–12; fala 3.15–5.15 s dentro dela
+OK     cena 2 sala: 3.00–6.00 s = batidas 6–12; fala 3.15–5.31 s dentro dela
 OK     cena 3 porta: 6.00–10.50 s = batidas 12–21; fala 6.20–9.80 s dentro dela
 OK     cena 4 portao: 10.50–14.50 s = batidas 21–29; fala 10.70–13.42 s dentro dela
-OK     cena 5 carro: 14.50–18.50 s = batidas 29–37; fala 15.70–17.70 s dentro dela
-OK     cena 6 fecho: 18.50–24.50 s = batidas 37–49; fala 18.75–21.95 s dentro dela
+OK     cena 5 carro: 14.50–19.00 s = batidas 29–38; fala 15.70–18.42 s dentro dela
+OK     cena 6 fecho: 19.00–25.00 s = batidas 38–50; fala 19.25–22.45 s dentro dela
 
 VOZ
 OK     o texto falado é o roteiro, cena a cena
-OK     voz oficial (Victor Pinho), perfil "narracao" (eleven_v4)
+OK     perfil "narracao" (eleven_v4); a voz oficial (Victor Pinho) é a do Pertim
+OK     cena 1 (pertim): voz Victor Pinho (LuQ9eaWO9yCQrR73VQFa)
+OK     cena 2 (visita): voz Sergio - Friendly and Encouraging (RGbeQtiShYRDVCrd9b9w)
+OK     cena 3 (pertim): voz Victor Pinho (LuQ9eaWO9yCQrR73VQFa)
+OK     cena 4 (pertim): voz Victor Pinho (LuQ9eaWO9yCQrR73VQFa)
+OK     cena 5 (visita): voz Sergio - Friendly and Encouraging (RGbeQtiShYRDVCrd9b9w)
+OK     cena 6 (pertim): voz Victor Pinho (LuQ9eaWO9yCQrR73VQFa)
      cena 1: seed 14042 · 2.72 s · enviado "Sabe quanto tempo dura uma despedida mineira?" · reels/coisa-de-mineiro/02-a-despedida-mineira/tomadas/cap-00/V-seed14042.mp3 · conferência: ok
-     cena 2: seed 42 · 2.00 s · enviado "Bom, gente… vou indo, né?" · voz.py, seed 42 · conferência: ok
+     cena 2: seed 42 · 2.16 s · enviado "Bom, gente… vou indo, né?" · reels/coisa-de-mineiro/02-a-despedida-mineira/vozes-visita/RGbeQtiShYRDVCrd9b9w/cap-01.wav · conferência: ok
      cena 3: seed 42 · 3.60 s · enviado "Leva um pedaço de bolo! Ah, mas fica mais um pouquinho!" · voz.py, seed 42 · conferência: ok
      cena 4: seed 42 · 2.72 s · enviado "E a sua mãe, como é que tá? E aquele seu primo?" · voz.py, seed 42 · conferência: ok
-     cena 5: seed 42 · 2.00 s · enviado "Ah, esqueci de te contar uma coisa…" · voz.py, seed 42 · conferência: ok
+     cena 5: seed 42 · 2.72 s · enviado "Ah, esqueci de te contar uma coisa…" · reels/coisa-de-mineiro/02-a-despedida-mineira/vozes-visita/RGbeQtiShYRDVCrd9b9w/cap-04.wav · conferência: ok
      cena 6: seed 42 · 3.20 s · enviado "Marca aquele amigo que demora uma hora pra ir embora!" · voz.py, seed 42 · conferência: ok
 OK     cada cena é UMA geração inteira, colocada sem cortes
 OK     nunca "de Glória"
@@ -38,19 +44,30 @@ OK     a pergunta sobe até a tônica: +9.0 st (mínimo +8 st)
 A SÉRIE (identidade e regras)
 OK     a fala não fala do app (sem app, celular, "em breve", "tá chegando")
 OK     placas só com km: (nenhuma)
-     a marca entra em 22.50 s (2.00 s finais)
+     a marca entra em 23.00 s (2.00 s finais)
 
 LEGENDA GRAVADA
 OK     11 blocos, até 2 linhas, cada um ≥ 0.8 s
 OK     a linha mais larga (790 px) cabe na faixa (x 112–908)
 OK     só o texto da tela ("pertim", nunca a grafia enviada à voz)
 OK     cobre a fala inteira, na ordem
-OK     sai em 22.35 s, antes da marca
+OK     sai em 22.85 s, antes da marca
 
 BOCA E PIXELS
 OK     nenhuma boca com menos de 2 quadros; A, E, O e M/B/P na fala (113 trechos)
 OK     o quadro muda a cada 0,1 s nos primeiros 0,5 s (diferença média 11.7, 13.7, 10.2, 8.0, 7.4)
-OK     o selo "COISA DE MINEIRO #02" aparece no começo, no meio e no fim (26729, 26765, 26766 px verdes)
-OK     a marca só aparece no fim: logo na caixa dela antes = 0 px coral, no fim = 13107 px
+OK     o selo "COISA DE MINEIRO #02" aparece no começo, no meio e no fim (26729, 26762, 26753 px verdes)
+OK     a marca só aparece no fim: logo na caixa dela antes = 0 px coral, no fim = 13097 px
+
+PERSONAGENS NA TELA (máscara: render.mjs mascara)
+OK     pertim: nunca cortado pela borda
+OK     pertim: parado, sempre a ≥ 60 px das bordas
+OK     visita: nunca cortado pela borda
+OK     visita: parado, sempre a ≥ 60 px das bordas
+OK     carro: nunca cortado pela borda
+OK     carro: parado, sempre a ≥ 60 px das bordas
+OK     cachorro: nunca cortado pela borda
+OK     cachorro: parado, sempre a ≥ 60 px das bordas
+OK     o rosto do Pertim nunca na coluna de botões do Instagram (x ≥ 940, y 1060–1560)
 
 RESULTADO: aprovado

@@ -6,7 +6,7 @@ faz o papel do mineiro em todas as cenas.
 | # | episódio | estreia | pasta | duração |
 |---|---|---|---|---|
 | 01 | "É logo ali, é pertim" | Reel de teste | [`01-e-logo-ali/`](01-e-logo-ali) | 25,50 s |
-| 02 | "A despedida mineira" | sex 20/11, 20h | [`02-a-despedida-mineira/`](02-a-despedida-mineira) | 24,50 s |
+| 02 | "A despedida mineira" | sex 20/11, 20h | [`02-a-despedida-mineira/`](02-a-despedida-mineira) | 25,00 s |
 
 ## Identidade (diferente do Tudo Pertim e dos Reels do app)
 
@@ -24,8 +24,18 @@ faz o papel do mineiro em todas as cenas.
   - A legenda fica logo abaixo dos pés (y 1400–1520), acima da descrição do Instagram; o selo, no alto.
 - **O visitante:** um pin genérico azul (não é o Pertim), com o mapa aberto na mão. Fica perdido, cansado ou dormindo.
   No #02 é a visita (o mesmo desenho, sem o mapa, com o pote de bolo).
-- **Duas falas, uma voz:** a voz da série é uma só. O campo `falante` do capítulo (`"pertim"` por padrão, ou
-  `"visita"`) diz de quem é a fala; a boca de quem fala segue a voz, e a do outro fica fechada.
+- **As vozes fixas da série** (eleven_v4, perfil "narracao"):
+  - **Pertim = Victor Pinho** (`LuQ9eaWO9yCQrR73VQFa`), a voz oficial da UaiPertim (`audio/voz_oficial.json`);
+  - **visita = Sergio - Friendly and Encouraging** (`RGbeQtiShYRDVCrd9b9w`, biblioteca pública da ElevenLabs), a voz
+    fixa da visita em TODOS os episódios. Escolhida de ouvido em 2026-11-17 entre 4 vozes (comparativo em
+    `02-a-despedida-mineira/vozes-visita/`).
+
+  O campo `falante` do capítulo (`"pertim"` por padrão, ou `"visita"`) diz de quem é a fala. A boca de quem fala segue a
+  voz, e a do outro fica fechada. A voz de cada falante fica no topo do roteiro, em
+  `"vozes": {"visita": {"name": "Sergio - Friendly and Encouraging", "voiceId": "RGbeQtiShYRDVCrd9b9w"}}`. Com ela, o
+  `voz.py` gera as falas da visita com a voz dela, e o QA confere a voz de cada fala.
+  - `scripts/vozes_visita.py gerar | medir | comparativo` gera e compara vozes candidatas.
+  - `scripts/vozes_visita.py instalar <ep> <voice_id>` confere e põe a tomada escolhida nas falas da visita.
 - **Sem marca no meio:** nada de celular, telas do app, "em breve" ou "tá chegando". A marca só aparece nos
   `marca_s` segundos finais (2 s): a logo pequena e "Tudo pertim de você.", no céu.
 - **Formato:** 1080×1920, 30 fps, 20–30 s.
@@ -146,11 +156,11 @@ A despedida que começa na sala e termina uma hora depois no portão. O relógio
 | # | cena | tempo (batidas) | voz | relógio |
 |---|---|---|---|---|
 | 1 | sala | 0,0–3,0 s (0–6) | "Sabe quanto tempo dura uma despedida mineira?" | 21:00 |
-| 2 | sala (visita) | 3,0–6,0 s (6–12) | "Bom, gente… vou indo, né?" · levanta 3,15 · bate nas pernas 4,71 | 21:00 |
+| 2 | sala (visita) | 3,0–6,0 s (6–12) | "Bom, gente… vou indo, né?" (voz da visita) · levanta 3,15 · bate nas pernas 4,91 | 21:00 |
 | 3 | porta | 6,0–10,5 s (12–21) | "Leva um pedaço de bolo! Ah, mas fica mais um pouquinho!" · o bolo voa 7,16 · aponta a sala 8,40 | 21:20 |
 | 4 | portão | 10,5–14,5 s (21–29) | "E a sua mãe, como é que tá? E aquele seu primo?" · o cachorro deita 11,66 · o vizinho apaga a luz 13,80 | 21:50 |
-| 5 | carro (visita) | 14,5–18,5 s (29–37) | "Ah, esqueci de te contar uma coisa…" · entra 14,5–15,05 · liga 15,35 · o vidro desce 15,70 | 22:30 |
-| 6 | fecho | 18,5–24,5 s (37–49) | "Marca aquele amigo que demora uma hora pra ir embora!" · a marca de 22,5 s ao fim | 22:30 |
+| 5 | carro (visita) | 14,5–19,0 s (29–38) | "Ah, esqueci de te contar uma coisa…" (voz da visita) · entra 14,5–15,0 · liga 15,35 · o vidro desce 15,70 | 22:30 |
+| 6 | fecho | 19,0–25,0 s (38–50) | "Marca aquele amigo que demora uma hora pra ir embora!" · a marca de 23,0 s ao fim | 22:30 |
 
 - **Sem trecho parado:** a abertura entra na sala com a câmera em movimento; a câmera chega um pouco mais perto em
   cada corte e vai até a janela do carro na fala da visita.
@@ -176,9 +186,13 @@ A despedida que começa na sala e termina uma hora depois no portão. O relógio
 | L | 11042 | — | +6.5 st | | Y | 17042 | — | +2.9 st |
 | M | 42 | "??" | +5.2 st | | | | | |
 
-- **As outras falas:** seed 42. As falas da visita (2 e 5) usam a mesma voz da série.
-- **Mixagem:** −14,0 LUFS, pico real −1,4 dBTP.
-- **Duração:** 24,50 s.
+- **As outras falas do Pertim:** seed 42.
+- **As falas da visita (2 e 5):** voz Sergio, seed 42 (as tomadas do comparativo, inteiras). Fala 2: 2,16 s,
+  7,9 letras/s; fala 5: 2,72 s, 9,9 letras/s.
+- **Carro e enquadramento (ajuste de 2026-11-17):** o carro foi redesenhado na escala dos personagens, e o carro e o
+  fecho viraram uma tomada afastada, com tudo inteiro. O portão e a porta foram reenquadrados.
+- **Mixagem:** −14,0 LUFS, pico real −1,5 dBTP.
+- **Duração:** 25,00 s (a fala 5 ficou mais longa com a voz da visita: a cena do carro ganhou uma batida).
 - **Capa:** o Pertim e a visita (com o pote de bolo) no portão, o cachorro dormindo e o relógio marcando 22:30.
 - **O #01 não mudou:** os blocos do #02 são novos. Os quadros do #01 renderizados de novo batem com o vídeo dele.
 
