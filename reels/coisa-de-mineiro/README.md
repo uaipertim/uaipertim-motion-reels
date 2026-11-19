@@ -9,6 +9,15 @@ faz o papel do mineiro em todas as cenas.
 | 02 | "A despedida mineira" | sex 20/11, 20h | [`02-a-despedida-mineira/`](02-a-despedida-mineira) | 25,00 s |
 | 03 | "Não precisa não" | dom 22/11 (primeiro como Reel de teste) | [`03-nao-precisa-nao/`](03-nao-precisa-nao) | 27,50 s |
 
+## Perguntas: como o QA mede
+
+Cada fala marcada com `"pergunta": true` no roteiro é medida; sem marca, só o gancho, se terminar em "?".
+
+- **Pergunta de sim/não** ("Aceita um café?"): sobe ≥ +8 st da palavra anterior até o pico na última palavra (a tônica).
+- **Pergunta com palavra interrogativa** (quanto/quantas, qual, onde, quem, como, quando, por que, o que, quê): o
+  natural é subir NA palavra interrogativa e cair no fim. Ela passa se o pico de F0 da fala estiver na palavra
+  interrogativa. Decisão de 2026-11-19, de ouvido, no fecho do #03: "E na sua casa, a visita recusa quantas vezes?".
+
 ## Padrão da série (do #03 em diante): os aprendizados do Reel de teste do #01
 
 1. **Piada nos 2 primeiros segundos.** Nada de introdução: o vídeo abre já dentro da situação engraçada (no teste,
@@ -68,6 +77,10 @@ O QA confere os itens 1 a 3 (fecho termina em "?", sem "marca o amigo", texto de
     - Centralizada logo abaixo dos pés (x 100–910, y ~1380–1560): fora da coluna de botões do Instagram (x ≥ 940 entre
       y 1060 e 1560) e acima da descrição. Uma linha na letra grande (76 px); se não couber, duas linhas na menor (62 px).
     - Some nas trocas de cena e antes da marca (e do texto de compartilhar).
+    - **O espaço entre as palavras nunca some.** Cada palavra ocupa no layout a largura que tem destacada (12% maior),
+      mais 0,24 em de cada lado. A palavra visível é desenhada por cima, centrada nessa caixa, e o pop e o destaque
+      crescem só dentro dela. (Na 1ª versão do #03, a palavra destacada encostava na anterior: "dequeijo", "duasvezes".)
+    - O QA confere nos quadros da máscara que as palavras de cada linha nunca se encostam.
 - **Voz:** Victor Pinho, eleven_v4, perfil "narracao". "Pertim"/"pertim" vai para a voz como "pertím" (grafia c, no campo
   `pronuncia` do topo do roteiro); na tela e na legenda continua "pertim".
 - **O Pertim:** a boca vem da voz. Olha para a câmera quando fala com o público e para o visitante quando fala com ele.
@@ -216,13 +229,13 @@ O mineiro recusa duas vezes e aceita na terceira. O contador no canto acompanha:
   +8).
   - Das 22 tomadas, só as quatro sem o texto vizinho passaram (S–V, de +10,7 a +13,2 st).
   - Com o texto vizinho (A–N), a pergunta ficou entre +0,7 e +5,3 st; com "??" no fim (O–R), entre +4,7 e +7,6 st.
-- **Fecho "E na sua casa, a visita recusa quantas vezes?": NÃO passa no mínimo de +8 st.**
-  - É uma pergunta com "quantas": o pico fica em "quantas" e o tom cai em "vezes".
-  - Nenhuma das 40 tomadas fez "vezes" subir: seeds diferentes; "??"; sem o texto vizinho; reticências antes;
+- **Fecho "E na sua casa, a visita recusa quantas vezes?": fica como está** (decisão de 2026-11-19, de ouvido e de
+  estratégia).
+  - É uma pergunta com "quantas": sobe na palavra interrogativa e cai no fim, que é o natural.
+  - Ficou a tomada **S** (seed 42, sem o texto vizinho): o pico da fala está em "quantas". Ela passa na regra das
+    perguntas com palavra interrogativa (acima). O gráfico está em `f0-cena-8.png`.
+  - Nenhuma das 40 tomadas subia em "vezes": seeds diferentes; "??"; sem o texto vizinho; reticências antes;
     contexto de contraste; marcação [curious].
-  - Ficou a tomada **S** (seed 42, sem o texto vizinho): é a de pergunta mais marcada, com o pico mais alto em
-    "quantas" (267 Hz).
-  - O QA registra a falha (`f0-cena-8.png`). Para subir no fim, o texto precisaria virar uma pergunta de sim/não.
 - **Vozes:** Pertim = Victor Pinho; visita = Sergio (ritmo mínimo da conferência de 6 letras/s para ele,
   `vozes.visita.ritmo_min`: a voz dele é mais lenta). Falas 5 e 6 da visita: seed 3042 (as 4 gerações de cada uma
   ficaram parecidas); as outras, seed 42.
@@ -236,7 +249,10 @@ O mineiro recusa duas vezes e aceita na terceira. O contador no canto acompanha:
   quando pedidos). Os quadros do #01 e do #02 renderizados de novo batem com os vídeos deles.
 - **Revisão da legenda nova:** `output/revisao/legenda-nova-pertim.png` e `legenda-nova-visita.png`.
 
-QA: `03-nao-precisa-nao/output/revisao/relatorio-tecnico.txt` (`RESULTADO: ajustar`, só pela pergunta do fecho).
+- **Correção da legenda (2026-11-19):** a palavra destacada encostava na anterior; agora o espaço é reservado (ver
+  "Legenda"). O marcador amarelo da palavra-chave ficou maior e um pouco mais baixo, para aparecer por baixo do contorno.
+
+QA: `03-nao-precisa-nao/output/revisao/relatorio-tecnico.txt` (`RESULTADO: aprovado`).
 
 ## #02 "A despedida mineira" — decisões e tomadas
 

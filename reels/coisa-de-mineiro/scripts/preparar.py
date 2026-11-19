@@ -125,8 +125,8 @@ def legenda_pop():
     fontes = {sz: ImageFont.truetype(os.path.join(REPO, 'public', 'fonts', 'poppins-latin-800-normal.woff2'), sz) for sz in (LP['size'], LP['size2'])}
     def larg(ws, sz=LP['size']):
         f_ = fontes[sz]
-        return (sum(f_.getlength(w['w']) + sz * 0.26 for w in ws)        # as palavras e os espaços (margem de 0,13 em)
-                + 0.12 * max(f_.getlength(w['w']) for w in ws) + sz * 0.24)  # + a destacada, que cresce 12%, e o contorno
+        # cada palavra ocupa a largura que tem destacada (12% maior) + 0,24 em de cada lado (o espaço nunca some)
+        return sum(f_.getlength(w['w']) * 1.12 + sz * 0.48 for w in ws)
     out = []
     for c in CAPS:
         rc = ROT['capitulos'][c['n']]
@@ -183,7 +183,11 @@ def legenda_pop():
                 linhas, sz = [pal], LP['size']
             else:
                 sz = LP['size2']
-                k = min(range(1, len(b)), key=lambda k: max(larg(b[:k], sz), larg(b[k:], sz)))
+                # a quebra de linha nunca divide um nome composto e evita deixar uma palavrinha de ligação no fim da linha
+                ns = [norm(w['w']) for w in b]
+                dentro = {i0 + j for i0 in range(len(b)) for cp in COMPOSTOS if ns[i0:i0 + len(cp)] == cp for j in range(1, len(cp))}
+                ks = [k for k in range(1, len(b)) if k not in dentro]
+                k = min(ks, key=lambda k: max(larg(b[:k], sz), larg(b[k:], sz)) + (200 if ns[k - 1] in fala.LIGA else 0))
                 linhas = [pal[:k], pal[k:]]
                 assert all(larg([{'w': p_['w']} for p_ in l], sz) <= LP['maxW'] for l in linhas), f'cena {c["n"] + 1}: um bloco da legenda não cabe em 2 linhas'
             out.append({'cena': c['n'], 'falante': rc.get('falante', 'pertim'), 't0': round(max(c['t0'], b[0]['t0'] - 0.06), 3), 't1': round(fim, 3), 'size': sz, 'linhas': linhas})

@@ -883,21 +883,30 @@ const Contador: React.FC<{ ev: { texto: string; t: number; confete?: boolean }; 
 type PalavraPop = { w: string; t0: number; ate: number; chave?: boolean };
 type BlocoPop = { cena: number; falante: string; t0: number; t1: number; size?: number; linhas: PalavraPop[][] };
 export const COR_FALA: Record<string, [string, string]> = { pertim: ["#F9B233", "#F08A00"], visita: ["#8EC5FF", "#4A86E0"] };
+// o espaço entre as palavras nunca some: cada palavra ocupa no layout a largura que tem DESTACADA (12% maior), mais uma
+// margem fixa de cada lado; a palavra visível é desenhada por cima, centrada nessa caixa, e cresce só dentro dela
+export const LEG_ESCALA_ATIVA = 1.12, LEG_MARGEM = 0.24;   // (em "em": 0,24 de cada lado ≈ 0,48 em entre as caixas)
 const PalavraPopV: React.FC<{ p: PalavraPop; t: number; falante: string; size: number }> = ({ p, t, falante, size }) => {
   const entrou = t >= p.t0, ativa = entrou && t < p.ate;
-  const s = !entrou ? 0.001 : outBack(entre(t, p.t0, p.t0 + 0.2), 1.7) * (ativa ? 1.12 : 1);
+  const s = !entrou ? 0.001 : outBack(entre(t, p.t0, p.t0 + 0.2), 1.2) * (ativa ? LEG_ESCALA_ATIVA : 1);
   const [c1, c2] = COR_FALA[falante] ?? COR_FALA.pertim;
   const fill: React.CSSProperties = ativa ? { backgroundImage: `linear-gradient(180deg, ${c1} 25%, ${c2} 100%)`, WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }
     : { color: p.chave ? VERDE : "#fff" };
   return (
-    <span style={{ position: "relative", display: "inline-block", margin: `0 ${size * 0.13}px`, transform: `scale(${s})`, transformOrigin: "50% 75%", opacity: entrou ? 1 : 0 }}>
-      {p.chave && (
-        <svg viewBox="0 0 100 20" preserveAspectRatio="none" style={{ position: "absolute", left: -10, width: "calc(100% + 20px)", bottom: size * 0.08, height: size * 0.5, overflow: "visible" }}>
-          <path d="M4 13 C30 9, 62 16, 96 7" stroke={AMARELO} strokeWidth={size * 0.42} strokeLinecap="round" fill="none" vectorEffect="non-scaling-stroke" />
-        </svg>
-      )}
-      <span style={{ position: "relative", WebkitTextStroke: `${size * 0.24}px ${C.tinta}`, color: C.tinta, filter: "drop-shadow(0 6px 0 rgba(34,28,25,0.4))" }}>{p.w}</span>
-      <span style={{ position: "absolute", left: 0, top: 0, ...fill }}>{p.w}</span>
+    <span style={{ position: "relative", display: "inline-block", margin: `0 ${size * LEG_MARGEM}px`, fontSize: size * LEG_ESCALA_ATIVA }}>
+      {/* a caixa: a palavra no tamanho destacado, invisível (só ocupa o lugar) */}
+      <span style={{ visibility: "hidden" }}>{p.w}</span>
+      <span style={{ position: "absolute", inset: 0, display: "flex", justifyContent: "center", alignItems: "center", fontSize: size }}>
+        <span style={{ position: "relative", display: "inline-block", transform: `scale(${s})`, transformOrigin: "50% 75%", opacity: entrou ? 1 : 0 }}>
+          {p.chave && (
+            <svg viewBox="0 0 100 20" preserveAspectRatio="none" style={{ position: "absolute", left: "-2%", width: "104%", bottom: -size * 0.1, height: size * 0.6, overflow: "visible" }}>
+              <path d="M4 14 C32 9, 64 17, 96 8" stroke={AMARELO} strokeWidth={size * 0.5} strokeLinecap="round" fill="none" vectorEffect="non-scaling-stroke" />
+            </svg>
+          )}
+          <span style={{ position: "relative", WebkitTextStroke: `${size * 0.24}px ${C.tinta}`, color: C.tinta, filter: "drop-shadow(0 6px 0 rgba(34,28,25,0.4))" }}>{p.w}</span>
+          <span style={{ position: "absolute", left: 0, top: 0, ...fill }}>{p.w}</span>
+        </span>
+      </span>
     </span>
   );
 };

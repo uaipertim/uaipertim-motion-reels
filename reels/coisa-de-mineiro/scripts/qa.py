@@ -122,6 +122,8 @@ ok(not re.search(r'\bde\s+Glória', json.dumps(ROT, ensure_ascii=False)), 'nunca
 
 # ---------------------------------------------------------------- as perguntas (a subida até a tônica)
 # as falas marcadas no roteiro com "pergunta": true; sem marca nenhuma, a 1ª fala, se terminar em "?"
+import unicodedata  # noqa: E402
+INTERROGATIVAS = {'quanto', 'quanta', 'quantos', 'quantas', 'qual', 'quais', 'onde', 'aonde', 'quem', 'como', 'quando', 'porque'}   # + "quê", "o que", "por que"
 PERGUNTAS = [n for n, c in enumerate(ROT['capitulos']) if c.get('pergunta')] or ([0] if ROTEIRO[0].rstrip().endswith('?') else [])
 
 
@@ -161,7 +163,21 @@ def mede_pergunta(n):
     base = float(np.median(antes))
     info(f'tomada usada: {f0c.get("tomada", {}).get("arquivo", "voz.py")} (seed {f0c["seed"]})')
     info(f'o F0 vai de {base:.0f} Hz ("{ant.group()}") para {pico[1]:.0f} Hz no pico de "{ult.group()}" (em {pico[0]:.2f} s)')
-    ok(st(base, pico[1]) >= 8, f'a pergunta sobe até a tônica: {st(base, pico[1]):+.1f} st (mínimo +8 st)' + ('' if st(base, pico[1]) > 0 else f' — o F0 CAI de "{ant.group()}" para "{ult.group()}"'))
+    # pergunta com palavra interrogativa (quantas, qual, onde, quem, como, quando, por que…): o natural é subir NA palavra
+    # interrogativa e cair no fim; passa se o pico de F0 da fala estiver nela. Pergunta de sim/não: sobe ≥ +8 st até a tônica.
+    nrm = lambda w: re.sub(r'[^a-z]', '', unicodedata.normalize('NFD', w.lower()).encode('ascii', 'ignore').decode())
+    qs = [m for m in pal if nrm(m.group()) in INTERROGATIVAS]
+    qs += [m for m in pal if m.group().lower() == 'quê']
+    qs += [b_ for a_, b_ in zip(pal, pal[1:]) if nrm(a_.group()) in ('por', 'o') and nrm(b_.group()) == 'que']
+    qs.sort(key=lambda m: m.start())
+    if qs:
+        q = qs[0]
+        topo = max(vz, key=lambda p_: p_[1])
+        dentro = ts[q.start()] - 0.02 <= topo[0] <= te[q.end() - 1] + 0.06
+        info(f'pergunta com palavra interrogativa ("{q.group()}"): o pico da fala é {topo[1]:.0f} Hz em {topo[0]:.2f} s; "{q.group()}" vai de {ts[q.start()]:.2f} a {te[q.end() - 1]:.2f} s')
+        ok(dentro, f'a pergunta sobe na palavra interrogativa: o pico de F0 está em "{q.group()}" (regra das perguntas com palavra interrogativa; o fim cai, como é natural)')
+    else:
+        ok(st(base, pico[1]) >= 8, f'a pergunta (de sim/não) sobe até a tônica: {st(base, pico[1]):+.1f} st (mínimo +8 st)' + ('' if st(base, pico[1]) > 0 else f' — o F0 CAI de "{ant.group()}" para "{ult.group()}"'))
     try:
         import matplotlib
         matplotlib.use('Agg')
@@ -209,7 +225,7 @@ if LG.get('pop'):
     fts = {}
     def larg(ws, sz):
         f_ = fts.setdefault(sz, ImageFont.truetype(os.path.join(REPO, 'public', 'fonts', 'poppins-latin-800-normal.woff2'), sz))
-        return sum(f_.getlength(w['w']) + sz * 0.26 for w in ws) + 0.12 * max(f_.getlength(w['w']) for w in ws) + sz * 0.24
+        return sum(f_.getlength(w['w']) * 1.12 + sz * 0.48 for w in ws)
     nfal = lambda b: [w for l in b['linhas'] for w in l]
     COMP = ['pão de queijo']
     def n_pal(b):
@@ -362,6 +378,39 @@ if LG.get('pop'):
             info(f'cena {c["n"] + 1} ({fal}), "{w["w"]}" em {k / 10:.1f} s: {n_cert} px na cor de quem fala, {n_out} px na cor do outro')
             if n_cert < 400 or (fal == 'pertim' and n_out > 100):
                 erradas.append(c['n'] + 1)
+    # o espaço entre as palavras: em cada quadro da máscara, cada linha do bloco tem tantos pedaços separados quantas
+    # palavras já entraram (duas palavras encostadas viram um pedaço só)
+    LPs = LG['estilo']
+    grudadas, menor = [], 1e9
+    for k, nome in enumerate(mq):
+        t_ = k / 10
+        b_ = next((b for b in LG['blocos'] if b['t0'] <= t_ < b['t1']), None)
+        if not b_:
+            continue
+        mk = np.asarray(Image.open(os.path.join(MDIR, nome)).convert('RGB')).min(2) > 200
+        sz = b_.get('size', LPs['size']); lh = LPs['linha'] if sz == LPs['size'] else LPs['linha2']
+        for li, l in enumerate(b_['linhas']):
+            dentro_ = [w for w in l if t_ - w['t0'] >= 0.08]
+            if len(dentro_) < 2 or any(0 <= t_ - w['t0'] < 0.08 for w in l):
+                continue
+            y0_, y1_ = int((LPs['top'] + li * lh + 0.15 * lh) * ESC), int((LPs['top'] + (li + 1) * lh - 0.1 * lh) * ESC)
+            col = mk[y0_:y1_].any(0)
+            seg, ant_, vaos = 0, False, []
+            ini = None
+            for x_, v_ in enumerate(col):
+                if v_ and not ant_:
+                    seg += 1
+                    if ini is not None:
+                        vaos.append(x_ - ini)
+                if not v_ and ant_:
+                    ini = x_
+                ant_ = v_
+            if seg < len(dentro_):
+                grudadas.append(t_)
+            if vaos:
+                menor = min(menor, min(vaos) / ESC)
+    ok(not grudadas, 'o espaço entre as palavras da legenda nunca some (nenhum par encostado em nenhum quadro)'
+       + (f' (encostadas em {faixas(grudadas)})' if grudadas else f'; menor vão entre duas palavras: {menor:.0f} px'))
     ok(not erradas, 'a palavra dita na cor de quem fala (amarelo/laranja = Pertim, azul = visita)' + (f' (errada nas cenas {erradas})' if erradas else ''))
 col = [tq(i) for i, n in enumerate(rostos) if n > 0]
 ok(not col, 'o rosto do Pertim nunca na coluna de botões do Instagram (x ≥ 940, y 1060–1560)' + (f' (está em {faixas(col)})' if col else ''))
