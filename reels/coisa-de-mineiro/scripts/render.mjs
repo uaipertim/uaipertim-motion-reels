@@ -47,7 +47,10 @@ if (modo === "video") {
   const png = path.join(OUT, "capa.png");
   await renderStill({ composition, serveUrl, inputProps, frame: 0, output: png, puppeteerInstance: browser, browserExecutable });
   ff("-i", png, "-vf", "crop=1080:1440:0:240", path.join(OUT, "capa-3x4.png"));
-  console.log("ok", path.relative(process.cwd(), png), "+ capa-3x4.png");
+  // a capa para TROCAR num Reel já publicado ("Editar capa"): 9:16 inteira na aba Reels, o recorte de cima na grade
+  const editar = await comp("CoisaDeMineiro-CapaEditar");
+  await renderStill({ composition: editar, serveUrl, inputProps, frame: 0, output: path.join(OUT, "capa-editar-9x16.png"), puppeteerInstance: browser, browserExecutable });
+  console.log("ok", path.relative(process.cwd(), png), "+ capa-3x4.png + capa-editar-9x16.png");
 } else if (modo === "mascara") {
   const composition = await comp("CoisaDeMineiro");
   const outputDir = path.join(OUT, "revisao", "mascara");

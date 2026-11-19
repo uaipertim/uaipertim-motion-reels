@@ -1249,7 +1249,12 @@ const Montagem: React.FC<CoisaDeMineiroProps> = ({ dados }) => {
 // MINEIRO · #NN", no formato do selo com número das outras capas, na pílula verde da série), a ilustração no meio (a cena
 // do episódio num quadro de cantos arredondados) e o título embaixo, na mesma letra, tamanho e entrelinha das outras
 // (tinta + a palavra-chave em CORAL com o marcador amarelo). Tudo dentro do recorte 3:4 da grade (y 300–1620, x 110–970).
-const CAPA = { seloY: 372, quadro: { x: 110, y: 474, w: 860, h: 600 }, titulo: { cy: 1330, maxH: 470, maxW: 820, sizes: [170, 156, 144, 132, 120, 110, 100, 92, 84] } };
+// O quadro tem 756 de largura (x 162–918), a mesma das ilustrações das outras capas (CapaReel: ILU 756): na aba Reels
+// o Instagram amplia a capa 3:4 para 9:16 e corta 135 px de cada lado; com 860 de largura o quadro saía com as laterais
+// cortadas lá. Variante "editar" (Reel já publicado, capa trocada no "Editar capa"): o Instagram usa a imagem inteira
+// como capa 9:16 na aba Reels e, na grade, o recorte 3:4 de CIMA; então a capa sobe 240 px (o recorte de cima é a capa
+// 3:4 inteira) e a faixa de baixo ganha a logo + @uaipertim.
+const CAPA = { seloY: 372, quadro: { x: 162, y: 511, w: 756, h: 527 }, titulo: { cy: 1330, maxH: 470, maxW: 820, sizes: [170, 156, 144, 132, 120, 110, 100, 92, 84] } };
 // de que altura da cena (1080 de largura, do quadro 1080 × 1920 da cena da capa) sai o recorte que vai para o quadro
 const CENA_Y: Record<string, number> = { campo: 812, portao: 788, sala: 780 };
 export const medeCapaCoisaDeMineiro = (titulo: string[]) => {
@@ -1270,23 +1275,30 @@ const SeloCoisaDeMineiro: React.FC<{ numero: number }> = ({ numero }) => {
   );
 };
 const TWINK_CAPA: Array<[number, number]> = [[150, 470], [930, 520], [130, 1120], [950, 1100], [170, 1560], [910, 1570]];
-export const CapaCoisaDeMineiro: React.FC<CoisaDeMineiroProps & { tituloCapa?: Wrapped }> = ({ dados, tituloCapa }) => {
+export const CapaCoisaDeMineiro: React.FC<CoisaDeMineiroProps & { tituloCapa?: Wrapped; editar?: boolean }> = ({ dados, tituloCapa, editar }) => {
   if (!dados || !tituloCapa) throw new Error("CapaCoisaDeMineiro: os dados e o título são lidos/medidos no calculateMetadata");
   const Q = CAPA.quadro, k = Q.w / 1080, y0 = CENA_Y[dados.capa?.cena ?? "campo"] ?? 760;
   const th = tituloCapa.lines.length * tituloCapa.size * 1.12;
+  const dy = editar ? -240 : 0;
   return (
-    <AbsoluteFill style={{ background: `radial-gradient(circle at 50% 38%, #FFF8EE 0%, ${C.creme} 55%, #F1E3D0 100%)`, overflow: "hidden" }}>
-      <Sunburst frame={0} cx={540} cy={Q.y + Q.h / 2} color={VERDE} opacity={0.12} />
-      <Twinkles frame={14} seed={`capa-cm-${dados.ep}`} points={TWINK_CAPA} size={34} />
-      <div style={{ position: "absolute", top: CAPA.seloY - 60, left: 0, right: 0, height: 120, display: "flex", justifyContent: "center", alignItems: "center" }}>
+    <AbsoluteFill style={{ background: `radial-gradient(circle at 50% ${editar ? 30 : 38}%, #FFF8EE 0%, ${C.creme} 55%, #F1E3D0 100%)`, overflow: "hidden" }}>
+      <Sunburst frame={0} cx={540} cy={Q.y + Q.h / 2 + dy} color={VERDE} opacity={0.12} />
+      <Twinkles frame={14} seed={`capa-cm-${dados.ep}`} points={TWINK_CAPA.map(([x, y]) => [x, y + dy] as [number, number])} size={34} />
+      {editar ? (
+        <div style={{ position: "absolute", top: 1620, left: 0, right: 0, display: "flex", justifyContent: "center", alignItems: "center", gap: 22 }}>
+          <Img src={staticFile("img/uaipertim_logo.png")} style={{ width: 132, height: 132, borderRadius: "50%", boxShadow: "0 8px 18px rgba(34,28,25,0.20)" }} />
+          <span style={{ fontFamily: FONT, fontWeight: W.black, fontSize: 52, color: C.tinta ?? "#221C19", letterSpacing: -0.5 }}>@uaipertim</span>
+        </div>
+      ) : null}
+      <div style={{ position: "absolute", top: CAPA.seloY - 60 + dy, left: 0, right: 0, height: 120, display: "flex", justifyContent: "center", alignItems: "center" }}>
         <SeloCoisaDeMineiro numero={dados.numero} />
       </div>
-      <div style={{ position: "absolute", left: Q.x, top: Q.y, width: Q.w, height: Q.h, borderRadius: 48, overflow: "hidden", boxShadow: "0 0 0 9px #fff, 0 18px 36px rgba(34,28,25,0.22)" }}>
+      <div style={{ position: "absolute", left: Q.x, top: Q.y + dy, width: Q.w, height: Q.h, borderRadius: 48, overflow: "hidden", boxShadow: "0 0 0 9px #fff, 0 18px 36px rgba(34,28,25,0.22)" }}>
         <div style={{ position: "absolute", left: 0, top: -y0 * k, width: 1080, height: 1920, transform: `scale(${k})`, transformOrigin: "0 0" }}>
           <CenaCapa dados={dados} />
         </div>
       </div>
-      <div style={{ position: "absolute", top: CAPA.titulo.cy - th / 2, left: 110, right: 110 }}>
+      <div style={{ position: "absolute", top: CAPA.titulo.cy - th / 2 + dy, left: 110, right: 110 }}>
         <Text source={(dados.capa?.titulo ?? [dados.titulo]).join(" ")} wrapped={tituloCapa} weight={W.black} />
       </div>
     </AbsoluteFill>

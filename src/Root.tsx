@@ -256,6 +256,8 @@ export const RemotionRoot: React.FC = () => (
       defaultProps={{ ep: "01-e-logo-ali" } as CoisaDeMineiroProps} calculateMetadata={async (a) => { await fontsReady; return carregaEpisodio(a); }} />
     <Still id="CoisaDeMineiro-Capa" component={CapaCoisaDeMineiro} width={1080} height={1920}
       defaultProps={{ ep: "01-e-logo-ali" } as CoisaDeMineiroProps} calculateMetadata={async (a) => { await fontsReady; const r = await carregaEpisodio(a); const d = r.props.dados!; return { props: { ...r.props, tituloCapa: medeCapaCoisaDeMineiro(d.capa?.titulo ?? [d.titulo]) } }; }} />
+    <Still id="CoisaDeMineiro-CapaEditar" component={CapaCoisaDeMineiro} width={1080} height={1920}
+      defaultProps={{ ep: "01-e-logo-ali", editar: true } as CoisaDeMineiroProps & { editar: boolean }} calculateMetadata={async (a) => { await fontsReady; const r = await carregaEpisodio(a); const d = r.props.dados!; return { props: { ...r.props, editar: true, tituloCapa: medeCapaCoisaDeMineiro(d.capa?.titulo ?? [d.titulo]) } }; }} />
     <Still id="Destaque-Capa" component={DestaqueCapa} width={1080} height={1920} defaultProps={{ icone: "conheca" as const }} />
   </>
 );
