@@ -9,6 +9,31 @@ faz o papel do mineiro em todas as cenas.
 | 02 | "A despedida mineira" | sex 20/11, 20h | [`02-a-despedida-mineira/`](02-a-despedida-mineira) | 25,00 s |
 | 03 | "Não precisa não" | dom 22/11 (primeiro como Reel de teste) | [`03-nao-precisa-nao/`](03-nao-precisa-nao) | 27,50 s |
 
+## As capas 3:4 (padrão da grade do @uaipertim, desde 2026-11-19)
+
+As capas da série seguem o MESMO padrão de tipografia e posição das outras capas da grade. As referências são
+"Olha ele por dentro!" e "Bateu a fome?" (`src/covers/CapaReel.tsx`) e o Facim Facim #11 (`src/carrossel/CapaFacim.tsx`).
+O componente é `CapaCoisaDeMineiro` (composição `CoisaDeMineiro-Capa`), e a medida do título vem de
+`medeCapaCoisaDeMineiro` (no `calculateMetadata`).
+
+- **Fundo:** creme com raios (verde da série, como os raios coloridos das outras) e brilhinhos.
+- **Selo:** em pílula, no alto e centralizado (centro em y 372), no formato e tamanho do selo com número das outras
+  capas: "COISA DE MINEIRO ·" (36 px) + "#NN" grande em amarelo (2,3×), na pílula verde da série (#3E9E4E) com a
+  sombra embaixo e o ícone do montinho com sol.
+- **Ilustração:** a cena aprovada do episódio num quadro de cantos arredondados (x 110–970, y 474–1074, borda branca),
+  no lugar da ilustração das outras capas. `CENA_Y` diz de que altura da cena sai o recorte.
+- **Título:** a mesma letra, peso, tamanho e entrelinha das outras: Poppins 900, de 170 px para baixo até caber em
+  820 px; entrelinha 1,12; centrado em y 1330, com respiro nas laterais (x 110–970). A primeira parte em tinta e a
+  palavra-chave em CORAL com o marcador amarelo atrás (`*palavra*` no `capa.titulo` do roteiro). Nada de verde no
+  título.
+- **Recorte:** tudo dentro do recorte 3:4 da grade (y 240–1680 do quadro 1080 × 1920), sem nada cortado no topo.
+- **Títulos:** #01 "É logo ali, / é *pertim*!" · #02 "A despedida / *mineira*" · #03 "Não precisa / *não*!".
+- **Prévia da grade:** [`previa-grade-capas.png`](previa-grade-capas.png). Na linha de cima, as 3 capas da série; na
+  de baixo, "Olha ele por dentro!", "Bateu a fome?" e Facim Facim #11. A capa do "Que calor, sô!" não está no
+  repositório, por isso "Bateu a fome?" entrou no lugar dela.
+- **Os vídeos não mudaram.** Só a capa: o selo antigo e o título no alto saíram. O relógio da capa do #02 desceu
+  um pouco para caber no quadro.
+
 ## Perguntas: como o QA mede
 
 Cada fala marcada com `"pergunta": true` no roteiro é medida; sem marca, só o gancho, se terminar em "?".
@@ -244,7 +269,7 @@ O mineiro recusa duas vezes e aceita na terceira. O contador no canto acompanha:
 - **Mixagem:** −14,0 LUFS, pico real −1,7 dBTP.
 - **Duração:** 27,50 s.
 - **Capa:** "Não precisa *não*!", com a visita fazendo "não" com a mão e olhando para o pão de queijo que o Pertim
-  oferece.
+  oferece (no padrão da grade, ver "As capas 3:4").
 - **O #01 e o #02 não mudaram:** os blocos do #03 são novos (e os objetos novos de personagens e acessórios só aparecem
   quando pedidos). Os quadros do #01 e do #02 renderizados de novo batem com os vídeos deles.
 - **Revisão da legenda nova:** `output/revisao/legenda-nova-pertim.png` e `legenda-nova-visita.png`.

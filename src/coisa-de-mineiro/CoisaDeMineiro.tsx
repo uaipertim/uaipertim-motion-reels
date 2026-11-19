@@ -8,6 +8,10 @@ import { Legenda, LegendaDados } from "../personagem/Legenda";
 import { bocaNoQuadro, piscadaEm, respiracao, Visemas } from "../personagem/rig";
 import { clamp01, inCubic, inOut, outBack, outCubic } from "../pedir-no-uaipertim/efeitos";
 import LAYOUT from "../../reels/coisa-de-mineiro/layout.json";
+import { Sunburst } from "../components/Decor";
+import { Twinkles } from "../components/Particles";
+import { Text } from "../carrossel/CarrosselFacim";
+import { fitWrap, Wrapped } from "../dicionario/fit";
 
 // SÉRIE "COISA DE MINEIRO" (1080×1920, 30 fps): humor de situação que todo mineiro reconhece. UMA composição para todos
 // os episódios: os dados de cada um (cenas, diagramas com os tempos das palavras, boca, legenda) vêm de
@@ -1054,24 +1058,6 @@ const CapaSala: React.FC<{ dados: DadosEpisodio; titulo: string[] }> = ({ dados,
       <SofaFrente />
       <PertimEm t={0.3} quadro={0} d={dados} pose="parado" expr="sorrindo" cx={300} base={CHAO + 10} altura={540} olhar={[1, 0.1]} prato={7} />
     </div>
-    <div style={{ position: "absolute", top: 330, left: 0, right: 0, display: "flex", justifyContent: "center" }}>
-      <SeloSerie numero={dados.numero} size={46} />
-    </div>
-    <div style={{ position: "absolute", top: 480, left: 90, right: 90, textAlign: "center", fontFamily: FONT, fontWeight: W.black, fontSize: 124, lineHeight: 1.08, letterSpacing: -3, color: C.tinta,
-      textShadow: "0 0 30px rgba(255,255,255,0.7)" }}>
-      {titulo.map((l, i) => (
-        <div key={i}>
-          {l.split("*").map((p, j) => j % 2 ? (
-            <span key={j} style={{ position: "relative", display: "inline-block", color: VERDE }}>
-              <svg viewBox="0 0 100 20" preserveAspectRatio="none" style={{ position: "absolute", left: -12, width: "calc(100% + 24px)", bottom: 4, height: 52, overflow: "visible" }}>
-                <path d="M4 13 C30 9, 62 16, 96 7" stroke={AMARELO} strokeWidth={40} strokeLinecap="round" fill="none" vectorEffect="non-scaling-stroke" />
-              </svg>
-              <span style={{ position: "relative" }}>{p}</span>
-            </span>
-          ) : <React.Fragment key={j}>{p}</React.Fragment>)}
-        </div>
-      ))}
-    </div>
   </AbsoluteFill>
 );
 
@@ -1257,8 +1243,57 @@ const Montagem: React.FC<CoisaDeMineiroProps> = ({ dados }) => {
 };
 
 // ================================================================ a capa (PNG para o "Editar capa"; tudo no recorte 3:4)
-export const CapaCoisaDeMineiro: React.FC<CoisaDeMineiroProps> = ({ dados }) => {
-  if (!dados) throw new Error("CapaCoisaDeMineiro: os dados do episódio são lidos no calculateMetadata");
+// ================================================================ a capa (padrão das capas da grade do @uaipertim)
+// O MESMO padrão de tipografia e posição das outras capas da grade (src/covers/CapaReel.tsx: "Olha ele por dentro!",
+// "Bateu a fome?"; src/carrossel/CapaFacim.tsx): fundo creme com raios, selo em pílula no alto e centralizado ("COISA DE
+// MINEIRO · #NN", no formato do selo com número das outras capas, na pílula verde da série), a ilustração no meio (a cena
+// do episódio num quadro de cantos arredondados) e o título embaixo, na mesma letra, tamanho e entrelinha das outras
+// (tinta + a palavra-chave em CORAL com o marcador amarelo). Tudo dentro do recorte 3:4 da grade (y 300–1620, x 110–970).
+const CAPA = { seloY: 372, quadro: { x: 110, y: 474, w: 860, h: 600 }, titulo: { cy: 1330, maxH: 470, maxW: 820, sizes: [170, 156, 144, 132, 120, 110, 100, 92, 84] } };
+// de que altura da cena (1080 de largura, do quadro 1080 × 1920 da cena da capa) sai o recorte que vai para o quadro
+const CENA_Y: Record<string, number> = { campo: 812, portao: 788, sala: 780 };
+export const medeCapaCoisaDeMineiro = (titulo: string[]) => {
+  const T = CAPA.titulo, lines = titulo.map((l) => l.replace(/\*/g, ""));
+  const size = T.sizes.find((z) => lines.length * z * 1.12 <= T.maxH && lines.every((l) => fitWrap(l, W.black, T.maxW, [z], 1).ok)) ?? T.sizes[T.sizes.length - 1];
+  return { size, lines, ok: true } as Wrapped;
+};
+const SeloCoisaDeMineiro: React.FC<{ numero: number }> = ({ numero }) => {
+  const s = 36;   // = o selo com número das capas da grade (CapaReel: 36 px, o número 2,3×; a pílula com a sombra embaixo)
+  return (
+    <div style={{ display: "inline-flex", alignItems: "center", gap: 18, background: VERDE, borderRadius: 999, padding: "10px 34px 10px 28px", boxShadow: "0 7px 0 #2B7337" }}>
+      <svg width={s * 1.35} height={s * 1.35} viewBox="0 0 24 24"><circle cx="15.5" cy="7.5" r="3.6" fill={AMARELO} /><path d="M2 20 Q7 9 12 14 Q15 10 22 20 Z" fill="#fff" /></svg>
+      <span style={{ fontFamily: FONT, fontWeight: W.black, fontSize: s, lineHeight: 1, color: "#fff", letterSpacing: s * 0.05, whiteSpace: "nowrap" }}>COISA DE MINEIRO ·</span>
+      <span style={{ fontFamily: FONT, fontWeight: W.black, fontSize: s * 2.3, lineHeight: 1, color: AMARELO, letterSpacing: -1, whiteSpace: "nowrap", textShadow: "0 4px 0 #2B7337" }}>
+        #{String(numero).padStart(2, "0")}
+      </span>
+    </div>
+  );
+};
+const TWINK_CAPA: Array<[number, number]> = [[150, 470], [930, 520], [130, 1120], [950, 1100], [170, 1560], [910, 1570]];
+export const CapaCoisaDeMineiro: React.FC<CoisaDeMineiroProps & { tituloCapa?: Wrapped }> = ({ dados, tituloCapa }) => {
+  if (!dados || !tituloCapa) throw new Error("CapaCoisaDeMineiro: os dados e o título são lidos/medidos no calculateMetadata");
+  const Q = CAPA.quadro, k = Q.w / 1080, y0 = CENA_Y[dados.capa?.cena ?? "campo"] ?? 760;
+  const th = tituloCapa.lines.length * tituloCapa.size * 1.12;
+  return (
+    <AbsoluteFill style={{ background: `radial-gradient(circle at 50% 38%, #FFF8EE 0%, ${C.creme} 55%, #F1E3D0 100%)`, overflow: "hidden" }}>
+      <Sunburst frame={0} cx={540} cy={Q.y + Q.h / 2} color={VERDE} opacity={0.12} />
+      <Twinkles frame={14} seed={`capa-cm-${dados.ep}`} points={TWINK_CAPA} size={34} />
+      <div style={{ position: "absolute", top: CAPA.seloY - 60, left: 0, right: 0, height: 120, display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <SeloCoisaDeMineiro numero={dados.numero} />
+      </div>
+      <div style={{ position: "absolute", left: Q.x, top: Q.y, width: Q.w, height: Q.h, borderRadius: 48, overflow: "hidden", boxShadow: "0 0 0 9px #fff, 0 18px 36px rgba(34,28,25,0.22)" }}>
+        <div style={{ position: "absolute", left: 0, top: -y0 * k, width: 1080, height: 1920, transform: `scale(${k})`, transformOrigin: "0 0" }}>
+          <CenaCapa dados={dados} />
+        </div>
+      </div>
+      <div style={{ position: "absolute", top: CAPA.titulo.cy - th / 2, left: 110, right: 110 }}>
+        <Text source={(dados.capa?.titulo ?? [dados.titulo]).join(" ")} wrapped={tituloCapa} weight={W.black} />
+      </div>
+    </AbsoluteFill>
+  );
+};
+// a cena da capa de cada episódio (a ilustração aprovada), no quadro 1080 × 1920; vai recortada para o quadro da capa
+const CenaCapa: React.FC<{ dados: DadosEpisodio }> = ({ dados }) => {
   const titulo = dados.capa?.titulo ?? [dados.titulo];
   if (dados.capa?.cena === "portao") return <CapaPortao dados={dados} titulo={titulo} />;
   if (dados.capa?.cena === "sala") return <CapaSala dados={dados} titulo={titulo} />;
@@ -1272,27 +1307,6 @@ export const CapaCoisaDeMineiro: React.FC<CoisaDeMineiroProps> = ({ dados }) => 
         <Placa x={250} texto="27 km" e={1} />
         <div style={{ position: "absolute", inset: 0, transform: "translateY(-30px) scale(0.85)", transformOrigin: `0px ${CHAO}px` }}><Vaca x={0} t={0} tc={-5} /></div>
         <PertimEm t={0.3} quadro={0} d={dados} pose="apontando" expr="piscadinha" cx={680} base={CHAO + 10} altura={700} />
-      </div>
-      <div style={{ position: "absolute", top: 330, left: 0, right: 0, display: "flex", justifyContent: "center" }}>
-        <SeloSerie numero={dados.numero} size={46} />
-      </div>
-      <div style={{ position: "absolute", top: 480, left: 110, right: 110, textAlign: "center", fontFamily: FONT, fontWeight: W.black, fontSize: 124, lineHeight: 1.08, letterSpacing: -3, color: C.tinta,
-        textShadow: "0 0 30px rgba(255,255,255,0.65)" }}>
-        {titulo.map((l, i) => {
-          const partes = l.split("*");
-          return (
-            <div key={i}>
-              {partes.map((p, j) => j % 2 ? (
-                <span key={j} style={{ position: "relative", display: "inline-block", color: VERDE }}>
-                  <svg viewBox="0 0 100 20" preserveAspectRatio="none" style={{ position: "absolute", left: -12, width: "calc(100% + 24px)", bottom: 4, height: 52, overflow: "visible" }}>
-                    <path d="M4 13 C30 9, 62 16, 96 7" stroke={AMARELO} strokeWidth={40} strokeLinecap="round" fill="none" vectorEffect="non-scaling-stroke" />
-                  </svg>
-                  <span style={{ position: "relative" }}>{p}</span>
-                </span>
-              ) : <React.Fragment key={j}>{p}</React.Fragment>)}
-            </div>
-          );
-        })}
       </div>
     </AbsoluteFill>
   );
@@ -1308,25 +1322,7 @@ const CapaPortao: React.FC<{ dados: DadosEpisodio; titulo: string[] }> = ({ dado
       <Visitante cx={300} base={CHAO} altura={470} t={0} mapa={false} pote olha={0.7} boca="A" />
       <PertimEm t={0.3} quadro={0} d={dados} pose="parado" expr="sorrindo" cx={760} base={CHAO + 10} altura={600} olhar={[-1, 0.1]} cansado={0.42} />
     </div>
-    <div style={{ position: "absolute", top: 330, left: 0, right: 0, display: "flex", justifyContent: "center" }}>
-      <SeloSerie numero={dados.numero} size={46} />
-    </div>
-    <div style={{ position: "absolute", top: 480, left: 110, right: 110, textAlign: "center", fontFamily: FONT, fontWeight: W.black, fontSize: 124, lineHeight: 1.08, letterSpacing: -3, color: "#FFF9F1",
-      textShadow: "0 6px 24px rgba(0,0,0,0.45)" }}>
-      {titulo.map((l, i) => (
-        <div key={i}>
-          {l.split("*").map((p, j) => j % 2 ? (
-            <span key={j} style={{ position: "relative", display: "inline-block", color: VERDE, textShadow: "none" }}>
-              <svg viewBox="0 0 100 20" preserveAspectRatio="none" style={{ position: "absolute", left: -12, width: "calc(100% + 24px)", bottom: 4, height: 52, overflow: "visible" }}>
-                <path d="M4 13 C30 9, 62 16, 96 7" stroke={AMARELO} strokeWidth={40} strokeLinecap="round" fill="none" vectorEffect="non-scaling-stroke" />
-              </svg>
-              <span style={{ position: "relative" }}>{p}</span>
-            </span>
-          ) : <React.Fragment key={j}>{p}</React.Fragment>)}
-        </div>
-      ))}
-    </div>
-    <div style={{ position: "absolute", left: 830, top: 730 }}><Relogio min={minutos(dados.capa?.relogio ?? "22:30")} size={170} /></div>
+    <div style={{ position: "absolute", left: 830, top: 800 }}><Relogio min={minutos(dados.capa?.relogio ?? "22:30")} size={170} /></div>
   </AbsoluteFill>
 );
 

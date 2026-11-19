@@ -43,7 +43,7 @@ import { PRAZER, PertimBocaTeste, PrazerPertim, PrazerPertimCapa } from "./praze
 import { PEDIR, PedirNoUaiPertim } from "./pedir-no-uaipertim/PedirNoUaiPertim";
 import { BATEU, BateuAFome, caveatReady } from "./bateu-a-fome/BateuAFome";
 import { OLHA, OlhaElePorDentro } from "./olha-ele-por-dentro/OlhaElePorDentro";
-import { CapaCoisaDeMineiro, CoisaDeMineiro, CoisaDeMineiroProps, carregaEpisodio } from "./coisa-de-mineiro/CoisaDeMineiro";
+import { CapaCoisaDeMineiro, CoisaDeMineiro, CoisaDeMineiroProps, carregaEpisodio, medeCapaCoisaDeMineiro } from "./coisa-de-mineiro/CoisaDeMineiro";
 import facim02 from "../carrosseis/facim/02-como-vai-funcionar.json";
 import facim03 from "../carrosseis/facim/03-o-que-vai-ter.json";
 import facim04 from "../carrosseis/facim/04-quem-e-o-pertim.json";
@@ -255,7 +255,7 @@ export const RemotionRoot: React.FC = () => (
     <Composition id="CoisaDeMineiro" component={CoisaDeMineiro} durationInFrames={840} fps={30} width={1080} height={1920}
       defaultProps={{ ep: "01-e-logo-ali" } as CoisaDeMineiroProps} calculateMetadata={async (a) => { await fontsReady; return carregaEpisodio(a); }} />
     <Still id="CoisaDeMineiro-Capa" component={CapaCoisaDeMineiro} width={1080} height={1920}
-      defaultProps={{ ep: "01-e-logo-ali" } as CoisaDeMineiroProps} calculateMetadata={async (a) => { await fontsReady; const r = await carregaEpisodio(a); return { props: r.props }; }} />
+      defaultProps={{ ep: "01-e-logo-ali" } as CoisaDeMineiroProps} calculateMetadata={async (a) => { await fontsReady; const r = await carregaEpisodio(a); const d = r.props.dados!; return { props: { ...r.props, tituloCapa: medeCapaCoisaDeMineiro(d.capa?.titulo ?? [d.titulo]) } }; }} />
     <Still id="Destaque-Capa" component={DestaqueCapa} width={1080} height={1920} defaultProps={{ icone: "conheca" as const }} />
   </>
 );
