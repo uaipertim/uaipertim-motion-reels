@@ -252,7 +252,7 @@ def gerar():
             nxt = opt('--depois') or None
         for s in seeds:
             letra = chr(ord('A') + k) if k < 26 else chr(ord('A') + k // 26 - 1) + chr(ord('A') + k % 26)
-            x, al, fmt = voz.tts(api, prev, nxt, s)
+            x, al, fmt = voz.tts(api, prev, nxt, s, voz.voz_de(C)[0])   # a voz de quem fala (o Pertim: a oficial)
             base = os.path.join(PASTA, f'{letra}-seed{s}' + (f'-{rot}' if rot else ''))
             pcm = np.round(np.clip(x, -1, 1) * 32767).astype(np.int16)
             wavfile.write(base + '.wav', SR, pcm)
@@ -303,7 +303,7 @@ def usar(letra):
         {'seed': J['seed'], 'texto_api': J['texto_api'], 'formato': J['formato'], 'resultado': motivo, **num, 'quando': J['quando'],
          'origem': f'tomada {letra} ({os.path.relpath(b, REPO)}.mp3)'}]
     ws = voz.palavras(J['alinhamento'])
-    D['capitulos'][KEY] = {'n': CAP, 'texto': texto, 'texto_api': J['texto_api'], 'perfil': J['perfil'], 'modelo': J['modelo'], 'seed': J['seed'],
+    D['capitulos'][KEY] = {'n': CAP, 'voz': voz.voz_de(C)[1], 'voice_id': voz.voz_de(C)[0], 'texto': texto, 'texto_api': J['texto_api'], 'perfil': J['perfil'], 'modelo': J['modelo'], 'seed': J['seed'],
                            'formato': J['formato'], 'duracao_audio': round(len(x) / sr, 3), 'inicio_da_fala': round(ws[0]['t0'], 3),
                            'fim_da_fala': round(ws[-1]['fim_letra'], 3), 'sha1_audio': J['sha1_audio'], 'geracoes': len(hist), 'historico': hist,
                            'tomada': {'letra': letra, 'arquivo': os.path.relpath(b, REPO) + '.mp3'}, 'alinhamento': J['alinhamento']}

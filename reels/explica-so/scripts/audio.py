@@ -539,6 +539,15 @@ for c in CUES['cues']:
         place(sfx, ping(midi(79), 0.5), t, 0.28); place(sfx, ping(midi(84), 0.5), t + 0.1, 0.22)
     elif ty == 'rise':
         place(sfx, riser(0.4, 400, 2600), t, 0.18)
+    elif ty == 'ronc':
+        # (Coisa de mineiro #03) a barriga roncando: um rugido grave que treme, de ~0,7 s
+        d_ = 0.7; tq = tt(d_)
+        env = np.sin(np.pi * np.clip(tq / d_, 0, 1)) ** 0.7 * (0.6 + 0.4 * np.sin(2 * np.pi * 23 * tq))
+        f0 = 95 - 35 * tq / d_
+        tom = np.sin(2 * np.pi * np.cumsum(f0) / SR) + 0.5 * np.sin(4 * np.pi * np.cumsum(f0) / SR)
+        sig = (0.6 * tom + 0.8 * filt(noise(d_), [60, 320], 'band')) * env
+        sig = sig / (np.abs(sig).max() + 1e-9)
+        place(sfx, sig, t, 0.55)
     elif ty == 'deny':
         place(sfx, buzz(0.18), t + 0.25, 0.18)
     elif ty == 'whoosh':

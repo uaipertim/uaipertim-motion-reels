@@ -1,0 +1,92 @@
+{
+ "duration": 27.5,
+ "cues": [
+  {
+   "t": 0.0,
+   "type": "stamp"
+  },
+  {
+   "t": 0.0,
+   "type": "whoosh"
+  },
+  {
+   "t": 1.6,
+   "type": "deny"
+  },
+  {
+   "t": 1.62,
+   "type": "stamp"
+  },
+  {
+   "t": 3.5,
+   "type": "whoosh"
+  },
+  {
+   "t": 3.65,
+   "type": "pop",
+   "f": 560
+  },
+  {
+   "t": 5.6,
+   "type": "deny"
+  },
+  {
+   "t": 5.619999999999999,
+   "type": "stamp"
+  },
+  {
+   "t": 7.68,
+   "type": "ronc"
+  },
+  {
+   "t": 8.5,
+   "type": "whoosh"
+  },
+  {
+   "t": 8.55,
+   "type": "jump"
+  },
+  {
+   "t": 9.3,
+   "type": "whoosh"
+  },
+  {
+   "t": 9.32,
+   "type": "big"
+  },
+  {
+   "t": 9.620000000000001,
+   "type": "plop"
+  },
+  {
+   "t": 12.5,
+   "type": "cut"
+  },
+  {
+   "t": 13.18,
+   "type": "pop",
+   "f": 760
+  },
+  {
+   "t": 15.5,
+   "type": "whoosh"
+  },
+  {
+   "t": 19.3,
+   "type": "shine"
+  },
+  {
+   "t": 20.65,
+   "type": "shine"
+  },
+  {
+   "t": 24.19,
+   "type": "pop",
+   "f": 520
+  },
+  {
+   "t": 25.5,
+   "type": "logo"
+  }
+ ]
+}

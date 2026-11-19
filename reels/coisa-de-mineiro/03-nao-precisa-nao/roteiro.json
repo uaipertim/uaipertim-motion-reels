@@ -1,0 +1,248 @@
+{
+  "id": "coisa-de-mineiro/03-nao-precisa-nao",
+  "serie": "coisa-de-mineiro",
+  "numero": 3,
+  "titulo": "Não precisa não",
+  "capa": {
+    "titulo": [
+      "Não precisa",
+      "*não*!"
+    ],
+    "cena": "sala"
+  },
+  "marca": "@uaipertim",
+  "perfil_voz": "narracao",
+  "trilha": "animada",
+  "bpm": 120,
+  "legenda": true,
+  "legenda_estilo": "pop",
+  "grade": true,
+  "limites": [
+    20,
+    30
+  ],
+  "limites_fecho": [
+    4.5,
+    7.5
+  ],
+  "pronuncia": {
+    "Pertim": "pertím",
+    "pertim": "pertím"
+  },
+  "vozes": {
+    "visita": {
+      "name": "Sergio - Friendly and Encouraging",
+      "voiceId": "RGbeQtiShYRDVCrd9b9w",
+      "ritmo_min": 6
+    }
+  },
+  "_doc": "Série 'Coisa de mineiro' #03 'Não precisa não' (dom 22/11; primeiro como Reel de teste): o mineiro recusa duas vezes e aceita na terceira. Na sala do #02, o Pertim (anfitrião, em pé à esquerda) oferece; a visita (sentada no sofá) recusa. Um CONTADOR no canto (RECUSA 1 → RECUSA 2 → ACEITOU!) no lugar do relógio do #02. 'falante': quem fala (a boca que mexe e a voz): 'pertim' (padrão, Victor Pinho) ou 'visita' (Sergio). 'chave': a palavra-chave da legenda (verde com marcador). 'pergunta': a fala que precisa soar como pergunta (subida até a tônica ≥ +8 st, medida no QA). 'em': 'apos' = logo depois da fala da cena. Legenda no estilo novo da série ('legenda_estilo': 'pop'). Ver reels/coisa-de-mineiro/README.md.",
+  "capitulos": [
+    {
+      "rotulo": "CENA 1 · aceita um café?",
+      "titulo": [
+        "",
+        ""
+      ],
+      "batidas": 3,
+      "inicio": 0.1,
+      "segura": 0.1,
+      "chave": "café",
+      "pergunta": true,
+      "fala": [
+        {
+          "texto": "Aceita um café?",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "cafe"
+      }
+    },
+    {
+      "rotulo": "CENA 1 · não precisa não",
+      "titulo": [
+        "",
+        ""
+      ],
+      "batidas": 3,
+      "inicio": 0.1,
+      "segura": 0.15,
+      "falante": "visita",
+      "chave": "não#2",
+      "fala": [
+        {
+          "texto": "Não precisa não!",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "cafe",
+        "nao": {
+          "em": "Não"
+        },
+        "contador": {
+          "texto": "RECUSA 1",
+          "em": "Não"
+        }
+      }
+    },
+    {
+      "rotulo": "CENA 2 · pão de queijo",
+      "titulo": [
+        "",
+        ""
+      ],
+      "batidas": 4,
+      "inicio": 0.15,
+      "segura": 0.15,
+      "chave": "quentinho…",
+      "fala": [
+        {
+          "texto": "Tem pão de queijo quentinho…",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "pao",
+        "prato": {
+          "em": "Tem"
+        }
+      }
+    },
+    {
+      "rotulo": "CENA 2 · imagina",
+      "titulo": [
+        "",
+        ""
+      ],
+      "batidas": 4,
+      "inicio": 0.1,
+      "segura": 0.85,
+      "falante": "visita",
+      "chave": "precisa!",
+      "fala": [
+        {
+          "texto": "Imagina, não precisa!",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "pao",
+        "nao": {
+          "em": "Imagina"
+        },
+        "contador": {
+          "texto": "RECUSA 2",
+          "em": "Imagina"
+        },
+        "ronc": {
+          "em": "apos"
+        }
+      }
+    },
+    {
+      "rotulo": "CENA 3 · aceita",
+      "titulo": [
+        "",
+        ""
+      ],
+      "batidas": 6,
+      "inicio": 0.8,
+      "segura": 0.3,
+      "falante": "visita",
+      "chave": "insiste…",
+      "fala": [
+        {
+          "texto": "Bom… já que cê insiste…",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "aceita",
+        "pega": {
+          "em": "Bom"
+        },
+        "contador": {
+          "texto": "ACEITOU!",
+          "em": "Bom",
+          "confete": true
+        }
+      }
+    },
+    {
+      "rotulo": "CENA 4 · exagero",
+      "titulo": [
+        "",
+        ""
+      ],
+      "batidas": 5,
+      "inicio": 0.2,
+      "segura": 0.3,
+      "falante": "visita",
+      "chave": "bolo",
+      "fala": [
+        {
+          "texto": "E esse bolo aí, é de quê?",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "exagero",
+        "bolo": {
+          "em": "bolo"
+        }
+      }
+    },
+    {
+      "rotulo": "CENA 5 · moral",
+      "titulo": [
+        "",
+        ""
+      ],
+      "batidas": 7,
+      "inicio": 0.2,
+      "segura": 0.3,
+      "chave": "terceira,",
+      "fala": [
+        {
+          "texto": "Mineiro recusa duas vezes. Na terceira, é sim.",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "moral",
+        "sim": {
+          "em": "sim."
+        }
+      }
+    },
+    {
+      "rotulo": "FECHO",
+      "titulo": [
+        "",
+        ""
+      ],
+      "batidas": 12,
+      "inicio": 0.25,
+      "segura": 3.2,
+      "chave": "quantas",
+      "pergunta": true,
+      "fala": [
+        {
+          "texto": "E na sua casa, a visita recusa quantas vezes?",
+          "apoio": null
+        }
+      ],
+      "diagrama": {
+        "tipo": "fecho",
+        "cenario": "sala",
+        "manda": {
+          "texto": "Manda pro amigo que sempre fala “não precisa não” 😂",
+          "em": "apos"
+        },
+        "marca_s": 2.0
+      }
+    }
+  ]
+}

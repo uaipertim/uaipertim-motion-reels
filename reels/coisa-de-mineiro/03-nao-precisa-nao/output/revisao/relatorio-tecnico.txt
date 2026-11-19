@@ -1,0 +1,100 @@
+REVISÃO TÉCNICA · Coisa de mineiro #03 "Não precisa não" · reels/coisa-de-mineiro/03-nao-precisa-nao/output/uaipertim-coisa-de-mineiro-03.mp4
+27.50 s · 825 quadros a 30 fps
+
+FORMATO E SOM
+OK     vídeo h264 yuv420p 1080×1920
+OK     30 fps
+OK     duração 27.50 s (20–30 s)
+OK     áudio aac 48000 Hz, 2 canais
+OK     -14.0 LUFS integrados (alvo −14)
+OK     pico real -1.7 dBTP (≤ −1)
+
+RITMO (trilha animada, 120 BPM: uma batida a cada 0,5 s)
+OK     cena 1 cafe: 0.00–1.50 s = batidas 0–3; fala 0.10–0.98 s dentro dela
+OK     cena 2 cafe: 1.50–3.50 s = batidas 3–7; fala 1.60–2.88 s dentro dela
+OK     cena 3 pao: 3.50–5.50 s = batidas 7–11; fala 3.65–5.25 s dentro dela
+OK     cena 4 pao: 5.50–8.50 s = batidas 11–17; fala 5.60–7.60 s dentro dela
+OK     cena 5 aceita: 8.50–12.50 s = batidas 17–25; fala 9.30–12.02 s dentro dela
+OK     cena 6 exagero: 12.50–15.50 s = batidas 25–31; fala 12.70–14.94 s dentro dela
+OK     cena 7 moral: 15.50–20.50 s = batidas 31–41; fala 15.70–19.86 s dentro dela
+OK     cena 8 fecho: 20.50–27.50 s = batidas 41–55; fala 20.75–24.11 s dentro dela
+
+VOZ
+OK     o texto falado é o roteiro, cena a cena
+OK     perfil "narracao" (eleven_v4); a voz oficial (Victor Pinho) é a do Pertim
+OK     cena 1 (pertim): voz Victor Pinho (LuQ9eaWO9yCQrR73VQFa)
+OK     cena 2 (visita): voz Sergio - Friendly and Encouraging (RGbeQtiShYRDVCrd9b9w)
+OK     cena 3 (pertim): voz Victor Pinho (LuQ9eaWO9yCQrR73VQFa)
+OK     cena 4 (visita): voz Sergio - Friendly and Encouraging (RGbeQtiShYRDVCrd9b9w)
+OK     cena 5 (visita): voz Sergio - Friendly and Encouraging (RGbeQtiShYRDVCrd9b9w)
+OK     cena 6 (visita): voz Sergio - Friendly and Encouraging (RGbeQtiShYRDVCrd9b9w)
+OK     cena 7 (pertim): voz Victor Pinho (LuQ9eaWO9yCQrR73VQFa)
+OK     cena 8 (pertim): voz Victor Pinho (LuQ9eaWO9yCQrR73VQFa)
+     cena 1: seed 2042 · 0.88 s · enviado "Aceita um café?" · reels/coisa-de-mineiro/03-nao-precisa-nao/tomadas/cap-00/U-seed2042-sem-contexto.mp3 · conferência: ok
+     cena 2: seed 42 · 1.28 s · enviado "Não precisa não!" · voz.py, seed 42 · conferência: ok
+     cena 3: seed 42 · 1.60 s · enviado "Tem pão de queijo quentinho…" · voz.py, seed 42 · conferência: ok
+     cena 4: seed 42 · 2.00 s · enviado "Imagina, não precisa!" · voz.py, seed 42 · conferência: ok
+     cena 5: seed 3042 · 2.72 s · enviado "Bom… já que cê insiste…" · voz.py, seed 3042 · conferência: ritmo 6.2 letras/s
+     cena 6: seed 3042 · 2.24 s · enviado "E esse bolo aí, é de quê?" · voz.py, seed 3042 · conferência: ritmo 7.6 letras/s
+     cena 7: seed 42 · 4.16 s · enviado "Mineiro recusa duas vezes. Na terceira, é sim." · voz.py, seed 42 · conferência: ok
+     cena 8: seed 42 · 3.36 s · enviado "E na sua casa, a visita recusa quantas vezes?" · reels/coisa-de-mineiro/03-nao-precisa-nao/tomadas/cap-07/S-seed42-sem-contexto.mp3 · conferência: ok
+OK     cada cena é UMA geração inteira, colocada sem cortes
+OK     nunca "de Glória"
+
+A PERGUNTA DO GANCHO ("Aceita um café?")
+     tomada usada: reels/coisa-de-mineiro/03-nao-precisa-nao/tomadas/cap-00/U-seed2042-sem-contexto.mp3 (seed 2042)
+     o F0 vai de 145 Hz ("um") para 306 Hz no pico de "café" (em 0.84 s)
+OK     a pergunta sobe até a tônica: +12.9 st (mínimo +8 st)
+     gráfico: output/revisao/f0-gancho.png
+
+A PERGUNTA DA CENA 8 ("E na sua casa, a visita recusa quantas vezes?")
+     tomada usada: reels/coisa-de-mineiro/03-nao-precisa-nao/tomadas/cap-07/S-seed42-sem-contexto.mp3 (seed 42)
+     o F0 vai de 267 Hz ("quantas") para 129 Hz no pico de "vezes" (em 2.89 s)
+FALHA  a pergunta sobe até a tônica: -12.5 st (mínimo +8 st) — o F0 CAI de "quantas" para "vezes"
+     gráfico: output/revisao/f0-cena-8.png
+
+A SÉRIE (identidade e regras)
+OK     a fala não fala do app (sem app, celular, "em breve", "tá chegando")
+OK     placas só com km: (nenhuma)
+     a marca entra em 25.50 s (2.00 s finais)
+OK     abre já na situação: a primeira fala começa em 0.10 s (≤ 0,3 s; sem introdução)
+OK     o fecho é uma pergunta (gera comentário): "E na sua casa, a visita recusa quantas vezes?"
+OK     sem "marca o amigo" na fala
+OK     o texto de compartilhar na tela: "Manda pro amigo que sempre fala “não precisa não” 😂" (entra em 24.19 s)
+
+LEGENDA NOVA (palavra a palavra; o resto da conferência, com a máscara, em PERSONAGENS NA TELA)
+OK     a legenda bate com a fala, cena a cena (o texto da tela, na ordem)
+OK     só o texto da tela ("pertim", nunca a grafia enviada à voz)
+OK     cada bloco com o falante da cena (a cor do destaque: amarelo/laranja = Pertim, azul = visita)
+OK     blocos de 2 a 4 palavras ("pão de queijo" conta como uma)
+OK     até 2 linhas, cada uma cabendo em 810 px
+OK     some nas trocas de cena (nenhum bloco atravessa o corte)
+OK     sai em 24.19 s, antes da marca (25.50 s)
+OK     cada palavra entra no tempo em que é falada (o alinhamento da voz)
+     palavras-chave (verde, com marcador): cena 1 "café?", cena 2 "não!", cena 3 "quentinho…", cena 4 "precisa!", cena 5 "insiste…", cena 6 "bolo", cena 7 "terceira,", cena 8 "quantas"
+
+BOCA E PIXELS
+OK     nenhuma boca com menos de 2 quadros; A, E, O e M/B/P na fala (87 trechos)
+OK     o quadro muda a cada 0,1 s nos primeiros 0,5 s (diferença média 6.3, 6.7, 6.0, 4.1, 3.7)
+OK     o selo "COISA DE MINEIRO #03" aparece no começo, no meio e no fim (26713, 26749, 26751 px verdes)
+OK     a marca só aparece no fim: logo na caixa dela antes = 0 px coral, no fim = 13107 px
+
+PERSONAGENS NA TELA (máscara: render.mjs mascara)
+OK     pertim: nunca cortado pela borda
+OK     pertim: parado, sempre a ≥ 60 px das bordas
+OK     visita: nunca cortado pela borda
+OK     visita: parado, sempre a ≥ 60 px das bordas
+OK     legenda na faixa segura: x 138–884, y 1378–1560 (x < 940, y 1372–1565: abaixo dos pés, fora da coluna de botões e acima da descrição)
+     cena 1 (pertim), "Aceita" em 0.4 s: 9756 px na cor de quem fala, 0 px na cor do outro
+     cena 2 (visita), "precisa" em 2.0 s: 11326 px na cor de quem fala, 0 px na cor do outro
+     cena 3 (pertim), "queijo" em 4.5 s: 6553 px na cor de quem fala, 0 px na cor do outro
+     cena 4 (visita), "Imagina," em 5.9 s: 9074 px na cor de quem fala, 2 px na cor do outro
+     cena 5 (visita), "Bom…" em 9.6 s: 8040 px na cor de quem fala, 0 px na cor do outro
+     cena 6 (visita), "quê?" em 14.6 s: 7610 px na cor de quem fala, 2 px na cor do outro
+     cena 7 (pertim), "duas" em 17.1 s: 4923 px na cor de quem fala, 0 px na cor do outro
+     cena 8 (pertim), "recusa" em 22.8 s: 9487 px na cor de quem fala, 0 px na cor do outro
+OK     a palavra dita na cor de quem fala (amarelo/laranja = Pertim, azul = visita)
+OK     o rosto do Pertim nunca na coluna de botões do Instagram (x ≥ 940, y 1060–1560)
+
+RESULTADO: ajustar
+  a pergunta sobe até a tônica: -12.5 st (mínimo +8 st) — o F0 CAI de "quantas" para "vezes"

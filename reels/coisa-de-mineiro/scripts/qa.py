@@ -120,11 +120,15 @@ for k in sorted(caps):
 ok(len(LN['colocacao']) == len(ROTEIRO), 'cada cena é UMA geração inteira, colocada sem cortes')
 ok(not re.search(r'\bde\s+Glória', json.dumps(ROT, ensure_ascii=False)), 'nunca "de Glória"')
 
-# ---------------------------------------------------------------- a pergunta do gancho
-if ROTEIRO[0].rstrip().endswith('?'):
-    sec(f'A PERGUNTA DO GANCHO ("{ROTEIRO[0]}")')
-    f0c = caps['00']
-    sr, y = wavfile.read(os.path.join(AUD, 'voz', 'cap-00.wav'))
+# ---------------------------------------------------------------- as perguntas (a subida até a tônica)
+# as falas marcadas no roteiro com "pergunta": true; sem marca nenhuma, a 1ª fala, se terminar em "?"
+PERGUNTAS = [n for n, c in enumerate(ROT['capitulos']) if c.get('pergunta')] or ([0] if ROTEIRO[0].rstrip().endswith('?') else [])
+
+
+def mede_pergunta(n):
+    sec(f'A PERGUNTA {"DO GANCHO" if n == 0 else f"DA CENA {n + 1}"} ("{ROTEIRO[n]}")')
+    f0c = caps[f'{n:02d}']
+    sr, y = wavfile.read(os.path.join(AUD, 'voz', f'cap-{n:02d}.wav'))
     y = y.astype(np.float64) / 32768
     al = f0c['alinhamento']
     txt = ''.join(al['characters'])
@@ -156,8 +160,8 @@ if ROTEIRO[0].rstrip().endswith('?'):
     antes = [f for t, f in vz if ts[ant.start()] <= t <= te[ant.end() - 1] + 0.04]
     base = float(np.median(antes))
     info(f'tomada usada: {f0c.get("tomada", {}).get("arquivo", "voz.py")} (seed {f0c["seed"]})')
-    info(f'o F0 sobe de {base:.0f} Hz ("{ant.group()}") para {pico[1]:.0f} Hz em "{ult.group()}" (em {pico[0]:.2f} s)')
-    ok(st(base, pico[1]) >= 8, f'a pergunta sobe até a tônica: +{st(base, pico[1]):.1f} st (mínimo +8 st)')
+    info(f'o F0 vai de {base:.0f} Hz ("{ant.group()}") para {pico[1]:.0f} Hz no pico de "{ult.group()}" (em {pico[0]:.2f} s)')
+    ok(st(base, pico[1]) >= 8, f'a pergunta sobe até a tônica: {st(base, pico[1]):+.1f} st (mínimo +8 st)' + ('' if st(base, pico[1]) > 0 else f' — o F0 CAI de "{ant.group()}" para "{ult.group()}"'))
     try:
         import matplotlib
         matplotlib.use('Agg')
@@ -168,11 +172,15 @@ if ROTEIRO[0].rstrip().endswith('?'):
             if ch.isalpha():
                 ax.text((a_ + b_) / 2, 75, ch, ha='center', fontsize=9, color='#221C19')
         ax.axvline(pico[0], color='#F9B233', ls='--'); ax.set_ylim(60, 320); ax.set_xlabel('s'); ax.set_ylabel('Hz')
-        ax.set_title(f'"{ROTEIRO[0]}" — sobe {st(base, pico[1]):+.1f} st até "{ult.group()}"')
-        ax.grid(alpha=0.25); fig.tight_layout(); fig.savefig(os.path.join(REV, 'f0-gancho.png')); plt.close(fig)
-        info('gráfico: output/revisao/f0-gancho.png')
+        ax.set_title(f'"{ROTEIRO[n]}" — sobe {st(base, pico[1]):+.1f} st até "{ult.group()}"')
+        ax.grid(alpha=0.25); fig.tight_layout(); fig.savefig(os.path.join(REV, 'f0-gancho.png' if n == 0 else f'f0-cena-{n + 1}.png')); plt.close(fig)
+        info('gráfico: output/revisao/' + ('f0-gancho.png' if n == 0 else f'f0-cena-{n + 1}.png'))
     except ImportError:
         pass
+
+
+for n in PERGUNTAS:
+    mede_pergunta(n)
 
 # ---------------------------------------------------------------- a série
 sec('A SÉRIE (identidade e regras)')
@@ -181,21 +189,60 @@ ok(not re.search(r'\bapp\b|aplicativo|celular|em breve|tá chegando|ta chegando'
 placas = [p['texto'] if isinstance(p, dict) else p for c in D['cenas'] for p in c['diagrama'].get('placas', [])]
 ok(all(re.fullmatch(r'\d+ km', p) for p in placas), f'placas só com km: {", ".join(placas) or "(nenhuma)"}')
 info(f'a marca entra em {D["marca_t"]:.2f} s ({DUR - D["marca_t"]:.2f} s finais)')
+if ROT['numero'] >= 3:
+    # os aprendizados do Reel de teste do #01 (padrão da série do #03 em diante)
+    c0 = D['cenas'][0]
+    ok(c0['voz_t0'] <= 0.3, f'abre já na situação: a primeira fala começa em {c0["voz_t0"]:.2f} s (≤ 0,3 s; sem introdução)')
+    fe = D['cenas'][-1]
+    ok(fe['texto'].rstrip().endswith('?'), f'o fecho é uma pergunta (gera comentário): "{fe["texto"]}"')
+    ok(not re.search(r'\bmarca (aquele|o|a) ', falado), 'sem "marca o amigo" na fala')
+    md = fe['diagrama'].get('manda')
+    ok(isinstance(md, dict) and md['texto'].lower().startswith('manda pro amigo') and md['t'] < D['marca_t'] - 1.0,
+       f'o texto de compartilhar na tela: "{md["texto"] if md else "—"}" (entra em {md["t"] if md else 0:.2f} s)')
 
 # ---------------------------------------------------------------- legenda
-sec('LEGENDA GRAVADA')
 LG = D['legenda']
-st_ = LG['estilo']
-fonte = ImageFont.truetype(os.path.join(REPO, 'public', 'fonts', 'poppins-latin-800-normal.woff2'), st_['size'])
-x0, y0, x1, y1 = st_['faixa']
-bl = LG['blocos']
-ok(all(len(b['linhas']) <= 2 for b in bl) and all(b['t1'] - b['t0'] >= st_['minDur'] - 1e-3 for b in bl), f'{len(bl)} blocos, até 2 linhas, cada um ≥ {st_["minDur"]} s')
-larg = max(fonte.getlength(' '.join(w['w'] for w in l)) for b in bl for l in b['linhas'])
-ok(larg + 2 * st_['padX'] <= x1 - x0 + 1, f'a linha mais larga ({larg + 2 * st_["padX"]:.0f} px) cabe na faixa (x {x0}–{x1})')
-pals = [w['w'] for b in bl for l in b['linhas'] for w in l]
-ok(not any('pertím' in p for p in pals), 'só o texto da tela ("pertim", nunca a grafia enviada à voz)')
-ok(' '.join(pals) == ' '.join(ROTEIRO), 'cobre a fala inteira, na ordem')
-ok(max(b['t1'] for b in bl) <= D['marca_t'] + 1e-3, f'sai em {max(b["t1"] for b in bl):.2f} s, antes da marca')
+if LG.get('pop'):
+    sec('LEGENDA NOVA (palavra a palavra; o resto da conferência, com a máscara, em PERSONAGENS NA TELA)')
+    bl = LG['blocos']
+    LP = LG['estilo']
+    fts = {}
+    def larg(ws, sz):
+        f_ = fts.setdefault(sz, ImageFont.truetype(os.path.join(REPO, 'public', 'fonts', 'poppins-latin-800-normal.woff2'), sz))
+        return sum(f_.getlength(w['w']) + sz * 0.26 for w in ws) + 0.12 * max(f_.getlength(w['w']) for w in ws) + sz * 0.24
+    nfal = lambda b: [w for l in b['linhas'] for w in l]
+    COMP = ['pão de queijo']
+    def n_pal(b):
+        txt = ' '.join(w['w'] for w in nfal(b)).lower()
+        return len(nfal(b)) - sum(txt.count(c) * (len(c.split()) - 1) for c in COMP)
+    por_cena = {}
+    for b in bl:
+        por_cena.setdefault(b['cena'], []).extend(w['w'] for w in nfal(b))
+    ok(all(' '.join(por_cena.get(n, [])) == ROTEIRO[n] for n in range(len(ROTEIRO))), 'a legenda bate com a fala, cena a cena (o texto da tela, na ordem)')
+    ok(not any('pertím' in w['w'] for b in bl for w in nfal(b)), 'só o texto da tela ("pertim", nunca a grafia enviada à voz)')
+    ok(all(b['falante'] == ROT['capitulos'][b['cena']].get('falante', 'pertim') for b in bl), 'cada bloco com o falante da cena (a cor do destaque: amarelo/laranja = Pertim, azul = visita)')
+    ok(all(2 <= n_pal(b) <= 4 for b in bl if len(ROTEIRO[b['cena']].split()) >= 2), 'blocos de 2 a 4 palavras ("pão de queijo" conta como uma)')
+    ok(all(len(b['linhas']) <= 2 and all(larg(l, b.get('size', LP['size'])) <= LP['maxW'] for l in b['linhas']) for b in bl), f'até 2 linhas, cada uma cabendo em {LP["maxW"]} px')
+    cen = {c['n']: c for c in D['cenas']}
+    ok(all(cen[b['cena']]['t0'] - 1e-6 <= b['t0'] and b['t1'] <= cen[b['cena']]['t1'] - 0.05 + 1e-6 for b in bl), 'some nas trocas de cena (nenhum bloco atravessa o corte)')
+    ok(max(b['t1'] for b in bl) <= D['marca_t'] - 0.05 + 1e-6, f'sai em {max(b["t1"] for b in bl):.2f} s, antes da marca ({D["marca_t"]:.2f} s)')
+    falados = {(c['n'], round(q['t0'], 3)) for c in LN['capitulos'] for q in c['palavras']}
+    ok(all((b['cena'], round(w['t0'], 3)) in falados for b in bl for w in nfal(b)), 'cada palavra entra no tempo em que é falada (o alinhamento da voz)')
+    chaves = {b['cena']: w['w'] for b in bl for w in nfal(b) if w.get('chave')}
+    info('palavras-chave (verde, com marcador): ' + ', '.join(f'cena {k + 1} "{v}"' for k, v in sorted(chaves.items())))
+else:
+    sec('LEGENDA GRAVADA')
+    st_ = LG['estilo']
+    fonte = ImageFont.truetype(os.path.join(REPO, 'public', 'fonts', 'poppins-latin-800-normal.woff2'), st_['size'])
+    x0, y0, x1, y1 = st_['faixa']
+    bl = LG['blocos']
+    ok(all(len(b['linhas']) <= 2 for b in bl) and all(b['t1'] - b['t0'] >= st_['minDur'] - 1e-3 for b in bl), f'{len(bl)} blocos, até 2 linhas, cada um ≥ {st_["minDur"]} s')
+    larg = max(fonte.getlength(' '.join(w['w'] for w in l)) for b in bl for l in b['linhas'])
+    ok(larg + 2 * st_['padX'] <= x1 - x0 + 1, f'a linha mais larga ({larg + 2 * st_["padX"]:.0f} px) cabe na faixa (x {x0}–{x1})')
+    pals = [w['w'] for b in bl for l in b['linhas'] for w in l]
+    ok(not any('pertím' in p for p in pals), 'só o texto da tela ("pertim", nunca a grafia enviada à voz)')
+    ok(' '.join(pals) == ' '.join(ROTEIRO), 'cobre a fala inteira, na ordem')
+    ok(max(b['t1'] for b in bl) <= D['marca_t'] + 1e-3, f'sai em {max(b["t1"] for b in bl):.2f} s, antes da marca')
 
 # ---------------------------------------------------------------- boca e pixels
 sec('BOCA E PIXELS')
@@ -238,7 +285,7 @@ COR = {'pertim': lambda r, g, b: (r > 128) & (g < 100), 'visita': lambda r, g, b
        'carro': lambda r, g, b: (b > 128) & (r < 100) & (g < 100), 'cachorro': lambda r, g, b: (r > 128) & (g > 128) & (b < 100),
        'vaca': lambda r, g, b: (g > 128) & (b > 128) & (r < 100)}
 rosto = lambda r, g, b: (r > 128) & (b > 128) & (g < 100)
-caixas, rostos = {k: [] for k in COR}, []
+caixas, rostos, leg = {k: [] for k in COR}, [], []
 for nome in mq:
     q = np.asarray(Image.open(os.path.join(MDIR, nome)).convert('RGB')).astype(np.int16)
     r, g, b = q[..., 0], q[..., 1], q[..., 2]
@@ -246,6 +293,8 @@ for nome in mq:
     for k, fn in COR.items():
         ys, xs = np.nonzero(fn(r, g, b))
         caixas[k].append((xs.min(), ys.min(), xs.max(), ys.max()) if len(xs) > 30 else None)
+    ys, xs = np.nonzero((r > 200) & (g > 200) & (b > 200))            # a legenda nova (branca na máscara)
+    leg.append((xs.min(), ys.min(), xs.max(), ys.max()) if len(xs) > 30 else None)
     m = rosto(r, g, b)
     zona = m[int(1060 * ESC):int(1560 * ESC), int(940 * ESC):]
     rostos.append(int(zona.sum()))
@@ -281,6 +330,39 @@ for k, cx in caixas.items():
             apertado.append(tq(i))
     ok(not cortado, f'{k}: nunca cortado pela borda' + (f' (cortado em {faixas(cortado)})' if cortado else ''))
     ok(not apertado, f'{k}: parado, sempre a ≥ {FOLGA} px das bordas' + (f' (mais perto em {faixas(apertado)})' if apertado else ''))
+if LG.get('pop'):
+    # a legenda nova: na faixa segura (abaixo dos pés, acima da descrição do Instagram, fora da coluna de botões) e com
+    # a cor do destaque de quem fala (conferida nos pixels do vídeo, só dentro das letras da legenda)
+    vistas = [(i, c) for i, c in enumerate(leg) if c]
+    fora = [tq(i) for i, (x0_, y0_, x1_, y1_) in vistas if x0_ / ESC < 60 or x1_ / ESC >= 940 or y0_ / ESC < 1372 or y1_ / ESC > 1565]
+    if vistas:
+        X0, Y0 = min(c[0] for _, c in vistas) / ESC, min(c[1] for _, c in vistas) / ESC
+        X1, Y1 = max(c[2] for _, c in vistas) / ESC, max(c[3] for _, c in vistas) / ESC
+        ok(not fora, f'legenda na faixa segura: x {X0:.0f}–{X1:.0f}, y {Y0:.0f}–{Y1:.0f} (x < 940, y 1372–1565: abaixo dos pés, fora da coluna de botões e acima da descrição)' + (f' (fora em {faixas(fora)})' if fora else ''))
+    CORPX = {'pertim': lambda q_: (q_[..., 0] > 215) & (q_[..., 1] > 110) & (q_[..., 1] < 205) & (q_[..., 2] < 90),
+             'visita': lambda q_: (q_[..., 2] > 200) & (q_[..., 0] < 170) & (q_[..., 1] > 115) & (q_[..., 1] < 215)}
+    erradas = []
+    with tempfile.TemporaryDirectory() as tmp:
+        for c in D['cenas']:
+            bs = [b for b in LG['blocos'] if b['cena'] == c['n']]
+            ws = [w for b in bs for l in b['linhas'] for w in l if not w.get('chave') and w['ate'] - w['t0'] > 0.32]
+            if not ws:
+                continue
+            w = ws[len(ws) // 2]
+            k = int(np.ceil((w['t0'] + 0.21) * 10))                   # o quadro da máscara (10/s) depois do pop
+            if k / 10 >= w['ate'] or k >= len(mq):
+                continue
+            mk = np.asarray(Image.open(os.path.join(MDIR, mq[k])).convert('RGB')).min(2) > 200
+            mk = np.repeat(np.repeat(mk, 2, 0), 2, 1)
+            p = os.path.join(tmp, 'q.png')
+            subprocess.run(['ffmpeg', '-v', 'error', '-y', '-ss', f'{k / 10:.3f}', '-i', VIDEO, '-frames:v', '1', p], check=True)
+            q_ = np.asarray(Image.open(p).convert('RGB')).astype(np.int16)[:mk.shape[0], :mk.shape[1]]
+            fal = ROT['capitulos'][c['n']].get('falante', 'pertim')
+            n_cert = int((CORPX[fal](q_) & mk).sum()); n_out = int((CORPX['visita' if fal == 'pertim' else 'pertim'](q_) & mk).sum())
+            info(f'cena {c["n"] + 1} ({fal}), "{w["w"]}" em {k / 10:.1f} s: {n_cert} px na cor de quem fala, {n_out} px na cor do outro')
+            if n_cert < 400 or (fal == 'pertim' and n_out > 100):
+                erradas.append(c['n'] + 1)
+    ok(not erradas, 'a palavra dita na cor de quem fala (amarelo/laranja = Pertim, azul = visita)' + (f' (errada nas cenas {erradas})' if erradas else ''))
 col = [tq(i) for i, n in enumerate(rostos) if n > 0]
 ok(not col, 'o rosto do Pertim nunca na coluna de botões do Instagram (x ≥ 940, y 1060–1560)' + (f' (está em {faixas(col)})' if col else ''))
 

@@ -42,7 +42,7 @@ export type CoisaDeMineiroProps = { ep: string; dados?: DadosEpisodio; mascara?:
 // a máscara do QA (render.mjs mascara): só os personagens e o carro, cada um numa cor chapada, sobre o preto; o resto
 // fica invisível. O qa.py lê as cores para ver se alguém fica cortado pela borda (e onde está o rosto do Pertim).
 const MascaraCtx = React.createContext(false);
-export const CORES_MASCARA: Record<string, string> = { pertim: "#FF0000", rosto: "#FF00FF", visita: "#00FF00", carro: "#0000FF", cachorro: "#FFFF00", vaca: "#00FFFF" };
+export const CORES_MASCARA: Record<string, string> = { pertim: "#FF0000", rosto: "#FF00FF", visita: "#00FF00", carro: "#0000FF", cachorro: "#FFFF00", vaca: "#00FFFF", legenda: "#FFFFFF" };
 const Ator: React.FC<{ nome: string; children: React.ReactNode }> = ({ nome, children }) => {
   const m = React.useContext(MascaraCtx);
   if (!m) return <>{children}</>;
@@ -329,8 +329,9 @@ const PoteDeBolo: React.FC<{ x: number; y: number; w: number }> = ({ x, y, w }) 
 const Visitante: React.FC<{
   cx: number; base: number; altura: number; t: number; anda?: number; estado?: "normal" | "perdido" | "cansado" | "dormindo"; olha?: number; pulo?: number; mapa?: boolean;
   boca?: string; pote?: boolean;   // (#02) a boca da fala (visema R/A/E/O/M) e o pote de bolo nas mãos
+  nao?: number; xicara?: boolean; prato?: number;   // (#03) a mão levantada fazendo "não" (0..1), a xícara (mão esquerda), o prato com N pães (mão direita)
 }> = ({
-  cx, base, altura, t, anda = 0, estado = "normal", olha = 0, pulo = 0, mapa = true, boca, pote,
+  cx, base, altura, t, anda = 0, estado = "normal", olha = 0, pulo = 0, mapa = true, boca, pote, nao = 0, xicara, prato = 0,
 }) => {
   const k = altura / 260;
   const passo = Math.sin(t * 11) * anda;
@@ -367,7 +368,17 @@ const Visitante: React.FC<{
           )}
           {boca && !dormindo ? <BocaVisita v={boca} /> : cansado ? <ellipse cx={100} cy={122} rx={10} ry={12} fill={C.tinta} /> : dormindo ? <path d="M92 120 Q100 124 108 120" stroke={C.tinta} strokeWidth={4} fill="none" /> : <path d="M88 118 Q100 126 112 118" stroke={C.tinta} strokeWidth={4} fill="none" strokeLinecap="round" />}
           {/* os braços e o mapa aberto na frente */}
-          <path d="M40 140 Q30 160 48 172" stroke={azul2} strokeWidth={12} strokeLinecap="round" fill="none" />
+          {nao > 0 ? (() => {
+            // o braço levanta e a mão abana "não" (gira no ombro)
+            const hx = 46 + (4 - 46) * nao, hy = 172 + (92 - 172) * nao, gira = nao * 16 * Math.sin(t * 17);
+            return (
+              <g transform={`rotate(${gira} 40 140)`}>
+                <path d={`M40 140 Q${30 - 18 * nao} ${158 - 30 * nao} ${hx} ${hy}`} stroke={azul2} strokeWidth={12} strokeLinecap="round" fill="none" />
+                <circle cx={hx} cy={hy} r={13} fill="#fff" />
+                {[-9, -3, 3, 9].map((dx) => <rect key={dx} x={hx + dx - 2.6} y={hy - 22} width={5.2} height={13} rx={2.6} fill="#fff" />)}
+              </g>
+            );
+          })() : <path d="M40 140 Q30 160 48 172" stroke={azul2} strokeWidth={12} strokeLinecap="round" fill="none" />}
           <path d="M160 140 Q170 160 152 172" stroke={azul2} strokeWidth={12} strokeLinecap="round" fill="none" />
           {mapa && (
             <g transform={`translate(100 172) rotate(${cansado ? 18 : -4})`}>
@@ -378,7 +389,9 @@ const Visitante: React.FC<{
             </g>
           )}
           {pote && <PoteDeBolo x={100} y={176} w={86} />}
-          <circle cx={46} cy={172} r={11} fill="#fff" /><circle cx={154} cy={172} r={11} fill="#fff" />
+          {xicara && nao === 0 && <Xicara x={46} y={150} w={34} t={t} />}
+          {prato > 0 && <PratoPao x={156} y={162} w={70} n={prato} t={t} vapor={false} />}
+          {nao === 0 && <circle cx={46} cy={172} r={11} fill="#fff" />}<circle cx={154} cy={172} r={11} fill="#fff" />
         </g>
         {cansado && [0, 1].map((i) => {
           const u = ((t * 1.4 + i * 0.5) % 1);
@@ -398,7 +411,8 @@ const VB: Record<string, number[]> = { parado: [0, 18, 240, 270], moto: [-24, 40
 const vbDe = (pose: string) => VB[pose] ?? [-20, 6, 280, 284];
 // chinelo e café: desenhados POR CIMA do Pertim oficial, no mesmo viewBox (o desenho dele não muda): o pé descalço com
 // o chinelo cobre o tênis; a xícara fica na luva de baixo (pose "parado")
-const Acessorios: React.FC<{ altura: number; pose: Pose; quique?: number; respira?: number; t: number; chinelo?: boolean; cafe?: boolean; pote?: boolean }> = ({ altura, pose, quique = 0, respira = 0, t, chinelo, cafe, pote }) => {
+const Acessorios: React.FC<{ altura: number; pose: Pose; quique?: number; respira?: number; t: number; chinelo?: boolean; cafe?: boolean; pote?: boolean;
+  xicara?: boolean; prato?: number; termica?: boolean; aceno?: number }> = ({ altura, pose, quique = 0, respira = 0, t, chinelo, cafe, pote, xicara, prato = 0, termica, aceno = 0 }) => {
   const [vx, vy, vw, vh] = vbDe(pose);
   const corpoT = `translate(120 252) scale(${1 - respira * 0.006} ${1 + respira * 0.014}) translate(-120 -252)`;
   const Pe: React.FC<{ x: number; flip?: boolean }> = ({ x, flip }) => (
@@ -427,6 +441,15 @@ const Acessorios: React.FC<{ altura: number; pose: Pose; quique?: number; respir
           </g>
         )}
         {pote && pose === "parado" && <g transform={corpoT}><PoteDeBolo x={216} y={200} w={44} /></g>}
+        {/* (#03) a xícara na ponta da mão estendida (o braço do "apontando" gira no ombro em 180, 172) */}
+        {xicara && pose === "apontando" && <g transform={`${corpoT} rotate(${aceno} 180 172)`}><Xicara x={234} y={146} w={30} t={t} /></g>}
+        {prato > 0 && pose === "parado" && <g transform={corpoT}><PratoPao x={214} y={196} w={64} n={prato} t={t} /></g>}
+        {termica && pose === "parado" && (
+          <g transform={corpoT}>
+            <rect x={203} y={168} width={24} height={44} rx={6} fill="#C9302C" stroke="#3A2C26" strokeWidth={2} /><rect x={206} y={160} width={18} height={10} rx={3} fill="#3A2C26" />
+            <rect x={205} y={182} width={20} height={5} fill="#F4EFE8" opacity={0.8} />
+          </g>
+        )}
       </g>
     </svg>
   );
@@ -434,7 +457,8 @@ const Acessorios: React.FC<{ altura: number; pose: Pose; quique?: number; respir
 const PertimEm: React.FC<{
   t: number; quadro: number; d: DadosEpisodio; pose: Pose; expr: Expressao; cx: number; base: number; altura: number; olhar?: [number, number];
   chinelo?: boolean; cafe?: boolean; rot?: number; aceno?: number; pote?: boolean; cansado?: number;
-}> = ({ t, quadro, d, pose, expr, cx, base, altura, olhar = [0, 0], chinelo, cafe, rot = 0, aceno, pote, cansado = 0 }) => {
+  xicara?: boolean; prato?: number; termica?: boolean; sobe?: number;   // (#03) o que ele segura; "sobe": um pulinho (px, para o "dar de ombros")
+}> = ({ t, quadro, d, pose, expr, cx, base, altura, olhar = [0, 0], chinelo, cafe, rot = 0, aceno, pote, cansado = 0, xicara, prato = 0, termica, sobe = 0 }) => {
   // a boca mexe só nas falas DELE (o "falante" da cena; sem falante, é o Pertim)
   const falando = d.cenas.some((c) => (c.falante ?? "pertim") === "pertim" && t >= c.voz_t0 - 0.02 && t <= c.voz_t1 + 0.04);
   const boca = bocaNoQuadro({ fps: d.fps, bocas: d.visemas, codigos: {} } as Visemas, quadro, falando);
@@ -447,9 +471,10 @@ const PertimEm: React.FC<{
   return (
     <>
       <Ator nome="pertim">
-        <div style={{ position: "absolute", left: cx - w / 2, top: base - altura, width: w, height: altura, transform: `rotate(${rot}deg)`, transformOrigin: "50% 95%" }}>
+        <div style={{ position: "absolute", left: cx - w / 2, top: base - altura - sobe, width: w, height: altura, transform: `rotate(${rot}deg)`, transformOrigin: "50% 95%" }}>
           <Pertim v={1} pose={pose} expr={expr} mouth={boca ?? "auto"} altura={altura} rig={rig} />
-          {(chinelo || cafe || pote) && <Acessorios altura={altura} pose={pose} respira={resp.respira} t={t} chinelo={chinelo} cafe={cafe} pote={pote} />}
+          {(chinelo || cafe || pote || xicara || prato > 0 || termica) && <Acessorios altura={altura} pose={pose} respira={resp.respira} t={t} chinelo={chinelo} cafe={cafe} pote={pote}
+            xicara={xicara} prato={prato} termica={termica} aceno={rig.aceno} />}
         </div>
       </Ator>
       {/* (só na máscara) o rosto: olhos, bochechas e boca, de x 70 a 170 e y 128 a 208 no desenho */}
@@ -569,7 +594,7 @@ const Interior: React.FC<{ porta?: boolean }> = ({ porta }) => (
   </svg>
 );
 // o primeiro plano da casa (perto da câmera, preenchendo a parte de baixo)
-const FrenteCasa: React.FC<{ porta?: boolean }> = ({ porta }) => (
+const FrenteCasa: React.FC<{ porta?: boolean; bolo?: boolean }> = ({ porta, bolo }) => (
   <svg width={1080} height={1920} viewBox="0 0 1080 1920" style={{ position: "absolute", left: 0, top: 0 }}>
     {porta ? (
       <g>
@@ -584,7 +609,14 @@ const FrenteCasa: React.FC<{ porta?: boolean }> = ({ porta }) => (
         <rect x={330} y={1480} width={50} height={84} rx={10} fill="#C9302C" /><rect x={340} y={1466} width={30} height={20} rx={4} fill="#3A2C26" />
         <rect x={420} y={1520} width={46} height={40} rx={6} fill="#F4EFE8" stroke="#3A2C26" strokeWidth={3} /><path d="M466 1530 q18 2 0 20" stroke="#3A2C26" strokeWidth={4} fill="none" />
         <ellipse cx={620} cy={1556} rx={110} ry={16} fill="#F4EFE8" />
-        {[[560, 1540], [600, 1534], [640, 1540], [680, 1544], [580, 1522], [625, 1516], [660, 1524]].map(([x, y], i) => <circle key={i} cx={x} cy={y} r={20} fill="#F2C063" stroke="#D9A043" strokeWidth={3} />)}
+        {bolo ? (
+          <g>
+            {/* (#03) o bolo de fubá, com calda */}
+            <path d="M540 1552 V1470 Q540 1452 560 1452 H680 Q700 1452 700 1470 V1552 Z" fill="#E9B44C" />
+            <path d="M540 1474 Q540 1452 560 1452 H680 Q700 1452 700 1474 Q690 1494 680 1476 Q668 1500 655 1478 Q640 1502 626 1478 Q612 1500 598 1478 Q584 1498 570 1476 Q556 1496 540 1474 Z" fill="#7A4424" />
+            <ellipse cx={620} cy={1462} rx={22} ry={8} fill="#F2D5B0" /><rect x={600} y={1500} width={8} height={8} rx={2} fill="#D99A2B" /><rect x={650} y={1520} width={8} height={8} rx={2} fill="#D99A2B" />
+          </g>
+        ) : [[560, 1540], [600, 1534], [640, 1540], [680, 1544], [580, 1522], [625, 1516], [660, 1524]].map(([x, y], i) => <circle key={i} cx={x} cy={y} r={20} fill="#F2C063" stroke="#D9A043" strokeWidth={3} />)}
       </g>
     )}
   </svg>
@@ -797,6 +829,243 @@ const CasaEmCena: React.FC<{ t: number; quadro: number; d: DadosEpisodio }> = ({
   return <div style={{ position: "absolute", inset: 0, transform: `scale(${empurra})`, transformOrigin: `540px ${CHAO}px` }}>{conteudo}</div>;
 };
 
+// ================================================================ #03 em diante: a sala da visita (cafe, pao, aceita, exagero, moral) e a legenda nova
+// (blocos novos; os do #01 e do #02 não mudam). Coordenadas do mundo (o chão em y CHAO), dentro do <Mundo>.
+// a xícara de café com fumacinha (x, y: o meio do fundo da xícara; w: a largura)
+const Xicara: React.FC<{ x: number; y: number; w: number; t: number }> = ({ x, y, w, t }) => (
+  <g transform={`translate(${x} ${y}) scale(${w / 30})`}>
+    {[0, 1].map((i) => { const u = ((t * 0.8 + i * 0.5) % 1); return <path key={i} d={`M${-4 + 8 * i} ${-14 - 22 * u} q-5 -6 0 -12 q5 -6 0 -12`} stroke="#fff" strokeOpacity={0.8 * (1 - u)} strokeWidth={3.2} fill="none" strokeLinecap="round" />; })}
+    <path d="M13 -8 a8 8 0 0 1 0 14" stroke="#F4EFE8" strokeWidth={4.5} fill="none" />
+    <path d="M-15 -14 H15 L12 10 Q11 14 6 14 H-6 Q-11 14 -12 10 Z" fill="#F4EFE8" stroke="#3A2C26" strokeWidth={2.2} />
+    <rect x={-14} y={-4} width={27} height={5} fill={C.coral} />
+    <ellipse cx={0} cy={-13} rx={13.5} ry={3} fill="#6B3A1E" />
+  </g>
+);
+// o prato de pão de queijo (x, y: o meio do prato; w: a largura; n: quantos pães; vapor: a fumacinha de quentinho)
+const PratoPao: React.FC<{ x: number; y: number; w: number; n: number; t: number; vapor?: boolean }> = ({ x, y, w, n, t, vapor = true }) => {
+  const P = [[-20, -4], [0, -6], [20, -4], [-10, -16], [10, -16], [0, -27], [-26, -14], [26, -14], [-14, -30], [14, -30], [0, -40]];
+  return (
+    <g transform={`translate(${x} ${y}) scale(${w / 80})`}>
+      {vapor && [0, 1, 2].map((i) => { const u = ((t * 0.7 + i / 3) % 1); return <path key={i} d={`M${-16 + 16 * i} ${-34 - 30 * u} q-6 -8 0 -16 q6 -8 0 -16`} stroke="#fff" strokeOpacity={0.85 * (1 - u)} strokeWidth={4} fill="none" strokeLinecap="round" />; })}
+      <ellipse cx={0} cy={4} rx={40} ry={9} fill="#fff" stroke="#3A2C26" strokeWidth={2} />
+      {P.slice(0, n).map(([px, py], i) => <g key={i}><circle cx={px} cy={py} r={11} fill="#F2C063" stroke="#D9A043" strokeWidth={2} /><circle cx={px - 3} cy={py - 4} r={3} fill="#FBE3A6" /></g>)}
+    </g>
+  );
+};
+// o contador do canto (no lugar do relógio do #02): "RECUSA 1" → "RECUSA 2" → "ACEITOU!" (verde, com confete)
+const contadorEm = (d: DadosEpisodio, t: number) => {
+  const ev = d.cenas.filter((c) => c.diagrama.contador).map((c) => c.diagrama.contador as { texto: string; t: number; confete?: boolean });
+  const ant = ev.filter((e) => t >= e.t);
+  return ant.length ? ant[ant.length - 1] : null;
+};
+const Contador: React.FC<{ ev: { texto: string; t: number; confete?: boolean }; t: number }> = ({ ev, t }) => {
+  const e = mola(t, ev.t, 0.38, 2.6), ok = !!ev.confete;
+  const treme = !ok && t - ev.t < 0.45 ? 7 * Math.sin((t - ev.t) * 60) * (1 - (t - ev.t) / 0.45) : 0;
+  return (
+    <div style={{ position: "relative", transform: `scale(${e}) rotate(${(ok ? -3 : 4) + treme}deg)`, transformOrigin: "50% 50%" }}>
+      <div style={{ padding: "10px 26px 12px", borderRadius: 22, background: ok ? VERDE : "#fff", border: `7px solid ${ok ? "#fff" : C.coral}`, boxShadow: "0 8px 0 rgba(34,28,25,0.25), 0 14px 26px rgba(34,28,25,0.25)",
+        fontFamily: FONT, fontWeight: W.black, fontSize: 50, lineHeight: 1, letterSpacing: 1, color: ok ? "#fff" : C.coral, whiteSpace: "nowrap" }}>
+        {ok ? "✔ " : "✖ "}{ev.texto}
+      </div>
+      {ok && Array.from({ length: 36 }).map((_, i) => {
+        const u = entre(t, ev.t, ev.t + 1.6), a = random(`cf-a-${i}`) * Math.PI * 2, v = 160 + 260 * random(`cf-v-${i}`);
+        const x = 150 + Math.cos(a) * v * outCubic(u), y = 40 + Math.sin(a) * v * outCubic(u) * 0.7 + 420 * u * u;
+        const cor = [AMARELO, C.coral, "#5A8FD8", "#fff", VERDE][i % 5];
+        return u > 0 && u < 1 ? <div key={i} style={{ position: "absolute", left: x, top: y, width: 14, height: 9, background: cor, borderRadius: 2, opacity: 1 - u * u,
+          transform: `rotate(${720 * u * (random(`cf-r-${i}`) - 0.5)}deg)` }} /> : null;
+      })}
+    </div>
+  );
+};
+// a LEGENDA NOVA da série (#03 em diante): solta sobre a cena, palavra a palavra. Cada palavra entra com um pop na hora
+// em que é falada; a que está sendo dita fica maior e colorida (amarelo/laranja = Pertim; azul = visita), as já ditas
+// voltam ao branco; a palavra-chave fica em verde com o marcador amarelo atrás.
+type PalavraPop = { w: string; t0: number; ate: number; chave?: boolean };
+type BlocoPop = { cena: number; falante: string; t0: number; t1: number; size?: number; linhas: PalavraPop[][] };
+export const COR_FALA: Record<string, [string, string]> = { pertim: ["#F9B233", "#F08A00"], visita: ["#8EC5FF", "#4A86E0"] };
+const PalavraPopV: React.FC<{ p: PalavraPop; t: number; falante: string; size: number }> = ({ p, t, falante, size }) => {
+  const entrou = t >= p.t0, ativa = entrou && t < p.ate;
+  const s = !entrou ? 0.001 : outBack(entre(t, p.t0, p.t0 + 0.2), 1.7) * (ativa ? 1.12 : 1);
+  const [c1, c2] = COR_FALA[falante] ?? COR_FALA.pertim;
+  const fill: React.CSSProperties = ativa ? { backgroundImage: `linear-gradient(180deg, ${c1} 25%, ${c2} 100%)`, WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }
+    : { color: p.chave ? VERDE : "#fff" };
+  return (
+    <span style={{ position: "relative", display: "inline-block", margin: `0 ${size * 0.13}px`, transform: `scale(${s})`, transformOrigin: "50% 75%", opacity: entrou ? 1 : 0 }}>
+      {p.chave && (
+        <svg viewBox="0 0 100 20" preserveAspectRatio="none" style={{ position: "absolute", left: -10, width: "calc(100% + 20px)", bottom: size * 0.08, height: size * 0.5, overflow: "visible" }}>
+          <path d="M4 13 C30 9, 62 16, 96 7" stroke={AMARELO} strokeWidth={size * 0.42} strokeLinecap="round" fill="none" vectorEffect="non-scaling-stroke" />
+        </svg>
+      )}
+      <span style={{ position: "relative", WebkitTextStroke: `${size * 0.24}px ${C.tinta}`, color: C.tinta, filter: "drop-shadow(0 6px 0 rgba(34,28,25,0.4))" }}>{p.w}</span>
+      <span style={{ position: "absolute", left: 0, top: 0, ...fill }}>{p.w}</span>
+    </span>
+  );
+};
+const LegendaPop: React.FC<{ t: number; blocos: BlocoPop[] }> = ({ t, blocos }) => {
+  const LP = (L as any).legenda_pop as { cx: number; top: number; size: number; linha: number; size2: number; linha2: number; maxW: number };
+  const b = blocos.find((x) => t >= x.t0 && t < x.t1);
+  if (!b) return null;
+  const sz = b.size ?? LP.size, lh = sz === LP.size ? LP.linha : LP.linha2;
+  return (
+    <div style={{ position: "absolute", left: LP.cx - LP.maxW / 2, top: LP.top, width: LP.maxW, textAlign: "center", fontFamily: FONT, fontWeight: W.black, fontSize: sz, lineHeight: `${lh}px` }}>
+      {b.linhas.map((l, i) => <div key={i} style={{ whiteSpace: "nowrap" }}>{l.map((p, j) => <PalavraPopV key={j} p={p} t={t} falante={b.falante} size={sz} />)}</div>)}
+    </div>
+  );
+};
+// o texto de compartilhar no fecho ("Manda pro amigo…"), grande, com a mesma letra da legenda nova
+const MandaPro: React.FC<{ texto: string; t: number; t0: number; marca: number }> = ({ texto, t, t0, marca }) => {
+  const e = mola(t, t0, 0.42, 2.2);
+  if (e <= 0) return null;
+  const topo = interpolate(t, [marca - 0.1, marca + 0.3], [628, 362], { ...clamp, easing: inOut });
+  return (
+    <>
+    <div style={{ position: "absolute", left: 60, right: 60, top: topo, height: 902 - topo, borderRadius: 44, background: "rgba(34,28,25,0.86)", opacity: Math.min(1, e),
+      boxShadow: "0 14px 30px rgba(0,0,0,0.3)" }} />
+    <div style={{ position: "absolute", left: 90, right: 90, top: 668, textAlign: "center", fontFamily: FONT, fontWeight: W.black, fontSize: 60, lineHeight: 1.12,
+      transform: `scale(${e})`, transformOrigin: "50% 50%" }}>
+      <span style={{ position: "relative", display: "inline-block" }}>
+        <span style={{ WebkitTextStroke: `16px ${C.tinta}`, color: C.tinta, filter: "drop-shadow(0 7px 0 rgba(34,28,25,0.35))" }}>{texto}</span>
+        <span style={{ position: "absolute", left: 0, top: 0, color: "#fff" }}>{texto}</span>
+      </span>
+    </div>
+    </>
+  );
+};
+// a cena da sala da visita (#03), num instante t: o Pertim em pé à esquerda (o anfitrião), a visita sentada no sofá
+const TIPOS_SALA_VISITA = ["cafe", "pao", "aceita", "exagero", "moral"];
+const SalaVisitaEmCena: React.FC<{ t: number; quadro: number; d: DadosEpisodio }> = ({ t, quadro, d }) => {
+  const ce = d.cenas.find((c) => t >= c.t0 - 1e-6 && t < c.t1) ?? d.cenas[d.cenas.length - 1];
+  const tipo = ce.tipo === "fecho" ? (ce.diagrama.cenario ?? "sala") : ce.tipo;
+  const um = (tp: string) => d.cenas.filter((c) => c.tipo === tp);
+  const falaVisita = d.cenas.some((c) => c.falante === "visita" && t >= c.voz_t0 - 0.02 && t <= c.voz_t1 + 0.04);
+  const bocaVisita = falaVisita ? d.visemas[Math.min(d.visemas.length - 1, quadro)] : undefined;
+  const PX = 400, VX = 690, VB = CHAO - 70, VA = 440;          // o Pertim (em pé) e a visita (sentada)
+  // a câmera: na abertura já se move (entra na sala); a cada troca de tipo de cena, chega um tiquinho mais perto; no
+  // exagero, um corte mais perto; no fecho, se afasta (o texto de compartilhar e a marca ficam no alto)
+  const inicioTipo = (() => { let k = d.cenas.indexOf(ce); while (k > 0 && d.cenas[k - 1].tipo === ce.tipo) k--; return d.cenas[k].t0; })();
+  const zBase = tipo === "exagero" ? 1.04 : ce.tipo === "fecho" ? 0.74 : 1;
+  const z = ce.n === 0 || inicioTipo === 0 ? zBase * (1 + 0.07 * Math.pow(1 - entre(t, 0, 1.0), 1.4))
+    : ce.tipo === "fecho" ? interpolate(t, [ce.t0, ce.t0 + 0.5], [1, 0.74], { ...clamp, easing: inOut })
+      : zBase * (1 + 0.04 * (1 - outCubic(entre(t, inicioTipo, inicioTipo + 0.35))));
+  const conteudo: React.ReactNode[] = [];
+  if (tipo === "moral") {
+    // a moral: o Pertim sozinho, de frente, mais perto (a mesma sala, sem o sofá no quadro)
+    const sim = ce.diagrama.sim?.t ?? 1e9;
+    const zm = 1 + 0.05 * entre(t, ce.t0, ce.t1);
+    conteudo.push(
+      <div key="m" style={{ position: "absolute", inset: 0, transform: `scale(${zm})`, transformOrigin: `540px ${CHAO}px` }}>
+        <Interior />
+        <PertimEm t={t} quadro={quadro} d={d} pose="parado" expr={t >= sim ? "piscadinha" : "sorrindo"} cx={540} base={CHAO} altura={620} olhar={[0, 0]} />
+      </div>,
+    );
+  } else {
+    // o que acontece em cada cena
+    const cafe = um("cafe"), pao = um("pao"), ac = um("aceita")[0], ex = um("exagero")[0];
+    const naoT = (cs: Cena[]) => cs.map((c) => c.diagrama.nao?.t).find((x) => x != null) as number | undefined;
+    const tNao1 = naoT(cafe), tNao2 = naoT(pao);
+    const ronc = pao.map((c) => c.diagrama.ronc?.t).find((x) => x != null) as number | undefined;
+    const tPega = ac?.diagrama.pega?.t ?? 1e9;
+    const tAc0 = ac?.t0 ?? 1e9;
+    // a visita: "não" com a mão (sobe e abana, e baixa no fim da cena), a barriga que ronca, o prato que ela pega
+    const naoAmp = (t0?: number, cs?: Cena[]) => t0 == null || !cs?.length ? 0 : inOut(entre(t, t0 - 0.15, t0 + 0.15)) * (1 - inOut(entre(t, cs[cs.length - 1].t1 - 0.35, cs[cs.length - 1].t1 - 0.05)));
+    const nao = tipo === "cafe" ? naoAmp(tNao1, cafe) : tipo === "pao" ? naoAmp(tNao2, pao) : 0;
+    const roncU = ronc != null ? entre(t, ronc, ronc + 0.6) : 0;
+    const treme = roncU > 0 && roncU < 1 ? 6 * Math.sin(t * 70) * (1 - roncU) : 0;
+    const pega = entre(t, tPega, tPega + 0.32);
+    const comPrato = tipo === "aceita" ? (pega >= 1 ? 5 : 0) : tipo === "exagero" ? 9 : ce.tipo === "fecho" ? Math.max(2, 9 - Math.floor((t - ce.t0) * 1.6)) : 0;
+    const comXicara = tipo === "exagero" || ce.tipo === "fecho";
+    const inclina = tipo === "aceita" ? -26 * Math.sin(Math.PI * pega) : 0;      // ela se estica para pegar o prato
+    const mastiga = ce.tipo === "fecho" && !falaVisita ? (Math.floor(t * 6) % 2 ? "M" : "R") : undefined;
+    // o Pertim: estende a xícara (cafe), mostra o prato (pao), dá de ombros e começa a levar embora (aceita), arregala os
+    // olhos com a garrafa na mão (exagero), olha para a câmera (fecho)
+    let pose: Pose = "parado", expr: Expressao = "sorrindo", olhar: [number, number] = [1, 0.1], px = PX, sobe = 0, rot = 0;
+    let xic = false, prato = 0, termica = false;
+    if (tipo === "cafe") { pose = "apontando"; xic = true; }
+    else if (tipo === "pao") { prato = 7; px = PX + 14 * outCubic(entre(t, pao[0].diagrama.prato?.t ?? pao[0].t0, (pao[0].diagrama.prato?.t ?? pao[0].t0) + 0.3)); }
+    else if (tipo === "aceita") {
+      const ombro = entre(t, tAc0, tAc0 + 0.5);
+      sobe = 22 * Math.abs(Math.sin(Math.PI * 2 * ombro)) * (ombro < 1 ? 1 : 0);
+      const vai = entre(t, tAc0 + 0.45, tPega);
+      px = PX - 10 * outCubic(vai); rot = -6 * Math.sin(Math.PI * Math.min(1, vai * 1.2)) * (pega >= 1 ? 1 - entre(t, tPega + 0.3, tPega + 0.6) : 1);
+      olhar = pega > 0 ? [1, 0.1] : vai > 0 ? [-1, 0] : [0, 0];
+      expr = t >= tPega + 0.1 && t < tPega + 0.9 ? "surpreso" : "sorrindo";
+      prato = pega > 0 ? 0 : 7;
+    } else if (tipo === "exagero") { termica = true; expr = "surpreso"; }
+    if (ce.tipo === "fecho") { olhar = [0, 0]; }
+    // o voo do prato da luva do Pertim para as mãos da visita
+    const alt = 500, w = (alt * 240) / 270, gx = px - w / 2 + (214 / 240) * w, gy = CHAO - alt + ((196 - 18) / 270) * alt;
+    const k = VA / 260, hx = VX - 26 + (156 - 100) * k, hy = VB - 260 * k + 162 * k;
+    conteudo.push(<Interior key="i" />, <SofaFundo key="sf" />);
+    conteudo.push(<Visitante key="v" cx={VX + treme + inclina} base={VB} altura={VA} t={t} mapa={false} boca={bocaVisita ?? mastiga} olha={tipo === "cafe" || tipo === "pao" ? -1 : ce.tipo === "fecho" ? 0 : -0.7}
+      nao={nao} xicara={comXicara} prato={comPrato} />);
+    conteudo.push(<SofaFrente key="sfr" />);
+    conteudo.push(<PertimEm key="p" t={t} quadro={quadro} d={d} pose={pose} expr={expr} cx={px} base={CHAO} altura={alt} olhar={olhar} rot={rot} sobe={sobe}
+      xicara={xic} prato={prato} termica={termica} cansado={ce.tipo === "fecho" ? 0.2 : 0} />);
+    if (pega > 0 && pega < 1) {
+      const x = gx + (hx - gx) * outCubic(pega), y = gy + (hy - gy) * pega - 90 * Math.sin(Math.PI * pega);
+      conteudo.push(<svg key="voa" width={1080} height={1920} style={{ position: "absolute", left: 0, top: 0 }}><PratoPao x={x} y={y} w={80} n={7} t={t} /></svg>);
+    }
+    conteudo.push(<FrenteCasa key="fc" bolo />);
+    // "RONC!" (a barriga da visita entrega)
+    if (roncU > 0 && roncU < 1) {
+      const e = outBack(Math.min(1, roncU * 3), 2.6) * (1 - entre(roncU, 0.75, 1));
+      conteudo.push(
+        <div key="ronc" style={{ position: "absolute", left: VX - 170, width: 340, textAlign: "center", top: VB - 500, transform: `scale(${e}) rotate(-6deg)`, transformOrigin: "50% 100%", fontFamily: FONT, fontWeight: W.black, fontSize: 74 }}>
+          <span style={{ position: "relative" }}>
+            <span style={{ WebkitTextStroke: `16px ${C.tinta}`, color: C.tinta }}>RONC!</span>
+            <span style={{ position: "absolute", left: 0, top: 0, color: "#fff" }}>RONC!</span>
+          </span>
+        </div>,
+        <svg key="ronc-l" width={1080} height={1920} style={{ position: "absolute", left: 0, top: 0, opacity: 1 - roncU }}>
+          {[-40, 0, 40].map((a, i) => <path key={i} d={`M${VX + 0.5 * a} ${VB - 400} l${1.4 * a} -40`} stroke={C.tinta} strokeWidth={7} strokeLinecap="round" />)}
+        </svg>,
+      );
+    }
+    // no exagero: a setinha da visita para o bolo da mesinha, na palavra "bolo"
+    if (tipo === "exagero" && ex?.diagrama.bolo) {
+      const u = entre(t, ex.diagrama.bolo.t - 0.1, ex.diagrama.bolo.t + 0.25);
+      if (u > 0) conteudo.push(
+        <svg key="seta" width={1080} height={1920} style={{ position: "absolute", left: 0, top: 0 }}>
+          <path d={`M${VX - 40} ${VB - 40} Q${VX - 40} ${1430} ${640} ${1440 + 6 * Math.sin(t * 9)}`} stroke={AMARELO} strokeWidth={12} strokeLinecap="round" fill="none" strokeDasharray="22 16" pathLength={1000}
+            strokeDashoffset={1000 * (1 - u)} />
+          <path d={`M${612} ${1426 + 6 * Math.sin(t * 9)} l36 14 l-30 24`} stroke={AMARELO} strokeWidth={12} strokeLinecap="round" strokeLinejoin="round" fill="none" opacity={u} />
+        </svg>,
+      );
+    }
+  }
+  return <div style={{ position: "absolute", inset: 0, transform: `scale(${z})`, transformOrigin: `540px ${CHAO}px` }}>{conteudo}</div>;
+};
+// a capa do #03 em diante (cena "sala"): a visita fazendo "não" com a mão e olhando para o pão de queijo do Pertim
+const CapaSala: React.FC<{ dados: DadosEpisodio; titulo: string[] }> = ({ dados, titulo }) => (
+  <AbsoluteFill style={{ background: "#F3E2C3", overflow: "hidden" }}>
+    <div style={{ position: "absolute", inset: 0, transform: "translateY(200px)" }}>
+      <Interior />
+      <SofaFundo />
+      <Visitante cx={745} base={CHAO - 10} altura={500} t={0.37} mapa={false} olha={-1} nao={1} boca="O" />
+      <SofaFrente />
+      <PertimEm t={0.3} quadro={0} d={dados} pose="parado" expr="sorrindo" cx={300} base={CHAO + 10} altura={540} olhar={[1, 0.1]} prato={7} />
+    </div>
+    <div style={{ position: "absolute", top: 330, left: 0, right: 0, display: "flex", justifyContent: "center" }}>
+      <SeloSerie numero={dados.numero} size={46} />
+    </div>
+    <div style={{ position: "absolute", top: 480, left: 90, right: 90, textAlign: "center", fontFamily: FONT, fontWeight: W.black, fontSize: 124, lineHeight: 1.08, letterSpacing: -3, color: C.tinta,
+      textShadow: "0 0 30px rgba(255,255,255,0.7)" }}>
+      {titulo.map((l, i) => (
+        <div key={i}>
+          {l.split("*").map((p, j) => j % 2 ? (
+            <span key={j} style={{ position: "relative", display: "inline-block", color: VERDE }}>
+              <svg viewBox="0 0 100 20" preserveAspectRatio="none" style={{ position: "absolute", left: -12, width: "calc(100% + 24px)", bottom: 4, height: 52, overflow: "visible" }}>
+                <path d="M4 13 C30 9, 62 16, 96 7" stroke={AMARELO} strokeWidth={40} strokeLinecap="round" fill="none" vectorEffect="non-scaling-stroke" />
+              </svg>
+              <span style={{ position: "relative" }}>{p}</span>
+            </span>
+          ) : <React.Fragment key={j}>{p}</React.Fragment>)}
+        </div>
+      ))}
+    </div>
+  </AbsoluteFill>
+);
+
 // ================================================================ a montagem
 export const CoisaDeMineiro: React.FC<CoisaDeMineiroProps> = (props) => props.mascara ? (
   <MascaraCtx.Provider value={true}>
@@ -932,7 +1201,16 @@ const Montagem: React.FC<CoisaDeMineiroProps> = ({ dados }) => {
       </AbsoluteFill>,
     );
   }
-  const rel = relogioEm(d, t);
+  // ---- #03 em diante: a sala da visita (o fecho com "cenario": "sala" acontece nela)
+  if (d.cenas.some((c) => TIPOS_SALA_VISITA.includes(c.tipo))) {
+    camada.push(
+      <AbsoluteFill key="sala-visita" style={{ background: "#F3E2C3" }}>
+        <Mundo><SalaVisitaEmCena t={t} quadro={quadro} d={d} /></Mundo>
+      </AbsoluteFill>,
+    );
+  }
+  const rel = relogioEm(d, t), cont = contadorEm(d, t);
+  const fechoD = d.cenas[d.cenas.length - 1].diagrama;
   // a noite caindo (o corte do caminho para a chegada, na batida): o azul da noite desce do alto
   const cai = CH ? entre(t, CH.t0 - 0.25, CH.t0 + 0.1) : 0;
   const sai = CH ? entre(t, CH.t0 + 0.05, CH.t0 + 0.3) : 0;
@@ -941,6 +1219,8 @@ const Montagem: React.FC<CoisaDeMineiroProps> = ({ dados }) => {
     <AbsoluteFill style={{ background: "#7FCBEF" }}>
       {camada}
       {cai > 0 && sai < 1 && <div style={{ position: "absolute", left: 0, top: 0, width: 1080, height: 1920 * inCubic(cai), background: "linear-gradient(to bottom, #16213E, #2B3C68)", opacity: 1 - sai }} />}
+      {/* (#03 em diante) o texto de compartilhar do fecho, no painel escuro que depois recebe a marca */}
+      {fechoD.manda && <MandaPro texto={fechoD.manda.texto} t={t} t0={fechoD.manda.t} marca={d.marca_t} />}
       {/* a marca, só nos segundos finais: logo pequena + "Tudo pertim de você." */}
       {t >= d.marca_t && (() => {
         const e = mola(t, d.marca_t, 0.4, 1.9), e2 = mola(t, d.marca_t + 0.15, 0.35, 2);
@@ -961,7 +1241,8 @@ const Montagem: React.FC<CoisaDeMineiroProps> = ({ dados }) => {
         <SeloSerie numero={d.numero} size={L.selo.size} e={outBack(Math.min(1, 0.35 + t / 0.45), 2.2)} />
       </div>
       {rel && <div style={{ position: "absolute", left: 870 - 76, top: 292, transform: `scale(${outBack(Math.min(1, t / 0.4 + 0.3), 2)})` }}><Relogio min={rel.min} giro={rel.giro} size={152} /></div>}
-      <Legenda t={t} dados={d.legenda} />
+      {cont && <div style={{ position: "absolute", right: 70, top: 372 }}><Contador ev={cont} t={t} /></div>}
+      {(d.legenda as any).pop ? <Ator nome="legenda"><LegendaPop t={t} blocos={(d.legenda as any).blocos} /></Ator> : <Legenda t={t} dados={d.legenda} />}
     </AbsoluteFill>
   );
 };
@@ -971,6 +1252,7 @@ export const CapaCoisaDeMineiro: React.FC<CoisaDeMineiroProps> = ({ dados }) => 
   if (!dados) throw new Error("CapaCoisaDeMineiro: os dados do episódio são lidos no calculateMetadata");
   const titulo = dados.capa?.titulo ?? [dados.titulo];
   if (dados.capa?.cena === "portao") return <CapaPortao dados={dados} titulo={titulo} />;
+  if (dados.capa?.cena === "sala") return <CapaSala dados={dados} titulo={titulo} />;
   // o recorte 3:4 da grade vai de y 240 a 1680: o selo e o título no céu (alto), a cena descida e maior (embaixo)
   return (
     <AbsoluteFill style={{ background: "#7FCBEF", overflow: "hidden" }}>

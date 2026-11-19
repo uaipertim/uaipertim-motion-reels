@@ -7,6 +7,18 @@ faz o papel do mineiro em todas as cenas.
 |---|---|---|---|---|
 | 01 | "É logo ali, é pertim" | Reel de teste | [`01-e-logo-ali/`](01-e-logo-ali) | 25,50 s |
 | 02 | "A despedida mineira" | sex 20/11, 20h | [`02-a-despedida-mineira/`](02-a-despedida-mineira) | 25,00 s |
+| 03 | "Não precisa não" | dom 22/11 (primeiro como Reel de teste) | [`03-nao-precisa-nao/`](03-nao-precisa-nao) | 27,50 s |
+
+## Padrão da série (do #03 em diante): os aprendizados do Reel de teste do #01
+
+1. **Piada nos 2 primeiros segundos.** Nada de introdução: o vídeo abre já dentro da situação engraçada (no teste,
+   ~45% saíram no começo). O QA confere que a primeira fala começa em ≤ 0,3 s.
+2. **Fecho com pergunta** (gera comentário), em vez de "marca o amigo" (que deu zero).
+3. **Texto "Manda pro amigo…" na tela no fim** (`"manda"` no diagrama do fecho), porque o compartilhamento é o que mais
+   pesa no alcance. Fica num painel escuro no alto, que nos 2 s finais recebe também a marca.
+4. **Sem trecho parado, cortes na batida.**
+
+O QA confere os itens 1 a 3 (fecho termina em "?", sem "marca o amigo", texto de compartilhar na tela antes da marca).
 
 ## Identidade (diferente do Tudo Pertim e dos Reels do app)
 
@@ -40,7 +52,22 @@ faz o papel do mineiro em todas as cenas.
   `marca_s` segundos finais (2 s): a logo pequena e "Tudo pertim de você.", no céu.
 - **Formato:** 1080×1920, 30 fps, 20–30 s.
 - **Trilha:** animada, 120 BPM, com todo corte numa batida (modo grade, como no "Olha ele por dentro!").
-- **Legenda gravada:** no estilo do "Bateu a fome?", na faixa de baixo.
+- **Legenda:**
+  - **#01 e #02:** a legenda gravada no estilo do "Bateu a fome?" (pílula), na faixa de baixo; não muda.
+  - **Do #03 em diante, a LEGENDA NOVA** (`"legenda_estilo": "pop"` no roteiro; `LegendaPop` na composição; `legenda_pop`
+    no `layout.json`). Só na série "Coisa de mineiro"; os Reels das outras séries continuam com a legenda deles.
+    - Fica solta sobre a cena: Poppins 800 grande e branca, com contorno escuro grosso (tinta #221C19) e sombra.
+    - Entra palavra a palavra: cada palavra dá um "pop" (escala com leve quique) no tempo exato em que é falada.
+    - A palavra que está sendo dita fica maior e colorida; as já ditas voltam ao branco.
+    - A cor do destaque mostra quem fala: Pertim em amarelo/laranja (#F9B233 → #F08A00), visita em azul
+      (#8EC5FF → #4A86E0, a cor dela).
+    - A palavra-chave (`"chave"` no capítulo; `"palavra#2"` = a 2ª vez) fica em verde (#3E9E4E), com o marcador
+      amarelo atrás, como no título da capa.
+    - Blocos de 2 a 4 palavras (um nome composto, como "pão de queijo", conta como uma e nunca se divide). Nenhum bloco
+      termina numa palavrinha de ligação ("de", "que", "um"…).
+    - Centralizada logo abaixo dos pés (x 100–910, y ~1380–1560): fora da coluna de botões do Instagram (x ≥ 940 entre
+      y 1060 e 1560) e acima da descrição. Uma linha na letra grande (76 px); se não couber, duas linhas na menor (62 px).
+    - Some nas trocas de cena e antes da marca (e do texto de compartilhar).
 - **Voz:** Victor Pinho, eleven_v4, perfil "narracao". "Pertim"/"pertim" vai para a voz como "pertím" (grafia c, no campo
   `pronuncia` do topo do roteiro); na tela e na legenda continua "pertim".
 - **O Pertim:** a boca vem da voz. Olha para a câmera quando fala com o público e para o visitante quando fala com ele.
@@ -101,6 +128,22 @@ O campo `em` aceita:
 
 O `preparar.py` resolve cada `em` para o tempo da palavra no vídeo (`t`).
 
+**Os tipos do #03 (a sala da visita, `SalaVisitaEmCena`).** O Pertim em pé à esquerda (o anfitrião), a visita sentada no
+sofá, e a mesinha com a garrafa, a xícara e o bolo no primeiro plano.
+
+| tipo | o que mostra | campos |
+|---|---|---|
+| `cafe` | o Pertim estende a xícara (pose "apontando"); a visita, de olho no café, faz "não" com a mão | `nao: {em}`, `contador` |
+| `pao` | o Pertim mostra o prato de pão de queijo soltando fumacinha; a visita faz "não"; em `ronc`, a barriga ronca ("RONC!") | `prato`, `nao`, `ronc: {em}`, `contador` |
+| `aceita` | o Pertim dá de ombros e começa a levar embora; em `pega`, a visita pega o prato na hora | `pega: {em}`, `contador` |
+| `exagero` | corte mais perto: a visita com a xícara cheia e o pratinho lotado; o Pertim de olho arregalado, com a garrafa; em `bolo`, a setinha até o bolo da mesinha | `bolo: {em}` |
+| `moral` | o Pertim sozinho, de frente, mais perto; em `sim`, a piscadinha | `sim: {em}` |
+| `fecho` com `cenario: "sala"` | a câmera se afasta. O Pertim olha para a câmera e a visita come; em `manda`, o texto de compartilhar | `manda: {texto, em}`, `marca_s` |
+
+- **`contador`** (`{texto, em, confete?}`) substitui o relógio do #02. Fica no canto, abaixo do selo: "✖ RECUSA 1" →
+  "✖ RECUSA 2" → "✔ ACEITOU!" (verde, com confete).
+- **`"em": "apos"`** quer dizer logo depois da fala da cena.
+
 **Cena nova** (para outro episódio): um bloco novo em `CoisaDeMineiro.tsx`, lendo `cena("<tipo>")` e o diagrama dela,
 mais os efeitos sonoros do tipo no `preparar.py` (`cues`). O selo, a legenda, a boca, a marca e o QA vêm sozinhos.
 
@@ -110,7 +153,11 @@ O desenho oficial (`src/personagem`) **não muda**. O chinelo e a xícara de caf
 viewBox (`Acessorios` em `CoisaDeMineiro.tsx`):
 
 - **chinelo:** o pé descalço cobre o tênis, com o solado verde e a tira amarela;
-- **café:** a xícara com fumacinha na luva de baixo da pose "parado".
+- **café:** a xícara com fumacinha na luva de baixo da pose "parado";
+- **(#03) `xicara`** na ponta da mão estendida da pose "apontando" (gira junto com o braço); **`prato`** de pão de queijo
+  e **`termica`** (a garrafa) na luva da pose "parado"; **`sobe`**, um pulinho para o "dar de ombros".
+
+A visita (`Visitante`) também ganhou objetos (#03): `nao` (a mão levantada abanando "não"), `xicara` e `prato`.
 
 O desenho não tem a pose "mão no bolso" (o pin não tem bolso). Na resposta, ele aponta com a pose "apontando", que deixa
 o outro braço solto e relaxado.
@@ -127,7 +174,7 @@ o outro braço solto e relaxado.
 
 ```bash
 python3 reels/explica-so/scripts/voz.py coisa-de-mineiro/NN-tema          # a voz (usa a API; só as falas que faltam)
-python3 scripts/tomadas.py coisa-de-mineiro/NN-tema 0 --seeds 42,1042,2042,3042   # o gancho, se for pergunta: a subida até a tônica (≥ +8 st)
+python3 scripts/tomadas.py coisa-de-mineiro/NN-tema 0 --seeds 42,1042,2042,3042   # cada fala marcada com "pergunta": true (sem marca, o gancho, se terminar em "?"): a subida até a tônica (≥ +8 st); tente também --sem-contexto
 python3 scripts/tomadas.py coisa-de-mineiro/NN-tema 0 --usar <letra>      # a tomada escolhida (sem API)
 python3 reels/explica-so/scripts/linha.py coisa-de-mineiro/NN-tema        # as cenas na grade de batidas (confere a duração)
 python3 reels/coisa-de-mineiro/scripts/preparar.py NN-tema                # public/coisa-de-mineiro/NN-tema/dados.json + cues.json
@@ -147,6 +194,49 @@ um numa cor chapada (10 quadros/s, meia resolução, em `output/revisao/mascara/
   de 60 px dela (entrando ou saindo de cena, em movimento, pode);
 - o rosto do Pertim nunca fica na coluna de botões do Instagram (x ≥ 940 entre y 1060 e 1560). A chave do
 ElevenLabs nunca fica no repositório: nesta nuvem, a rede a põe no cabeçalho `xi-api-key`.
+
+## #03 "Não precisa não" — decisões e tomadas
+
+O mineiro recusa duas vezes e aceita na terceira. O contador no canto acompanha: RECUSA 1 → RECUSA 2 → ACEITOU!
+
+| # | cena | tempo (batidas) | quem fala | voz |
+|---|---|---|---|---|
+| 1 | cafe | 0,0–1,5 s (0–3) | Pertim | "Aceita um café?" (já na sala, com a xícara estendida) |
+| 2 | cafe | 1,5–3,5 s (3–7) | visita | "Não precisa não!" · "não" com a mão e RECUSA 1 em 1,60 s |
+| 3 | pao | 3,5–5,5 s (7–11) | Pertim | "Tem pão de queijo quentinho…" |
+| 4 | pao | 5,5–8,5 s (11–17) | visita | "Imagina, não precisa!" · RECUSA 2 em 5,60 · RONC! em 7,68 |
+| 5 | aceita | 8,5–12,5 s (17–25) | visita | "Bom… já que cê insiste…" · dá de ombros em 8,5 · pega o prato e ACEITOU! em 9,30 |
+| 6 | exagero | 12,5–15,5 s (25–31) | visita | "E esse bolo aí, é de quê?" · a setinha para o bolo em 13,18 |
+| 7 | moral | 15,5–20,5 s (31–41) | Pertim | "Mineiro recusa duas vezes. Na terceira, é sim." |
+| 8 | fecho | 20,5–27,5 s (41–55) | Pertim | "E na sua casa, a visita recusa quantas vezes?" · "Manda pro amigo…" em 24,19 · a marca de 25,5 s ao fim |
+
+- **A piada nos 2 primeiros segundos:** a primeira fala começa em 0,10 s; a recusa da visita, em 1,60 s.
+- **Gancho "Aceita um café?":** tomada **U** (seed 2042, sem o texto vizinho como contexto,
+  `03-nao-precisa-nao/tomadas/cap-00/U-seed2042-sem-contexto.mp3`): **+12,9 st** até a tônica de "café" no QA (mínimo
+  +8).
+  - Das 22 tomadas, só as quatro sem o texto vizinho passaram (S–V, de +10,7 a +13,2 st).
+  - Com o texto vizinho (A–N), a pergunta ficou entre +0,7 e +5,3 st; com "??" no fim (O–R), entre +4,7 e +7,6 st.
+- **Fecho "E na sua casa, a visita recusa quantas vezes?": NÃO passa no mínimo de +8 st.**
+  - É uma pergunta com "quantas": o pico fica em "quantas" e o tom cai em "vezes".
+  - Nenhuma das 40 tomadas fez "vezes" subir: seeds diferentes; "??"; sem o texto vizinho; reticências antes;
+    contexto de contraste; marcação [curious].
+  - Ficou a tomada **S** (seed 42, sem o texto vizinho): é a de pergunta mais marcada, com o pico mais alto em
+    "quantas" (267 Hz).
+  - O QA registra a falha (`f0-cena-8.png`). Para subir no fim, o texto precisaria virar uma pergunta de sim/não.
+- **Vozes:** Pertim = Victor Pinho; visita = Sergio (ritmo mínimo da conferência de 6 letras/s para ele,
+  `vozes.visita.ritmo_min`: a voz dele é mais lenta). Falas 5 e 6 da visita: seed 3042 (as 4 gerações de cada uma
+  ficaram parecidas); as outras, seed 42.
+- **Enquadramento:** ninguém cortado nem a menos de 60 px das bordas, e o rosto do Pertim fora da coluna de botões
+  (conferido pela máscara).
+- **Mixagem:** −14,0 LUFS, pico real −1,7 dBTP.
+- **Duração:** 27,50 s.
+- **Capa:** "Não precisa *não*!", com a visita fazendo "não" com a mão e olhando para o pão de queijo que o Pertim
+  oferece.
+- **O #01 e o #02 não mudaram:** os blocos do #03 são novos (e os objetos novos de personagens e acessórios só aparecem
+  quando pedidos). Os quadros do #01 e do #02 renderizados de novo batem com os vídeos deles.
+- **Revisão da legenda nova:** `output/revisao/legenda-nova-pertim.png` e `legenda-nova-visita.png`.
+
+QA: `03-nao-precisa-nao/output/revisao/relatorio-tecnico.txt` (`RESULTADO: ajustar`, só pela pergunta do fecho).
 
 ## #02 "A despedida mineira" — decisões e tomadas
 

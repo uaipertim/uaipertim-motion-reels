@@ -58,7 +58,8 @@ PERFIL = SCRIPT.get('perfil_voz', 'narracao')
 VOZ = perfil(PERFIL)
 VOICE, MODEL, SETTINGS, SEED0 = VOZ['voiceId'], VOZ['model'], VOZ['voiceSettings'], VOZ.get('seed', 42)
 # um 2º personagem com voz própria (ex.: a visita da série "Coisa de mineiro"): "vozes": {"<falante>": {"name", "voiceId"}}
-# no topo do roteiro e "falante": "<falante>" no capítulo. Sem falante (ou sem voz para ele), a voz oficial.
+# no topo do roteiro e "falante": "<falante>" no capítulo. Sem falante (ou sem voz para ele), a voz oficial. "ritmo_min"
+# na voz do falante troca o ritmo mínimo da conferência (8 letras/s): uma voz de personagem mais lenta (a da visita: 6).
 VOZES = SCRIPT.get('vozes', {})
 
 
@@ -145,7 +146,7 @@ def palavras(al):
     return [w for w in out if w['fim_letra'] is not None]
 
 
-def confere(x, al, texto):
+def confere(x, al, texto, ritmo_min=8):
     """(ok, motivo, números) de uma geração"""
     ws = palavras(al)
     ini, fim = ws[0]['t0'], ws[-1]['fim_letra']
@@ -155,7 +156,7 @@ def confere(x, al, texto):
     maior = max(gaps) if gaps else 0.0
     sobra = len(x) / SR - fim
     n = {'ritmo_letras_s': round(ritmo, 1), 'maior_pausa_s': round(maior, 2), 'sobra_no_fim_s': round(sobra, 2), 'fala_s': round(fim - ini, 2)}
-    if not 8 <= ritmo <= 19:
+    if not ritmo_min <= ritmo <= 19:
         return False, f'ritmo {ritmo:.1f} letras/s', n
     if maior > 0.9 + PASSO:
         return False, f'pausa interna de {maior:.2f} s', n
@@ -202,7 +203,7 @@ def gerar(refaz):
         seed = c.get('seed', SEED0) + 1000 * sum(1 for h in hist if h.get('texto_api') == api)
         for k in range(TENTATIVAS):
             x, al, fmt = tts(api, prev, nxt, seed, voz_de(c)[0])
-            ok, motivo, num = confere(x, al, api)
+            ok, motivo, num = confere(x, al, api, VOZES.get(c.get('falante', ''), {}).get('ritmo_min', 8))
             hist.append({'seed': seed, 'texto_api': api, 'formato': fmt, 'resultado': motivo, **num, 'quando': time.strftime('%Y-%m-%d %H:%M')})
             print(f'  cap {key}: seed {seed} · {motivo} · {num["fala_s"]} s · {num["ritmo_letras_s"]} letras/s · maior pausa {num["maior_pausa_s"]} s')
             if ok or k + 1 == TENTATIVAS:
