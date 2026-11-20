@@ -10,7 +10,7 @@
  "saida": "out/carrosseis/animados/02-como-chega-o-seu-pedido",
  "capa_arquivo": "capa-4x5.png",
  "publicacao": "ter 24/11, 12h",
- "_doc": "Carrossel animado #02 (mesmo motor do Quiz #01: scripts/quiz.mjs e scripts/quiz_qa.py com o caminho deste JSON). Lâminas 1080×1350 (4:5: o agendador do Instagram não aceita vídeo 3:4), em loop, sem áudio. 'estatico' = o segundo do quadro que vira o PNG (plano B). Textos com *palavra* = a palavra-chave no marcador. 'crf' (opcional, por lâmina): a qualidade do H.264 (padrão 17); a capa, que se mexe inteira, vai com 12 para a emenda do loop não ganhar ruído de compressão.",
+ "_doc": "Carrossel animado #02 (mesmo motor do Quiz #01: scripts/quiz.mjs e scripts/quiz_qa.py com o caminho deste JSON). Lâminas 1080×1350 (4:5: o agendador do Instagram não aceita vídeo 3:4), em loop, sem áudio. 'estatico' = o segundo do quadro que vira o PNG (plano B). Textos com *palavra* = a palavra-chave no marcador. 'crf' (opcional, por lâmina): a qualidade do H.264 (padrão 17); a capa, que se mexe inteira, vai com 12 para a emenda do loop não ganhar ruído de compressão. O cliente escolhe só entre ENTREGA e RETIRADA NO BALCÃO; na entrega, quem leva (a equipe da loja ou um entregador parceiro da rede) é a loja que decide (correção de 2026-11-20).",
  "selo": "COMO FUNCIONA",
  "ilustrativo": "Lojas e valores ilustrativos",
  "laminas": [
@@ -40,20 +40,18 @@
   },
   {
    "tipo": "loja",
-   "rotulo": "1 · da loja",
+   "rotulo": "entrega: a loja",
    "segundos": 7,
    "estatico": 3.2,
-   "numero": 1,
-   "titulo": "Entregador da *própria loja*",
-   "texto": "A equipe da loja leva até a sua porta."
+   "titulo": "Escolheu entrega? Quem leva é *a loja* que decide",
+   "texto": "Pode ser a equipe da própria loja…"
   },
   {
    "tipo": "parceiro",
-   "rotulo": "2 · parceiro",
+   "rotulo": "entrega: parceiro",
    "segundos": 8,
    "estatico": 4.4,
-   "numero": 2,
-   "titulo": "Entregador *parceiro* do UaiPertim",
+   "titulo": "…ou um entregador *parceiro* do UaiPertim",
    "texto": "Quando a loja chama, um entregador da rede aceita, coleta e leva.",
    "passos": [
     "Chama",
@@ -62,15 +60,18 @@
     "Leva"
    ],
    "selo": "Cadastrado e conferido pessoalmente pela equipe",
-   "detalhe": "Seu telefone só aparece pro entregador depois que ele coleta o pedido"
+   "detalhe": "Seu telefone só aparece pro entregador depois que ele coleta o pedido",
+   "quebra": [
+    "…ou um entregador",
+    "*parceiro* do UaiPertim"
+   ]
   },
   {
    "tipo": "balcao",
-   "rotulo": "3 · balcão",
+   "rotulo": "retirada",
    "segundos": 7,
    "estatico": 2.0,
-   "numero": 3,
-   "titulo": "Retirada no *balcão*",
+   "titulo": "Prefere buscar? Retirada no *balcão*",
    "texto": "Passou pertim? Busca na loja, sem taxa de entrega."
   },
   {
@@ -93,14 +94,17 @@
    "rotulo": "fecho",
    "segundos": 7,
    "estatico": 0,
-   "titulo": "E você, vai de *qual*?",
+   "titulo": "E você, vai de *entrega* ou *retirada*?",
    "cartoes": [
-    "Entregador da loja",
-    "Entregador parceiro",
+    "Entrega",
     "Retirada no balcão"
    ],
-   "cta": "Comenta 1, 2 ou 3 👇",
-   "assinatura": "Tudo pertim de você"
+   "cta": "Comenta: entrega ou retirada? 👇",
+   "assinatura": "Tudo pertim de você",
+   "quebra": [
+    "E você, vai de",
+    "*entrega* ou *retirada*?"
+   ]
   }
  ]
 }

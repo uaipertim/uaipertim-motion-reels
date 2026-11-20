@@ -38,13 +38,20 @@ O agendador do Instagram não aceita vídeo 3:4, por isso os carrosséis animado
 |---|---|---|---|
 | 1 · capa | selo "COMO FUNCIONA"; o Pertim na motinha (com a mochila de entrega) entre a lojinha e a casa, a estrada correndo; "Como *chega* o seu pedido?"; "Arrasta pra ver →" | 6 s | quadro 0 |
 | 2 · escolha | Checkout.png num celular; o destaque e o toque passam por "Entrega" e "Retirar na loja", e os chips Entrega / Retirada acendem junto; "Cada loja escolhe as formas que oferece"; "Lojas e valores ilustrativos" | 7 s | 1,8 s (Entrega) |
-| 3 · 1 | "Entregador da *própria loja*": a motinha sai da lojinha e chega na porta da casa | 7 s | 3,2 s |
-| 4 · 2 | "Entregador *parceiro* do UaiPertim": Chama → Aceita → Coleta → Leva acendem; o selo verde "Cadastrado e conferido pessoalmente pela equipe" (com brilho); o cadeado e "Seu telefone só aparece pro entregador depois que ele coleta o pedido" | 8 s | 4,4 s |
-| 5 · 3 | "Retirada no *balcão*": "Passou pertim? Busca na loja, sem taxa de entrega."; o Pertim acenando na porta da lojinha | 7 s | 2,0 s |
+| 3 · entrega: a loja | "Escolheu entrega? Quem leva é *a loja* que decide" + "Pode ser a equipe da própria loja…": a motinha sai da lojinha e chega na porta da casa | 7 s | 3,2 s |
+| 4 · entrega: parceiro | "…ou um entregador *parceiro* do UaiPertim": Chama → Aceita → Coleta → Leva acendem; o selo verde "Cadastrado e conferido pessoalmente pela equipe" (com brilho); o cadeado e "Seu telefone só aparece pro entregador depois que ele coleta o pedido" | 8 s | 4,4 s |
+| 5 · retirada | "Prefere buscar? Retirada no *balcão*": "Passou pertim? Busca na loja, sem taxa de entrega."; o Pertim acenando na porta da lojinha | 7 s | 2,0 s |
 | 6 · acompanha | Acompanhar.png num celular e o cartão com os 5 status (Aceito → Em preparo → Pronto → Saiu para entrega → Entregue) acendendo; a notificação "Seu pedido saiu para entrega 🛵"; "Lojas e valores ilustrativos" | 8 s | 5,2 s |
-| 7 · fecho | "E você, vai de *qual*?"; os cartões 1 · 2 · 3 acendem um a um; "Comenta 1, 2 ou 3 👇"; a logo redonda sem fundo e "Tudo pertim de você" | 7 s | quadro 0 |
+| 7 · fecho | "E você, vai de *entrega* ou *retirada*?"; os cartões "Entrega" (a motinha) e "Retirada no balcão" (o balcão) acendem um a um; "Comenta: entrega ou retirada? 👇"; o Pertim; a logo redonda sem fundo e "Tudo pertim de você" | 7 s | quadro 0 |
 
 **Decisões:**
+
+- **O que o cliente escolhe (correção de 2026-11-20):** só entre ENTREGA e RETIRADA NO BALCÃO. Na entrega, quem leva é a
+  loja que decide: a equipe da própria loja (lâmina 3) ou um entregador parceiro da rede (lâmina 4). Por isso:
+  - as lâminas 3–5 não têm mais número;
+  - a enquete do fecho tem só as duas opções que o cliente escolhe.
+- **Quebra de linha fixa:** `quebra` (opcional) no JSON fixa as linhas de um título (lâminas 4 e 7). Sem ela, o título quebra
+  sozinho em até 3 linhas.
 
 - **A tela Acompanhar** tem 4 linhas: Pagamento confirmado, Loja aceitou e preparou, Saiu para entrega, Entregue. Por isso:
   - os 5 status pedidos vão num cartão ao lado;

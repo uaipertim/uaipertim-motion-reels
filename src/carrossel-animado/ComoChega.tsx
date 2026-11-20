@@ -17,16 +17,17 @@ import { Brilhos, FONTE, Fundo, PertimFixo, TAU, clamp01, ease, hop, onda, outBa
 // quadro D é igual ao quadro 0. Lâmina 1 = capa da grade: o quadro 0 já é a capa completa.
 //   1 capa       o Pertim na motinha (com a mochila de entrega) entre a lojinha e a casa; "Como *chega* o seu pedido?"
 //   2 escolha    a tela Checkout.png num celular; o destaque passa por "Entrega" e "Retirar na loja" (e os chips acendem)
-//   3 loja       a motinha sai da lojinha e chega na porta da casa
-//   4 parceiro   os passos Chama → Aceita → Coleta → Leva acendem; o selo de confiança e o detalhe do telefone
-//   5 balcão     o Pertim acenando na porta da lojinha
+//   3 loja       "Escolheu entrega? Quem leva é a loja que decide": a motinha sai da lojinha e chega na porta da casa
+//   4 parceiro   "…ou um entregador parceiro do UaiPertim": Chama → Aceita → Coleta → Leva; o selo de confiança e o telefone
+//   5 balcão     "Prefere buscar? Retirada no balcão": o Pertim acenando na porta da lojinha
+//   (o cliente escolhe só entre entrega e retirada; na entrega, quem leva é a loja que decide)
 //   6 acompanha  a tela Acompanhar.png (a partir da linha do tempo) e o cartão com os 5 status acendendo; a notificação
-//   7 fecho      os cartões 1 · 2 · 3 acendem um a um; "Comenta 1, 2 ou 3 👇"; a logo redonda e "Tudo pertim de você"
+//   7 fecho      os cartões Entrega e Retirada no balcão acendem um a um; "Comenta: entrega ou retirada? 👇"; a logo redonda
 // Todo o conteúdo fica em x 135–945 e y 60–1290. `semFundo` tira o fundo para o QA medir o conteúdo.
 
 type Lamina = {
   tipo: "capa" | "escolha" | "loja" | "parceiro" | "balcao" | "acompanha" | "fecho"; rotulo: string; segundos: number; estatico?: number;
-  titulo: string | string[]; rodape?: string; texto?: string; numero?: number; opcoes?: string[]; nota?: string; passos?: string[]; selo?: string;
+  titulo: string | string[]; quebra?: string[]; rodape?: string; texto?: string; numero?: number; opcoes?: string[]; nota?: string; passos?: string[]; selo?: string;
   detalhe?: string; status?: string[]; notificacao?: string; cartoes?: string[]; cta?: string; assinatura?: string;
 };
 export type ComoChegaDados = { numero: number; formato: [number, number]; selo: string; ilustrativo: string; laminas: Lamina[] };
@@ -51,7 +52,14 @@ export const medeComoChega = (d: ComoChegaDados, i: number): { titulo: Wrapped }
     return { titulo: { size, lines, ok: true } };
   }
   const larg = L.numero ? TIT.w - NUM_W : TIT.w;
-  return { titulo: fitWrap(glue(plain(juntaChave(L.titulo as string))), W.black, larg, [76, 70, 64, 60, 56], 2) };
+  // "quebra" (opcional): as linhas do título definidas, no maior tamanho em que todas cabem
+  if (L.quebra?.length) {
+    const lines = L.quebra.map((l) => glue(plain(juntaChave(l))));
+    if (lines.join(" ") !== glue(plain(juntaChave(L.titulo as string)))) throw new Error(`lâmina ${i + 1}: a quebra não bate com o título`);
+    const size = [76, 70, 64, 60, 56].find((z) => lines.every((l) => fitWrap(l, W.black, larg, [z], 1).ok)) ?? 56;
+    return { titulo: { size, lines, ok: true } };
+  }
+  return { titulo: fitWrap(glue(plain(juntaChave(L.titulo as string))), W.black, larg, [76, 70, 64, 60, 56], 3) };
 };
 
 // ---------------------------------------------------------------- tempo
@@ -87,9 +95,10 @@ const NumeroBola: React.FC<{ n: number; s?: number }> = ({ n, s = 92 }) => (
     fontFamily: FONT, fontWeight: W.black, fontSize: s * 0.6, color: "#fff", lineHeight: 1 }}><span style={{ marginTop: s * 0.06 }}>{n}</span></div>
 );
 // o título no alto (centrado na faixa y 165–335), à esquerda; com número, a bolinha antes
-const Titulo: React.FC<{ L: Lamina; wt: Wrapped; y0?: number; y1?: number }> = ({ L, wt, y0 = 168, y1 = 332 }) => {
-  const th = wt.lines.length * wt.size * 1.12;
-  const top = (y0 + y1) / 2 - th / 2;
+const altTitulo = (wt: Wrapped) => wt.lines.length * wt.size * 1.12;
+const Titulo: React.FC<{ L: Lamina; wt: Wrapped; y0?: number; y1?: number; topo?: boolean }> = ({ L, wt, y0 = 168, y1 = 332, topo }) => {
+  const th = altTitulo(wt);
+  const top = topo ? y0 : (y0 + y1) / 2 - th / 2;
   return (
     <>
       {L.numero ? <div style={{ position: "absolute", left: SAFE.x0, top: (y0 + y1) / 2 - 46 }}><NumeroBola n={L.numero} /></div> : null}
@@ -250,8 +259,8 @@ const Loja: React.FC<ComoChegaProps & { L: Lamina; f: number; D: number }> = ({ 
   const base = 1050;
   return (
     <>
-      <Titulo L={L} wt={layout!.titulo} />
-      <Texto y={352}>{L.texto}</Texto>
+      <Titulo L={L} wt={layout!.titulo} topo />
+      <Texto y={168 + altTitulo(layout!.titulo) + 20}>{L.texto}</Texto>
       <div style={{ position: "absolute", left: 540 - 400, top: 760 - 400, width: 800, height: 800, borderRadius: "50%", background: `radial-gradient(circle, ${C.amareloLight}55 0%, ${C.amareloLight}00 68%)` }} />
       <Estrada x0={150} x1={930} y={base + 10} desloca={0} />
       <div style={{ position: "absolute", left: 150, top: base - 350 * SHOP_RATIO }}>
@@ -287,8 +296,8 @@ const Parceiro: React.FC<ComoChegaProps & { L: Lamina; f: number; D: number }> =
   const brilho = clamp01((t - (dur - 2.4)) / 0.8);
   return (
     <>
-      <Titulo L={L} wt={layout!.titulo} />
-      <Texto y={352} size={38}>{L.texto}</Texto>
+      <Titulo L={L} wt={layout!.titulo} topo />
+      <Texto y={Math.max(330, 168 + altTitulo(layout!.titulo) + 20)} size={38}>{L.texto}</Texto>
       {/* os passos: acendem em sequência e apagam juntos, suaves, antes do fim */}
       {passos.map((p, k) => {
         const cx = SAFE.x0 + (LARG / 8) * (2 * k + 1);
@@ -330,8 +339,8 @@ const Balcao: React.FC<ComoChegaProps & { L: Lamina; f: number; D: number }> = (
   const base = 1120, lw = 400;
   return (
     <>
-      <Titulo L={L} wt={layout!.titulo} />
-      <Texto y={352}>{L.texto}</Texto>
+      <Titulo L={L} wt={layout!.titulo} topo />
+      <Texto y={168 + altTitulo(layout!.titulo) + 20}>{L.texto}</Texto>
       <div style={{ position: "absolute", left: 600 - 400, top: 820 - 400, width: 800, height: 800, borderRadius: "50%", background: `radial-gradient(circle, ${C.amareloLight}66 0%, ${C.amareloLight}00 68%)` }} />
       <div style={{ position: "absolute", left: SAFE.x0 + 20, width: LARG - 40, top: base - 8, height: 18, borderRadius: 9, background: C.cremeDeep }} />
       <div style={{ position: "absolute", left: 930 - lw, top: base - lw * SHOP_RATIO }}>
@@ -394,41 +403,41 @@ const Acompanha: React.FC<ComoChegaProps & { L: Lamina; f: number; D: number }> 
 };
 
 // ================================================================ 7 · fecho (os cartões 1 · 2 · 3 acendem um a um)
-const IconesCartao = [
-  <ShopChar key="l" kind="lanchonete" width={120} mood="happy" lit={0.9} awning={0.3} />,
-  <ScooterIcon key="s" size={130} />,
-  <svg key="b" width={130} height={130} viewBox="0 0 100 100"><rect x="10" y="58" width="80" height="12" rx="4" fill="#C98A4B" /><rect x="16" y="70" width="68" height="22" rx="4" fill="#E0A863" />
+const IconeBalcao: React.FC<{ s: number }> = ({ s }) => (
+  <svg width={s} height={s} viewBox="0 0 100 100"><rect x="10" y="58" width="80" height="12" rx="4" fill="#C98A4B" /><rect x="16" y="70" width="68" height="22" rx="4" fill="#E0A863" />
     <path d="M30 58 C30 40 70 40 70 58 Z" fill={C.coral} /><rect x="46" y="32" width="8" height="10" rx="3" fill={C.coralDark} /><circle cx="78" cy="36" r="10" fill={C.amarelo} />
-    <path d="M73 36 L77 40 L84 32" stroke="#fff" strokeWidth="3" fill="none" strokeLinecap="round" /></svg>,
-];
+    <path d="M73 36 L77 40 L84 32" stroke="#fff" strokeWidth="3" fill="none" strokeLinecap="round" /></svg>
+);
+// a enquete do fecho: só as opções que o cliente escolhe (entrega ou retirada no balcão)
+const IconesCartao = [<ScooterIcon key="s" size={170} />, <IconeBalcao key="b" s={170} />];
 const Fecho: React.FC<ComoChegaProps & { L: Lamina; f: number; D: number }> = ({ L, layout, f, D }) => {
-  const per = D / 3;
+  const cs = L.cartoes!, per = D / cs.length;
   const env = (k: number) => Math.pow(Math.sin(Math.PI * clamp01((f - k * per) / per)), 2);
   const dedo = 7 * (1 - Math.cos((TAU * 4 * f) / D)) / 2;
   const [antes, depois = ""] = L.cta!.split(/ *👇/);
+  const topo = 168 + altTitulo(layout!.titulo) + 36, cw = (LARG - 50) / 2;
   return (
     <>
-      <Titulo L={L} wt={layout!.titulo} y0={168} y1={262} />
-      {L.cartoes!.map((c, k) => {
+      <Titulo L={L} wt={layout!.titulo} topo />
+      {cs.map((c, k) => {
         const e = env(k);
         return (
-          <div key={k} style={{ position: "absolute", left: SAFE.x0 + k * 280, top: 320, width: 250, height: 400, boxSizing: "border-box", borderRadius: 34, background: mix("#FFFFFF", "#FFF1E8", e),
+          <div key={k} style={{ position: "absolute", left: SAFE.x0 + k * (cw + 50), top: topo, width: cw, height: 380, boxSizing: "border-box", borderRadius: 38, background: mix("#FFFFFF", "#FFF1E8", e),
             border: `5px solid ${mix("#EADBC6", C.coral, e)}`, boxShadow: `0 ${9 + 4 * e}px 0 ${mix("#E2CDB2", C.coralDark, e)}`, transform: `translateY(${-14 * e}px)`,
-            display: "flex", flexDirection: "column", alignItems: "center", padding: "22px 14px 0" }}>
-            <NumeroBola n={k + 1} s={76} />
-            <div style={{ height: 150, display: "flex", alignItems: "center", justifyContent: "center", marginTop: 6, transform: `scale(${1 + 0.08 * e})` }}>{IconesCartao[k]}</div>
-            <div style={{ fontFamily: FONTE, fontWeight: W.black, fontSize: 32, lineHeight: 1.12, color: C.tinta, textAlign: "center", letterSpacing: -0.4, textWrap: "balance" } as React.CSSProperties}>{glue(c)}</div>
+            display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 18, padding: "10px 20px" }}>
+            <div style={{ height: 190, display: "flex", alignItems: "center", justifyContent: "center", transform: `scale(${1 + 0.08 * e})` }}>{IconesCartao[k]}</div>
+            <div style={{ fontFamily: FONTE, fontWeight: W.black, fontSize: 42, lineHeight: 1.1, color: C.tinta, textAlign: "center", letterSpacing: -0.5, textWrap: "balance" } as React.CSSProperties}>{glue(c)}</div>
           </div>
         );
       })}
-      <PertimFixo altura={250} pose="apontando" expr="sorrindo" style={{ left: 230 - 140 * (250 / 284), top: 1008 - 270 * (250 / 284) }}
-        rig={{ respira: onda(f, D, 3), capacete: 0.8 * onda(f, D, 3, -0.7), aceno: -14 + 4 * onda(f, D, 4), piscada: piscadaEm([2.2, 5.4], f / 30) }} />
-      <div style={{ position: "absolute", left: 370, width: SAFE.x1 - 370, top: 820, display: "flex", justifyContent: "center" }}>
-        <div style={{ padding: "26px 38px", borderRadius: 999, background: C.coral, boxShadow: `0 9px 0 ${C.coralDark}`, fontFamily: FONTE, fontWeight: W.black, fontSize: 46, color: "#fff", whiteSpace: "nowrap", letterSpacing: -0.5 }}>
+      <div style={{ position: "absolute", left: SAFE.x0, width: LARG, top: topo + 430, display: "flex", justifyContent: "center" }}>
+        <div style={{ padding: "22px 30px", borderRadius: 999, background: C.coral, boxShadow: `0 9px 0 ${C.coralDark}`, fontFamily: FONTE, fontWeight: W.black, fontSize: 40, color: "#fff", whiteSpace: "nowrap", letterSpacing: -0.6 }}>
           {antes} <span style={{ display: "inline-block", transform: `translateY(${dedo}px)` }}>👇</span>{depois}
         </div>
       </div>
-      <div style={{ position: "absolute", left: SAFE.x0, width: LARG, top: 1130, height: 84, display: "flex", alignItems: "center", justifyContent: "center", gap: 18 }}>
+      <PertimFixo altura={230} pose="apontando" expr="sorrindo" style={{ left: 232 - 140 * (230 / 284), top: 1222 - 270 * (230 / 284) }}
+        rig={{ respira: onda(f, D, 3), capacete: 0.8 * onda(f, D, 3, -0.7), aceno: -14 + 4 * onda(f, D, 4), piscada: piscadaEm([2.2, 5.4], f / 30) }} />
+      <div style={{ position: "absolute", left: 360, width: SAFE.x1 - 360, top: 1130, height: 84, display: "flex", alignItems: "center", justifyContent: "center", gap: 18 }}>
         <Img src={staticFile("pedir-no-uaipertim/logo/logo-selo-transparente.png")} style={{ width: 80, height: 80, objectFit: "contain", filter: "drop-shadow(0 4px 8px rgba(198,58,23,0.22))" }} />
         <span style={{ fontFamily: FONT, fontWeight: W.extraBold, fontSize: 36, color: C.tinta, letterSpacing: -0.4, whiteSpace: "nowrap" }}>
           {L.assinatura!.split(/(pertim)/).map((s, i) => (s === "pertim" ? <span key={i} style={{ color: C.coral }}>{s}</span> : <React.Fragment key={i}>{s}</React.Fragment>))}
