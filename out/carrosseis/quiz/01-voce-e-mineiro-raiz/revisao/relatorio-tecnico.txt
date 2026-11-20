@@ -25,9 +25,9 @@ ok    1080 × 1440 (1080 × 1440)
 ok    30 fps (30/1)
 ok    duração entre 6 e 8 s (7.00 s)
 ok    sem trilha de áudio
-ok    loop sem salto: último→primeiro 0.45 (quadros seguidos: mediana 0.18, máx 4.41)
+ok    loop sem salto: último→primeiro 0.43 (quadros seguidos: mediana 0.18, máx 4.51)
 ok    emenda sem compressão: quadro 209→0 0.126 vs 0→1 0.113
-ok    lamina-3.png = quadro 138 do vídeo (PSNR 38.9 dB)
+ok    lamina-3.png = quadro 138 do vídeo (PSNR 39.0 dB)
 ok    conteúdo em x 134–945, y 94–1383 (42 quadros; limite x 135–945, y 30–1410)
 --- lâmina 4: 7.00 s (210 quadros)
 ok    H.264 yuv420p (h264, yuv420p, perfil High)
@@ -45,9 +45,9 @@ ok    1080 × 1440 (1080 × 1440)
 ok    30 fps (30/1)
 ok    duração entre 6 e 8 s (7.00 s)
 ok    sem trilha de áudio
-ok    loop sem salto: último→primeiro 0.45 (quadros seguidos: mediana 0.18, máx 5.54)
+ok    loop sem salto: último→primeiro 0.45 (quadros seguidos: mediana 0.18, máx 5.56)
 ok    emenda sem compressão: quadro 209→0 0.132 vs 0→1 0.114
-ok    lamina-5.png = quadro 138 do vídeo (PSNR 38.8 dB)
+ok    lamina-5.png = quadro 138 do vídeo (PSNR 38.7 dB)
 ok    conteúdo em x 134–945, y 94–1383 (42 quadros; limite x 135–945, y 30–1410)
 --- lâmina 6: 7.00 s (210 quadros)
 ok    H.264 yuv420p (h264, yuv420p, perfil High)
@@ -55,7 +55,7 @@ ok    1080 × 1440 (1080 × 1440)
 ok    30 fps (30/1)
 ok    duração entre 6 e 8 s (7.00 s)
 ok    sem trilha de áudio
-ok    loop sem salto: último→primeiro 0.44 (quadros seguidos: mediana 0.18, máx 6.56)
+ok    loop sem salto: último→primeiro 0.43 (quadros seguidos: mediana 0.18, máx 6.63)
 ok    emenda sem compressão: quadro 209→0 0.127 vs 0→1 0.112
 ok    lamina-6.png = quadro 138 do vídeo (PSNR 38.9 dB)
 ok    conteúdo em x 134–945, y 94–1383 (42 quadros; limite x 135–945, y 30–1410)

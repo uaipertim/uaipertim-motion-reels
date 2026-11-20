@@ -43,7 +43,7 @@ Teste de formato: carrossel em que cada lâmina é um vídeo curto em loop. O pr
 | tempo | o que acontece |
 |---|---|
 | 0–2,5 s | pergunta + cartões A e B neutros; a barrinha "Qual é a raiz?" enche |
-| 2,5 s | a resposta raiz (B) acende: borda e check verdes, pulinho, estrelinhas; A esmaece (cinza, 45%); o Pertim reage e o balão com a fala dele entra |
+| 2,5 s | a resposta raiz (campo `certa`: "a" ou "b") acende: borda e check verdes, pulinho, estrelinhas; A esmaece (cinza, 45%); o Pertim reage e o balão com a fala dele entra |
 | 2,5–6,2 s | resposta acesa |
 | 6,2–6,9 s | tudo volta suave ao estado do quadro 0 |
 | 6,9–7,0 s | igual ao quadro 0 (emenda do loop) |

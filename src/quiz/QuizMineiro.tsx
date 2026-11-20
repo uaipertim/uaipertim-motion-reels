@@ -19,7 +19,7 @@ import { piscadaEm } from "../personagem/rig";
 // Todo o conteúdo fica em x 135–945 (a margem das capas da grade). `semFundo` tira o fundo para o QA medir o conteúdo.
 
 type Resposta = { texto: string; nota?: string };
-export type Pergunta = { titulo: string; quebra?: string[]; a: Resposta; b: Resposta; reacao: "comemora" | "aponta"; fala: string };
+export type Pergunta = { titulo: string; quebra?: string[]; certa?: "a" | "b"; a: Resposta; b: Resposta; reacao: "comemora" | "aponta"; fala: string };
 export type Quiz = {
   numero: number; pasta: string; selo: [string, string];
   capa: { titulo: string[]; rodape: string; segundos: number };
@@ -342,7 +342,7 @@ const LaminaPergunta: React.FC<QuizProps & { f: number; D: number }> = ({ selo, 
   const expr: Expressao = f >= R && f / fps < tVolta ? "piscadinha" : "sorrindo";
   const braco = f >= R && f < R + 6 ? { de: "parado" as Pose, u: (f - R) / 6 } : f >= V + 2 && f < V + 8 ? { de: reacao, u: (f - V - 2) / 6 } : undefined;
   const quique = -24 * hop(f, R, 11) - (p.reacao === "comemora" ? 12 * hop(f, R + 13, 9) : 0) + (pose === "comemorando" ? 14 : 0);
-  const aceno = p.reacao === "aponta" && reagindo ? -50 + 6 * Math.sin((f - R) * 0.35) * Math.exp(-(f - R) * 0.06) : 0;
+  const aceno = p.reacao === "aponta" && reagindo ? ((p.certa ?? "b") === "a" ? -63 : -50) + 6 * Math.sin((f - R) * 0.35) * Math.exp(-(f - R) * 0.06) : 0;
   const rig: PertimRig = {
     respira: onda(f, D, 3), capacete: 0.8 * onda(f, D, 3, -0.7) + 3 * hop(f, R, 14),
     piscada: piscadaEm([1.3, tVolta - 0.08], t), quique, aceno, braco,
@@ -357,13 +357,19 @@ const LaminaPergunta: React.FC<QuizProps & { f: number; D: number }> = ({ selo, 
         <Text source={glue(juntaChave(p.titulo))} wrapped={wt} weight={W.black} align="left" />
       </div>
       <div style={{ position: "absolute", left: SAFE.x0, top: 540, width: LARG, display: "flex", flexDirection: "column", gap: 30 }}>
-        <Cartao letra="A" r={p.a} certo={false} acende={acende} pulo={0} check={0} desenho={0} />
-        <div style={{ position: "relative" }}>
-          <Cartao letra="B" r={p.b} certo acende={acende} pulo={pulo} check={check} desenho={desenho} />
-          <div style={{ position: "absolute", left: 0, top: "50%", width: LARG, height: 0, transform: `translateY(${-30 * pulo}px)` }}>
-            <Estouro u={(f - R - 2) / 18} cx={LARG - 62} cy={0} />
-          </div>
-        </div>
+        {(["a", "b"] as const).map((k) => {
+          const certo = (p.certa ?? "b") === k;
+          return (
+            <div key={k} style={{ position: "relative" }}>
+              <Cartao letra={k.toUpperCase()} r={p[k]} certo={certo} acende={acende} pulo={certo ? pulo : 0} check={certo ? check : 0} desenho={certo ? desenho : 0} />
+              {certo && (
+                <div style={{ position: "absolute", left: 0, top: "50%", width: LARG, height: 0, transform: `translateY(${-30 * pulo}px)` }}>
+                  <Estouro u={(f - R - 2) / 18} cx={LARG - 62} cy={0} />
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
       {/* embaixo: o Pertim à esquerda; à direita, a barrinha de espera e, depois, o balão com a fala dele */}
       <PertimFixo altura={370} pose={pose} expr={expr} rig={rig} style={{ left: 116, top: 1376 - 270 * (370 / 284) }} />

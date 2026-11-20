@@ -1,6 +1,7 @@
 // Carrossel animado "Quiz" (composição QuizMineiro, src/quiz/QuizMineiro.tsx; dados em carrosseis/quiz/NN-tema.json).
 //   node scripts/quiz.mjs 01                    -> out/carrosseis/quiz/<pasta>/lamina-1..N.mp4 + lamina-1..N.png + capa-3x4.png
 //   node scripts/quiz.mjs 01 quadros <lamina> <quadro> [quadro …]   -> out/…/revisao/quadros/ (conferir antes do render)
+//   SO=3,5,6 node scripts/quiz.mjs 01 …     -> só as lâminas 3, 5 e 6
 //   node scripts/quiz.mjs 01 loop               -> out/…/revisao/loop/ (quadros D-1, 0 e 1 em PNG, para o qa)
 //   node scripts/quiz.mjs 01 mascara            -> out/…/revisao/mascara/ (sem fundo, para o qa: o conteúdo em x 135–945)
 // Depois: python3 scripts/quiz_qa.py 01 (a revisão técnica + a prévia).
@@ -22,6 +23,9 @@ const OUT = path.resolve("out/carrosseis/quiz", data.pasta);
 const REV = path.join(OUT, "revisao");
 fs.mkdirSync(REV, { recursive: true });
 const N = data.perguntas.length + 2;
+// SO=3,5,6 (opcional): só essas lâminas (numeradas de 1), em qualquer modo
+const SO = process.env.SO ? process.env.SO.split(",").map((x) => Number(x) - 1) : null;
+const vale = (i) => !SO || SO.includes(i);
 const estatico = (i) => (i === 0 || i === N - 1 ? 0 : Math.round(4.6 * 30));   // = quadroEstatico() da composição
 
 const serveUrl = await bundle({ entryPoint: path.resolve("src/index.ts") });
@@ -43,6 +47,7 @@ if (modo === "quadros") {
   // a emenda do loop sem compressão: os quadros D-1, 0 e 1 de cada lâmina (o qa compara D-1→0 com 0→1)
   fs.mkdirSync(path.join(REV, "loop"), { recursive: true });
   for (let i = 0; i < N; i++) {
+    if (!vale(i)) continue;
     const inputProps = { ...data, lamina: i };
     const composition = await comp(inputProps);
     const D = composition.durationInFrames;
@@ -54,6 +59,7 @@ if (modo === "quadros") {
 } else if (modo === "mascara") {
   // sem o fundo (PNG com transparência), 1 quadro a cada 5, em meia resolução: o qa mede onde há conteúdo
   for (let i = 0; i < N; i++) {
+    if (!vale(i)) continue;
     const inputProps = { ...data, lamina: i, semFundo: true };
     const composition = await comp(inputProps);
     const outputDir = path.join(REV, "mascara", `lamina-${i + 1}`);
@@ -65,6 +71,7 @@ if (modo === "quadros") {
   }
 } else {
   for (let i = 0; i < N; i++) {
+    if (!vale(i)) continue;
     const inputProps = { ...data, lamina: i };
     const composition = await comp(inputProps);
     const bruto = path.join(REV, `lamina-${i + 1}-bruto.mp4`);

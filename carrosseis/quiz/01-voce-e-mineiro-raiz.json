@@ -1,64 +1,115 @@
 {
   "numero": 1,
   "pasta": "01-voce-e-mineiro-raiz",
-  "selo": ["QUIZ", "MINEIRO RAIZ"],
+  "selo": [
+    "QUIZ",
+    "MINEIRO RAIZ"
+  ],
   "publicacao": "sáb 21/11, 12h",
   "capa": {
-    "titulo": ["Você é", "mineiro *raiz*?"],
+    "titulo": [
+      "Você é",
+      "mineiro *raiz*?"
+    ],
     "rodape": "Conta seus acertos e confere no final →",
     "segundos": 6
   },
   "perguntas": [
     {
       "titulo": "Perguntaram *onde fica*. Você responde:",
-      "quebra": ["Perguntaram", "*onde fica*.", "Você responde:"],
-      "a": { "texto": "“Uns 5 km, segunda à direita”" },
-      "b": { "texto": "“É logo ali, é pertim!”" },
+      "quebra": [
+        "Perguntaram",
+        "*onde fica*.",
+        "Você responde:"
+      ],
+      "a": {
+        "texto": "“Uns 5 km, segunda à direita”"
+      },
+      "b": {
+        "texto": "“É logo ali, é pertim!”"
+      },
       "reacao": "comemora",
-      "fala": "Isso, sô!"
+      "fala": "Isso, sô!",
+      "certa": "b"
     },
     {
       "titulo": "Como você chama aquele *negócio* ali?",
-      "a": { "texto": "“Objeto”" },
-      "b": { "texto": "“Trem”" },
+      "a": {
+        "texto": "“Trem”"
+      },
+      "b": {
+        "texto": "“Objeto”"
+      },
       "reacao": "aponta",
-      "fala": "Ô trem bão!"
+      "fala": "Ô trem bão!",
+      "certa": "a"
     },
     {
       "titulo": "A *visita* chegou. Você diz:",
-      "a": { "texto": "“Fica à vontade”" },
-      "b": { "texto": "“Aceita um cafezim? Tem pão de queijo quentim!”" },
+      "a": {
+        "texto": "“Fica à vontade”"
+      },
+      "b": {
+        "texto": "“Aceita um cafezim? Tem pão de queijo quentim!”"
+      },
       "reacao": "comemora",
-      "fala": "Com cafezim, né?"
+      "fala": "Com cafezim, né?",
+      "certa": "b"
     },
     {
       "titulo": "Hora de *ir embora* da visita:",
-      "a": { "texto": "“Tchau, até mais!”" },
-      "b": { "texto": "“Bom… vou indo, né?”", "nota": "(e fica mais uma hora)" },
+      "a": {
+        "texto": "“Bom… vou indo, né?”",
+        "nota": "(e fica mais uma hora)"
+      },
+      "b": {
+        "texto": "“Tchau, até mais!”"
+      },
       "reacao": "aponta",
-      "fala": "Mais uma horinha…"
+      "fala": "Mais uma horinha…",
+      "certa": "a"
     },
     {
       "titulo": "“*Uai*” serve pra quê?",
-      "a": { "texto": "Só pra susto" },
-      "b": { "texto": "Pra tudo: susto, alegria, dúvida e concordância" },
+      "a": {
+        "texto": "Pra tudo: susto, alegria, dúvida e concordância"
+      },
+      "b": {
+        "texto": "Só pra susto"
+      },
       "reacao": "comemora",
-      "fala": "Uai, pra tudo!"
+      "fala": "Uai, pra tudo!",
+      "certa": "a"
     },
     {
       "titulo": "Ofereceram *café*. Você:",
-      "a": { "texto": "“Aceito, obrigado”" },
-      "b": { "texto": "“Não precisa não…”", "nota": "(e aceita na terceira)" },
+      "a": {
+        "texto": "“Aceito, obrigado”"
+      },
+      "b": {
+        "texto": "“Não precisa não…”",
+        "nota": "(e aceita na terceira)"
+      },
       "reacao": "aponta",
-      "fala": "Na terceira, né?"
+      "fala": "Na terceira, né?",
+      "certa": "b"
     }
   ],
   "resultado": {
     "titulo": "Seu *resultado*",
     "faixas": [
-      { "nota": "6", "texto": "mineiro raiz de carteirinha 🧀☕" },
-      { "nota": "4–5", "texto": "mineiro de coração" },
-      { "nota": "até 3", "texto": "cê tá precisando de um cafezim com a gente" }
+      {
+        "nota": "6",
+        "texto": "mineiro raiz de carteirinha 🧀☕"
+      },
+      {
+        "nota": "4–5",
+        "texto": "mineiro de coração"
+      },
+      {
+        "nota": "até 3",
+        "texto": "cê tá precisando de um cafezim com a gente"
+      }
     ],
     "cta": "Comenta quantos você acertou 👇 e manda pro amigo mineiro",
     "assinatura": "Tudo pertim de você",
