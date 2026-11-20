@@ -18,3 +18,5 @@ __pycache__/
 out/capas/*
 !out/capas/dicionario/
 !out/capas/reels/
+out/carrosseis/quiz/*/revisao/*
+!out/carrosseis/quiz/*/revisao/relatorio-tecnico.txt

@@ -44,6 +44,8 @@ import { PEDIR, PedirNoUaiPertim } from "./pedir-no-uaipertim/PedirNoUaiPertim";
 import { BATEU, BateuAFome, caveatReady } from "./bateu-a-fome/BateuAFome";
 import { OLHA, OlhaElePorDentro } from "./olha-ele-por-dentro/OlhaElePorDentro";
 import { CapaCoisaDeMineiro, CoisaDeMineiro, CoisaDeMineiroProps, carregaEpisodio, medeCapaCoisaDeMineiro } from "./coisa-de-mineiro/CoisaDeMineiro";
+import { QUIZ, QuizMineiro, QuizProps, duracaoLamina, medeQuiz } from "./quiz/QuizMineiro";
+import quiz01 from "../carrosseis/quiz/01-voce-e-mineiro-raiz.json";
 import facim02 from "../carrosseis/facim/02-como-vai-funcionar.json";
 import facim03 from "../carrosseis/facim/03-o-que-vai-ter.json";
 import facim04 from "../carrosseis/facim/04-quem-e-o-pertim.json";
@@ -258,6 +260,10 @@ export const RemotionRoot: React.FC = () => (
       defaultProps={{ ep: "01-e-logo-ali" } as CoisaDeMineiroProps} calculateMetadata={async (a) => { await fontsReady; const r = await carregaEpisodio(a); const d = r.props.dados!; return { props: { ...r.props, tituloCapa: medeCapaCoisaDeMineiro(d.capa?.titulo ?? [d.titulo]) } }; }} />
     <Still id="CoisaDeMineiro-CapaEditar" component={CapaCoisaDeMineiro} width={1080} height={1920}
       defaultProps={{ ep: "01-e-logo-ali", editar: true } as CoisaDeMineiroProps & { editar: boolean }} calculateMetadata={async (a) => { await fontsReady; const r = await carregaEpisodio(a); const d = r.props.dados!; return { props: { ...r.props, editar: true, tituloCapa: medeCapaCoisaDeMineiro(d.capa?.titulo ?? [d.titulo]) } }; }} />
+    {/* Carrossel animado "Quiz" (carrosseis/quiz): UMA lâmina por render, em loop (--props={"lamina": 0..7}); scripts/quiz.mjs */}
+    <Composition id="QuizMineiro" component={QuizMineiro} durationInFrames={180} fps={QUIZ.fps} width={QUIZ.width} height={QUIZ.height}
+      defaultProps={{ ...(quiz01 as unknown as QuizProps), lamina: 0 }}
+      calculateMetadata={async ({ props }) => { await fontsReady; return { durationInFrames: duracaoLamina(props, props.lamina), props: { ...props, layout: medeQuiz(props, props.lamina) } }; }} />
     <Still id="Destaque-Capa" component={DestaqueCapa} width={1080} height={1920} defaultProps={{ icone: "conheca" as const }} />
   </>
 );
