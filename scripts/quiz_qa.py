@@ -7,7 +7,7 @@ Confere, para cada lâmina (out/carrosseis/quiz/<pasta>/):
   - formato: H.264, yuv420p, 1080 × 1440, 30 fps, 6–8 s, sem trilha de áudio;
   - loop: a diferença entre o último quadro e o primeiro (a volta do Instagram) não pode ser maior que a maior
     diferença entre dois quadros seguidos do próprio vídeo (sem salto visível);
-  - capa: o quadro 0 da lâmina 1 = capa-3x4.png (PSNR ≥ 38 dB) e o PNG estático de cada lâmina = o quadro dele no vídeo;
+  - capa: o quadro 0 da lâmina 1 = capa-3x4.png (PSNR ≥ 35 dB: a diferença é só a compressão do H.264) e o PNG estático de cada lâmina = o quadro dele no vídeo;
   - bordas: na máscara (render sem fundo, revisao/mascara/), todo o conteúdo fica em x 135–945 e longe do alto e do pé.
 Grava revisao/relatorio-tecnico.txt e previa.png.
 """
@@ -80,14 +80,23 @@ def main():
         dif = np.abs(np.diff(fr, axis=0)).mean(axis=(1, 2, 3))
         volta = np.abs(fr[-1] - fr[0]).mean()
         ok(volta <= dif.max() + 1e-6, f"loop sem salto: último→primeiro {volta:.2f} (quadros seguidos: mediana {np.median(dif):.2f}, máx {dif.max():.2f})")
+        # a emenda sem compressão (PNG): D-1 → 0 tem de ser um passo como 0 → 1
+        lp = out / "revisao/loop"
+        if (lp / f"lamina-{i + 1}-fim.png").exists():
+            P = lambda k: np.asarray(Image.open(lp / f"lamina-{i + 1}-{k}.png").convert("RGB")).astype(np.float32)
+            fim, q0, q1 = P("fim"), P("q0"), P("q1")
+            dl, dn = np.abs(fim - q0).mean(), np.abs(q1 - q0).mean()
+            ok(dl <= 2 * dn + 0.05, f"emenda sem compressão: quadro {nq - 1}→0 {dl:.3f} vs 0→1 {dn:.3f}")
+        else:
+            ok(False, "quadros da emenda não encontrados (node scripts/quiz.mjs NN loop)")
         # PNG estático = o quadro dele no vídeo
         est = 0 if i in (0, n - 1) else round(4.6 * FPS)
         png = np.asarray(Image.open(out / f"lamina-{i + 1}.png").convert("RGB")).astype(np.float32)
-        ok(psnr(png, quadro_cheio(mp4, est)) >= 38, f"lamina-{i + 1}.png = quadro {est} do vídeo (PSNR {psnr(png, quadro_cheio(mp4, est)):.1f} dB)")
+        ok(psnr(png, quadro_cheio(mp4, est)) >= 35, f"lamina-{i + 1}.png = quadro {est} do vídeo (PSNR {psnr(png, quadro_cheio(mp4, est)):.1f} dB)")
         if i == 0:
             capa = np.asarray(Image.open(out / "capa-3x4.png").convert("RGB")).astype(np.float32)
             p0 = psnr(capa, quadro_cheio(mp4, 0))
-            ok(capa.shape == (H, W, 3) and p0 >= 38, f"quadro 0 da lâmina 1 = capa-3x4.png (PSNR {p0:.1f} dB, {capa.shape[1]} × {capa.shape[0]})")
+            ok(capa.shape == (H, W, 3) and p0 >= 35, f"quadro 0 da lâmina 1 = capa-3x4.png (PSNR {p0:.1f} dB, {capa.shape[1]} × {capa.shape[0]})")
         # bordas (máscara sem fundo, meia resolução)
         masc = sorted((out / "revisao/mascara" / f"lamina-{i + 1}").glob("*.png"))
         if masc:

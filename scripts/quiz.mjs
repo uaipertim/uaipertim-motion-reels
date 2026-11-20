@@ -1,6 +1,7 @@
 // Carrossel animado "Quiz" (composição QuizMineiro, src/quiz/QuizMineiro.tsx; dados em carrosseis/quiz/NN-tema.json).
 //   node scripts/quiz.mjs 01                    -> out/carrosseis/quiz/<pasta>/lamina-1..N.mp4 + lamina-1..N.png + capa-3x4.png
 //   node scripts/quiz.mjs 01 quadros <lamina> <quadro> [quadro …]   -> out/…/revisao/quadros/ (conferir antes do render)
+//   node scripts/quiz.mjs 01 loop               -> out/…/revisao/loop/ (quadros D-1, 0 e 1 em PNG, para o qa)
 //   node scripts/quiz.mjs 01 mascara            -> out/…/revisao/mascara/ (sem fundo, para o qa: o conteúdo em x 135–945)
 // Depois: python3 scripts/quiz_qa.py 01 (a revisão técnica + a prévia).
 import { bundle } from "@remotion/bundler";
@@ -37,6 +38,18 @@ if (modo === "quadros") {
     const output = path.join(REV, "quadros", `l${lam}-q${String(q).padStart(3, "0")}.png`);
     await renderStill({ composition, serveUrl, frame: q, output, inputProps, puppeteerInstance: browser, browserExecutable, scale: 0.5 });
     console.log("ok", path.relative(process.cwd(), output));
+  }
+} else if (modo === "loop") {
+  // a emenda do loop sem compressão: os quadros D-1, 0 e 1 de cada lâmina (o qa compara D-1→0 com 0→1)
+  fs.mkdirSync(path.join(REV, "loop"), { recursive: true });
+  for (let i = 0; i < N; i++) {
+    const inputProps = { ...data, lamina: i };
+    const composition = await comp(inputProps);
+    const D = composition.durationInFrames;
+    for (const [nome, q] of [["fim", D - 1], ["q0", 0], ["q1", 1]]) {
+      await renderStill({ composition, serveUrl, frame: q, output: path.join(REV, "loop", `lamina-${i + 1}-${nome}.png`), inputProps, puppeteerInstance: browser, browserExecutable });
+    }
+    console.log("ok loop", i + 1);
   }
 } else if (modo === "mascara") {
   // sem o fundo (PNG com transparência), 1 quadro a cada 5, em meia resolução: o qa mede onde há conteúdo

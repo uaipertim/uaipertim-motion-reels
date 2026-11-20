@@ -11,6 +11,7 @@
   "perguntas": [
     {
       "titulo": "Perguntaram *onde fica*. Você responde:",
+      "quebra": ["Perguntaram", "*onde fica*.", "Você responde:"],
       "a": { "texto": "“Uns 5 km, segunda à direita”" },
       "b": { "texto": "“É logo ali, é pertim!”" },
       "reacao": "comemora",

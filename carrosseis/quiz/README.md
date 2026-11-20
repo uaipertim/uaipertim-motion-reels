@@ -27,6 +27,7 @@ Teste de formato: carrossel em que cada lâmina é um vídeo curto em loop. O pr
 - Selo em pílula coral "QUIZ · **MINEIRO RAIZ**" (a 2ª parte em amarelo) com o ícone do balão "?".
 - Títulos em Poppins 900 tinta, com a palavra-chave em coral sobre o marcador amarelo (`*palavra*` no JSON).
   - Uma chave de várias palavras ("*ir embora*") fica inteira numa linha, sob um marcador só.
+  - `quebra` (opcional, na pergunta) fixa as linhas do título; sem ela, o título quebra sozinho em até 3 linhas.
 - O Pertim é o do rig oficial (`src/personagem`), sem redesenho. Ele olha para a câmera e nunca aparece bravo.
   - capa: "curioso", com a prancheta e a lupa desenhadas por trás da luva;
   - perguntas: "sorrindo" e, na resposta, "piscadinha" com a reação (`comemora` = braços para cima com pulinho e
@@ -55,13 +56,15 @@ src/quiz/QuizMineiro.tsx         a composição QuizMineiro (uma lâmina por ren
 scripts/quiz.mjs                 node scripts/quiz.mjs 01            → lamina-*.mp4, lamina-*.png, capa-3x4.png
                                  node scripts/quiz.mjs 01 quadros <lâmina> <quadro…>   → revisao/quadros/
                                  node scripts/quiz.mjs 01 mascara    → revisao/mascara/ (sem fundo, para o QA)
+                                 node scripts/quiz.mjs 01 loop       → revisao/loop/ (quadros D-1, 0 e 1 em PNG, para o QA)
 scripts/quiz_qa.py               python3 scripts/quiz_qa.py 01       → revisao/relatorio-tecnico.txt + previa.png
 ```
 
 O QA confere:
 
 - formato, duração e ausência de áudio;
-- loop: a diferença último→primeiro quadro não passa da maior diferença entre quadros seguidos;
+- loop: a diferença último→primeiro quadro no MP4 não passa da maior diferença entre quadros seguidos. Sem
+  compressão (PNG), a emenda D-1→0 é um passo como 0→1;
 - o quadro 0 da lâmina 1 é igual à `capa-3x4.png`;
 - cada PNG é igual ao quadro dele no vídeo;
 - pela máscara, o conteúdo fica em x 135–945.

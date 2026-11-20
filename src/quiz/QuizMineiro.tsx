@@ -19,7 +19,7 @@ import { piscadaEm } from "../personagem/rig";
 // Todo o conteúdo fica em x 135–945 (a margem das capas da grade). `semFundo` tira o fundo para o QA medir o conteúdo.
 
 type Resposta = { texto: string; nota?: string };
-export type Pergunta = { titulo: string; a: Resposta; b: Resposta; reacao: "comemora" | "aponta"; fala: string };
+export type Pergunta = { titulo: string; quebra?: string[]; a: Resposta; b: Resposta; reacao: "comemora" | "aponta"; fala: string };
 export type Quiz = {
   numero: number; pasta: string; selo: [string, string];
   capa: { titulo: string[]; rodape: string; segundos: number };
@@ -55,7 +55,15 @@ export const medeQuiz = (q: Quiz, i: number): { titulo: Wrapped } => {
     return { titulo: { size, lines, ok: true } };
   }
   if (tipo === "resultado") return { titulo: fitWrap(glue(plain(q.resultado.titulo)), W.black, LARG, RES_T.sizes, 1) };
-  return { titulo: fitWrap(glue(plain(juntaChave(q.perguntas[i - 1].titulo))), W.black, LARG, PERG_T.sizes, 3) };
+  const p = q.perguntas[i - 1];
+  // "quebra" (opcional): as linhas definidas, no maior tamanho em que todas cabem
+  if (p.quebra?.length) {
+    const lines = p.quebra.map((l) => glue(plain(juntaChave(l))));
+    if (lines.join(" ") !== glue(plain(juntaChave(p.titulo)))) throw new Error(`pergunta ${i}: a quebra não bate com o título`);
+    const size = PERG_T.sizes.find((z) => lines.every((l) => fitWrap(l, W.black, LARG - 16, [z], 1).ok)) ?? 60;
+    return { titulo: { size, lines, ok: true } };
+  }
+  return { titulo: fitWrap(glue(plain(juntaChave(p.titulo))), W.black, LARG - 16, PERG_T.sizes, 3) };
 };
 
 // ---------------------------------------------------------------- tempo
@@ -282,7 +290,7 @@ const Cartao: React.FC<{ letra: string; r: Resposta; certo: boolean; acende: num
       padding: "28px 112px 28px 26px", borderRadius: 34, background: mix("#FFFFFF", "#EAF6EA", a),
       border: `6px solid ${mix("#EADBC6", C.verde, a)}`, boxShadow: `0 9px 0 ${mix("#E2CDB2", C.verdeDark, a)}`,
       opacity: 1 - 0.55 * e, filter: e > 0 ? `grayscale(${0.7 * e})` : undefined,
-      transform: `translateY(${-30 * pulo}px) scale(${1 + 0.025 * a - 0.03 * e})`,
+      transform: `translateY(${-30 * pulo}px) scale(${1 - 0.03 * e})`,
     }}>
       <div style={{ flex: "none", width: 88, height: 88, borderRadius: "50%", background: mix(C.tinta, C.verde, a), display: "flex", alignItems: "center", justifyContent: "center", fontFamily: FONT, fontWeight: W.black, fontSize: 50, color: "#fff", lineHeight: 1 }}>
         <span style={{ marginTop: 4 }}>{letra}</span>
@@ -305,7 +313,7 @@ const Estouro: React.FC<{ u: number; cx: number; cy: number }> = ({ u, cx, cy })
   u <= 0 || u >= 1 ? null : (
     <>
       {Array.from({ length: 8 }).map((_, i) => {
-        const ang = (i / 8) * TAU + 0.3, d = 40 + 110 * Easing.out(Easing.cubic)(u);
+        const ang = Math.PI / 2 + (i / 7) * Math.PI, d = 44 + 100 * Easing.out(Easing.cubic)(u);   // só para a esquerda, cima e baixo: nada passa de x 945
         const sz = (i % 2 ? 26 : 34) * (1 - u * 0.6);
         return (
           <div key={i} style={{ position: "absolute", left: cx + Math.cos(ang) * d, top: cy + Math.sin(ang) * d, transform: `translate(-50%,-50%) rotate(${u * 160}deg)`, opacity: 1 - u }}>
@@ -345,7 +353,7 @@ const LaminaPergunta: React.FC<QuizProps & { f: number; D: number }> = ({ selo, 
     <AbsoluteFill>
       {!semFundo && <Fundo f={f} D={D} cy={760} cor={C.amarelo} seed={`quiz-p${lamina}`} pts={[[905, 250], [160, 520], [930, 1040], [500, 1380]]} />}
       <Cabecalho selo={selo} n={lamina} total={perguntas.length} />
-      <div style={{ position: "absolute", left: SAFE.x0, width: LARG, top: (PERG_T.y0 + PERG_T.y1) / 2 - th / 2 }}>
+      <div style={{ position: "absolute", left: SAFE.x0 + 8, width: LARG - 16, top: (PERG_T.y0 + PERG_T.y1) / 2 - th / 2 }}>   {/* +8: o marcador passa um pouco da 1ª letra */}
         <Text source={glue(juntaChave(p.titulo))} wrapped={wt} weight={W.black} align="left" />
       </div>
       <div style={{ position: "absolute", left: SAFE.x0, top: 540, width: LARG, display: "flex", flexDirection: "column", gap: 30 }}>
@@ -358,7 +366,7 @@ const LaminaPergunta: React.FC<QuizProps & { f: number; D: number }> = ({ selo, 
         </div>
       </div>
       {/* embaixo: o Pertim à esquerda; à direita, a barrinha de espera e, depois, o balão com a fala dele */}
-      <PertimFixo altura={370} pose={pose} expr={expr} rig={rig} style={{ left: 96, top: 1376 - 270 * (370 / 284) }} />
+      <PertimFixo altura={370} pose={pose} expr={expr} rig={rig} style={{ left: 116, top: 1376 - 270 * (370 / 284) }} />
       <div style={{ position: "absolute", left: 470, width: SAFE.x1 - 470, top: 1150, opacity: 1 - acende }}>
         <div style={{ fontFamily: FONT, fontWeight: W.extraBold, fontSize: 40, color: C.tinta, letterSpacing: -0.4 }}>Qual é a raiz?</div>
         <div style={{ marginTop: 16, height: 18, borderRadius: 9, background: C.cremeDeep, overflow: "hidden" }}>
@@ -366,7 +374,7 @@ const LaminaPergunta: React.FC<QuizProps & { f: number; D: number }> = ({ selo, 
         </div>
       </div>
       {balao > 0 && (
-        <div style={{ position: "absolute", left: 470, width: SAFE.x1 - 470, top: 1112, height: 170, display: "flex", alignItems: "center", transform: `scale(${balao})`, transformOrigin: "0% 70%", opacity: Math.min(1, balao * 2) }}>
+        <div style={{ position: "absolute", left: 470, width: SAFE.x1 - 470, top: 1112, height: 170, display: "flex", alignItems: "center", transform: `translateY(${-14 * Math.max(0, balao - 1) * 6}px) scale(${Math.min(1, balao)})`, transformOrigin: "0% 70%", opacity: Math.min(1, balao * 2) }}>
           <svg width={40} height={44} viewBox="0 0 40 44" style={{ position: "absolute", left: -30, top: 96 }}><path d="M40 0 L0 30 L40 40 Z" fill="#fff" /></svg>
           <div style={{ width: "100%", boxSizing: "border-box", padding: "26px 30px", borderRadius: 36, background: "#fff", boxShadow: `0 9px 0 ${C.cremeDeep}`, fontFamily: FONTE, fontWeight: W.black, fontSize: 44, lineHeight: 1.12, letterSpacing: -0.6, color: C.tinta, textAlign: "center", textWrap: "balance" } as React.CSSProperties}>
             {p.fala}
@@ -416,13 +424,13 @@ const LaminaResultado: React.FC<QuizProps & { f: number; D: number }> = ({ selo,
           const d = destaque(i), c = COR_FAIXA[i % 3];
           const grande = fx.nota.replace(/^até /, "");
           return (
-            <div key={i} style={{ display: "flex", alignItems: "center", gap: 28, height: 136, boxSizing: "border-box", padding: "0 30px 0 14px", borderRadius: 32, background: "#fff", border: "5px solid #EADBC6", boxShadow: `0 ${8 + 4 * d}px 0 #E2CDB2`, transform: `translateY(${-6 * d}px) scale(${1 + 0.03 * d})` }}>
+            <div key={i} style={{ display: "flex", alignItems: "center", gap: 28, height: 136, boxSizing: "border-box", padding: "0 30px 0 14px", borderRadius: 32, background: "#fff", border: "5px solid #EADBC6", boxShadow: `0 ${8 + 4 * d}px 0 #E2CDB2`, transform: `translateY(${-8 * d}px)` }}>
               <div style={{ flex: "none", width: 190, height: 104, borderRadius: 24, background: c.bg, boxShadow: `0 6px 0 ${c.sombra}`, color: c.fg, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", transform: `rotate(${-3 * d}deg)` }}>
                 <div style={{ fontFamily: FONT, fontWeight: W.black, lineHeight: 1, letterSpacing: -1, display: "flex", alignItems: "baseline", gap: 8 }}>
                   {fx.nota.startsWith("até ") && <span style={{ fontSize: 30 }}>até</span>}
                   <span style={{ fontSize: 56 }}>{fx.nota.startsWith("até ") ? grande : fx.nota}</span>
                 </div>
-                <div style={{ fontFamily: FONT, fontWeight: W.extraBold, fontSize: 24, lineHeight: 1, marginTop: 4, letterSpacing: 0.5 }}>ACERTOS</div>
+                <div style={{ fontFamily: FONT, fontWeight: W.extraBold, fontSize: 26, lineHeight: 1, marginTop: 4, letterSpacing: 0.5 }}>ACERTOS</div>
               </div>
               <div style={{ flex: 1, fontFamily: FONTE, fontWeight: W.extraBold, fontSize: 40, lineHeight: 1.15, color: C.tinta, letterSpacing: -0.4, textWrap: "balance" } as React.CSSProperties}>{glue(fx.texto)}</div>
             </div>
@@ -430,7 +438,7 @@ const LaminaResultado: React.FC<QuizProps & { f: number; D: number }> = ({ selo,
         })}
       </div>
       {/* o Pertim comemorando e o balão do CTA */}
-      <PertimFixo altura={392} pose="comemorando" expr="sorrindo" style={{ left: 104, top: 1262 - 270 * (392 / 284) }}
+      <PertimFixo altura={392} pose="comemorando" expr="sorrindo" style={{ left: 118, top: 1262 - 270 * (392 / 284) }}
         rig={{ respira: onda(f, D, 4), capacete: 0.8 * onda(f, D, 4, -0.7) + 3 * hop(f, 0.12 * D, 14) + 3 * hop(f, 0.62 * D, 14), piscada: piscadaEm([(0.4 * D) / 30, (0.88 * D) / 30], f / 30), quique: 14 + hops }} />
       <div style={{ position: "absolute", left: 478, width: SAFE.x1 - 478, top: 880, height: 330, display: "flex", alignItems: "center" }}>
         <svg width={44} height={50} viewBox="0 0 44 50" style={{ position: "absolute", left: -32, top: 190 }}><path d="M44 0 L0 34 L44 46 Z" fill={C.coral} /></svg>
@@ -441,7 +449,7 @@ const LaminaResultado: React.FC<QuizProps & { f: number; D: number }> = ({ selo,
             return (<>
               {antes.slice(0, k + 1)}
               <span style={{ whiteSpace: "nowrap" }}>{antes.slice(k + 1)}{" "}<span style={{ display: "inline-block", transform: `translateY(${dedo}px)` }}>👇</span></span>
-              {depois}
+              <br />{depois.trim()}
             </>);
           })()}
         </div>
