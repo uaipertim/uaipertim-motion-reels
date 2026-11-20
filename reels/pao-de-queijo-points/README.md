@@ -12,8 +12,13 @@ As telas são `public/telas-app/celular/Main.png` (a abertura) e `Fidelidade.png
 
 ## Roteiro e cenas (todo corte numa batida)
 
-Trilha animada do app, 120 BPM, no modo **grade** do `linha.py`. Ela fica **baixinha** por baixo da voz: `"trilha_db": -15`
-no roteiro (o padrão da animada é −10), com o ducking de sempre.
+Trilha animada do app, 120 BPM, no modo **grade** do `linha.py`, **no mesmo nível do "Olha ele por dentro!" e do "Bateu a
+fome?"**: o padrão do `audio.py` (10 dB abaixo da voz em RMS, com o ducking de sempre), sem `trilha_db` no roteiro.
+
+- Medido nas pistas em LUFS, a trilha fica −12,8 dB da voz; no "Olha", −12,9 dB.
+- Ela toca também no gancho e no fecho sem fala.
+- **Ajuste de 2026-11-20:** a 1ª versão saiu com a trilha a −15 dB (`"trilha_db": -15`) e ficou inaudível no celular. O
+  mix foi refeito no nível padrão e só a faixa de áudio do MP4 foi trocada: o vídeo é o mesmo, bit a bit.
 
 | # | cena | tempo (batidas) | voz | o que acontece |
 |---|---|---|---|---|
@@ -79,7 +84,7 @@ no roteiro (o padrão da animada é −10), com o ducking de sempre.
 | D | 3042 | 302 Hz em 0,17 s | sim | +7,8 st |
 
 - **As outras falas:** seed 42.
-- **Mixagem:** −14,1 LUFS e pico real −1,5 dBTP depois do AAC.
+- **Mixagem:** −14,0 LUFS e pico real −1,5 dBTP depois do AAC; a trilha −12,8 dB da voz (LUFS), como no "Olha ele por dentro!".
 
 ## Capa
 
@@ -100,7 +105,7 @@ python3 scripts/tomadas.py pao-de-queijo-points 5 --seeds 42,1042,2042,3042     
 python3 scripts/tomadas.py pao-de-queijo-points 5 --usar B                           # (e 0 --usar B)
 python3 reels/explica-so/scripts/linha.py pao-de-queijo-points                       # as cenas na grade de batidas
 python3 reels/pao-de-queijo-points/scripts/preparar.py                               # dados/ (cena, visemas, legenda) + cues.json
-python3 reels/explica-so/scripts/audio.py pao-de-queijo-points                       # mix.wav (trilha a −15 dB)
+python3 reels/explica-so/scripts/audio.py pao-de-queijo-points                       # mix.wav (trilha no nível padrão)
 node reels/pao-de-queijo-points/scripts/render.mjs                                   # output/uaipertim-pao-de-queijo-points.mp4
 node reels/pao-de-queijo-points/scripts/render.mjs capa                              # output/capa.png + capa-3x4.png
 node reels/pao-de-queijo-points/scripts/render.mjs mascara                           # máscaras do QA (fora do git)
@@ -117,4 +122,5 @@ ambiente).
 - `uaipertim-pao-de-queijo-points.mp4`: o Reel (H.264 yuv420p, 1080×1920, 30 fps, 28,50 s, AAC 48 kHz estéreo).
 - `capa.png` (9:16) e `capa-3x4.png` (o recorte da grade, y 240–1680).
 - `legenda.txt`: a legenda do post e a sugestão de comentário fixado.
-- `revisao/relatorio-tecnico.txt` (`RESULTADO: aprovado`) e `revisao/f0-cena-6.png`.
+- `revisao/relatorio-tecnico.txt` (`RESULTADO: aprovado`; inclui o nível da trilha comparado com o do "Olha ele por dentro!")
+  e `revisao/f0-cena-6.png`.

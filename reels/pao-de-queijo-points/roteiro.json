@@ -4,7 +4,6 @@
  "marca": "@uaipertim",
  "perfil_voz": "narracao",
  "trilha": "animada",
- "trilha_db": -15,
  "bpm": 120,
  "legenda": true,
  "grade": true,
@@ -17,7 +16,7 @@
   4.0,
   6.5
  ],
- "_doc": "Reel 'Pão de Queijo Points' (Instagram @uaipertim, seg 23/11 20h): o programa de fidelidade do app, apresentado pelo Pertim com a tela real (public/telas-app/celular/Fidelidade.png; Main.png na abertura). Pipeline do Explica, Sô! (voz.py, linha.py, audio.py) + a composição Remotion PaoDeQueijoPoints (src/pao-de-queijo-points/). 'grade': true = todo corte numa batida da trilha animada (120 BPM). 'trilha_db': a trilha abaixo da voz (baixinha: -15 dB; o padrão da animada é -10).",
+ "_doc": "Reel 'Pão de Queijo Points' (Instagram @uaipertim, seg 23/11 20h): o programa de fidelidade do app, apresentado pelo Pertim com a tela real (public/telas-app/celular/Fidelidade.png; Main.png na abertura). Pipeline do Explica, Sô! (voz.py, linha.py, audio.py) + a composição Remotion PaoDeQueijoPoints (src/pao-de-queijo-points/). 'grade': true = todo corte numa batida da trilha animada (120 BPM). Trilha: a animada do app no nível dos outros Reels (o padrão do audio.py, 10 dB abaixo da voz, com o ducking), presente também no gancho e no fecho.",
  "_doc_pronuncia": "Grafia c: 'UaiPertim' vai para a voz como 'Uai pertím' e 'Pertim'/'pertim' como 'pertím' (só o texto enviado; na tela e na legenda continua 'UaiPertim').",
  "pronuncia": {
   "UaiPertim": "Uai pertím",

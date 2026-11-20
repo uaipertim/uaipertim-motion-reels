@@ -6,9 +6,12 @@ OK     vídeo h264 yuv420p 1080×1920
 OK     30 fps
 OK     duração 28.50 s (25–30 s)
 OK     áudio aac 48000 Hz, 2 canais
-OK     -14.1 LUFS integrados (alvo −14)
+OK     -14.0 LUFS integrados (alvo −14)
 OK     pico real -1.5 dBTP (≤ −1)
-     trilha animada -15 dB abaixo da voz (baixinha; o padrão da animada é −10)
+OK     a trilha animada do app, no nível padrão (sem "trilha_db"), como no "Olha ele por dentro!" e no "Bateu a fome?"
+OK     nível da trilha: -12.8 dB da voz (LUFS); no "Olha ele por dentro!", -12.9 dB (diferença +0.1 dB; tolerância 1 dB)
+OK     a trilha toca no gancho (-28.6 LUFS nos primeiros 3 s) e no fecho sem fala (-22.8 LUFS de 25.3 a 28.5 s)
+OK     a voz em destaque: a trilha fica 12.8 dB abaixo dela
 
 RITMO (trilha animada, 120 BPM: uma batida a cada 0,5 s)
 OK     cena 1 gancho: 0.00–5.00 s = batidas 0–10; fala 0.12–4.60 s dentro dela

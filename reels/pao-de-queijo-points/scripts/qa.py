@@ -7,6 +7,7 @@ Revisão técnica do Reel "Pão de Queijo Points" (sem API).
 
 Confere e grava reels/pao-de-queijo-points/output/revisao/relatorio-tecnico.txt (+ f0-cena-6.png):
   • formato: H.264 yuv420p 1080×1920, 30 fps, 25–30 s, AAC 48 kHz estéreo; −14 LUFS e pico real ≤ −1 dBTP;
+  • trilha: a animada no nível do "Olha ele por dentro!" (pistas musica.wav × voz-tratada.wav, ±1 dB), tocando no gancho e no fecho;
   • ritmo: todo corte numa batida (120 BPM) e a fala dentro da cena;
   • voz: o texto falado é o do roteiro, Victor Pinho, eleven_v4 (perfil "narracao"); "UaiPertim" foi para a voz como
     "Uai pertím" e "Pertim" nunca foi sem acento; "o Glória" nunca "a Glória"/"de Glória";
@@ -99,7 +100,30 @@ I = float(re.search(r'I:\s+(-?[\d.]+) LUFS', sm).group(1))
 TP = float(re.search(r'Peak:\s+(-?[\d.]+) dBFS', sm[sm.index('True peak'):]).group(1))
 ok(abs(I + 14) <= 0.5, f'{I:.1f} LUFS integrados (alvo −14)')
 ok(TP <= -1.0, f'pico real {TP:.1f} dBTP (≤ −1)')
-info(f'trilha animada {ROT.get("trilha_db", -10)} dB abaixo da voz (baixinha; o padrão da animada é −10)')
+# o nível da trilha: o mesmo do "Olha ele por dentro!" (a trilha animada no padrão do audio.py, sem "trilha_db"), medido nas
+# pistas que o audio.py grava (musica.wav e voz-tratada.wav, na mesma escala do mix); presente no gancho e no fecho sem fala
+
+
+def lufs_wav(f, a=None, b=None):
+    args = ['ffmpeg', '-hide_banner', '-nostats'] + (['-ss', str(a), '-to', str(b)] if a is not None else [])
+    e_ = subprocess.run(args + ['-i', f, '-af', 'ebur128', '-f', 'null', '-'], capture_output=True, text=True).stderr
+    return float(re.search(r'I:\s+(-?[\d.]+) LUFS', e_[e_.rindex('Summary:'):]).group(1))
+
+
+ok(ROT.get('trilha') == 'animada' and 'trilha_db' not in ROT, 'a trilha animada do app, no nível padrão (sem "trilha_db"), como no "Olha ele por dentro!" e no "Bateu a fome?"')
+niv = {}
+for ep_ in ('olha-ele-por-dentro', EP):
+    A_ = os.path.join(REPO, 'reels', 'explica-so', 'audio', ep_)
+    if not os.path.exists(os.path.join(A_, 'musica.wav')):
+        subprocess.run(['python3', os.path.join(REPO, 'reels', 'explica-so', 'scripts', 'audio.py'), ep_], check=True, capture_output=True)
+    niv[ep_] = lufs_wav(os.path.join(A_, 'musica.wav')) - lufs_wav(os.path.join(A_, 'voz-tratada.wav'))
+dif = niv[EP] - niv['olha-ele-por-dentro']
+ok(abs(dif) <= 1.0, f'nível da trilha: {niv[EP]:+.1f} dB da voz (LUFS); no "Olha ele por dentro!", {niv["olha-ele-por-dentro"]:+.1f} dB (diferença {dif:+.1f} dB; tolerância 1 dB)')
+MW = os.path.join(AUD, 'musica.wav')
+fim_fala = CENA['cenas'][-1]['voz_t1'] + 0.3
+g_, f_ = lufs_wav(MW, 0, CENA['cenas'][0]['voz_t0']) if CENA['cenas'][0]['voz_t0'] > 0.4 else lufs_wav(MW, 0, 3.0), lufs_wav(MW, fim_fala, DUR)
+ok(g_ > -40 and f_ > -40, f'a trilha toca no gancho ({g_:.1f} LUFS nos primeiros 3 s) e no fecho sem fala ({f_:.1f} LUFS de {fim_fala:.1f} a {DUR:.1f} s)')
+ok(niv[EP] <= -9, f'a voz em destaque: a trilha fica {-niv[EP]:.1f} dB abaixo dela')
 
 sec('RITMO (trilha animada, 120 BPM: uma batida a cada 0,5 s)')
 for c in CENA['cenas']:
