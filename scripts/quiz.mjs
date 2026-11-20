@@ -5,6 +5,9 @@
 //   node scripts/quiz.mjs 01 loop               -> out/…/revisao/loop/ (quadros D-1, 0 e 1 em PNG, para o qa)
 //   node scripts/quiz.mjs 01 mascara            -> out/…/revisao/mascara/ (sem fundo, para o qa: o conteúdo em x 135–945)
 // Depois: python3 scripts/quiz_qa.py 01 (a revisão técnica + a prévia).
+// O mesmo motor serve os outros carrosséis animados: passe o caminho do JSON (ex.: carrosseis/animados/02-como-chega-o-seu-pedido.json).
+// Um JSON com "composicao" diz a composição, a pasta de saída ("saida"), as lâminas ("laminas", cada uma com "estatico" em s)
+// e o nome da capa ("capa_arquivo", ex.: capa-4x5.png); sem ele, vale o Quiz (QuizMineiro, out/carrosseis/quiz/, capa-3x4.png).
 import { bundle } from "@remotion/bundler";
 import { openBrowser, renderFrames, renderMedia, renderStill, selectComposition } from "@remotion/renderer";
 import { execFileSync } from "node:child_process";
@@ -17,20 +20,23 @@ const browserExecutable = CANDIDATOS.find((p) => fs.existsSync(p)) ?? null;
 const [arg, modo = "tudo", ...resto] = process.argv.slice(2);
 if (!arg) throw new Error("uso: quiz.mjs <NN> [tudo|quadros|mascara] [...]");
 const dir = path.resolve("carrosseis/quiz");
-const json = path.join(dir, fs.readdirSync(dir).find((f) => f.startsWith(String(arg).padStart(2, "0") + "-")) ?? "");
+const json = fs.existsSync(arg) ? path.resolve(arg) : path.join(dir, fs.readdirSync(dir).find((f) => f.startsWith(String(arg).padStart(2, "0") + "-")) ?? "");
 const data = JSON.parse(fs.readFileSync(json, "utf-8"));
-const OUT = path.resolve("out/carrosseis/quiz", data.pasta);
+const GEN = Boolean(data.composicao);
+const ID = GEN ? data.composicao : "QuizMineiro";
+const CAPA = GEN ? data.capa_arquivo : "capa-3x4.png";
+const OUT = GEN ? path.resolve(data.saida) : path.resolve("out/carrosseis/quiz", data.pasta);
 const REV = path.join(OUT, "revisao");
 fs.mkdirSync(REV, { recursive: true });
-const N = data.perguntas.length + 2;
+const N = GEN ? data.laminas.length : data.perguntas.length + 2;
 // SO=3,5,6 (opcional): só essas lâminas (numeradas de 1), em qualquer modo
 const SO = process.env.SO ? process.env.SO.split(",").map((x) => Number(x) - 1) : null;
 const vale = (i) => !SO || SO.includes(i);
-const estatico = (i) => (i === 0 || i === N - 1 ? 0 : Math.round(4.6 * 30));   // = quadroEstatico() da composição
+const estatico = (i) => (GEN ? Math.round((data.laminas[i].estatico ?? 0) * 30) : i === 0 || i === N - 1 ? 0 : Math.round(4.6 * 30));   // = quadroEstatico() da composição
 
 const serveUrl = await bundle({ entryPoint: path.resolve("src/index.ts") });
 const browser = await openBrowser("chrome", { browserExecutable });
-const comp = (inputProps) => selectComposition({ serveUrl, id: "QuizMineiro", inputProps, puppeteerInstance: browser, browserExecutable });
+const comp = (inputProps) => selectComposition({ serveUrl, id: ID, inputProps, puppeteerInstance: browser, browserExecutable });
 const ff = (...a) => execFileSync("ffmpeg", ["-y", "-loglevel", "error", ...a], { stdio: "inherit" });
 
 if (modo === "quadros") {
@@ -76,8 +82,11 @@ if (modo === "quadros") {
     const composition = await comp(inputProps);
     const bruto = path.join(REV, `lamina-${i + 1}-bruto.mp4`);
     await renderMedia({
-      composition, serveUrl, inputProps, codec: "h264", crf: 17, pixelFormat: "yuv420p", imageFormat: "png", muted: true, outputLocation: bruto,
+      composition, serveUrl, inputProps, codec: "h264", crf: (GEN && data.laminas[i].crf) || 17, pixelFormat: "yuv420p", imageFormat: "png", muted: true, outputLocation: bruto,
       puppeteerInstance: browser, browserExecutable, concurrency: 4, x264Preset: "slow",
+      // nos carrosséis com "composicao": o último quadro também é quadro-chave (I), como o primeiro, para a emenda do loop
+      // não ganhar a diferença de compressão de um quadro P longe do I
+      ffmpegOverride: GEN ? ({ type, args }) => (type === "pre-stitcher" ? [...args.slice(0, -1), "-force_key_frames", `expr:eq(n,0)+eq(n,${composition.durationInFrames - 1})`, args[args.length - 1]] : args) : undefined,
     });
     // sem trilha de áudio nenhuma, faststart para o upload
     const mp4 = path.join(OUT, `lamina-${i + 1}.mp4`);
@@ -85,7 +94,7 @@ if (modo === "quadros") {
     fs.rmSync(bruto);
     const png = path.join(OUT, `lamina-${i + 1}.png`);
     await renderStill({ composition, serveUrl, frame: estatico(i), output: png, inputProps, puppeteerInstance: browser, browserExecutable });
-    if (i === 0) fs.copyFileSync(png, path.join(OUT, "capa-3x4.png"));   // a capa da grade = o quadro 0 da lâmina 1
+    if (i === 0) fs.copyFileSync(png, path.join(OUT, CAPA));   // a capa da grade = o quadro 0 da lâmina 1
     console.log("ok", `lamina-${i + 1}.mp4 (${composition.durationInFrames} quadros) + lamina-${i + 1}.png`);
   }
 }

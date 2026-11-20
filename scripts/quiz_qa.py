@@ -25,6 +25,9 @@ X0, X1, Y0, Y1 = 135, 945, 30, 1410
 
 
 def dados(arg):
+    """o JSON do carrossel: o número do Quiz (carrosseis/quiz/NN-*.json) ou o caminho de outro carrossel animado"""
+    if Path(arg).exists():
+        return json.loads(Path(arg).read_text())
     d = RAIZ / "carrosseis/quiz"
     j = next(p for p in d.glob(f"{int(arg):02d}-*.json"))
     return json.loads(j.read_text())
@@ -51,9 +54,16 @@ def psnr(a, b):
 
 
 def main():
+    global W, H, Y0, Y1
     q = dados(sys.argv[1] if len(sys.argv) > 1 else "01")
-    out = RAIZ / "out/carrosseis/quiz" / q["pasta"]
-    n = len(q["perguntas"]) + 2
+    # um carrossel animado com "composicao" no JSON traz o formato, a saída, as lâminas, a capa e o respiro de cima/baixo
+    GEN = bool(q.get("composicao"))
+    if GEN:
+        W, H = q["formato"]
+        Y0, Y1 = q.get("respiro", 30), H - q.get("respiro", 30)
+    out = RAIZ / q["saida"] if GEN else RAIZ / "out/carrosseis/quiz" / q["pasta"]
+    n = len(q["laminas"]) if GEN else len(q["perguntas"]) + 2
+    CAPA = q["capa_arquivo"] if GEN else "capa-3x4.png"
     linhas, falhas, duracoes = [], [], []
 
     def ok(cond, msg):
@@ -71,7 +81,7 @@ def main():
         duracoes.append(dur)
         linhas.append(f"--- lâmina {i + 1}: {dur:.2f} s ({nq} quadros)")
         ok(v["codec_name"] == "h264" and v["pix_fmt"] == "yuv420p", f"H.264 yuv420p ({v['codec_name']}, {v['pix_fmt']}, perfil {v.get('profile')})")
-        ok((v["width"], v["height"]) == (W, H), f"1080 × 1440 ({v['width']} × {v['height']})")
+        ok((v["width"], v["height"]) == (W, H), f"{W} × {H} ({v['width']} × {v['height']})")
         ok(v["r_frame_rate"] == "30/1", f"30 fps ({v['r_frame_rate']})")
         ok(6.0 <= dur <= 8.0, f"duração entre 6 e 8 s ({dur:.2f} s)")
         ok(not a, "sem trilha de áudio")
@@ -90,13 +100,13 @@ def main():
         else:
             ok(False, "quadros da emenda não encontrados (node scripts/quiz.mjs NN loop)")
         # PNG estático = o quadro dele no vídeo
-        est = 0 if i in (0, n - 1) else round(4.6 * FPS)
+        est = round(q["laminas"][i].get("estatico", 0) * FPS) if GEN else 0 if i in (0, n - 1) else round(4.6 * FPS)
         png = np.asarray(Image.open(out / f"lamina-{i + 1}.png").convert("RGB")).astype(np.float32)
         ok(psnr(png, quadro_cheio(mp4, est)) >= 35, f"lamina-{i + 1}.png = quadro {est} do vídeo (PSNR {psnr(png, quadro_cheio(mp4, est)):.1f} dB)")
         if i == 0:
-            capa = np.asarray(Image.open(out / "capa-3x4.png").convert("RGB")).astype(np.float32)
+            capa = np.asarray(Image.open(out / CAPA).convert("RGB")).astype(np.float32)
             p0 = psnr(capa, quadro_cheio(mp4, 0))
-            ok(capa.shape == (H, W, 3) and p0 >= 35, f"quadro 0 da lâmina 1 = capa-3x4.png (PSNR {p0:.1f} dB, {capa.shape[1]} × {capa.shape[0]})")
+            ok(capa.shape == (H, W, 3) and p0 >= 35, f"quadro 0 da lâmina 1 = {CAPA} (PSNR {p0:.1f} dB, {capa.shape[1]} × {capa.shape[0]})")
         # bordas (máscara sem fundo, meia resolução)
         masc = sorted((out / "revisao/mascara" / f"lamina-{i + 1}").glob("*.png"))
         if masc:
@@ -106,12 +116,12 @@ def main():
                 ys, xs = np.nonzero(al > 32)
                 if len(xs):
                     x0, x1, y0, y1 = min(x0, xs.min() * 2), max(x1, xs.max() * 2 + 1), min(y0, ys.min() * 2), max(y1, ys.max() * 2 + 1)
-            ok(x0 >= X0 - 2 and x1 <= X1 + 2 and y0 >= Y0 and y1 <= Y1, f"conteúdo em x {x0}–{x1}, y {y0}–{y1} ({len(masc)} quadros; limite x 135–945, y 30–1410)")
+            ok(x0 >= X0 - 2 and x1 <= X1 + 2 and y0 >= Y0 and y1 <= Y1, f"conteúdo em x {x0}–{x1}, y {y0}–{y1} ({len(masc)} quadros; limite x 135–945, y {Y0}–{Y1})")
         else:
             ok(False, "máscara não encontrada (node scripts/quiz.mjs NN mascara)")
 
     # a prévia: as lâminas (PNG estático) num contato 4 × 2, com o número e a duração
-    th_w, th_h, gap, rot = 360, 480, 28, 54
+    th_w, th_h, gap, rot = 360, round(360 * H / W), 28, 54
     cols = 4
     rows = (n + cols - 1) // cols
     folha = Image.new("RGB", (cols * th_w + (cols + 1) * gap, rows * (th_h + rot) + (rows + 1) * gap), "#EFE4D4")
@@ -125,7 +135,7 @@ def main():
         x = gap + (i % cols) * (th_w + gap)
         y = gap + (i // cols) * (th_h + rot + gap)
         folha.paste(im, (x, y))
-        tipo = "capa" if i == 0 else "resultado" if i == n - 1 else f"pergunta {i}/{n - 2}"
+        tipo = q["laminas"][i]["rotulo"] if GEN else "capa" if i == 0 else "resultado" if i == n - 1 else f"pergunta {i}/{n - 2}"
         d.text((x + 4, y + th_h + 12), f"{i + 1} · {tipo} · {duracoes[i]:.0f} s", fill="#221C19", font=f)
     folha.save(out / "previa.png")
 

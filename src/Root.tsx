@@ -44,6 +44,8 @@ import { PEDIR, PedirNoUaiPertim } from "./pedir-no-uaipertim/PedirNoUaiPertim";
 import { BATEU, BateuAFome, caveatReady } from "./bateu-a-fome/BateuAFome";
 import { OLHA, OlhaElePorDentro } from "./olha-ele-por-dentro/OlhaElePorDentro";
 import { CapaCoisaDeMineiro, CoisaDeMineiro, CoisaDeMineiroProps, carregaEpisodio, medeCapaCoisaDeMineiro } from "./coisa-de-mineiro/CoisaDeMineiro";
+import { COMO_CHEGA, ComoChega, ComoChegaProps, duracaoComoChega, medeComoChega } from "./carrossel-animado/ComoChega";
+import comoChega02 from "../carrosseis/animados/02-como-chega-o-seu-pedido.json";
 import { PDQ, PaoDeQueijoPoints } from "./pao-de-queijo-points/PaoDeQueijoPoints";
 import { QUIZ, QuizMineiro, QuizProps, duracaoLamina, medeQuiz } from "./quiz/QuizMineiro";
 import quiz01 from "../carrosseis/quiz/01-voce-e-mineiro-raiz.json";
@@ -263,6 +265,10 @@ export const RemotionRoot: React.FC = () => (
       defaultProps={{ ep: "01-e-logo-ali", editar: true } as CoisaDeMineiroProps & { editar: boolean }} calculateMetadata={async (a) => { await fontsReady; const r = await carregaEpisodio(a); const d = r.props.dados!; return { props: { ...r.props, editar: true, tituloCapa: medeCapaCoisaDeMineiro(d.capa?.titulo ?? [d.titulo]) } }; }} />
     {/* Reel "Pão de Queijo Points" (o programa de fidelidade, narrado pelo Pertim; reels/pao-de-queijo-points). mascara: só para o QA */}
     <Composition id="PaoDeQueijoPoints" component={PaoDeQueijoPoints} durationInFrames={PDQ.duracao} fps={PDQ.fps} width={1080} height={1920} defaultProps={{}} calculateMetadata={async () => { await fontsReady; return {}; }} />
+    {/* Carrossel animado #02 "Como chega o seu pedido?" (1080×1350, uma lâmina por render: --props={"lamina": 0..6}); scripts/quiz.mjs com o caminho do JSON */}
+    <Composition id="ComoChega" component={ComoChega} durationInFrames={180} fps={COMO_CHEGA.fps} width={COMO_CHEGA.width} height={COMO_CHEGA.height}
+      defaultProps={{ ...(comoChega02 as unknown as ComoChegaProps), lamina: 0 }}
+      calculateMetadata={async ({ props }) => { await fontsReady; return { durationInFrames: duracaoComoChega(props, props.lamina), props: { ...props, layout: medeComoChega(props, props.lamina) } }; }} />
     {/* Carrossel animado "Quiz" (carrosseis/quiz): UMA lâmina por render, em loop (--props={"lamina": 0..7}); scripts/quiz.mjs */}
     <Composition id="QuizMineiro" component={QuizMineiro} durationInFrames={180} fps={QUIZ.fps} width={QUIZ.width} height={QUIZ.height}
       defaultProps={{ ...(quiz01 as unknown as QuizProps), lamina: 0 }}

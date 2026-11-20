@@ -67,23 +67,23 @@ export const medeQuiz = (q: Quiz, i: number): { titulo: Wrapped } => {
 };
 
 // ---------------------------------------------------------------- tempo
-const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
-const TAU = Math.PI * 2;
-const ease = Easing.inOut(Easing.cubic);
-const outBack = (u: number, k = 1.8) => { const c = k + 1; return 1 + c * Math.pow(u - 1, 3) + k * Math.pow(u - 1, 2); };
-const hop = (f: number, f0: number, dur: number) => (f < f0 || f > f0 + dur ? 0 : Math.sin((Math.PI * (f - f0)) / dur));
+export const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
+export const TAU = Math.PI * 2;
+export const ease = Easing.inOut(Easing.cubic);
+export const outBack = (u: number, k = 1.8) => { const c = k + 1; return 1 + c * Math.pow(u - 1, 3) + k * Math.pow(u - 1, 2); };
+export const hop = (f: number, f0: number, dur: number) => (f < f0 || f > f0 + dur ? 0 : Math.sin((Math.PI * (f - f0)) / dur));
 // periódica em D: começa (f = 0) em 0 e volta a 0 em D
-const onda = (f: number, D: number, ciclos: number, fase = 0) => Math.sin((TAU * ciclos * f) / D + fase);
-const FONTE = `${FONT}, "Noto Color Emoji"`;
+export const onda = (f: number, D: number, ciclos: number, fase = 0) => Math.sin((TAU * ciclos * f) / D + fase);
+export const FONTE = `${FONT}, "Noto Color Emoji"`;
 
 // ---------------------------------------------------------------- fundo (raios girando 20° por lâmina = 1 raio: loop exato)
-const Fundo: React.FC<{ f: number; D: number; cy: number; cor: string; pts: Array<[number, number]>; seed: string }> = ({ f, D, cy, cor, pts, seed }) => (
+export const Fundo: React.FC<{ f: number; D: number; cy: number; cor: string; pts: Array<[number, number]>; seed: string }> = ({ f, D, cy, cor, pts, seed }) => (
   <AbsoluteFill style={{ background: `radial-gradient(circle at 50% 38%, #FFF8EE 0%, ${C.creme} 55%, #F1E3D0 100%)`, overflow: "hidden" }}>
     <Sunburst frame={f} speed={20 / D} cx={540} cy={cy} color={cor} opacity={0.13} />
     <Brilhos f={f} D={D} pts={pts} seed={seed} />
   </AbsoluteFill>
 );
-const Brilhos: React.FC<{ f: number; D: number; pts: Array<[number, number]>; seed: string; size?: number }> = ({ f, D, pts, seed, size = 32 }) => (
+export const Brilhos: React.FC<{ f: number; D: number; pts: Array<[number, number]>; seed: string; size?: number }> = ({ f, D, pts, seed, size = 32 }) => (
   <>
     {pts.map(([x, y], i) => {
       const ph = random(`${seed}-${i}`) * TAU;
@@ -99,7 +99,7 @@ const Brilhos: React.FC<{ f: number; D: number; pts: Array<[number, number]>; se
 );
 
 // ---------------------------------------------------------------- selo em pílula: "QUIZ ·" + "MINEIRO RAIZ" em amarelo
-const IconeQuiz: React.FC<{ s: number }> = ({ s }) => (
+export const IconeQuiz: React.FC<{ s: number }> = ({ s }) => (
   <svg width={s} height={s} viewBox="0 0 24 24">
     <path d="M4 4 H20 Q22 4 22 6 V15 Q22 17 20 17 H11 L6 21 L7 17 H4 Q2 17 2 15 V6 Q2 4 4 4 Z" fill={C.amarelo} />
     <path d="M10 8.5 Q10 6.6 12 6.6 Q14 6.6 14 8.4 Q14 9.8 12.2 10.4 V11.6" stroke={C.coral} strokeWidth="1.8" strokeLinecap="round" fill="none" />
@@ -126,7 +126,7 @@ const transfCorpo = (e: Estado) => {
   const corpoT = r ? `translate(120 252) scale(${1 - r * 0.006} ${1 + r * 0.014}) translate(-120 -252)` : "";
   return `${x.charT} ${e.rig.quique ? `translate(0 ${e.rig.quique})` : ""} ${x.pinT} ${corpoT}`.trim();
 };
-const PertimFixo: React.FC<Estado & { altura: number; tras?: React.ReactNode; style?: React.CSSProperties }> = ({ altura, tras, style, ...e }) => {
+export const PertimFixo: React.FC<Estado & { altura: number; tras?: React.ReactNode; style?: React.CSSProperties }> = ({ altura, tras, style, ...e }) => {
   const s = altura / 284, parado = e.pose === "parado";
   return (
     <div style={{ position: "absolute", width: 280 * s, height: altura, ...style }}>
