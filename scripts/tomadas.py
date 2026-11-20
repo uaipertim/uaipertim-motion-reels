@@ -179,6 +179,36 @@ def pergunta(y, sr, L):
             'contorno_hz': [round(f) if f else 0 for t, f in tr][::2]}
 
 
+INTERROGATIVAS = {'quanto', 'quanta', 'quantos', 'quantas', 'qual', 'quais', 'onde', 'aonde', 'quem', 'como', 'quando', 'porque'}
+
+
+def pergunta_wh(y, sr, L):
+    """pergunta com palavra interrogativa (regra das wh-questions, 2026-11-19): o natural é subir NA palavra interrogativa e
+    cair no fim. Mede só o trecho da pergunta (até o "?"): o pico de F0 tem de estar na palavra interrogativa."""
+    import unicodedata
+    nrm = lambda w: re.sub(r'[^a-z]', '', unicodedata.normalize('NFD', w.lower()).encode('ascii', 'ignore').decode())
+    txt = ''.join(c for c, _, _ in L)
+    fim_q = txt.find('?')
+    if fim_q < 0:
+        return None
+    W = [w for w in palavras(L) if w[2] <= fim_q]
+    qs = [w for w in W if nrm(w[0]) in INTERROGATIVAS]
+    if not qs:
+        return None
+    q, i0, i1 = qs[0]
+    a, b = L[W[0][1]][1], L[W[-1][2]][2] + 0.08
+    tr = [(t, f) for t, f in f0_trilha(y, sr, a, b) if f]
+    if len(tr) < 4:
+        return {'palavra': q, 'erro': 'F0 não medido'}
+    topo = max(tr, key=lambda p: p[1])
+    qa, qb = L[i0][1], L[i1][2]
+    resto = [f for t, f in tr if not (qa - 0.02 <= t <= qb + 0.06)]
+    pico_q = max([f for t, f in tr if qa - 0.02 <= t <= qb + 0.06] or [0])
+    return {'palavra': q, 'de_s': round(qa, 3), 'ate_s': round(qb, 3), 'pico_hz': round(topo[1]), 't_pico_s': round(topo[0], 3),
+            'pico_na_interrogativa': bool(qa - 0.02 <= topo[0] <= qb + 0.06),
+            'interrogativa_vs_resto_st': round(float(12 * np.log2(pico_q / np.median(resto))), 1) if resto and pico_q else None}
+
+
 def pertins(y, sr, L):
     txt = ''.join(c for c, _, _ in L)
     res = []
@@ -212,6 +242,9 @@ def medir_tomada(base):
     m = {'tomada': J['letra'], 'arquivo': os.path.basename(base) + '.mp3', 'seed': J['seed'], 'texto_api': J['texto_api'], 'conferencia': motivo, **num}
     if J['texto'].rstrip().endswith('?'):
         m['pergunta'] = pergunta(y, sr, L)
+    wh = pergunta_wh(y, sr, L) if '?' in J['texto'] else None
+    if wh:
+        m['pergunta_wh'] = wh
     pt = pertins(y, sr, L)
     if pt:
         m['pertim'] = pt
@@ -278,6 +311,10 @@ def medir():
             lin += f' · sobe até a tônica: {tq.get("f0_antes_hz")} Hz ("{tq.get("palavra_antes")}") → {tq.get("pico_hz")} Hz ({tq.get("st", 0):+.1f} st)'
             lin += (f' · "{p["palavra"]}" F0 {p["f0_inicio_hz"]}→mín {p["f0_min_hz"]}→fim {p["f0_fim_hz"]} Hz · última vogal {v.get("f0_inicio_hz")}→{v.get("f0_fim_hz")} Hz '
                     f'({v.get("st", 0):+.1f} st) {"SOBE" if p["sobe"] else "não sobe"}')
+        wh = m.get('pergunta_wh')
+        if wh and 'erro' not in wh:
+            lin += (f' · wh "{wh["palavra"]}" ({wh["de_s"]:.2f}–{wh["ate_s"]:.2f} s): pico da pergunta {wh["pico_hz"]} Hz em {wh["t_pico_s"]:.2f} s '
+                    f'{"NA interrogativa" if wh["pico_na_interrogativa"] else "FORA da interrogativa"} ({wh["interrogativa_vs_resto_st"]:+.1f} st sobre a mediana do resto)')
         for q in m.get('pertim', []):
             lin += f' · {q["grafia"]}: F1 é {q["F1_PER_max_hz"]} Hz, força {q["forca"]}, fim {q["fim"]}'
         print(lin)

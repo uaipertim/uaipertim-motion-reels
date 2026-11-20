@@ -1,0 +1,59 @@
+REVISÃO TÉCNICA · Reel "Pão de Queijo Points" · reels/pao-de-queijo-points/output/uaipertim-pao-de-queijo-points.mp4
+28.50 s · 855 quadros a 30 fps
+
+FORMATO E SOM
+OK     vídeo h264 yuv420p 1080×1920
+OK     30 fps
+OK     duração 28.50 s (25–30 s)
+OK     áudio aac 48000 Hz, 2 canais
+OK     -14.1 LUFS integrados (alvo −14)
+OK     pico real -1.5 dBTP (≤ −1)
+     trilha animada -15 dB abaixo da voz (baixinha; o padrão da animada é −10)
+
+RITMO (trilha animada, 120 BPM: uma batida a cada 0,5 s)
+OK     cena 1 gancho: 0.00–5.00 s = batidas 0–10; fala 0.12–4.60 s dentro dela
+OK     cena 2 boasvindas: 5.00–8.50 s = batidas 10–17; fala 5.10–8.06 s dentro dela
+OK     cena 3 pedido: 8.50–12.00 s = batidas 17–24; fala 8.60–11.64 s dentro dela
+OK     cena 4 troca: 12.00–16.50 s = batidas 24–33; fala 12.10–16.18 s dentro dela
+OK     cena 5 niveis: 16.50–22.50 s = batidas 33–45; fala 16.60–22.04 s dentro dela
+OK     cena 6 fecho: 22.50–28.50 s = batidas 45–57; fala 22.62–25.02 s dentro dela
+OK     a logo do fecho fica parada nos últimos 3.37 s (mínimo 3 s)
+
+VOZ
+OK     o texto falado é o roteiro, cena a cena
+OK     Victor Pinho (LuQ9eaWO9yCQrR73VQFa), eleven_v4, perfil "narracao"
+OK     "UaiPertim" vai para a voz como "Uai pertím" (e "Pertim" nunca sem acento); na tela, "UaiPertim"
+OK     "o Glória" no masculino (nunca "a/da/na/de Glória")
+OK     sem "aguarde" e sem "não é app"
+     cena 1: seed 1042 · 4.48 s · enviado "Sabia que pedir no Uai pertím rende pão de queijo… em pontos?" · reels/pao-de-queijo-points/tomadas/cap-00/B-seed1042.mp3
+     cena 2: seed 42 · 2.96 s · enviado "Cê já começa com trinta pontos de boas-vindas." · voz.py, seed 42
+     cena 3: seed 42 · 3.04 s · enviado "E a cada pedido concluído, ganha mais vinte." · voz.py, seed 42
+     cena 4: seed 42 · 4.08 s · enviado "Juntou? Troca por cupom de desconto… ou até pela entrega." · voz.py, seed 42
+     cena 5: seed 42 · 5.44 s · enviado "E ainda vai subindo de nível: Bronze, Prata, Ouro… até Diamante!" · voz.py, seed 42
+     cena 6: seed 1042 · 2.40 s · enviado "Qual prêmio cê ia pegar primeiro? Conta aqui!" · reels/pao-de-queijo-points/tomadas/cap-05/B-seed1042.mp3
+OK     só a fala 6 é marcada como pergunta ("pergunta": true)
+
+PITCH · A PERGUNTA DA CENA 6 ("Qual prêmio cê ia pegar primeiro? Conta aqui!")
+     tomada usada: reels/pao-de-queijo-points/tomadas/cap-05/B-seed1042.mp3 (seed 1042)
+     "Qual" vai de 0.00 a 0.16 s; o pico da pergunta é 296 Hz em 0.14 s (+8.5 st sobre a mediana do resto da pergunta)
+OK     a pergunta sobe na palavra interrogativa: o pico de F0 do trecho da pergunta está em "Qual" (regra das wh-questions; o fim cai)
+     gráfico: output/revisao/f0-cena-6.png
+
+LEGENDA (a nova, da Coisa de mineiro #03)
+OK     a legenda bate com a fala, cena a cena (o texto da tela, na ordem, com a grafia oficial)
+OK     nenhum bloco atravessa a troca de cena
+OK     blocos curtos (até 2 linhas, até 4 palavras; "pão de queijo" conta como uma)
+OK     legenda na faixa segura: x 116–892, y 1382–1548 (x 110–906, y 1372–1565: abaixo dos pés, fora da coluna de botões e acima da descrição)
+OK     legenda sem palavras grudadas: o espaço entre as palavras nunca some (nenhum par encostado em nenhum quadro); menor vão entre duas palavras: 12 px
+
+BORDAS (máscara do conteúdo, sem o fundo; 10 quadros/s)
+     o conteúdo ocupa no máximo x 0–980, até y 1920 (entrando e saindo incluídos)
+OK     nada parado cortado pela borda
+OK     parado, tudo a ≥ 30 px das bordas laterais e de baixo
+OK     nada parado na coluna de botões do Instagram (x ≥ 940, y 1060–1560)
+
+CAPA (3:4, padrão da grade)
+OK     capa-3x4.png 1080×1440 (o recorte da grade, y 240–1680 da capa 9:16)
+OK     todo o conteúdo da capa em x 143–929 (regra x 135–945: vale na grade e na aba Reels), y 84–1340 do 3:4
+
+RESULTADO: aprovado

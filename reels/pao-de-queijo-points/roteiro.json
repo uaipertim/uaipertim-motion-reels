@@ -1,0 +1,201 @@
+{
+ "id": "pao-de-queijo-points",
+ "titulo": "Pão de Queijo Points",
+ "marca": "@uaipertim",
+ "perfil_voz": "narracao",
+ "trilha": "animada",
+ "trilha_db": -15,
+ "bpm": 120,
+ "legenda": true,
+ "grade": true,
+ "logo_pronta": 0.6,
+ "limites": [
+  25.0,
+  30.0
+ ],
+ "limites_fecho": [
+  4.0,
+  6.5
+ ],
+ "_doc": "Reel 'Pão de Queijo Points' (Instagram @uaipertim, seg 23/11 20h): o programa de fidelidade do app, apresentado pelo Pertim com a tela real (public/telas-app/celular/Fidelidade.png; Main.png na abertura). Pipeline do Explica, Sô! (voz.py, linha.py, audio.py) + a composição Remotion PaoDeQueijoPoints (src/pao-de-queijo-points/). 'grade': true = todo corte numa batida da trilha animada (120 BPM). 'trilha_db': a trilha abaixo da voz (baixinha: -15 dB; o padrão da animada é -10).",
+ "_doc_pronuncia": "Grafia c: 'UaiPertim' vai para a voz como 'Uai pertím' e 'Pertim'/'pertim' como 'pertím' (só o texto enviado; na tela e na legenda continua 'UaiPertim').",
+ "pronuncia": {
+  "UaiPertim": "Uai pertím",
+  "Pertim": "pertím",
+  "pertim": "pertím"
+ },
+ "capitulos": [
+  {
+   "rotulo": "CENA 1 · gancho",
+   "titulo": [
+    "",
+    ""
+   ],
+   "batidas": 6,
+   "inicio": 0.12,
+   "segura": 0.1,
+   "fala": [
+    {
+     "texto": "Sabia que pedir no UaiPertim rende pão de queijo… em pontos?",
+     "apoio": null
+    }
+   ],
+   "diagrama": {
+    "tipo": "gancho"
+   },
+   "chaves": [
+    "pão de queijo",
+    "pontos?"
+   ]
+  },
+  {
+   "rotulo": "CENA 2 · boas-vindas",
+   "titulo": [
+    "",
+    ""
+   ],
+   "batidas": 5,
+   "inicio": 0.1,
+   "segura": 0.05,
+   "fala": [
+    {
+     "texto": "Cê já começa com trinta pontos de boas-vindas.",
+     "apoio": null
+    }
+   ],
+   "diagrama": {
+    "tipo": "boasvindas",
+    "mais30": {
+     "em": "trinta"
+    }
+   },
+   "chaves": [
+    "trinta"
+   ]
+  },
+  {
+   "rotulo": "CENA 3 · pedido",
+   "titulo": [
+    "",
+    ""
+   ],
+   "batidas": 5,
+   "inicio": 0.1,
+   "segura": 0.05,
+   "fala": [
+    {
+     "texto": "E a cada pedido concluído, ganha mais vinte.",
+     "apoio": null
+    }
+   ],
+   "diagrama": {
+    "tipo": "pedido",
+    "mais20": {
+     "em": "vinte"
+    }
+   },
+   "chaves": [
+    "vinte."
+   ]
+  },
+  {
+   "rotulo": "CENA 4 · troca",
+   "titulo": [
+    "",
+    ""
+   ],
+   "batidas": 7,
+   "inicio": 0.1,
+   "segura": 0.05,
+   "fala": [
+    {
+     "texto": "Juntou? Troca por cupom de desconto… ou até pela entrega.",
+     "apoio": null
+    }
+   ],
+   "diagrama": {
+    "tipo": "troca",
+    "desconto": {
+     "em": "desconto"
+    },
+    "entrega": {
+     "em": "entrega"
+    }
+   },
+   "chaves": [
+    "desconto…",
+    "entrega."
+   ]
+  },
+  {
+   "rotulo": "CENA 5 · níveis",
+   "titulo": [
+    "",
+    ""
+   ],
+   "batidas": 8,
+   "inicio": 0.1,
+   "segura": 0.05,
+   "fala": [
+    {
+     "texto": "E ainda vai subindo de nível: Bronze, Prata, Ouro… até Diamante!",
+     "apoio": null
+    }
+   ],
+   "diagrama": {
+    "tipo": "niveis",
+    "niveis": [
+     {
+      "em": "Bronze",
+      "i": 0
+     },
+     {
+      "em": "Prata",
+      "i": 1
+     },
+     {
+      "em": "Ouro",
+      "i": 2
+     },
+     {
+      "em": "Diamante",
+      "i": 3
+     }
+    ]
+   },
+   "chaves": [
+    "Bronze,",
+    "Prata,",
+    "Ouro…",
+    "Diamante!"
+   ]
+  },
+  {
+   "rotulo": "FECHO",
+   "titulo": [
+    "",
+    ""
+   ],
+   "batidas": 8,
+   "inicio": 0.12,
+   "segura": 0.3,
+   "fala": [
+    {
+     "texto": "Qual prêmio cê ia pegar primeiro? Conta aqui!",
+     "apoio": null
+    }
+   ],
+   "diagrama": {
+    "tipo": "fecho",
+    "logo": {
+     "em": "Conta"
+    }
+   },
+   "pergunta": true,
+   "chaves": [
+    "prêmio"
+   ]
+  }
+ ],
+ "_doc_chaves": "'chaves' de cada capítulo: as palavras-chave da legenda gravada (ficam em amarelo/laranja depois de ditas); 'pão de queijo' conta como uma palavra só."
+}

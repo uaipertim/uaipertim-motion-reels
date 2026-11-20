@@ -1,0 +1,218 @@
+{
+ "_doc": "Layout do Reel 'Pão de Queijo Points' (1080×1920, 30 fps). Lido pela composição (src/pao-de-queijo-points/), por scripts/preparar.py e pelo qa.py. Caixas [x0, y0, x1, y1]. Telas em px do PNG (1170 de largura). O celular é o do 'Olha ele por dentro!' (x 245–935, y 310–1750); as lupas ficam no alto (y 300–780); o Pertim no canto de baixo à esquerda; a legenda nova (pop) logo abaixo dos pés, em x 110–906; a nota 'Prêmios e valores ilustrativos' no rodapé, fixa enquanto a tela aparece.",
+ "W": 1080,
+ "H": 1920,
+ "fps": 30,
+ "botoes": [
+  940,
+  1060,
+  1080,
+  1560
+ ],
+ "legenda_pop": {
+  "cx": 508,
+  "top": 1400,
+  "size": 72,
+  "linha": 88,
+  "size2": 60,
+  "linha2": 66,
+  "maxW": 796,
+  "x0": 110,
+  "x1": 906,
+  "_doc": "a legenda nova (a da Coisa de mineiro #03): uma linha na letra grande; se não couber, duas na menor; sempre em x 110–906"
+ },
+ "nota": {
+  "texto": "Prêmios e valores ilustrativos",
+  "cx": 508,
+  "y": 1584,
+  "size": 24
+ },
+ "celular": {
+  "x": 245,
+  "y": 310,
+  "w": 690,
+  "h": 1440,
+  "bezel": 0.042
+ },
+ "lupa": {
+  "y0": 300,
+  "y1": 780,
+  "x0": 90,
+  "x1": 930
+ },
+ "pertim": {
+  "canto": {
+   "cx": 180,
+   "base": 1318,
+   "altura": 300
+  },
+  "gancho": {
+   "cx": 190,
+   "base": 1318,
+   "altura": 400
+  },
+  "fecho": {
+   "cx": 224,
+   "base": 1318,
+   "altura": 420
+  }
+ },
+ "gancho": {
+  "pao": {
+   "cx": 640,
+   "cy": 640,
+   "r": 190
+  },
+  "contador": {
+   "cx": 640,
+   "cy": 1130,
+   "w": 520,
+   "h": 184
+  }
+ },
+ "telas": {
+  "Main": {
+   "h": 4140,
+   "fixo": {
+    "faixa": [
+     4033,
+     4140
+    ]
+   },
+   "pontos": {
+    "banner": [
+     60,
+     981,
+     1110,
+     1353
+    ],
+    "premios": [
+     906,
+     1170
+    ],
+    "saldoTexto": [
+     318,
+     1120
+    ]
+   }
+  },
+  "Fidelidade": {
+   "h": 3510,
+   "fixo": {},
+   "pontos": {
+    "saldo": [
+     60,
+     231,
+     1110,
+     810
+    ],
+    "mais30": [
+     60,
+     858,
+     570,
+     1140
+    ],
+    "mais20": [
+     600,
+     858,
+     1110,
+     1140
+    ],
+    "cartoes": [
+     60,
+     858,
+     1110,
+     1140
+    ],
+    "linhas": [
+     [
+      60,
+      1311,
+      1110,
+      1554
+     ],
+     [
+      60,
+      1587,
+      1110,
+      1830
+     ],
+     [
+      60,
+      1863,
+      1110,
+      2106
+     ],
+     [
+      60,
+      2139,
+      1110,
+      2382
+     ]
+    ],
+    "troque": [
+     60,
+     1200,
+     1110,
+     2382
+    ],
+    "niveis": [
+     [
+      60,
+      2943,
+      303,
+      3156
+     ],
+     [
+      330,
+      2943,
+      573,
+      3156
+     ],
+     [
+      597,
+      2943,
+      843,
+      3156
+     ],
+     [
+      867,
+      2943,
+      1110,
+      3156
+     ]
+    ],
+    "niveisRegiao": [
+     40,
+     2880,
+     1130,
+     3180
+    ]
+   }
+  }
+ },
+ "rola": {
+  "Fidelidade_niveis": 950
+ },
+ "fecho": {
+  "logo": {
+   "cx": 600,
+   "cy": 560,
+   "d": 330
+  },
+  "frase": {
+   "cy": 815,
+   "size": 62
+  },
+  "comenta": {
+   "cx": 640,
+   "cy": 1000
+  },
+  "cartoes": {
+   "cx": 640,
+   "y0": 500,
+   "passo": 168,
+   "escala": 0.54
+  }
+ }
+}

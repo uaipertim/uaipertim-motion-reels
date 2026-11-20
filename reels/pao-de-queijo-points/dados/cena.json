@@ -1,0 +1,188 @@
+{
+ "duracao": 28.5,
+ "fps": 30,
+ "quadros": 855,
+ "batida": 0.5,
+ "bpm": 120.0,
+ "cenas": [
+  {
+   "n": 0,
+   "tipo": "gancho",
+   "t0": 0.0,
+   "t1": 5.0,
+   "voz_t0": 0.12,
+   "voz_t1": 4.6,
+   "texto": "Sabia que pedir no UaiPertim rende pão de queijo… em pontos?"
+  },
+  {
+   "n": 1,
+   "tipo": "boasvindas",
+   "t0": 5.0,
+   "t1": 8.5,
+   "voz_t0": 5.1,
+   "voz_t1": 8.06,
+   "texto": "Cê já começa com trinta pontos de boas-vindas."
+  },
+  {
+   "n": 2,
+   "tipo": "pedido",
+   "t0": 8.5,
+   "t1": 12.0,
+   "voz_t0": 8.6,
+   "voz_t1": 11.64,
+   "texto": "E a cada pedido concluído, ganha mais vinte."
+  },
+  {
+   "n": 3,
+   "tipo": "troca",
+   "t0": 12.0,
+   "t1": 16.5,
+   "voz_t0": 12.1,
+   "voz_t1": 16.18,
+   "texto": "Juntou? Troca por cupom de desconto… ou até pela entrega."
+  },
+  {
+   "n": 4,
+   "tipo": "niveis",
+   "t0": 16.5,
+   "t1": 22.5,
+   "voz_t0": 16.6,
+   "voz_t1": 22.04,
+   "texto": "E ainda vai subindo de nível: Bronze, Prata, Ouro… até Diamante!"
+  },
+  {
+   "n": 5,
+   "tipo": "fecho",
+   "t0": 22.5,
+   "t1": 28.5,
+   "voz_t0": 22.62,
+   "voz_t1": 25.02,
+   "texto": "Qual prêmio cê ia pegar primeiro? Conta aqui!"
+  }
+ ],
+ "eventos": {
+  "gancho": {
+   "estoura": 0.7,
+   "moedas": [
+    0.98,
+    1.052,
+    1.124,
+    1.196,
+    1.268,
+    1.34,
+    1.412,
+    1.484,
+    1.556,
+    1.628,
+    1.7,
+    1.772,
+    1.844,
+    1.916
+   ],
+   "conta_fim": 1.916,
+   "celular": [
+    2.1,
+    2.65
+   ],
+   "voa": [
+    2.3,
+    2.85
+   ],
+   "banner": 4.07
+  },
+  "boasvindas": {
+   "toque": 4.78,
+   "entra": [
+    4.95,
+    5.25
+   ],
+   "saldo": [
+    5.3,
+    5.92
+   ],
+   "lupa": [
+    5.8,
+    11.88
+   ],
+   "mais30": 6.19
+  },
+  "pedido": {
+   "mais20": 9.13,
+   "vinte": 10.93
+  },
+  "troca": {
+   "lupa": [
+    12.08,
+    16.38
+   ],
+   "desconto": 13.95,
+   "desce": 15.01,
+   "entrega": 15.43,
+   "toque": 14.33
+  },
+  "niveis": {
+   "rola": [
+    16.55,
+    17.25,
+    0,
+    950
+   ],
+   "lupa": [
+    17.1,
+    22.38
+   ],
+   "niveis": [
+    {
+     "i": 0,
+     "t": 18.49
+    },
+    {
+     "i": 1,
+     "t": 19.21
+    },
+    {
+     "i": 2,
+     "t": 20.01
+    },
+    {
+     "i": 3,
+     "t": 21.01
+    }
+   ]
+  },
+  "fecho": {
+   "afasta": [
+    22.4,
+    22.95
+   ],
+   "cartoes": [
+    22.65,
+    22.77,
+    22.89,
+    23.01
+   ],
+   "pergunta": 22.62,
+   "somem": 24.43,
+   "logo": {
+    "entra": 24.53,
+    "parada": 25.13
+   },
+   "frase": 25.08,
+   "comenta": 24.83,
+   "acena": 24.53,
+   "pisca": 25.27
+  }
+ },
+ "piscadas": [
+  0.9,
+  4.712,
+  8.162,
+  10.712,
+  13.659,
+  17.832,
+  21.718,
+  25.503,
+  27.677
+ ],
+ "piscada_dur": 0.16
+}

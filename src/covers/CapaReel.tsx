@@ -21,8 +21,10 @@ export type CapaReelProps = {
   ilustracao: Ilustracao; titulo: string[]; fundo: "creme" | "pessego"; cor: "coral" | "verde" | "amarelo";
   layout?: { titulo: Wrapped; fonte: string };
   aviso?: string;   // um aviso discreto embaixo (ex.: "Lojas e valores ilustrativos", nas capas com telas do app)
+  semFundo?: boolean;   // só para o QA: sem o fundo (creme, raios e halo), para medir onde está o conteúdo
+  margem?: number;  // a margem lateral do título e dos brilhos (padrão 110; 135 = a regra das capas que valem na grade E na aba Reels)
 };
-type Ilustracao = "mesa" | "nao-e-app" | "entrega" | "vaga" | "fome" | "dentro";
+type Ilustracao = "mesa" | "nao-e-app" | "entrega" | "vaga" | "fome" | "dentro" | "cesta";
 
 const SAFE = { x0: 110, x1: 970, y0: 300, y1: 1620 };
 const SELO_Y = 372;                                     // centro do selo
@@ -32,7 +34,8 @@ const TITULO = { cy: 1330, maxH: 470, maxW: 820, sizes: [170, 156, 144, 132, 120
 // medido em calculateMetadata (fontes carregadas): as linhas dadas, no maior tamanho em que todas cabem
 export const measureCapaReel = (c: CapaReelProps) => {
   const lines = c.titulo.map((l) => l.replace(/\*/g, ""));
-  const size = TITULO.sizes.find((z) => lines.length * z * 1.12 <= TITULO.maxH && lines.every((l) => fitWrap(l, W.black, TITULO.maxW, [z], 1).ok)) ?? TITULO.sizes[TITULO.sizes.length - 1];
+  const maxW = c.margem ? 1080 - 2 * c.margem : TITULO.maxW;
+  const size = TITULO.sizes.find((z) => lines.length * z * 1.12 <= TITULO.maxH && lines.every((l) => fitWrap(l, W.black, maxW, [z], 1).ok)) ?? TITULO.sizes[TITULO.sizes.length - 1];
   return { titulo: { size, lines, ok: true }, fonte: c.titulo.join(" ") };
 };
 
@@ -278,11 +281,67 @@ const Dentro: React.FC = () => {
   );
 };
 
-const ILUSTRACOES: Record<Ilustracao, React.FC> = { mesa: Mesa, "nao-e-app": NaoEApp, entrega: Entrega, vaga: Vaga, fome: Fome, dentro: Dentro };
+// 7 · Pão de Queijo Points: o Pertim com uma cesta de pão de queijo quentinho (as duas luvas na borda da cesta), olhando
+//     para a câmera, com as moedinhas de pontos e os cartões "+30" e "+20" (os da tela do programa) em volta
+const PaoBola: React.FC<{ x: number; y: number; r: number }> = ({ x, y, r }) => (
+  <g>
+    <ellipse cx={x} cy={y + r * 0.12} rx={r} ry={r * 0.84} fill="#D7962F" />
+    <ellipse cx={x} cy={y} rx={r} ry={r * 0.84} fill="#F2C063" />
+    <ellipse cx={x - r * 0.32} cy={y - r * 0.34} rx={r * 0.36} ry={r * 0.18} fill="#FFE6A6" transform={`rotate(-18 ${x - r * 0.32} ${y - r * 0.34})`} />
+    <circle cx={x + r * 0.3} cy={y + r * 0.1} r={r * 0.09} fill="#C47E1E" opacity={0.55} /><circle cx={x - r * 0.2} cy={y + r * 0.35} r={r * 0.07} fill="#C47E1E" opacity={0.5} />
+  </g>
+);
+const MoedaCapa: React.FC<{ x: number; y: number; r: number; rot?: number }> = ({ x, y, r, rot = 0 }) => (
+  <g transform={`translate(${x} ${y}) rotate(${rot}) scale(${r / 48})`}>
+    <circle r="48" fill={C.amareloDark} /><circle r="44" cy="-3" fill={C.amarelo} /><circle r="32" cy="-3" fill="none" stroke="#FFE08A" strokeWidth="5" />
+    <path d="M-17 4 C-19 -11 -9 -18 0 -18 C9 -18 19 -11 17 4 C16 12 9 15 0 15 C-9 15 -16 12 -17 4 Z" fill={C.amareloDark} transform="translate(0 -3)" />
+    <path d="M-17 1 C-19 -14 -9 -21 0 -21 C9 -21 19 -14 17 1 C16 9 9 12 0 12 C-9 12 -16 9 -17 1 Z" fill="#FFE08A" transform="translate(0 -3)" />
+  </g>
+);
+const CartaoPontos: React.FC<{ x: number; y: number; txt: string; rot: number }> = ({ x, y, txt, rot }) => (
+  <g transform={`translate(${x} ${y}) rotate(${rot})`}>
+    <rect x="-82" y="-50" width="164" height="100" rx="26" fill="#000" opacity="0.08" transform="translate(0 8)" />
+    <rect x="-82" y="-50" width="164" height="100" rx="26" fill="#fff" stroke={C.cremeDeep} strokeWidth="4" />
+    <text x="0" y="20" textAnchor="middle" fontFamily={FONT} fontWeight={900} fontSize="58" fill={C.coral}>{txt}</text>
+  </g>
+);
+const Cesta: React.FC = () => {
+  // o Pertim acenando (viewBox das poses com braço: -20 6 280 284) com a cesta pendurada na mão esquerda (luva em 39 207)
+  const ph = 470, k = ph / 284, pw = 280 * k, px = 378 - pw / 2, py = 584 - (276 - 6) * k;
+  return (
+    <>
+      <Svg abs>
+        <ellipse cx="378" cy="586" rx="250" ry="14" fill="#000" opacity="0.08" />
+        <CartaoPontos x={112} y={250} txt="+30" rot={-8} />
+        <CartaoPontos x={648} y={214} txt="+20" rot={7} />
+        <MoedaCapa x={96} y={420} r={40} rot={-14} /><MoedaCapa x={668} y={420} r={46} rot={12} /><MoedaCapa x={600} y={60} r={30} rot={-8} /><MoedaCapa x={170} y={78} r={26} rot={10} />
+        <Brilho x={300} y={40} s={40} c={C.coral} /><Brilho x={720} y={320} s={30} /><Brilho x={40} y={140} s={30} />
+      </Svg>
+      <div style={{ position: "absolute", left: px, top: py, width: pw, height: ph }}>
+        <Pertim v={1} pose="acenando" expr="sorrindo" altura={ph} rig={{ olhar: [0, 0], centro: true, aceno: 6 }} />
+      </div>
+      <svg viewBox="-20 6 280 284" width={pw} height={ph} style={{ position: "absolute", left: px, top: py, overflow: "visible" }}>
+        {[0, 1, 2].map((i) => <path key={i} d={`M${18 + i * 18} 186 c-6 -8 6 -12 0 -20`} stroke="#fff" strokeWidth="4" strokeLinecap="round" fill="none" opacity={0.95 - i * 0.15} />)}
+        <path d="M-10 222 Q39 170 88 222" stroke="#8A5427" strokeWidth="6" fill="none" strokeLinecap="round" />
+        <PaoBola x={6} y={214} r={15} /><PaoBola x={72} y={214} r={15} /><PaoBola x={39} y={206} r={18} /><PaoBola x={22} y={198} r={12} /><PaoBola x={56} y={198} r={12} />
+        <path d="M-18 220 H96 L88 266 Q87 272 80 272 H-2 Q-9 272 -10 266 Z" fill="#C98A4B" />
+        {[234, 250].map((y) => <path key={y} d={`M${-15 + (y - 220) * 0.18} ${y} H${93 - (y - 220) * 0.18}`} stroke="#A86B33" strokeWidth="3.5" />)}
+        {[6, 26, 52, 72].map((x) => <path key={x} d={`M${x} 226 L${x + (x < 39 ? 2 : -2)} 270`} stroke="#A86B33" strokeWidth="3" opacity="0.8" />)}
+        <rect x="-22" y="214" width="122" height="11" rx="5.5" fill="#E0A863" />
+        <rect x="2" y="238" width="74" height="19" rx="9.5" fill="#fff" opacity="0.94" />
+        <text x="39" y="252" textAnchor="middle" fontFamily={FONT} fontWeight={900} fontSize="12" fill={C.coral}>+ PONTOS</text>
+        {/* a luva por cima da alça (segurando) */}
+        <g transform="translate(39 198) rotate(18)"><circle r="10.5" fill={C.coral} /><circle cx="-8.5" cy="-1" r="4.6" fill={C.coral} /><rect x="-8" y="-15.5" width="16" height="7" rx="3.5" fill={C.creme} /></g>
+      </svg>
+    </>
+  );
+};
+
+const ILUSTRACOES: Record<Ilustracao, React.FC> = { mesa: Mesa, "nao-e-app": NaoEApp, entrega: Entrega, vaga: Vaga, fome: Fome, dentro: Dentro, cesta: Cesta };
 
 // ---------------------------------------------------------------- a capa
 const TWINK: Array<[number, number]> = [[150, 470], [930, 520], [130, 1120], [950, 1100], [170, 1560], [910, 1570]];
-export const CapaReel: React.FC<CapaReelProps> = ({ id, selo, numero, icone, ilustracao, fundo, cor, layout, aviso }) => {
+export const CapaReel: React.FC<CapaReelProps> = ({ id, selo, numero, icone, ilustracao, fundo, cor, layout, aviso, margem, semFundo }) => {
   if (!layout) throw new Error("CapaReel: layout é medido no calculateMetadata");
   const k = COR[cor];
   const bg = fundo === "pessego"
@@ -291,17 +350,17 @@ export const CapaReel: React.FC<CapaReelProps> = ({ id, selo, numero, icone, ilu
   const Ilu = ILUSTRACOES[ilustracao];
   const t = layout.titulo, th = t.lines.length * t.size * 1.12;
   return (
-    <AbsoluteFill style={{ background: bg, overflow: "hidden" }}>
-      <Sunburst frame={0} cx={540} cy={ILU.y + ILU.h / 2} color={k.raio} opacity={0.12} />
-      <Twinkles frame={14} seed={`capa-reel-${id}`} points={TWINK} size={34} />
-      <div style={{ position: "absolute", left: 540 - 400, top: ILU.y + ILU.h / 2 - 400, width: 800, height: 800, borderRadius: "50%", background: `radial-gradient(circle, ${k.halo}66 0%, ${k.halo}00 68%)` }} />
+    <AbsoluteFill style={{ background: semFundo ? undefined : bg, overflow: "hidden" }}>
+      {!semFundo && <Sunburst frame={0} cx={540} cy={ILU.y + ILU.h / 2} color={k.raio} opacity={0.12} />}
+      <Twinkles frame={14} seed={`capa-reel-${id}`} points={margem ? TWINK.map(([x, y]) => [Math.min(1080 - margem - 20, Math.max(margem + 20, x)), y] as [number, number]) : TWINK} size={34} />
+      {!semFundo && <div style={{ position: "absolute", left: 540 - 400, top: ILU.y + ILU.h / 2 - 400, width: 800, height: 800, borderRadius: "50%", background: `radial-gradient(circle, ${k.halo}66 0%, ${k.halo}00 68%)` }} />}
       <div style={{ position: "absolute", top: SELO_Y - 60, left: 0, right: 0, height: 120, display: "flex", justifyContent: "center", alignItems: "center" }}>
         <Selo texto={selo} numero={numero} icone={icone} />
       </div>
       <div style={{ position: "absolute", left: ILU.x, top: ILU.y, width: ILU.w, height: ILU.h }}>
         <Ilu />
       </div>
-      <div style={{ position: "absolute", top: TITULO.cy - th / 2, left: SAFE.x0, right: 1080 - SAFE.x1 }}>
+      <div style={{ position: "absolute", top: TITULO.cy - th / 2, left: margem ?? SAFE.x0, right: margem ?? 1080 - SAFE.x1 }}>
         <Text source={layout.fonte} wrapped={t} weight={W.black} />
       </div>
       {aviso && (

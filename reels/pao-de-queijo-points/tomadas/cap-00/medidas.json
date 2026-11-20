@@ -1,0 +1,172 @@
+{
+ "episodio": "pao-de-queijo-points",
+ "cap": 0,
+ "texto": "Sabia que pedir no UaiPertim rende pão de queijo… em pontos?",
+ "voz": "Victor Pinho",
+ "perfil": "narracao",
+ "modelo": "eleven_v4",
+ "tomadas": [
+  {
+   "tomada": "A",
+   "arquivo": "A-seed42.mp3",
+   "seed": 42,
+   "texto_api": "Sabia que pedir no Uai pertím rende pão de queijo… em pontos?",
+   "conferencia": "ok",
+   "ritmo_letras_s": 10.7,
+   "maior_pausa_s": 0.44,
+   "sobra_no_fim_s": 0.16,
+   "fala_s": 4.48,
+   "pergunta": {
+    "subida_tonica": {
+     "palavra_antes": "em",
+     "f0_antes_hz": 327,
+     "pico_hz": 200,
+     "t_pico_s": 4.14,
+     "st": -8.5
+    },
+    "ultima_vogal": null,
+    "palavra": "pontos?",
+    "de_s": 3.92,
+    "ate_s": 4.534,
+    "f0_inicio_hz": 116,
+    "f0_min_hz": 115,
+    "t_min_s": 3.98,
+    "f0_fim_hz": 198,
+    "subida_st": 9.5,
+    "fim_vs_inicio_st": 9.3,
+    "sobe": false,
+    "contorno_hz": [
+     0,
+     0,
+     115,
+     116,
+     118,
+     0,
+     0,
+     0,
+     0,
+     0,
+     200,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "pertim": [
+    {
+     "grafia": "Uai pertím",
+     "F1_PER_max_hz": 2402,
+     "E_aberto": true,
+     "vogal_PER": {
+      "dur": 0.08,
+      "f0": 154
+     },
+     "vogal_TIM": {
+      "dur": 0.12,
+      "f0": 146
+     },
+     "forca": "TIM",
+     "F2_meio": 2690,
+     "F2_fim": 2450,
+     "fim": "in? (F2 alto)"
+    }
+   ]
+  },
+  {
+   "tomada": "B",
+   "arquivo": "B-seed1042.mp3",
+   "seed": 1042,
+   "texto_api": "Sabia que pedir no Uai pertím rende pão de queijo… em pontos?",
+   "conferencia": "ok",
+   "ritmo_letras_s": 10.7,
+   "maior_pausa_s": 0.44,
+   "sobra_no_fim_s": 0.16,
+   "fala_s": 4.48,
+   "pergunta": {
+    "subida_tonica": {
+     "palavra_antes": "em",
+     "f0_antes_hz": 252,
+     "pico_hz": 339,
+     "t_pico_s": 4.19,
+     "st": 5.1
+    },
+    "ultima_vogal": null,
+    "palavra": "pontos?",
+    "de_s": 4.0,
+    "ate_s": 4.575,
+    "f0_inicio_hz": 111,
+    "f0_min_hz": 111,
+    "t_min_s": 4.04,
+    "f0_fim_hz": 333,
+    "subida_st": 19.0,
+    "fim_vs_inicio_st": 19.0,
+    "sobe": false,
+    "contorno_hz": [
+     0,
+     111,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     327,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "pertim": [
+    {
+     "grafia": "Uai pertím",
+     "F1_PER_max_hz": null,
+     "E_aberto": false,
+     "vogal_PER": {
+      "dur": 0.05,
+      "f0": null
+     },
+     "vogal_TIM": {
+      "dur": 0.08,
+      "f0": 137
+     },
+     "forca": "TIM",
+     "F2_meio": 2516,
+     "F2_fim": 1549,
+     "fim": "im (F2 cai)"
+    }
+   ]
+  }
+ ]
+}

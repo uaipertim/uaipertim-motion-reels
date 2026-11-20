@@ -1,0 +1,90 @@
+{
+ "episodio": "pao-de-queijo-points",
+ "cap": 5,
+ "texto": "Qual prêmio cê ia pegar primeiro? Conta aqui!",
+ "voz": "Victor Pinho",
+ "perfil": "narracao",
+ "modelo": "eleven_v4",
+ "tomadas": [
+  {
+   "tomada": "A",
+   "arquivo": "A-seed42.mp3",
+   "seed": 42,
+   "texto_api": "Qual prêmio cê ia pegar primeiro? Conta aqui!",
+   "conferencia": "ok",
+   "ritmo_letras_s": 15.0,
+   "maior_pausa_s": 0.36,
+   "sobra_no_fim_s": 0.24,
+   "fala_s": 2.4,
+   "pergunta_wh": {
+    "palavra": "Qual",
+    "de_s": 0.0,
+    "ate_s": 0.16,
+    "pico_hz": 237,
+    "t_pico_s": 0.35,
+    "pico_na_interrogativa": false,
+    "interrogativa_vs_resto_st": 3.5
+   }
+  },
+  {
+   "tomada": "B",
+   "arquivo": "B-seed1042.mp3",
+   "seed": 1042,
+   "texto_api": "Qual prêmio cê ia pegar primeiro? Conta aqui!",
+   "conferencia": "ok",
+   "ritmo_letras_s": 15.0,
+   "maior_pausa_s": 0.44,
+   "sobra_no_fim_s": 0.16,
+   "fala_s": 2.4,
+   "pergunta_wh": {
+    "palavra": "Qual",
+    "de_s": 0.0,
+    "ate_s": 0.16,
+    "pico_hz": 296,
+    "t_pico_s": 0.14,
+    "pico_na_interrogativa": true,
+    "interrogativa_vs_resto_st": 8.5
+   }
+  },
+  {
+   "tomada": "C",
+   "arquivo": "C-seed2042.mp3",
+   "seed": 2042,
+   "texto_api": "Qual prêmio cê ia pegar primeiro? Conta aqui!",
+   "conferencia": "ok",
+   "ritmo_letras_s": 14.5,
+   "maior_pausa_s": 0.44,
+   "sobra_no_fim_s": 0.16,
+   "fala_s": 2.48,
+   "pergunta_wh": {
+    "palavra": "Qual",
+    "de_s": 0.0,
+    "ate_s": 0.08,
+    "pico_hz": 283,
+    "t_pico_s": 0.11,
+    "pico_na_interrogativa": true,
+    "interrogativa_vs_resto_st": 6.6
+   }
+  },
+  {
+   "tomada": "D",
+   "arquivo": "D-seed3042.mp3",
+   "seed": 3042,
+   "texto_api": "Qual prêmio cê ia pegar primeiro? Conta aqui!",
+   "conferencia": "ok",
+   "ritmo_letras_s": 14.1,
+   "maior_pausa_s": 0.44,
+   "sobra_no_fim_s": 0.16,
+   "fala_s": 2.56,
+   "pergunta_wh": {
+    "palavra": "Qual",
+    "de_s": 0.0,
+    "ate_s": 0.24,
+    "pico_hz": 302,
+    "t_pico_s": 0.17,
+    "pico_na_interrogativa": true,
+    "interrogativa_vs_resto_st": 7.8
+   }
+  }
+ ]
+}

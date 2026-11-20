@@ -708,7 +708,8 @@ for i in range(1, N):
 music *= 1 - (1 - 10 ** (-6 / 20)) * sm
 ref = np.sqrt(np.mean(voz[np.abs(voz) > 0.005] ** 2)) if np.any(np.abs(voz) > 0.005) else 0.11   # (prévia sem voz: a voz de referência)
 # a trilha da série fica ~11 dB abaixo da voz; a animada, ~10 dB (como no Tudo Pertim): a batida pede 1 dB a mais
-music *= 10 ** ((-10 if TRILHA == 'animada' else -11) / 20) / max(1e-9, np.sqrt(np.mean(music ** 2))) * ref * 0.8
+# "trilha_db" no roteiro troca esse nível (ex.: -15, a trilha baixinha por baixo da voz do "Pão de Queijo Points")
+music *= 10 ** (float(EPJ.get('trilha_db', -10 if TRILHA == 'animada' else -11)) / 20) / max(1e-9, np.sqrt(np.mean(music ** 2))) * ref * 0.8
 msc = np.stack([music, np.roll(music, int(0.011 * SR)) * 0.97])
 
 # ------------------------------------------------------------------ a sala + a mixagem + o master
