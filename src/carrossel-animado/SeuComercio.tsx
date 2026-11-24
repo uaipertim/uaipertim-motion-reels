@@ -128,7 +128,7 @@ const ANEIS_VITRINE: Cx[][] = [
 const Chip: React.FC<{ e: number; txt: string }> = ({ e, txt }) => (
   <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 26px 12px 14px", borderRadius: 999, background: mix("#FFFFFF", "#EAF6EA", e),
     border: `5px solid ${mix("#EADBC6", C.verde, e)}`, boxShadow: `0 7px 0 ${mix("#E2CDB2", C.verdeDark, e)}`, transform: `scale(${1 + 0.06 * e})`,
-    fontFamily: FONT, fontWeight: W.black, fontSize: 38, color: C.tinta, whiteSpace: "nowrap" }}>
+    fontFamily: FONT, fontWeight: W.black, fontSize: 36, color: C.tinta, whiteSpace: "nowrap" }}>
     <div style={{ width: 46, height: 46, borderRadius: "50%", background: mix("#E9DED0", C.verde, e), display: "flex", alignItems: "center", justifyContent: "center" }}><IconeCheck s={34} cor="#fff" /></div>
     {txt}
   </div>
@@ -146,7 +146,7 @@ const Vitrine: React.FC<P> = ({ L, layout, f, D, ilustrativo }) => {
       <Notebook x={170} y={548} w={740} tela="LojistaCardapio" recorte={REC_CARD}>
         {ANEIS_VITRINE.map((cxs, k) => cxs.map((cx, j) => <Anel key={`${k}-${j}`} cx={cx} e={e(k)} raio={18} esp={7} />))}
       </Notebook>
-      <div style={{ position: "absolute", left: SAFE.x0, width: LARG, top: 1060, display: "flex", justifyContent: "center", gap: 22 }}>
+      <div style={{ position: "absolute", left: SAFE.x0, width: LARG, top: 1060, display: "flex", justifyContent: "center", gap: 14 }}>
         {L.itens!.map((x, k) => <Chip key={k} e={chip(k)} txt={x} />)}
       </div>
       <Ilustrativo texto={ilustrativo} y={1196} />
@@ -179,7 +179,7 @@ const Pedido: React.FC<P> = ({ L, layout, f, D, ilustrativo }) => {
   const anel = liga(t, T_CHEGA + 0.3, FIM, 0.3);
   const aviso = outBack(clamp01((t - (T_CHEGA + 0.1)) / 0.35), 2) * (1 - ease(clamp01((t - (T_TOQUE - 0.2)) / 0.3)));
   const yt = 168 + altTitulo(layout!.titulo) + 18;
-  const BAL: Array<{ x: number; y: number; lado: "e" | "d" }> = [{ x: 150, y: 470, lado: "e" }, { x: 600, y: 470, lado: "d" }, { x: 330, y: 560, lado: "e" }];
+  const BAL: Array<{ x: number; y: number; lado: "e" | "d" }> = [{ x: 150, y: 470, lado: "e" }, { x: 555, y: 470, lado: "d" }, { x: 330, y: 560, lado: "e" }];
   return (
     <>
       <Titulo L={L} wt={layout!.titulo} topo />
@@ -250,8 +250,8 @@ const Entrega: React.FC<P> = ({ L, layout, f, D }) => {
               transform: `scale(${1 + 0.06 * e})` }}>
               <div style={{ opacity: 0.5 + 0.5 * e, filter: e < 0.5 ? "grayscale(0.7)" : undefined }}>{ICONES_ENTREGA[k](132)}</div>
             </div>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontFamily: FONT, fontWeight: W.black, fontSize: 46, lineHeight: 1.1, color: mix("#8C7F75", C.tinta, e), letterSpacing: -0.8, whiteSpace: "nowrap" }}>{o.titulo}</div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ fontFamily: FONT, fontWeight: W.black, fontSize: 44, lineHeight: 1.08, color: mix("#8C7F75", C.tinta, e), letterSpacing: -0.8, textWrap: "balance" } as React.CSSProperties}>{o.titulo}</div>
               <div style={{ fontFamily: FONTE, fontWeight: W.medium, fontSize: 34, lineHeight: 1.2, color: C.tinta, opacity: 0.55 + 0.35 * e, marginTop: 8 }}>{glue(o.texto)}</div>
             </div>
             <div style={{ flex: "none", width: 60, height: 60, borderRadius: "50%", background: mix("#E9DED0", C.verde, e), display: "flex", alignItems: "center", justifyContent: "center", transform: `scale(${0.8 + 0.25 * e})` }}>
@@ -312,7 +312,7 @@ const Pagamento: React.FC<P> = ({ L, layout, f, D }) => {
         );
       })}
       <div style={{ position: "absolute", left: SAFE.x0, width: LARG, top: top + 610, display: "flex", justifyContent: "center", transform: `scale(${(0.92 + 0.08 * selo) * pulso})`, opacity: 0.35 + 0.65 * selo }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 18, padding: "16px 30px 16px 18px", borderRadius: 30, background: C.amarelo, boxShadow: `0 8px 0 ${C.amareloDark}`, maxWidth: LARG - 20, boxSizing: "border-box" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 18, padding: "16px 30px 16px 18px", borderRadius: 30, background: C.amarelo, boxShadow: `0 8px 0 ${C.amareloDark}`, maxWidth: LARG - 70, boxSizing: "border-box" }}>
           <div style={{ flex: "none", width: 72, height: 72, borderRadius: "50%", background: "#fff", display: "flex", alignItems: "center", justifyContent: "center",
             fontFamily: FONT, fontWeight: W.black, fontSize: 32, color: C.coral, letterSpacing: -1 }}>%</div>
           <div style={{ fontFamily: FONTE, fontWeight: W.black, fontSize: 34, lineHeight: 1.15, color: C.tinta, letterSpacing: -0.4, textWrap: "balance" } as React.CSSProperties}>{glue(L.selo!)}</div>
@@ -347,7 +347,7 @@ const Mensalidade: React.FC<P> = ({ L, layout, f, D, valores }) => {
   const n = Math.min(valores.meses_gratis, Math.floor(cont * (valores.meses_gratis + 0.999)));
   const pulo = n > 0 ? Math.sin(Math.PI * clamp01(((cont * (valores.meses_gratis + 0.999)) % 1) / 0.6)) * (cont < 1 ? 1 : 0) : 0;
   const some = 1 - ease(clamp01((t - (dur - 0.6)) / 0.45));
-  const vis = Math.max(0.35, some) * (t < 0.5 ? 0.35 + 0.65 * ease(clamp01(t / 0.5)) : 1);
+  const vis = some * ease(clamp01(t / 0.45));
   const dep = liga(t, 2.0, dur - 0.7, 0.35), dest = liga(t, 3.0, dur - 0.7, 0.35);
   const brilho = clamp01((t - 5.5) / 0.9);
   return (
@@ -356,14 +356,14 @@ const Mensalidade: React.FC<P> = ({ L, layout, f, D, valores }) => {
       <div style={{ position: "absolute", left: SAFE.x0, width: LARG, top, height: 400, boxSizing: "border-box", borderRadius: 40, background: "#fff", border: "5px solid #EADBC6", boxShadow: "0 9px 0 #E2CDB2",
         display: "flex", alignItems: "center", justifyContent: "center", gap: 34 }}>
         <div style={{ transform: `rotate(${-6 + 3 * onda(f, D, 2)}deg)` }}><Calendario s={170} /></div>
-        <div style={{ display: "flex", alignItems: "baseline", gap: 18, opacity: vis }}>
-          <span style={{ fontFamily: FONT, fontWeight: W.black, fontSize: 260, lineHeight: 1, color: C.coral, letterSpacing: -8, display: "inline-block", transform: `scale(${1 + 0.12 * pulo})`, textShadow: `0 10px 0 ${C.amarelo}` }}>{n}</span>
+        <div style={{ display: "flex", alignItems: "baseline", gap: 18 }}>
+          <span style={{ opacity: vis, fontFamily: FONT, fontWeight: W.black, fontSize: 260, lineHeight: 1, color: C.coral, letterSpacing: -8, display: "inline-block", transform: `scale(${1 + 0.12 * pulo})`, textShadow: `0 10px 0 ${C.amarelo}` }}>{n}</span>
           <span style={{ fontFamily: FONT, fontWeight: W.black, fontSize: 84, lineHeight: 1, color: C.tinta, letterSpacing: -2 }}>meses</span>
         </div>
       </div>
       <Texto y={top + 432} size={38} x={SAFE.x0} w={LARG}><div style={{ textAlign: "center" }}>{glue(L.texto!)}</div></Texto>
       <div style={{ position: "absolute", left: SAFE.x0, width: LARG, top: top + 520, display: "flex", justifyContent: "center", opacity: 0.35 + 0.65 * dep, transform: `scale(${0.94 + 0.06 * dep})` }}>
-        <div style={{ padding: "14px 34px", borderRadius: 999, background: C.tinta, fontFamily: FONT, fontWeight: W.black, fontSize: 46, color: "#fff", whiteSpace: "nowrap", letterSpacing: -0.5 }}>{L.depois}</div>
+        <div style={{ padding: "14px 34px", borderRadius: 999, background: C.tinta, fontFamily: FONT, fontWeight: W.black, fontSize: 46, color: "#fff", whiteSpace: "nowrap", letterSpacing: -0.5, wordSpacing: 4 }}>{L.depois}</div>
       </div>
       <div style={{ position: "absolute", left: SAFE.x0, width: LARG, top: top + 670, boxSizing: "border-box", borderRadius: 34, background: "#EAF6EA", border: `5px solid ${C.verde}`,
         boxShadow: `0 8px 0 ${C.verdeDark}`, display: "flex", alignItems: "center", gap: 22, padding: "22px 30px 22px 22px", overflow: "hidden", opacity: 0.35 + 0.65 * dest, transform: `scale(${0.96 + 0.04 * dest})` }}>
@@ -394,7 +394,7 @@ const Fecho: React.FC<P> = ({ L, layout, f, D }) => {
         rig={{ respira: onda(f, D, 3), capacete: 0.8 * onda(f, D, 3, -0.7), aceno: 14 * onda(f, D, 7), piscada: piscadaEm([2.5, 5.6], t_(f)) }} />
       <div style={{ position: "absolute", left: SAFE.x0, width: LARG, top: base + 50, display: "flex", justifyContent: "center" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 16, padding: "18px 32px 18px 20px", borderRadius: 999, background: C.coral, boxShadow: `0 9px 0 ${C.coralDark}`,
-          fontFamily: FONTE, fontWeight: W.black, fontSize: 44, color: "#fff", whiteSpace: "nowrap", letterSpacing: -0.6 }}>
+          fontFamily: FONTE, fontWeight: W.black, fontSize: 44, color: "#fff", whiteSpace: "nowrap", letterSpacing: -0.6, wordSpacing: 4 }}>
           <div style={{ width: 70, height: 70, borderRadius: "50%", background: "rgba(255,255,255,0.22)", border: "4px solid rgba(255,255,255,0.75)", display: "flex", alignItems: "center", justifyContent: "center" }}>
             <PaperPlaneIcon size={42} style={{ transform: `translate(${voa}px, ${-voa}px)` }} />
           </div>

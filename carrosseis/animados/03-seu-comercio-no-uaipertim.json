@@ -10,7 +10,7 @@
  "saida": "out/carrosseis/animados/03-seu-comercio-no-uaipertim",
  "capa_arquivo": "capa-4x5.png",
  "publicacao": "qui 26/11, 12h",
- "_doc": "Carrossel animado #03 'Seu comércio no UaiPertim', para o LOJISTA do Glória (as primeiras lojas parceiras do lançamento). Mesmo motor do #02 (scripts/quiz.mjs e scripts/quiz_qa.py com o caminho deste JSON) + o QA dos textos (scripts/carrossel_textos_qa.py: OCR dos PNGs = espaços entre palavras, legibilidade e os valores). Lâminas 1080×1350 (4:5), em loop, sem áudio. 'estatico' = o segundo do quadro que vira o PNG (plano B). *palavra* = a palavra-chave no marcador. Sem promessa de vendas ou resultado; sem WhatsApp de suporte; 'entrega', nunca 'frete'.",
+ "_doc": "Carrossel animado #03 'Seu comércio no UaiPertim', para o LOJISTA do Glória (as primeiras lojas parceiras do lançamento). Mesmo motor do #02 (scripts/quiz.mjs e scripts/quiz_qa.py com o caminho deste JSON) + o QA dos textos (scripts/carrossel_textos_qa.py: OCR dos PNGs = espaços entre palavras, legibilidade e os valores). Lâminas 1080×1350 (4:5), em loop, sem áudio. 'estatico' = o segundo do quadro que vira o PNG (plano B). *palavra* = a palavra-chave no marcador. Sem promessa de vendas ou resultado; sem WhatsApp de suporte; 'entrega', nunca 'frete'. O marcador vai sempre numa palavra só: dentro de um marcador de várias palavras o espaço fica estreito e as palavras parecem grudadas (o OCR do QA lia 'seujeito').",
  "selo": "PRO LOJISTA",
  "ilustrativo": "Lojas e valores ilustrativos",
  "valores": {
@@ -71,7 +71,7 @@
    "rotulo": "entrega",
    "segundos": 7,
    "estatico": 4.6,
-   "titulo": "Entrega do *seu jeito*",
+   "titulo": "Entrega do seu *jeito*",
    "texto": "A loja escolhe como faz:",
    "opcoes": [
     {
@@ -93,7 +93,7 @@
    "rotulo": "pagamento",
    "segundos": 7,
    "estatico": 4.2,
-   "titulo": "Recebe pelo app *ou na entrega*",
+   "titulo": "Recebe pelo app ou na *entrega*",
    "grupos": [
     {
      "titulo": "Pelo app",
@@ -115,7 +115,7 @@
    "nota": "As taxas do meio de pagamento ficam com a loja.",
    "quebra": [
     "Recebe pelo app",
-    "*ou na entrega*"
+    "ou na *entrega*"
    ]
   },
   {
@@ -123,22 +123,26 @@
    "rotulo": "mensalidade",
    "segundos": 8,
    "estatico": 4.8,
-   "titulo": "*3 meses* sem mensalidade",
+   "titulo": "*3* *meses* sem mensalidade",
    "texto": "Pras lojas do lançamento.",
    "depois": "Depois, R$ 49,90/mês",
-   "destaque": "Pão de Queijo Points sem custo pra loja: os prêmios são bancados pelo UaiPertim"
+   "destaque": "Pão de Queijo Points sem custo pra loja: os prêmios são bancados pelo UaiPertim",
+   "quebra": [
+    "*3* *meses*",
+    "sem mensalidade"
+   ]
   },
   {
    "tipo": "fecho",
    "rotulo": "fecho",
    "segundos": 7,
    "estatico": 0,
-   "titulo": "Quer *sua loja* no UaiPertim?",
+   "titulo": "Quer sua *loja* no UaiPertim?",
    "cta": "Chama a gente no Direct 📩",
    "email": "uaipertim@uaipertim.com.br",
    "assinatura": "Tudo pertim de você",
    "quebra": [
-    "Quer *sua loja*",
+    "Quer sua *loja*",
     "no UaiPertim?"
    ]
   }

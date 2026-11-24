@@ -22,3 +22,4 @@ out/carrosseis/quiz/*/revisao/*
 !out/carrosseis/quiz/*/revisao/relatorio-tecnico.txt
 out/carrosseis/animados/*/revisao/*
 !out/carrosseis/animados/*/revisao/relatorio-tecnico.txt
+!out/carrosseis/animados/*/revisao/textos-qa.txt

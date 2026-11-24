@@ -19,6 +19,7 @@ Os dois recebem o caminho do JSON. Um JSON com `"composicao"` diz:
 | # | carrossel | publicação | JSON | composição | saída |
 |---|---|---|---|---|---|
 | 02 | "Como chega o seu pedido?" | ter 24/11, 12h | [`02-como-chega-o-seu-pedido.json`](02-como-chega-o-seu-pedido.json) | `ComoChega` (`src/carrossel-animado/ComoChega.tsx`) | `out/carrosseis/animados/02-como-chega-o-seu-pedido/` |
+| 03 | "Seu comércio no UaiPertim" (pro lojista) | qui 26/11, 12h | [`03-seu-comercio-no-uaipertim.json`](03-seu-comercio-no-uaipertim.json) | `SeuComercio` (`src/carrossel-animado/SeuComercio.tsx`) | `out/carrosseis/animados/03-seu-comercio-no-uaipertim/` |
 
 ## Formato: 4:5 (1080 × 1350)
 
@@ -72,3 +73,41 @@ python3 scripts/quiz_qa.py carrosseis/animados/02-como-chega-o-seu-pedido.json  
 ```
 
 `SO=3,5` antes do comando refaz só essas lâminas. `quadros <lâmina> <quadro…>` tira quadros soltos.
+
+## #03 "Seu comércio no UaiPertim" (7 lâminas, 49 s no total)
+
+Para o LOJISTA do Glória: atrair as primeiras lojas parceiras do lançamento. Selo "PRO LOJISTA" (com a lojinha no lugar do pin).
+
+| lâmina | o que mostra | duração | PNG (plano B) |
+|---|---|---|---|
+| 1 · capa | selo "PRO LOJISTA"; a lojinha com toldo (olhinhos, placa balançando) e o Pertim apontando pra ela, olhando pra câmera; "Seu *comércio* no UaiPertim"; "Arrasta pra ver →" | 6 s | quadro 0 |
+| 2 · vitrine | "Sua vitrine montada *junto* com você" + "No cadastro, a nossa equipe monta o cardápio, as fotos e os preços com você. Depois, cê atualiza tudo pelo painel."; LojistaCardapio.png num notebook: os anéis passam pelo cardápio, pelas fotos e pelos preços, e os chips Cardápio · Fotos · Preços acendem; "Lojas e valores ilustrativos" | 7 s | 4,4 s |
+| 3 · pedido no painel | "Pedido chega *organizado* no painel" + "Sem ficar repetindo cardápio e preço no WhatsApp o dia todo."; os balões de pergunta ("Qual o preço?", "Manda o cardápio?", "Ainda tem?") somem e um pedido novo chega na coluna "Novos" do painel (Lojista.png, recorte sem os números do dia), com o aviso "Novo pedido!" e o toque em "Aceitar"; "Lojas e valores ilustrativos" | 7 s | 3,6 s |
+| 4 · entrega | "Entrega do seu *jeito*" + "A loja escolhe como faz:"; os cartões Equipe da própria loja · Entregador parceiro · Retirada no balcão acendem um a um | 7 s | 4,6 s |
+| 5 · pagamento | "Recebe pelo app ou na *entrega*": Pelo app (Pix, Cartão) e Na entrega (Dinheiro, Pix, Cartão) acendem; o selo amarelo "Comissão de 5% só nos pedidos pagos pelo app"; "As taxas do meio de pagamento ficam com a loja." | 7 s | 4,2 s |
+| 6 · mensalidade | "*3* *meses* sem mensalidade": o contador 0 → 3 meses (com o calendário); "Pras lojas do lançamento."; "Depois, R$ 49,90/mês"; o cartão verde "Pão de Queijo Points sem custo pra loja: os prêmios são bancados pelo UaiPertim" | 8 s | 4,8 s |
+| 7 · fecho | "Quer sua *loja* no UaiPertim?"; o Pertim acenando ao lado da lojinha (com o cordão de luzinhas); o CTA "Chama a gente no Direct 📩"; uaipertim@uaipertim.com.br; a logo redonda sem fundo e "Tudo pertim de você" | 7 s | quadro 0 |
+
+**Decisões:**
+
+- **Valores** no campo `"valores"` do JSON (3 meses, R$ 49,90, 5%); o QA dos textos confere se a tela (OCR), as lâminas e a
+  legenda batem com ele e se não aparece nenhum outro valor.
+- **Sem promessa de vendas ou resultado**; "entrega", nunca "frete"; o WhatsApp só aparece como o jeito antigo (lâmina 3),
+  nunca como canal de suporte. O contato é o Direct e o e-mail.
+- **A tela Lojista.png** entra recortada nas colunas "Novos" e "Em preparo": os números do dia (pedidos, vendas) ficam de fora,
+  para não ler como resultado prometido.
+- **Marcador numa palavra só:** dentro de um marcador de várias palavras o espaço fica estreito ("seu jeito" lia como
+  "seujeito" no OCR). Por isso "Entrega do seu *jeito*", "ou na *entrega*", "Quer sua *loja*" e "*3* *meses*".
+- **O contador da lâmina 6** começa invisível no quadro 0 e some no fim, para a emenda do loop não saltar de 3 para 0.
+
+**QA dos textos** (`scripts/carrossel_textos_qa.py <json>`, além do `quiz_qa.py`): OCR (tesseract, português, 12 passadas
+por canal de cor) do PNG de cada lâmina. Confere que nenhum par de palavras vizinhas aparece grudado, que ≥ 90% das palavras de
+tela são lidas (legibilidade), que a menor fonte é ≥ 24 px, os valores e as regras de texto. Grava `revisao/textos-qa.txt`.
+
+```bash
+node scripts/quiz.mjs carrosseis/animados/03-seu-comercio-no-uaipertim.json            # lamina-1..7.mp4/.png + capa-4x5.png
+node scripts/quiz.mjs carrosseis/animados/03-seu-comercio-no-uaipertim.json mascara
+node scripts/quiz.mjs carrosseis/animados/03-seu-comercio-no-uaipertim.json loop
+python3 scripts/quiz_qa.py carrosseis/animados/03-seu-comercio-no-uaipertim.json       # revisao/relatorio-tecnico.txt + previa.png
+python3 scripts/carrossel_textos_qa.py carrosseis/animados/03-seu-comercio-no-uaipertim.json   # revisao/textos-qa.txt
+```

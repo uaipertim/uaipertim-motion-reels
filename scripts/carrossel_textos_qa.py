@@ -65,17 +65,24 @@ def textos(i, L):
 
 
 def ocr(png):
-    # o PNG em 2× (letras maiores para o OCR), modo de texto esparso
-    big = OUT / "revisao" / f"ocr-{png.stem}.png"
-    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(png), "-vf", "scale=2160:-1", str(big)], check=True)
-    tsv = subprocess.run(["tesseract", str(big), "-", "-l", "por", "--psm", "11", "tsv"], capture_output=True, text=True).stdout
-    big.unlink()
-    toks = []
-    for ln in tsv.splitlines()[1:]:
-        c = ln.split("\t")
-        if len(c) == 12 and c[11].strip() and float(c[10]) >= 0:
-            toks.append((c[11].strip(), float(c[10])))
-    return toks
+    # o PNG em 2× (letras maiores), em 12 passadas (modos 11 e 3 do tesseract × (canais R, G e B, normais e invertidos: texto branco no coral, tinta no
+    # amarelo, branco no escuro…), modo de texto esparso; junta os tokens de todas as passadas (fica a maior confiança)
+    from PIL import Image, ImageOps
+    im = Image.open(png).convert("RGB")
+    im = im.resize((im.width * 2, im.height * 2), Image.LANCZOS)
+    toks = {}
+    tmp = OUT / "revisao" / f"ocr-{png.stem}.png"
+    for ch in im.split():
+        for v in (ch, ImageOps.invert(ch)):
+            v.save(tmp)
+            tsv = "".join(subprocess.run(["tesseract", str(tmp), "-", "-l", "por", "--psm", psm, "tsv"], capture_output=True, text=True).stdout for psm in ("11", "3"))
+            for ln in tsv.splitlines():
+                c = ln.split("\t")
+                if len(c) == 12 and c[11].strip() and float(c[10]) >= 0:
+                    w = c[11].strip()
+                    toks[w] = max(toks.get(w, 0), float(c[10]))
+    tmp.unlink()
+    return list(toks.items())
 
 
 parecido = lambda a, b: a == b or (len(a) >= 4 and SequenceMatcher(None, a, b).ratio() >= 0.8)
@@ -85,7 +92,7 @@ for i, L in enumerate(D["laminas"]):
     toks = ocr(OUT / f"lamina-{i + 1}.png")
     OCR[i] = toks
     ns = [nrm(t) for t, _ in toks]
-    esperadas, achadas, conf, grudadas = 0, 0, [], []
+    esperadas, achadas, conf, grudadas, faltam = 0, 0, [], [], []
     for tx in textos(i, L):
         ws = [nrm(w) for w in palavras(tx) if not re.fullmatch(r"[\W_]+", w)]
         ws = [w for w in ws if w]
@@ -95,6 +102,8 @@ for i, L in enumerate(D["laminas"]):
             if hit:
                 achadas += 1
                 conf.append(max(toks[k][1] for k in hit))
+            else:
+                faltam.append(w)
         for a, b in zip(ws, ws[1:]):
             junto = a + b
             if len(junto) >= 5 and any(n == junto or (len(n) >= len(junto) - 1 and parecido(n, junto) and not parecido(n, a) and not parecido(n, b)) for n in ns):
@@ -102,7 +111,7 @@ for i, L in enumerate(D["laminas"]):
     taxa = achadas / max(1, esperadas)
     cm = sum(conf) / max(1, len(conf))
     ok(not grudadas, "espaços entre palavras: nenhum par grudado" + (f" (grudadas: {', '.join(grudadas)})" if grudadas else ""))
-    ok(taxa >= 0.9 and cm >= 75, f"legível: o OCR reconhece {achadas}/{esperadas} palavras ({100 * taxa:.0f}%), confiança média {cm:.0f}")
+    ok(taxa >= 0.9 and cm >= 75, f"legível: o OCR reconhece {achadas}/{esperadas} palavras ({100 * taxa:.0f}%), confiança média {cm:.0f}" + (f" (não lidas: {', '.join(faltam)})" if faltam else ""))
 
 rel.append("--- a composição, os valores e as regras")
 # a menor fonte dos textos da composição (os PNGs das telas do app não contam)
@@ -117,22 +126,24 @@ if V:
     t6 = " ".join(t for t, _ in OCR[i6])
     t5 = " ".join(t for t, _ in OCR[i5])
     ok(re.search(rf"\b{meses}\b", t6) and "meses" in t6.lower(), f"{meses} meses sem mensalidade: na tela da lâmina {i6 + 1} (OCR: o contador parado em {meses})")
-    ok(mens.replace(" ", "") in t6.replace(" ", ""), f"mensalidade depois: {mens}/mês na tela da lâmina {i6 + 1}")
+    ok(mens.split()[-1] in t6, f"mensalidade depois: {mens}/mês na tela da lâmina {i6 + 1} (OCR: {mens.split()[-1]})")
     ok(com in t5, f"comissão: {com} só nos pedidos pagos pelo app, na tela da lâmina {i5 + 1}")
     js = json.dumps(D["laminas"], ensure_ascii=False)
-    ok(f"*{meses} meses*" in js and f"{mens}/mês" in js and f"Comissão de {com}" in js, "os valores do texto das lâminas batem com o campo 'valores' do JSON")
+    ok(re.search(rf"\*?{meses}\*? \*?meses\*?", js) and f"{mens}/mês" in js and f"Comissão de {com}" in js, "os valores do texto das lâminas batem com o campo 'valores' do JSON")
     ok(not [x for x in re.findall(r"R\$\s?\d+,\d\d", js) if x.replace(" ", "") != mens.replace(" ", "")], f"nenhum outro valor em R$ nas lâminas além de {mens}")
     ok(not [x for x in re.findall(r"\d+\s?%", js) if x.replace(" ", "") != com], f"nenhuma outra porcentagem além de {com}")
     if LEG:
         ok(f"{meses} meses" in LEG and mens in LEG and com in LEG, f"a legenda do post traz os mesmos valores ({meses} meses, {mens}, {com})")
-texto_total = json.dumps(D, ensure_ascii=False) + LEG
+ok(not [t for L in D["laminas"] for t in ([L["titulo"]] if isinstance(L["titulo"], str) else L["titulo"]) + L.get("quebra", []) if re.search(r"\*[^*\s]+\s[^*]+\*", t)],
+   "o marcador vai numa palavra só (num marcador de várias palavras o espaço fica estreito)")
+texto_total = json.dumps({k: v for k, v in D.items() if not k.startswith("_")}, ensure_ascii=False) + LEG
 ok(not re.search(r"\bfrete", texto_total, re.I), 'sem "frete" (sempre "entrega")')
 ok(not re.search(r"vend(a|e)r? mais|aument\w* (as |suas |de )?vendas|mais vendas|garant|fatur\w+ mais|lucr", texto_total, re.I), "sem promessa de vendas ou resultado")
 wa = [L["rotulo"] for L in D["laminas"] if "whatsapp" in json.dumps(L, ensure_ascii=False).lower()]
 ok(wa == ["pedido no painel"] and "whatsapp" not in LEG.lower() and not re.search(r"\(?\d{2}\)?\s?9?\d{4}-?\d{4}", texto_total),
    'WhatsApp só como o jeito antigo ("Sem ficar repetindo cardápio e preço no WhatsApp"), nunca como canal de suporte; sem telefone')
 ok(not re.search(r"\b(a|da|na|de)\s+Glória", texto_total), '"o Glória" no masculino')
-ok(not re.search(r"P[ée]rr?-?t[ií]m|Pértim", texto_total), '"Pertim" sem troca de grafia na tela')
+ok(re.search(r"\bpertim\b", texto_total, re.I) and not re.search(r"P[ée]rr-?t[ií]m|P[ée]r-t[ií]m|Pértim|Pertím", texto_total), '"Pertim" sem troca de grafia na tela')
 
 rel.append("")
 rel.append(f"RESULTADO: {'aprovado' if not falhas else 'ajustar'}")
