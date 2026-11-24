@@ -3,7 +3,7 @@
 Chamada para o cadastro na rede de entregadores parceiros do UaiPertim, que estará ligada no lançamento. Narrado pelo
 Pertim, na mesma linha visual e técnica do "Pão de Queijo Points".
 
-- Formato 9:16, 1080×1920 a **30 fps**; duração em `output/revisao/relatorio-tecnico.txt`.
+- Formato 9:16, 1080×1920 a **30 fps**, com **38,00 s** (1140 quadros).
 - Composição Remotion: `src/seja-entregador/SejaEntregador.tsx` (`SejaEntregador`); as ilustrações próprias ficam em
   `src/seja-entregador/Ilustracoes.tsx`.
 - Roteiro: `roteiro.json`; posições: `layout.json`.
@@ -11,7 +11,8 @@ Pertim, na mesma linha visual e técnica do "Pão de Queijo Points".
 ## Duração
 
 O alvo pedido era 25 a 30 s, mas as 8 falas do roteiro dão cerca de 37 s de narração no ritmo dos outros Reels.
-**Decisão de 2026-11-24:** o roteiro ficou inteiro e o Reel ficou com ~37 s (`"limites": [30, 40]` no roteiro e no QA).
+**Decisão de 2026-11-24:** o roteiro ficou inteiro. A voz deu 32,3 s de fala; com os cortes na batida e a logo parada
+3,5 s no fim, o Reel ficou com **38,00 s** (`"limites": [30, 40]` no roteiro e no QA).
 
 ## Roteiro e cenas (todo corte numa batida)
 
@@ -84,4 +85,4 @@ A chave do ElevenLabs nunca fica no repositório: o proxy da rede a injeta no ca
 - `uaipertim-seja-entregador-parceiro.mp4`: o Reel (H.264 yuv420p, 1080×1920, 30 fps, AAC 48 kHz estéreo).
 - `capa.png` (9:16) e `capa-3x4.png` (o recorte da grade, y 240–1680).
 - `legenda.txt`: a legenda do post e a sugestão de comentário fixado.
-- `revisao/relatorio-tecnico.txt` (inclui o nível da trilha comparado com o do "Olha ele por dentro!") e os gráficos de F0.
+- `revisao/relatorio-tecnico.txt` (`RESULTADO: aprovado`; inclui o nível da trilha comparado com o do "Olha ele por dentro!") e os gráficos de F0.

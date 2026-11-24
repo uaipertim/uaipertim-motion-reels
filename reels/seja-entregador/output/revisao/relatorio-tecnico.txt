@@ -1,0 +1,78 @@
+REVISÃO TÉCNICA · Reel "Seja entregador parceiro" · reels/seja-entregador/output/uaipertim-seja-entregador-parceiro.mp4
+38.00 s · 1140 quadros a 30 fps
+
+FORMATO E SOM
+OK     vídeo h264 yuv420p 1080×1920
+OK     30 fps
+OK     duração 38.00 s (30–40 s)
+OK     áudio aac 48000 Hz, 2 canais
+OK     -14.1 LUFS integrados (alvo −14)
+OK     pico real -1.6 dBTP (≤ −1)
+OK     a trilha animada do app, no nível padrão (sem "trilha_db"), como no "Olha ele por dentro!" e no "Bateu a fome?"
+OK     nível da trilha: -13.1 dB da voz (LUFS); no "Olha ele por dentro!", -12.9 dB (diferença -0.2 dB; tolerância 1 dB)
+OK     a trilha toca no gancho (-28.3 LUFS nos primeiros 3 s) e no fecho sem fala (-22.5 LUFS de 35.6 a 38.0 s)
+OK     a voz em destaque: a trilha fica 13.1 dB abaixo dela
+
+RITMO (trilha animada, 120 BPM: uma batida a cada 0,5 s)
+OK     cena 1 gancho: 0.00–4.50 s = batidas 0–9; fala 0.12–4.44 s dentro dela
+OK     cena 2 chamada: 4.50–8.00 s = batidas 9–16; fala 4.60–7.48 s dentro dela
+OK     cena 3 disponivel: 8.00–11.00 s = batidas 16–22; fala 8.10–10.58 s dentro dela
+OK     cena 4 notificacao: 11.00–17.50 s = batidas 22–35; fala 11.10–17.26 s dentro dela
+OK     cena 5 coleta: 17.50–21.00 s = batidas 35–42; fala 17.60–20.88 s dentro dela
+OK     cena 6 acerto: 21.00–25.50 s = batidas 42–51; fala 21.10–25.10 s dentro dela
+OK     cena 7 cadastro: 25.50–32.50 s = batidas 51–65; fala 25.60–32.08 s dentro dela
+OK     cena 8 fecho: 32.50–38.00 s = batidas 65–76; fala 32.62–35.26 s dentro dela
+OK     a logo do fecho fica parada nos últimos 3.51 s (mínimo 3 s)
+
+VOZ
+OK     o texto falado é o roteiro, cena a cena
+OK     Victor Pinho (LuQ9eaWO9yCQrR73VQFa), eleven_v4, perfil "narracao"
+OK     "UaiPertim" vai para a voz como "Uai pertím" (e "Pertim" nunca sem acento); na tela, "UaiPertim"
+OK     "o Glória" no masculino (nunca "a/da/na/de Glória")
+OK     sem "aguarde" e sem "não é app"
+OK     sem "frete" (na fala, na tela e na legenda do post: sempre "entrega")
+OK     sem promessa de ganho (nem "renda garantida", nem valor por dia/mês)
+OK     sem CPF, CNH ou documentos (só "conferência pessoal")
+OK     a notificação é fictícia ("Padaria do Centro", "R$ 8,00") e leva a nota "Valores ilustrativos"
+OK     legenda do post: CTA do Direct, pergunta de fecho, as 5 hashtags e o comentário fixado
+OK     o Pertim olha para a câmera em todas as cenas (olhar no centro) e nunca aparece bravo
+     cena 1: seed 1042 · 4.32 s · enviado "Tem moto, bike ou carro… e quer fazer uma renda extra aqui no Glória?" · reels/seja-entregador/tomadas/cap-00/B-seed1042.mp3
+     cena 2: seed 42 · 2.88 s · enviado "O Uai pertím tá chamando entregadores parceiros!" · voz.py, seed 42
+     cena 3: seed 42 · 2.48 s · enviado "Cê fica disponível na hora que quiser." · voz.py, seed 42
+     cena 4: seed 42 · 6.16 s · enviado "A entrega chega no celular, com a loja, o bairro e o valor. Cê vê tudo antes de aceitar." · voz.py, seed 42
+     cena 5: seed 42 · 3.28 s · enviado "Aceitou? Coleta na loja e leva até o cliente." · voz.py, seed 42
+     cena 6: seed 42 · 4.00 s · enviado "O acerto é direto com a loja, e fica tudo registrado no app." · voz.py, seed 42
+     cena 7: seed 42 · 6.48 s · enviado "O cadastro é feito pela nossa equipe, com conferência pessoal, pra todo mundo trabalhar com segurança." · voz.py, seed 42
+     cena 8: seed 42 · 2.64 s · enviado "Quer entrar pra rede? Chama a gente no Direct!" · reels/seja-entregador/tomadas/cap-07/A-seed42.mp3
+OK     as falas 1 e 8 são as perguntas de sim/não marcadas ("pergunta": true)
+
+PITCH · A PERGUNTA DA CENA 1 ("Tem moto, bike ou carro… e quer fazer uma renda extra aqui no Glória?")
+     tomada usada: reels/seja-entregador/tomadas/cap-00/B-seed1042.mp3 (seed 1042)
+     o F0 vai de 106 Hz ("no") para 238 Hz no pico de "Glória" (em 4.19 s); a última vogal: +nan st
+OK     a pergunta (de sim/não) sobe até a tônica de "Glória": +14.1 st (mínimo +8 st)
+     gráfico: output/revisao/f0-cena-1.png
+
+PITCH · A PERGUNTA DA CENA 8 ("Quer entrar pra rede? Chama a gente no Direct!")
+     tomada usada: reels/seja-entregador/tomadas/cap-07/A-seed42.mp3 (seed 42)
+     o F0 vai de 104 Hz ("pra") para 258 Hz no pico de "rede" (em 0.83 s); a última vogal: +9.5 st
+OK     a pergunta (de sim/não) sobe até a tônica de "rede": +15.8 st (mínimo +8 st)
+     gráfico: output/revisao/f0-cena-8.png
+
+LEGENDA (a nova, da Coisa de mineiro #03)
+OK     a legenda bate com a fala, cena a cena (o texto da tela, na ordem, com a grafia oficial)
+OK     nenhum bloco atravessa a troca de cena
+OK     blocos curtos (até 2 linhas, até 4 palavras)
+OK     legenda na faixa segura: x 126–892, y 1382–1548 (x 110–906, y 1372–1565: abaixo dos pés, fora da coluna de botões e acima da descrição)
+OK     legenda sem palavras grudadas: o espaço entre as palavras nunca some (nenhum par encostado em nenhum quadro); menor vão entre duas palavras: 12 px
+
+BORDAS (máscara do conteúdo, sem o fundo; 10 quadros/s)
+     o conteúdo ocupa no máximo x 0–1080, até y 1920 (entrando e saindo incluídos)
+OK     nada parado cortado pela borda
+OK     parado, tudo a ≥ 30 px das bordas laterais e de baixo
+OK     nada parado na coluna de botões do Instagram (x ≥ 940, y 1060–1560)
+
+CAPA (3:4, padrão da grade)
+OK     capa-3x4.png 1080×1440 (o recorte da grade, y 240–1680 da capa 9:16)
+OK     todo o conteúdo da capa em x 150–934 (regra x 135–945: vale na grade e na aba Reels), y 84–1337 do 3:4
+
+RESULTADO: aprovado
