@@ -1,0 +1,70 @@
+REVISÃO TÉCNICA · Reel "Cadê meu pedido?" · reels/cade-meu-pedido/output/uaipertim-cade-meu-pedido.mp4
+30.00 s · 900 quadros a 30 fps
+
+FORMATO E SOM
+OK     vídeo h264 yuv420p 1080×1920
+OK     30 fps
+OK     duração 30.00 s (25–30 s)
+OK     áudio aac 48000 Hz, 2 canais
+OK     -14.0 LUFS integrados (alvo −14)
+OK     pico real -1.4 dBTP (≤ −1)
+OK     a trilha animada do app, no nível padrão (sem "trilha_db"), como no "Olha ele por dentro!" e no "Bateu a fome?"
+OK     nível da trilha: -12.9 dB da voz (LUFS); no "Olha ele por dentro!", -12.9 dB (diferença +0.0 dB; tolerância 1 dB)
+OK     a trilha toca no gancho (-27.8 LUFS nos primeiros 3 s) e no fecho (-27.6 LUFS de 25.5 a 30.0 s, na pista da música)
+OK     a voz em destaque: a trilha fica 12.9 dB abaixo dela
+
+RITMO (trilha animada, 120 BPM: uma batida a cada 0,5 s)
+OK     cena 1 gancho: 0.00–5.00 s = batidas 0–10; fala 0.12–4.76 s dentro dela
+OK     cena 2 whatsapp: 5.00–9.00 s = batidas 10–18; fala 5.10–8.62 s dentro dela
+OK     cena 3 pedido: 9.00–13.00 s = batidas 18–26; fala 9.10–12.78 s dentro dela
+OK     cena 4 pagamento: 13.00–17.00 s = batidas 26–34; fala 13.10–16.78 s dentro dela
+OK     cena 5 acompanha: 17.00–22.50 s = batidas 34–45; fala 17.10–22.38 s dentro dela
+OK     cena 6 aviso: 22.50–25.50 s = batidas 45–51; fala 22.60–25.40 s dentro dela
+OK     cena 7 fecho: 25.50–30.00 s = batidas 51–60; fala 25.62–29.30 s dentro dela
+OK     a logo do fecho fica parada nos últimos 3.83 s (mínimo 3 s)
+
+VOZ
+OK     o texto falado é o roteiro, cena a cena
+OK     Victor Pinho (LuQ9eaWO9yCQrR73VQFa), eleven_v4, perfil "narracao"
+OK     "UaiPertim" vai para a voz como "Uai pertím" (e "Pertim" nunca sem acento); na tela, "UaiPertim"
+OK     "o Glória" no masculino (nunca "a/da/na/de Glória")
+OK     sem "aguarde" e sem "não é app"
+OK     sem "frete" (na fala, na tela e na legenda do post: sempre "entrega")
+OK     "WhatsApp" vai para a voz como "Uátsap"; na tela e na legenda, "WhatsApp"
+OK     a Cartao.png não entra (o cartão aparece como a opção "Cartão de crédito" do Checkout)
+OK     nota fixa "Lojas e valores ilustrativos" enquanto as telas aparecem
+OK     o Pertim olha para a câmera (olhar no centro) e nunca aparece bravo (sem "apressado")
+OK     legenda do post: o fecho com a pergunta, as 5 hashtags e o comentário fixado
+     cena 1: seed 42 · 4.64 s · enviado "Pediu um lanche e ficou de olho no portão, perguntando: cadê meu pedido?" · voz.py, seed 42
+     cena 2: seed 42 · 3.52 s · enviado "No Uai pertím, cê não precisa ficar perguntando no Uátsap." · voz.py, seed 42
+     cena 3: seed 42 · 3.68 s · enviado "Escolhe a loja, monta a sacola e fecha o pedido." · voz.py, seed 42
+     cena 4: seed 42 · 3.68 s · enviado "Paga no Pix pelo app, no cartão… ou na entrega." · voz.py, seed 42
+     cena 5: seed 42 · 5.28 s · enviado "E acompanha tudo: aceito, em preparo, pronto… saiu pra entrega!" · voz.py, seed 42
+     cena 6: seed 42 · 2.80 s · enviado "E quando sai, chega o aviso no celular." · voz.py, seed 42
+     cena 7: seed 1042 · 3.68 s · enviado "Quantas vezes cê já perguntou 'cadê meu pedido'? Conta aqui!" · reels/cade-meu-pedido/tomadas/cap-06/B-seed1042.mp3
+OK     só a fala 7 é marcada como pergunta ("pergunta": true)
+
+PITCH · A PERGUNTA DA CENA 7 ("Quantas vezes cê já perguntou 'cadê meu pedido'? Conta aqui!")
+     tomada usada: reels/cade-meu-pedido/tomadas/cap-06/B-seed1042.mp3 (seed 1042)
+     "Quantas" vai de 0.00 a 0.40 s; o pico da pergunta é 356 Hz em 0.16 s (+13.5 st sobre a mediana do resto da pergunta)
+OK     a pergunta sobe na palavra interrogativa: o pico de F0 do trecho da pergunta está em "Quantas" (regra das wh-questions; o fim cai)
+     gráfico: output/revisao/f0-cena-7.png
+
+LEGENDA (a nova, da Coisa de mineiro #03)
+OK     a legenda bate com a fala, cena a cena (o texto da tela, na ordem, com a grafia oficial)
+OK     nenhum bloco atravessa a troca de cena
+OK     blocos curtos (até 2 linhas, até 4 palavras; "pão de queijo" conta como uma)
+OK     legenda na faixa segura: x 122–900, y 1388–1548 (x 110–906, y 1372–1565: abaixo dos pés, fora da coluna de botões e acima da descrição)
+OK     legenda sem palavras grudadas: o espaço entre as palavras nunca some (nenhum par encostado em nenhum quadro); menor vão entre duas palavras: 8 px
+
+BORDAS (máscara do conteúdo, sem o fundo; 10 quadros/s)
+     o conteúdo ocupa no máximo x 40–1080, até y 1920 (entrando e saindo incluídos)
+OK     nada parado cortado pela borda
+OK     parado, tudo a ≥ 30 px das bordas laterais e de baixo
+OK     nada parado na coluna de botões do Instagram (x ≥ 940, y 1060–1560)
+
+CAPA (3:4, padrão da grade)
+OK     capa-3x4.png 1080×1440 (o recorte da grade, y 240–1680 da capa 9:16)
+OK     todo o conteúdo da capa em x 150–938 (regra x 135–945: vale na grade e na aba Reels), y 84–1333 do 3:4
+
+RESULTADO: aprovado
