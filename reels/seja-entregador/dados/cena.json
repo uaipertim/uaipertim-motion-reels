@@ -9,54 +9,54 @@
    "n": 0,
    "tipo": "gancho",
    "t0": 0.0,
-   "t1": 5.0,
+   "t1": 4.5,
    "voz_t0": 0.12,
-   "voz_t1": 4.836,
+   "voz_t1": 4.44,
    "texto": "Tem moto, bike ou carro… e quer fazer uma renda extra aqui no Glória?"
   },
   {
    "n": 1,
    "tipo": "chamada",
-   "t0": 5.0,
-   "t1": 8.5,
-   "voz_t0": 5.1,
-   "voz_t1": 8.209,
+   "t0": 4.5,
+   "t1": 8.0,
+   "voz_t0": 4.6,
+   "voz_t1": 7.48,
    "texto": "O UaiPertim tá chamando entregadores parceiros!"
   },
   {
    "n": 2,
    "tipo": "disponivel",
-   "t0": 8.5,
-   "t1": 11.5,
-   "voz_t0": 8.6,
-   "voz_t1": 10.994,
+   "t0": 8.0,
+   "t1": 11.0,
+   "voz_t0": 8.1,
+   "voz_t1": 10.58,
    "texto": "Cê fica disponível na hora que quiser."
   },
   {
    "n": 3,
    "tipo": "notificacao",
-   "t0": 11.5,
-   "t1": 18.0,
-   "voz_t0": 11.6,
-   "voz_t1": 17.494,
+   "t0": 11.0,
+   "t1": 17.5,
+   "voz_t0": 11.1,
+   "voz_t1": 17.26,
    "texto": "A entrega chega no celular, com a loja, o bairro e o valor. Cê vê tudo antes de aceitar."
   },
   {
    "n": 4,
    "tipo": "coleta",
-   "t0": 18.0,
-   "t1": 21.5,
-   "voz_t0": 18.1,
-   "voz_t1": 21.16,
+   "t0": 17.5,
+   "t1": 21.0,
+   "voz_t0": 17.6,
+   "voz_t1": 20.88,
    "texto": "Aceitou? Coleta na loja e leva até o cliente."
   },
   {
    "n": 5,
    "tipo": "acerto",
-   "t0": 21.5,
+   "t0": 21.0,
    "t1": 25.5,
-   "voz_t0": 21.6,
-   "voz_t1": 25.406,
+   "voz_t0": 21.1,
+   "voz_t1": 25.1,
    "texto": "O acerto é direto com a loja, e fica tudo registrado no app."
   },
   {
@@ -65,7 +65,7 @@
    "t0": 25.5,
    "t1": 32.5,
    "voz_t0": 25.6,
-   "voz_t1": 32.37,
+   "voz_t1": 32.08,
    "texto": "O cadastro é feito pela nossa equipe, com conferência pessoal, pra todo mundo trabalhar com segurança."
   },
   {
@@ -74,7 +74,7 @@
    "t0": 32.5,
    "t1": 38.0,
    "voz_t0": 32.62,
-   "voz_t1": 35.751,
+   "voz_t1": 35.26,
    "texto": "Quer entrar pra rede? Chama a gente no Direct!"
   }
  ],
@@ -84,89 +84,91 @@
     0.25,
     0.55
    ],
-   "moto": 0.334,
-   "bike": 0.81,
-   "carro": 1.299,
-   "renda": 3.114,
-   "gloria": 4.377,
-   "sai": 4.65
+   "moto": 0.33,
+   "bike": 1.21,
+   "carro": 1.69,
+   "renda": 3.17,
+   "gloria": 4.09,
+   "sai": 4.15
   },
   "chamada": {
-   "logo": 5.02,
-   "cartaz": 6.599,
-   "parceiros": 7.536,
-   "veiculos": 5.3
+   "logo": 4.52,
+   "cartaz": 5.96,
+   "parceiros": 6.73,
+   "veiculos": 4.8
   },
   "disponivel": {
-   "cartao": 8.52,
-   "liga": 9.059,
-   "relogio": 9.976
+   "cartao": 8.02,
+   "liga": 8.59,
+   "relogio": 9.43
   },
   "notificacao": {
    "celular": [
-    11.45,
-    11.9
+    10.95,
+    11.4
    ],
-   "notif": 11.651,
-   "loja": 13.797,
-   "bairro": 14.374,
-   "valor": 15.036,
-   "ve": 15.916,
-   "aceitar": 16.964
+   "notif": 11.25,
+   "loja": 13.23,
+   "bairro": 14.11,
+   "valor": 14.59,
+   "ve": 15.47,
+   "aceitar": 16.43
   },
   "coleta": {
-   "toque": 18.08,
+   "toque": 17.58,
    "troca": [
-    18.35,
-    18.75
+    17.85,
+    18.25
    ],
-   "pega": 18.9,
-   "coletei": 19.329,
-   "sai": 19.899,
-   "chega": 20.61,
-   "entregue": 20.63
+   "pega": 18.43,
+   "coletei": 18.83,
+   "sai": 19.58,
+   "chega": 20.35,
+   "entregue": 20.37
   },
   "acerto": {
    "fichas": [
-    21.52,
-    21.66
+    21.02,
+    21.16
    ],
-   "seta": 21.641,
-   "direto": 22.231,
-   "registro": 23.929,
-   "check": 24.244
+   "seta": 21.12,
+   "direto": 21.95,
+   "registro": 23.71,
+   "check": 24.19
   },
   "cadastro": {
    "prancheta": 25.52,
-   "equipe": 27.464,
-   "selo": 28.297,
-   "seguranca": 31.697
+   "equipe": 27.25,
+   "selo": 27.94,
+   "seguranca": 31.01
   },
   "fecho": {
    "pergunta": 32.62,
-   "rede": 33.609,
-   "somem": 34.124,
+   "rede": 33.23,
+   "somem": 33.79,
    "logo": {
-    "entra": 34.224,
-    "parada": 34.824
+    "entra": 33.89,
+    "parada": 34.49
    },
-   "cta": 34.374,
-   "direct": 35.293,
-   "frase": 34.974,
-   "acena": 34.224,
-   "pisca": 36.101
+   "cta": 34.04,
+   "direct": 34.67,
+   "frase": 34.64,
+   "acena": 33.89,
+   "pisca": 35.61
   }
  },
  "piscadas": [
-  0.9,
-  5.446,
-  8.296,
-  10.846,
-  15.525,
-  20.765,
-  25.352,
-  33.736,
-  35.91
+  0.933,
+  4.979,
+  7.562,
+  10.212,
+  13.992,
+  20.498,
+  24.052,
+  28.169,
+  32.177,
+  35.02,
+  37.08
  ],
  "piscada_dur": 0.16
 }

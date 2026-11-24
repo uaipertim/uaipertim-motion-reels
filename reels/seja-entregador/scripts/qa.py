@@ -197,7 +197,7 @@ for n in PERG:
     ult, ant = pal[-1], pal[-2]
     tr = trilha(y, sr, max(0, ts[0] - 0.05), min(len(y) / sr, te[fim_q] + 0.25))
     vz = [(t, f) for t, f in tr if f]
-    pico = max([(t, f) for t, f in vz if ts[ult.start()] - 0.02 <= t <= te[fim_q] + 0.2], key=lambda q: q[1])
+    pico = max([(t, f) for t, f in vz if ts[ult.start()] - 0.02 <= t <= te[ult.end() - 1] + 0.08], key=lambda q: q[1])   # só na última palavra (a fala 8 segue depois da pausa)
     base = float(np.median([f for t, f in vz if ts[ant.start()] <= t <= te[ant.end() - 1] + 0.04]))
     vog = [m.start() for m in re.finditer(r'[aeiouáéíóúâêôãõ]', ult.group().lower())]
     tv = [(t, f) for t, f in vz if t >= ts[ult.start() + vog[-1]]]

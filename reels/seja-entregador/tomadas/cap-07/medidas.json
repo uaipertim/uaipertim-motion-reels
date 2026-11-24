@@ -1,0 +1,54 @@
+{
+ "episodio": "seja-entregador",
+ "cap": 7,
+ "texto": "Quer entrar pra rede? Chama a gente no Direct!",
+ "voz": "Victor Pinho",
+ "perfil": "narracao",
+ "modelo": "eleven_v4",
+ "tomadas": [
+  {
+   "tomada": "A",
+   "arquivo": "A-seed42.mp3",
+   "seed": 42,
+   "texto_api": "Quer entrar pra rede? Chama a gente no Direct!",
+   "conferencia": "ok",
+   "ritmo_letras_s": 13.6,
+   "maior_pausa_s": 0.36,
+   "sobra_no_fim_s": 0.16,
+   "fala_s": 2.64
+  },
+  {
+   "tomada": "B",
+   "arquivo": "B-seed1042.mp3",
+   "seed": 1042,
+   "texto_api": "Quer entrar pra rede? Chama a gente no Direct!",
+   "conferencia": "ok",
+   "ritmo_letras_s": 13.2,
+   "maior_pausa_s": 0.4,
+   "sobra_no_fim_s": 0.24,
+   "fala_s": 2.72
+  },
+  {
+   "tomada": "C",
+   "arquivo": "C-seed2042.mp3",
+   "seed": 2042,
+   "texto_api": "Quer entrar pra rede? Chama a gente no Direct!",
+   "conferencia": "ok",
+   "ritmo_letras_s": 12.9,
+   "maior_pausa_s": 0.4,
+   "sobra_no_fim_s": 0.16,
+   "fala_s": 2.8
+  },
+  {
+   "tomada": "D",
+   "arquivo": "D-seed3042.mp3",
+   "seed": 3042,
+   "texto_api": "Quer entrar pra rede? Chama a gente no Direct!",
+   "conferencia": "ok",
+   "ritmo_letras_s": 14.1,
+   "maior_pausa_s": 0.36,
+   "sobra_no_fim_s": 0.16,
+   "fala_s": 2.56
+  }
+ ]
+}
