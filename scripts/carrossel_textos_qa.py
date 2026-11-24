@@ -5,8 +5,8 @@ QA DOS TEXTOS de um carrossel animado (complementa o scripts/quiz_qa.py, que con
     python3 scripts/carrossel_textos_qa.py carrosseis/animados/03-seu-comercio-no-uaipertim.json
 
 Lê os PNGs das lâminas (o quadro "estatico" de cada uma: lamina-N.png) com OCR (tesseract, português) e confere:
-  • espaços entre palavras: cada par de palavras vizinhas do texto de tela aparece SEPARADO no OCR, nunca grudado num token
-    só (ex.: "comércio" + "no" → "comérciono");
+  • espaços entre palavras: cada par de palavras vizinhas do texto de tela aparece SEPARADO no OCR (em ao menos uma das
+    passadas, uma palavra logo depois da outra); acusa o par que só aparece grudado num token ("comércio" + "no" → "comérciono");
   • legibilidade: o OCR reconhece ≥ 90% das palavras de tela da lâmina, com confiança média ≥ 75; e nenhum texto da
     composição tem fonte menor que 24 px (fora as telas do app, que são imagem);
   • valores: os do JSON ("valores": meses grátis, mensalidade, comissão) estão na tela (OCR) e na legenda do post, e
@@ -70,12 +70,13 @@ def ocr(png):
     from PIL import Image, ImageOps
     im = Image.open(png).convert("RGB")
     im = im.resize((im.width * 2, im.height * 2), Image.LANCZOS)
-    toks = {}
+    toks, passadas = {}, []
     tmp = OUT / "revisao" / f"ocr-{png.stem}.png"
     for ch in im.split():
         for v in (ch, ImageOps.invert(ch)):
             v.save(tmp)
             tsv = "".join(subprocess.run(["tesseract", str(tmp), "-", "-l", "por", "--psm", psm, "tsv"], capture_output=True, text=True).stdout for psm in ("11", "3"))
+            passadas.append([ln.split("\t")[11].strip() for ln in tsv.splitlines() if len(ln.split("\t")) == 12 and ln.split("\t")[11].strip()])
             for ln in tsv.splitlines():
                 c = ln.split("\t")
                 if len(c) == 12 and c[11].strip() and re.fullmatch(r"-?[\d.]+", c[10]) and float(c[10]) >= 0:
@@ -87,20 +88,22 @@ def ocr(png):
         for v in (ImageOps.invert(ImageOps.grayscale(faixa)), ImageOps.invert(faixa.split()[2]), ImageOps.grayscale(faixa)):
             v.save(tmp)
             tsv = subprocess.run(["tesseract", str(tmp), "-", "-l", "por", "--psm", "6", "tsv"], capture_output=True, text=True).stdout
+            passadas.append([ln.split("\t")[11].strip() for ln in tsv.splitlines() if len(ln.split("\t")) == 12 and ln.split("\t")[11].strip()])
             for ln in tsv.splitlines():
                 c = ln.split("\t")
                 if len(c) == 12 and c[11].strip() and re.fullmatch(r"-?[\d.]+", c[10]) and float(c[10]) >= 0:
                     w = c[11].strip()
                     toks[w] = max(toks.get(w, 0), float(c[10]))
     tmp.unlink()
-    return list(toks.items())
+    return list(toks.items()), passadas
 
 
 parecido = lambda a, b: a == b or (len(a) >= 4 and SequenceMatcher(None, a, b).ratio() >= 0.8)
 OCR = {}
 for i, L in enumerate(D["laminas"]):
     rel.append(f"--- lâmina {i + 1} ({L['rotulo']})")
-    toks = ocr(OUT / f"lamina-{i + 1}.png")
+    toks, passadas = ocr(OUT / f"lamina-{i + 1}.png")
+    pares_sep = {(nrm(a), nrm(b)) for ps in passadas for a, b in zip(ps, ps[1:])}
     OCR[i] = toks
     ns = [nrm(t) for t, _ in toks]
     esperadas, achadas, conf, grudadas, faltam = 0, 0, [], [], []
@@ -117,7 +120,9 @@ for i, L in enumerate(D["laminas"]):
                 faltam.append(w)
         for a, b in zip(ws, ws[1:]):
             junto = a + b
-            if len(junto) >= 5 and any(n == junto or (len(n) >= len(junto) - 1 and parecido(n, junto) and not parecido(n, a) and not parecido(n, b)) for n in ns):
+            # grudado = alguma passada lê as duas como um token só E nenhuma passada lê as duas separadas, uma depois da outra
+            separado = any(parecido(x, a) and parecido(y, b) for x, y in pares_sep)
+            if not separado and len(junto) >= 5 and any(n == junto or (len(n) >= len(junto) - 1 and parecido(n, junto) and not parecido(n, a) and not parecido(n, b)) for n in ns):
                 grudadas.append(f"{a}+{b}")
     taxa = achadas / max(1, esperadas)
     cm = sum(conf) / max(1, len(conf))
