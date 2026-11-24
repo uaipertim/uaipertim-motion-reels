@@ -9,29 +9,29 @@ ok    espaços entre palavras: nenhum par grudado
 ok    legível: o OCR reconhece 24/24 palavras (100%), confiança média 96
 --- lâmina 4 (entrega)
 ok    espaços entre palavras: nenhum par grudado
-ok    legível: o OCR reconhece 37/37 palavras (100%), confiança média 96
+ok    legível: o OCR reconhece 47/47 palavras (100%), confiança média 96
 --- lâmina 5 (pagamento)
 ok    espaços entre palavras: nenhum par grudado
 ok    legível: o OCR reconhece 36/36 palavras (100%), confiança média 97
 --- lâmina 6 (mensalidade)
 ok    espaços entre palavras: nenhum par grudado
-ok    legível: o OCR reconhece 25/27 palavras (93%), confiança média 95 (não lidas: pro, lojista)
+ok    legível: o OCR reconhece 45/45 palavras (100%), confiança média 96
 --- lâmina 7 (fecho)
 ok    espaços entre palavras: nenhum par grudado
 ok    legível: o OCR reconhece 17/17 palavras (100%), confiança média 93
 --- a composição, os valores e as regras
-ok    menor fonte dos textos da composição: 32 px (mínimo 24)
-ok    3 meses sem mensalidade: na tela da lâmina 6 (OCR: o contador parado em 3)
-ok    mensalidade depois: R$ 49,90/mês na tela da lâmina 6 (OCR: 49,90)
-ok    comissão: 5% só nos pedidos pagos pelo app, na tela da lâmina 5
-ok    os valores do texto das lâminas batem com o campo 'valores' do JSON
-ok    nenhum outro valor em R$ nas lâminas além de R$ 49,90
+ok    menor fonte dos textos da composição: 24 px (mínimo 24)
+ok    as 3 faixas na tela da lâmina 6 (OCR): até R$ 1.600 → R$ 79,90; até R$ 6.000 → 5%; acima → R$ 300 (teto)
+ok    comissão de 5% dos pedidos pagos pelo app: nas lâminas 5 e 6
+ok    a tabela da lâmina bate com o campo 'valores' do JSON (as faixas em ordem, o teto marcado)
+ok    nenhum outro valor em R$ nas lâminas
 ok    nenhuma outra porcentagem além de 5%
-ok    a legenda do post traz os mesmos valores (3 meses, R$ 49,90, 5%)
+ok    nada da política antiga ("3 meses", "sem mensalidade", "grátis", "R$ 49,90", "lojas do lançamento") nas lâminas, na tela nem na legenda
+ok    a legenda do post traz a regra nova (a partir de R$ 79,90, acompanha as vendas pelo app, teto de R$ 300) e a comissão de 5%
 ok    o marcador vai numa palavra só (num marcador de várias palavras o espaço fica estreito)
 ok    sem "frete" (sempre "entrega")
 ok    sem promessa de vendas ou resultado
-ok    WhatsApp só como o jeito antigo ("Sem ficar repetindo cardápio e preço no WhatsApp"), nunca como canal de suporte; sem telefone
+ok    WhatsApp só como o jeito antigo (lâmina 3) e como venda que não entra na conta da mensalidade (lâmina 6), nunca como canal de suporte; sem telefone
 ok    "o Glória" no masculino
 ok    "Pertim" sem troca de grafia na tela
 
