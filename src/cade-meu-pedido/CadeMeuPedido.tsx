@@ -383,7 +383,7 @@ const Gancho: React.FC<{ t: number; quadro: number }> = ({ t, quadro }) => {
       <PertimEm t={t} quadro={quadro} pose="parado" expr="surpreso" cx={PG_.cx} base={PG_.base + espia} altura={PG_.altura} />
       <Grade />
       {b > 0.01 && (
-        <div style={abs(560, 600, { transform: `scale(${b * (1 + 0.12 * pulo)})`, transformOrigin: "10% 100%" })}><Balao texto="cadê meu pedido?" size={46} /></div>
+        <div style={abs(470, 600, { transform: `scale(${b * (1 + 0.1 * pulo)})`, transformOrigin: "10% 100%" })}><Balao texto="cadê meu pedido?" size={46} /></div>
       )}
       <Twinkles frame={quadro} seed="cmp-gancho" points={[[140, 480], [940, 470]]} size={30} />
     </div>

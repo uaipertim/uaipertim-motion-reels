@@ -121,8 +121,12 @@ dif = niv[EP] - niv['olha-ele-por-dentro']
 ok(abs(dif) <= 1.0, f'nível da trilha: {niv[EP]:+.1f} dB da voz (LUFS); no "Olha ele por dentro!", {niv["olha-ele-por-dentro"]:+.1f} dB (diferença {dif:+.1f} dB; tolerância 1 dB)')
 MW = os.path.join(AUD, 'musica.wav')
 fim_fala = CENA['cenas'][-1]['voz_t1'] + 0.3
+# o fecho deste Reel quase não tem trecho sem fala (a voz vai até 0,7 s do fim): com menos de 1,5 s livres, mede a trilha na
+# cena do fecho inteira, na pista só da música (musica.wav)
+if DUR - fim_fala < 1.5:
+    fim_fala = CENA['cenas'][-1]['t0']
 g_, f_ = lufs_wav(MW, 0, CENA['cenas'][0]['voz_t0']) if CENA['cenas'][0]['voz_t0'] > 0.4 else lufs_wav(MW, 0, 3.0), lufs_wav(MW, fim_fala, DUR)
-ok(g_ > -40 and f_ > -40, f'a trilha toca no gancho ({g_:.1f} LUFS nos primeiros 3 s) e no fecho sem fala ({f_:.1f} LUFS de {fim_fala:.1f} a {DUR:.1f} s)')
+ok(g_ > -40 and f_ > -40, f'a trilha toca no gancho ({g_:.1f} LUFS nos primeiros 3 s) e no fecho ({f_:.1f} LUFS de {fim_fala:.1f} a {DUR:.1f} s, na pista da música)')
 ok(niv[EP] <= -9, f'a voz em destaque: a trilha fica {-niv[EP]:.1f} dB abaixo dela')
 
 sec('RITMO (trilha animada, 120 BPM: uma batida a cada 0,5 s)')
