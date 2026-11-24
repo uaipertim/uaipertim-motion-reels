@@ -1,0 +1,172 @@
+{
+ "duracao": 38.0,
+ "fps": 30,
+ "quadros": 1140,
+ "batida": 0.5,
+ "bpm": 120.0,
+ "cenas": [
+  {
+   "n": 0,
+   "tipo": "gancho",
+   "t0": 0.0,
+   "t1": 5.0,
+   "voz_t0": 0.12,
+   "voz_t1": 4.836,
+   "texto": "Tem moto, bike ou carro… e quer fazer uma renda extra aqui no Glória?"
+  },
+  {
+   "n": 1,
+   "tipo": "chamada",
+   "t0": 5.0,
+   "t1": 8.5,
+   "voz_t0": 5.1,
+   "voz_t1": 8.209,
+   "texto": "O UaiPertim tá chamando entregadores parceiros!"
+  },
+  {
+   "n": 2,
+   "tipo": "disponivel",
+   "t0": 8.5,
+   "t1": 11.5,
+   "voz_t0": 8.6,
+   "voz_t1": 10.994,
+   "texto": "Cê fica disponível na hora que quiser."
+  },
+  {
+   "n": 3,
+   "tipo": "notificacao",
+   "t0": 11.5,
+   "t1": 18.0,
+   "voz_t0": 11.6,
+   "voz_t1": 17.494,
+   "texto": "A entrega chega no celular, com a loja, o bairro e o valor. Cê vê tudo antes de aceitar."
+  },
+  {
+   "n": 4,
+   "tipo": "coleta",
+   "t0": 18.0,
+   "t1": 21.5,
+   "voz_t0": 18.1,
+   "voz_t1": 21.16,
+   "texto": "Aceitou? Coleta na loja e leva até o cliente."
+  },
+  {
+   "n": 5,
+   "tipo": "acerto",
+   "t0": 21.5,
+   "t1": 25.5,
+   "voz_t0": 21.6,
+   "voz_t1": 25.406,
+   "texto": "O acerto é direto com a loja, e fica tudo registrado no app."
+  },
+  {
+   "n": 6,
+   "tipo": "cadastro",
+   "t0": 25.5,
+   "t1": 32.5,
+   "voz_t0": 25.6,
+   "voz_t1": 32.37,
+   "texto": "O cadastro é feito pela nossa equipe, com conferência pessoal, pra todo mundo trabalhar com segurança."
+  },
+  {
+   "n": 7,
+   "tipo": "fecho",
+   "t0": 32.5,
+   "t1": 38.0,
+   "voz_t0": 32.62,
+   "voz_t1": 35.751,
+   "texto": "Quer entrar pra rede? Chama a gente no Direct!"
+  }
+ ],
+ "eventos": {
+  "gancho": {
+   "fila": [
+    0.25,
+    0.55
+   ],
+   "moto": 0.334,
+   "bike": 0.81,
+   "carro": 1.299,
+   "renda": 3.114,
+   "gloria": 4.377,
+   "sai": 4.65
+  },
+  "chamada": {
+   "logo": 5.02,
+   "cartaz": 6.599,
+   "parceiros": 7.536,
+   "veiculos": 5.3
+  },
+  "disponivel": {
+   "cartao": 8.52,
+   "liga": 9.059,
+   "relogio": 9.976
+  },
+  "notificacao": {
+   "celular": [
+    11.45,
+    11.9
+   ],
+   "notif": 11.651,
+   "loja": 13.797,
+   "bairro": 14.374,
+   "valor": 15.036,
+   "ve": 15.916,
+   "aceitar": 16.964
+  },
+  "coleta": {
+   "toque": 18.08,
+   "troca": [
+    18.35,
+    18.75
+   ],
+   "pega": 18.9,
+   "coletei": 19.329,
+   "sai": 19.899,
+   "chega": 20.61,
+   "entregue": 20.63
+  },
+  "acerto": {
+   "fichas": [
+    21.52,
+    21.66
+   ],
+   "seta": 21.641,
+   "direto": 22.231,
+   "registro": 23.929,
+   "check": 24.244
+  },
+  "cadastro": {
+   "prancheta": 25.52,
+   "equipe": 27.464,
+   "selo": 28.297,
+   "seguranca": 31.697
+  },
+  "fecho": {
+   "pergunta": 32.62,
+   "rede": 33.609,
+   "somem": 34.124,
+   "logo": {
+    "entra": 34.224,
+    "parada": 34.824
+   },
+   "cta": 34.374,
+   "direct": 35.293,
+   "frase": 34.974,
+   "acena": 34.224,
+   "pisca": 36.101
+  }
+ },
+ "piscadas": [
+  0.9,
+  5.446,
+  8.296,
+  10.846,
+  15.525,
+  20.765,
+  25.352,
+  33.736,
+  35.91
+ ],
+ "piscada_dur": 0.16
+}

@@ -24,7 +24,7 @@ export type CapaReelProps = {
   semFundo?: boolean;   // só para o QA: sem o fundo (creme, raios e halo), para medir onde está o conteúdo
   margem?: number;  // a margem lateral do título e dos brilhos (padrão 110; 135 = a regra das capas que valem na grade E na aba Reels)
 };
-type Ilustracao = "mesa" | "nao-e-app" | "entrega" | "vaga" | "fome" | "dentro" | "cesta";
+type Ilustracao = "mesa" | "nao-e-app" | "entrega" | "vaga" | "fome" | "dentro" | "cesta" | "entregador";
 
 const SAFE = { x0: 110, x1: 970, y0: 300, y1: 1620 };
 const SELO_Y = 372;                                     // centro do selo
@@ -337,7 +337,45 @@ const Cesta: React.FC = () => {
   );
 };
 
-const ILUSTRACOES: Record<Ilustracao, React.FC> = { mesa: Mesa, "nao-e-app": NaoEApp, entrega: Entrega, vaga: Vaga, fome: Fome, dentro: Dentro, cesta: Cesta };
+
+// 8 · Seja entregador parceiro: o Pertim na motinha (pose "moto", olhando para a câmera), acenando com a outra mão, e a
+//     sacola da entrega na garupa; a rua tracejada embaixo, uma plaquinha de pin e brilhos em volta
+const SacolaCapa: React.FC = () => (
+  <g>
+    <path d="M30 168 Q30 150 40 150 Q50 150 50 168" stroke={C.coralDark} strokeWidth="4" fill="none" />
+    <path d="M20 168 H60 L57 206 Q57 210 52 210 H28 Q23 210 23 206 Z" fill={C.coral} />
+    <path d="M48 168 H60 L57 206 Q57 210 52 210 H46 Z" fill={C.coralDark} />
+    <circle cx="40" cy="188" r="9.5" fill={C.creme} />
+    <path d="M40 196 C40 196 34.5 190 34.5 186.5 A5.5 5.5 0 0 1 45.5 186.5 C45.5 190 40 196 40 196 Z" fill={C.coral} />
+    <circle cx="40" cy="186.5" r="2" fill={C.creme} />
+  </g>
+);
+const Entregador: React.FC = () => {
+  // a pose "moto" (viewBox -24 40 300 254): o corpo vai em translate(110 108) scale(0.8) translate(-120 -120); o ombro
+  // esquerdo do corpo (60, 166) fica em (62, 145); dali sai o braço do aceno, para cima
+  const ph = 430, k = ph / 254, pw = 300 * k, px = 378 - pw / 2 + 20, py = 560 - (294 - 40) * k + 10;
+  const vb = "-24 40 300 254";
+  return (
+    <>
+      <Svg abs>
+        <rect x="-10" y="548" width="776" height="40" rx="20" fill="#7A6B62" opacity="0.18" />
+        {[40, 200, 360, 520, 680].map((x) => <rect key={x} x={x} y="563" width="90" height="10" rx="5" fill="#fff" opacity="0.7" />)}
+        <Brilho x={70} y={120} s={44} c={C.coral} /><Brilho x={700} y={110} s={36} /><Brilho x={690} y={380} s={30} c={C.coral} /><Brilho x={60} y={400} s={28} />
+      </Svg>
+      <div style={{ position: "absolute", left: px, top: py, width: pw, height: ph }}>
+        <Pertim v={1} pose="moto" expr="sorrindo" altura={ph} rig={{ olhar: [0, 0], centro: true }} />
+      </div>
+      <svg viewBox={vb} width={pw} height={ph} style={{ position: "absolute", left: px, top: py, overflow: "visible" }}>
+        <g transform="translate(-6 10) scale(1.15) translate(-4 -30)"><SacolaCapa /></g>
+        <path d="M64 146 Q30 134 14 112" stroke="#F08A00" strokeWidth="11" strokeLinecap="round" fill="none" />
+        <g transform="translate(9 104) rotate(-218)"><circle r="10.5" fill={C.coral} /><circle cx="-8.5" cy="-1" r="4.6" fill={C.coral} /><rect x="-8" y="-15.5" width="16" height="7" rx="3.5" fill={C.creme} /></g>
+        <g stroke={C.tinta} strokeOpacity={0.3} strokeWidth={3.5} strokeLinecap="round" fill="none"><path d="M-10 88 Q-18 100 -12 112" /><path d="M-20 82 Q-30 100 -22 118" /></g>
+      </svg>
+    </>
+  );
+};
+
+const ILUSTRACOES: Record<Ilustracao, React.FC> = { mesa: Mesa, "nao-e-app": NaoEApp, entrega: Entrega, vaga: Vaga, fome: Fome, dentro: Dentro, cesta: Cesta, entregador: Entregador };
 
 // ---------------------------------------------------------------- a capa
 const TWINK: Array<[number, number]> = [[150, 470], [930, 520], [130, 1120], [950, 1100], [170, 1560], [910, 1570]];

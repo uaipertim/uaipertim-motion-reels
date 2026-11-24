@@ -1,0 +1,99 @@
+{
+ "_doc": "Layout do Reel 'Seja entregador parceiro' (1080×1920, 30 fps). Lido pela composição (src/seja-entregador/), por scripts/preparar.py e pelo qa.py. O Pertim no canto de baixo à esquerda nas cenas 2, 3, 4, 6 e 7 (na rua do gancho, na coleta e no fecho ele está na cena); o conteúdo à direita, em x 300–920; a legenda nova (pop) abaixo dos pés, em x 110–906; nada na coluna de botões do Instagram (x ≥ 940, y 1060–1560).",
+ "W": 1080,
+ "H": 1920,
+ "fps": 30,
+ "botoes": [
+  940,
+  1060,
+  1080,
+  1560
+ ],
+ "legenda_pop": {
+  "cx": 508,
+  "top": 1400,
+  "size": 72,
+  "linha": 88,
+  "size2": 60,
+  "linha2": 66,
+  "maxW": 796,
+  "x0": 110,
+  "x1": 906,
+  "_doc": "a legenda nova (a da Coisa de mineiro #03): uma linha na letra grande; se não couber, duas na menor; sempre em x 110–906"
+ },
+ "nota": {
+  "texto": "Valores ilustrativos",
+  "cx": 540,
+  "y": 1092,
+  "size": 26
+ },
+ "pertim": {
+  "canto": {
+   "cx": 180,
+   "base": 1318,
+   "altura": 300
+  },
+  "fecho": {
+   "cx": 195,
+   "base": 1318,
+   "altura": 380
+  }
+ },
+ "rua": {
+  "y0": 930,
+  "y1": 1290,
+  "calcada": 40
+ },
+ "gancho": {
+  "carro": {
+   "cx": 205,
+   "base": 1075,
+   "w": 350
+  },
+  "bike": {
+   "cx": 445,
+   "base": 1165,
+   "w": 290
+  },
+  "moto": {
+   "cx": 700,
+   "base": 1268,
+   "altura": 370
+  },
+  "placa": {
+   "cx": 830,
+   "y": 470
+  }
+ },
+ "celular": {
+  "x": 360,
+  "y": 360,
+  "w": 520,
+  "h": 1080
+ },
+ "notif": {
+  "x": 150,
+  "y": 470,
+  "w": 780
+ },
+ "fecho": {
+  "logo": {
+   "cx": 610,
+   "cy": 490,
+   "d": 290
+  },
+  "frase": {
+   "cy": 715,
+   "size": 56
+  },
+  "cta": {
+   "cx": 615,
+   "cy": 895,
+   "size": 62
+  },
+  "direct": {
+   "cx": 672,
+   "cy": 1075
+  }
+ }
+}
