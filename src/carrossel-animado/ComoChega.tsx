@@ -34,11 +34,11 @@ export type ComoChegaDados = { numero: number; formato: [number, number]; selo: 
 export type ComoChegaProps = ComoChegaDados & { lamina: number; layout?: { titulo: Wrapped }; semFundo?: boolean };
 
 export const COMO_CHEGA = { width: 1080, height: 1350, fps: 30 };
-const SAFE = { x0: 135, x1: 945 };
-const LARG = SAFE.x1 - SAFE.x0;
-const TIT = { x: SAFE.x0 + 8, w: LARG - 16 };                 // +8: o marcador passa um pouco da 1ª letra
-const plain = (t: string) => t.replace(/\*/g, "");
-const juntaChave = (t: string) => t.replace(/\*([^*]+)\*/g, (_, k: string) => `*${k.replace(/ +/g, " ")}*`);
+export const SAFE = { x0: 135, x1: 945 };
+export const LARG = SAFE.x1 - SAFE.x0;
+export const TIT = { x: SAFE.x0 + 8, w: LARG - 16 };                 // +8: o marcador passa um pouco da 1ª letra
+export const plain = (t: string) => t.replace(/\*/g, "");
+export const juntaChave = (t: string) => t.replace(/\*([^*]+)\*/g, (_, k: string) => `*${k.replace(/ +/g, " ")}*`);
 export const duracaoComoChega = (d: ComoChegaDados, i: number) => Math.round(d.laminas[i].segundos * COMO_CHEGA.fps);
 const CAPA_T = { cy: 860, maxH: 330, sizes: [150, 140, 130, 120, 110, 100, 92, 84] };
 const NUM_W = 112;                                            // a bolinha do número (lâminas 3–5) + o respiro até o título
@@ -63,8 +63,8 @@ export const medeComoChega = (d: ComoChegaDados, i: number): { titulo: Wrapped }
 };
 
 // ---------------------------------------------------------------- tempo
-const liga = (t: number, a: number, b: number, r = 0.3) => ease(clamp01((t - a) / r)) * (1 - ease(clamp01((t - (b - r)) / r)));
-const mix = (c0: string, c1: string, u: number) => {
+export const liga = (t: number, a: number, b: number, r = 0.3) => ease(clamp01((t - a) / r)) * (1 - ease(clamp01((t - (b - r)) / r)));
+export const mix = (c0: string, c1: string, u: number) => {
   const h = (c: string, i: number) => parseInt(c.slice(1 + 2 * i, 3 + 2 * i), 16);
   return `rgb(${[0, 1, 2].map((i) => Math.round(h(c0, i) + (h(c1, i) - h(c0, i)) * u)).join(",")})`;
 };
@@ -76,15 +76,15 @@ const IconeRota: React.FC<{ s: number }> = ({ s }) => (
     <circle cx="12" cy="9.5" r="2.8" fill={C.coral} />
   </svg>
 );
-const Selo: React.FC<{ texto: string; s: number }> = ({ texto, s }) => (
+export const Selo: React.FC<{ texto: string; s: number; icone?: React.ReactNode }> = ({ texto, s, icone }) => (
   <div style={{ display: "inline-flex", alignItems: "center", gap: s * 0.4, background: C.coral, borderRadius: 999, padding: `${s * 0.36}px ${s * 0.9}px ${s * 0.36}px ${s * 0.66}px`, boxShadow: `0 ${s * 0.19}px 0 ${C.coralDark}` }}>
-    <IconeRota s={s * 1.35} />
+    {icone ?? <IconeRota s={s * 1.35} />}
     <span style={{ fontFamily: FONT, fontWeight: W.black, fontSize: s, lineHeight: 1, color: "#fff", letterSpacing: s * 0.05, whiteSpace: "nowrap" }}>{texto}</span>
   </div>
 );
-const Cabecalho: React.FC<{ selo: string; n: number; total: number }> = ({ selo, n, total }) => (
+export const Cabecalho: React.FC<{ selo: string; n: number; total: number; icone?: React.ReactNode }> = ({ selo, n, total, icone }) => (
   <>
-    <div style={{ position: "absolute", left: SAFE.x0, top: 112 - 38, height: 76, display: "flex", alignItems: "center" }}><Selo texto={selo} s={28} /></div>
+    <div style={{ position: "absolute", left: SAFE.x0, top: 112 - 38, height: 76, display: "flex", alignItems: "center" }}><Selo texto={selo} s={28} icone={icone} /></div>
     <div style={{ position: "absolute", right: 1080 - SAFE.x1, top: 112 - 38, height: 76, display: "flex", alignItems: "center", fontFamily: FONT, fontWeight: W.black, fontSize: 52, letterSpacing: -1, lineHeight: 1 }}>
       <span style={{ color: C.coral }}>{n}</span><span style={{ color: C.tinta, opacity: 0.4 }}>/{total}</span>
     </div>
@@ -95,8 +95,8 @@ const NumeroBola: React.FC<{ n: number; s?: number }> = ({ n, s = 92 }) => (
     fontFamily: FONT, fontWeight: W.black, fontSize: s * 0.6, color: "#fff", lineHeight: 1 }}><span style={{ marginTop: s * 0.06 }}>{n}</span></div>
 );
 // o título no alto (centrado na faixa y 165–335), à esquerda; com número, a bolinha antes
-const altTitulo = (wt: Wrapped) => wt.lines.length * wt.size * 1.12;
-const Titulo: React.FC<{ L: Lamina; wt: Wrapped; y0?: number; y1?: number; topo?: boolean }> = ({ L, wt, y0 = 168, y1 = 332, topo }) => {
+export const altTitulo = (wt: Wrapped) => wt.lines.length * wt.size * 1.12;
+export const Titulo: React.FC<{ L: Pick<Lamina, "titulo" | "numero">; wt: Wrapped; y0?: number; y1?: number; topo?: boolean }> = ({ L, wt, y0 = 168, y1 = 332, topo }) => {
   const th = altTitulo(wt);
   const top = topo ? y0 : (y0 + y1) / 2 - th / 2;
   return (
@@ -108,10 +108,10 @@ const Titulo: React.FC<{ L: Lamina; wt: Wrapped; y0?: number; y1?: number; topo?
     </>
   );
 };
-const Texto: React.FC<{ y: number; size?: number; children: React.ReactNode; w?: number; x?: number }> = ({ y, size = 40, children, w = TIT.w, x = TIT.x }) => (
+export const Texto: React.FC<{ y: number; size?: number; children: React.ReactNode; w?: number; x?: number }> = ({ y, size = 40, children, w = TIT.w, x = TIT.x }) => (
   <div style={{ position: "absolute", left: x, width: w, top: y, fontFamily: FONTE, fontWeight: W.medium, fontSize: size, lineHeight: 1.22, color: C.tinta, letterSpacing: -0.3, textWrap: "balance" } as React.CSSProperties}>{children}</div>
 );
-const Ilustrativo: React.FC<{ texto: string; y: number }> = ({ texto, y }) => (
+export const Ilustrativo: React.FC<{ texto: string; y: number }> = ({ texto, y }) => (
   <div style={{ position: "absolute", left: SAFE.x0, width: LARG, top: y, display: "flex", justifyContent: "center" }}>
     <div style={{ fontFamily: FONT, fontWeight: W.extraBold, fontSize: 24, lineHeight: "32px", color: C.tinta, background: "rgba(255,249,241,0.92)", borderRadius: 999, padding: "2px 18px",
       whiteSpace: "nowrap", boxShadow: "0 3px 8px rgba(34,28,25,0.10)" }}><span style={{ opacity: 0.68 }}>{texto}</span></div>
@@ -136,13 +136,13 @@ const Celular: React.FC<{ x: number; y: number; w: number; h: number; tela: stri
   );
 };
 // o anel de destaque, em px do PNG (dentro da tela)
-const Anel: React.FC<{ cx: [number, number, number, number]; e: number; raio?: number; esp?: number }> = ({ cx, e, raio = 44, esp = 12 }) =>
+export const Anel: React.FC<{ cx: [number, number, number, number]; e: number; raio?: number; esp?: number }> = ({ cx, e, raio = 44, esp = 12 }) =>
   e <= 0.001 ? null : (
     <div style={{ position: "absolute", left: cx[0] - 12, top: cx[1] - 12, width: cx[2] - cx[0] + 24, height: cx[3] - cx[1] + 24, borderRadius: raio, border: `${esp}px solid ${C.coral}`,
       boxShadow: `0 0 0 ${14 * e}px rgba(249,178,51,0.35)`, opacity: Math.min(1, e * 1.5), transform: `scale(${0.9 + 0.1 * e})` }} />
   );
 // o toque: o círculo que aperta e a onda (em px do PNG)
-const Toque: React.FC<{ u: number; x: number; y: number; r?: number }> = ({ u, x, y, r = 80 }) =>
+export const Toque: React.FC<{ u: number; x: number; y: number; r?: number }> = ({ u, x, y, r = 80 }) =>
   u <= 0 || u >= 1 ? null : (
     <>
       <div style={{ position: "absolute", left: x - r * (0.5 + 1.4 * u), top: y - r * (0.5 + 1.4 * u), width: 2 * r * (0.5 + 1.4 * u), height: 2 * r * (0.5 + 1.4 * u), borderRadius: "50%",
@@ -180,14 +180,14 @@ const LinhasVelocidade: React.FC<{ x: number; y: number; f: number; D: number }>
     })}
   </>
 );
-const Escudo: React.FC<{ s: number }> = ({ s }) => (
+export const Escudo: React.FC<{ s: number }> = ({ s }) => (
   <svg width={s} height={s} viewBox="0 0 100 100">
     <path d="M50 6 L86 20 V48 C86 72 70 88 50 96 C30 88 14 72 14 48 V20 Z" fill={C.verde} />
     <path d="M50 6 L86 20 V48 C86 72 70 88 50 96 Z" fill={C.verdeDark} opacity="0.35" />
     <path d="M32 52 L45 65 L70 38" stroke="#fff" strokeWidth="10" strokeLinecap="round" strokeLinejoin="round" fill="none" />
   </svg>
 );
-const IconeCheck: React.FC<{ s: number; cor: string }> = ({ s, cor }) => (
+export const IconeCheck: React.FC<{ s: number; cor: string }> = ({ s, cor }) => (
   <svg width={s} height={s} viewBox="0 0 100 100"><path d="M26 52 L43 69 L76 34" stroke={cor} strokeWidth="13" strokeLinecap="round" strokeLinejoin="round" fill="none" /></svg>
 );
 
@@ -403,7 +403,7 @@ const Acompanha: React.FC<ComoChegaProps & { L: Lamina; f: number; D: number }> 
 };
 
 // ================================================================ 7 · fecho (os cartões 1 · 2 · 3 acendem um a um)
-const IconeBalcao: React.FC<{ s: number }> = ({ s }) => (
+export const IconeBalcao: React.FC<{ s: number }> = ({ s }) => (
   <svg width={s} height={s} viewBox="0 0 100 100"><rect x="10" y="58" width="80" height="12" rx="4" fill="#C98A4B" /><rect x="16" y="70" width="68" height="22" rx="4" fill="#E0A863" />
     <path d="M30 58 C30 40 70 40 70 58 Z" fill={C.coral} /><rect x="46" y="32" width="8" height="10" rx="3" fill={C.coralDark} /><circle cx="78" cy="36" r="10" fill={C.amarelo} />
     <path d="M73 36 L77 40 L84 32" stroke="#fff" strokeWidth="3" fill="none" strokeLinecap="round" /></svg>

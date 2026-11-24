@@ -1,0 +1,146 @@
+{
+ "numero": 3,
+ "pasta": "03-seu-comercio-no-uaipertim",
+ "composicao": "SeuComercio",
+ "formato": [
+  1080,
+  1350
+ ],
+ "respiro": 60,
+ "saida": "out/carrosseis/animados/03-seu-comercio-no-uaipertim",
+ "capa_arquivo": "capa-4x5.png",
+ "publicacao": "qui 26/11, 12h",
+ "_doc": "Carrossel animado #03 'Seu comércio no UaiPertim', para o LOJISTA do Glória (as primeiras lojas parceiras do lançamento). Mesmo motor do #02 (scripts/quiz.mjs e scripts/quiz_qa.py com o caminho deste JSON) + o QA dos textos (scripts/carrossel_textos_qa.py: OCR dos PNGs = espaços entre palavras, legibilidade e os valores). Lâminas 1080×1350 (4:5), em loop, sem áudio. 'estatico' = o segundo do quadro que vira o PNG (plano B). *palavra* = a palavra-chave no marcador. Sem promessa de vendas ou resultado; sem WhatsApp de suporte; 'entrega', nunca 'frete'.",
+ "selo": "PRO LOJISTA",
+ "ilustrativo": "Lojas e valores ilustrativos",
+ "valores": {
+  "meses_gratis": 3,
+  "mensalidade": "R$ 49,90",
+  "comissao": "5%"
+ },
+ "laminas": [
+  {
+   "tipo": "capa",
+   "rotulo": "capa",
+   "segundos": 6,
+   "estatico": 0,
+   "titulo": [
+    "Seu *comércio*",
+    "no UaiPertim"
+   ],
+   "rodape": "Arrasta pra ver →",
+   "crf": 12
+  },
+  {
+   "tipo": "vitrine",
+   "rotulo": "vitrine",
+   "segundos": 7,
+   "estatico": 4.4,
+   "titulo": "Sua vitrine montada *junto* com você",
+   "texto": "No cadastro, a nossa equipe monta o cardápio, as fotos e os preços com você. Depois, cê atualiza tudo pelo painel.",
+   "itens": [
+    "Cardápio",
+    "Fotos",
+    "Preços"
+   ],
+   "quebra": [
+    "Sua vitrine montada",
+    "*junto* com você"
+   ]
+  },
+  {
+   "tipo": "pedido",
+   "rotulo": "pedido no painel",
+   "segundos": 7,
+   "estatico": 3.6,
+   "titulo": "Pedido chega *organizado* no painel",
+   "texto": "Sem ficar repetindo cardápio e preço no WhatsApp o dia todo.",
+   "baloes": [
+    "Qual o preço?",
+    "Manda o cardápio?",
+    "Ainda tem?"
+   ],
+   "aviso": "Novo pedido!",
+   "quebra": [
+    "Pedido chega",
+    "*organizado* no painel"
+   ]
+  },
+  {
+   "tipo": "entrega",
+   "rotulo": "entrega",
+   "segundos": 7,
+   "estatico": 4.6,
+   "titulo": "Entrega do *seu jeito*",
+   "texto": "A loja escolhe como faz:",
+   "opcoes": [
+    {
+     "titulo": "Equipe da própria loja",
+     "texto": "quem entrega é o seu pessoal"
+    },
+    {
+     "titulo": "Entregador parceiro",
+     "texto": "chama alguém da rede do UaiPertim"
+    },
+    {
+     "titulo": "Retirada no balcão",
+     "texto": "o cliente busca na loja"
+    }
+   ]
+  },
+  {
+   "tipo": "pagamento",
+   "rotulo": "pagamento",
+   "segundos": 7,
+   "estatico": 4.2,
+   "titulo": "Recebe pelo app *ou na entrega*",
+   "grupos": [
+    {
+     "titulo": "Pelo app",
+     "formas": [
+      "Pix",
+      "Cartão"
+     ]
+    },
+    {
+     "titulo": "Na entrega",
+     "formas": [
+      "Dinheiro",
+      "Pix",
+      "Cartão"
+     ]
+    }
+   ],
+   "selo": "Comissão de 5% só nos pedidos pagos pelo app",
+   "nota": "As taxas do meio de pagamento ficam com a loja.",
+   "quebra": [
+    "Recebe pelo app",
+    "*ou na entrega*"
+   ]
+  },
+  {
+   "tipo": "mensalidade",
+   "rotulo": "mensalidade",
+   "segundos": 8,
+   "estatico": 4.8,
+   "titulo": "*3 meses* sem mensalidade",
+   "texto": "Pras lojas do lançamento.",
+   "depois": "Depois, R$ 49,90/mês",
+   "destaque": "Pão de Queijo Points sem custo pra loja: os prêmios são bancados pelo UaiPertim"
+  },
+  {
+   "tipo": "fecho",
+   "rotulo": "fecho",
+   "segundos": 7,
+   "estatico": 0,
+   "titulo": "Quer *sua loja* no UaiPertim?",
+   "cta": "Chama a gente no Direct 📩",
+   "email": "uaipertim@uaipertim.com.br",
+   "assinatura": "Tudo pertim de você",
+   "quebra": [
+    "Quer *sua loja*",
+    "no UaiPertim?"
+   ]
+  }
+ ]
+}

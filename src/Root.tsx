@@ -46,6 +46,8 @@ import { OLHA, OlhaElePorDentro } from "./olha-ele-por-dentro/OlhaElePorDentro";
 import { CapaCoisaDeMineiro, CoisaDeMineiro, CoisaDeMineiroProps, carregaEpisodio, medeCapaCoisaDeMineiro } from "./coisa-de-mineiro/CoisaDeMineiro";
 import { COMO_CHEGA, ComoChega, ComoChegaProps, duracaoComoChega, medeComoChega } from "./carrossel-animado/ComoChega";
 import comoChega02 from "../carrosseis/animados/02-como-chega-o-seu-pedido.json";
+import seuComercio03 from "../carrosseis/animados/03-seu-comercio-no-uaipertim.json";
+import { SEU_COMERCIO, SeuComercio, SeuComercioProps, duracaoSeuComercio, medeSeuComercio } from "./carrossel-animado/SeuComercio";
 import { PDQ, PaoDeQueijoPoints } from "./pao-de-queijo-points/PaoDeQueijoPoints";
 import { SE, SejaEntregador } from "./seja-entregador/SejaEntregador";
 import { QUIZ, QuizMineiro, QuizProps, duracaoLamina, medeQuiz } from "./quiz/QuizMineiro";
@@ -271,6 +273,9 @@ export const RemotionRoot: React.FC = () => (
     <Composition id="ComoChega" component={ComoChega} durationInFrames={180} fps={COMO_CHEGA.fps} width={COMO_CHEGA.width} height={COMO_CHEGA.height}
       defaultProps={{ ...(comoChega02 as unknown as ComoChegaProps), lamina: 0 }}
       calculateMetadata={async ({ props }) => { await fontsReady; return { durationInFrames: duracaoComoChega(props, props.lamina), props: { ...props, layout: medeComoChega(props, props.lamina) } }; }} />
+    <Composition id="SeuComercio" component={SeuComercio} durationInFrames={180} fps={SEU_COMERCIO.fps} width={SEU_COMERCIO.width} height={SEU_COMERCIO.height}
+      defaultProps={{ ...(seuComercio03 as unknown as SeuComercioProps), lamina: 0 }}
+      calculateMetadata={async ({ props }) => { await fontsReady; return { durationInFrames: duracaoSeuComercio(props, props.lamina), props: { ...props, layout: medeSeuComercio(props, props.lamina) } }; }} />
     {/* Carrossel animado "Quiz" (carrosseis/quiz): UMA lâmina por render, em loop (--props={"lamina": 0..7}); scripts/quiz.mjs */}
     <Composition id="QuizMineiro" component={QuizMineiro} durationInFrames={180} fps={QUIZ.fps} width={QUIZ.width} height={QUIZ.height}
       defaultProps={{ ...(quiz01 as unknown as QuizProps), lamina: 0 }}
