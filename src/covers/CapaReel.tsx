@@ -24,7 +24,7 @@ export type CapaReelProps = {
   semFundo?: boolean;   // só para o QA: sem o fundo (creme, raios e halo), para medir onde está o conteúdo
   margem?: number;  // a margem lateral do título e dos brilhos (padrão 110; 135 = a regra das capas que valem na grade E na aba Reels)
 };
-type Ilustracao = "mesa" | "nao-e-app" | "entrega" | "vaga" | "fome" | "dentro" | "cesta" | "entregador";
+type Ilustracao = "mesa" | "nao-e-app" | "entrega" | "vaga" | "fome" | "dentro" | "cesta" | "entregador" | "acompanha";
 
 const SAFE = { x0: 110, x1: 970, y0: 300, y1: 1620 };
 const SELO_Y = 372;                                     // centro do selo
@@ -375,7 +375,41 @@ const Entregador: React.FC = () => {
   );
 };
 
-const ILUSTRACOES: Record<Ilustracao, React.FC> = { mesa: Mesa, "nao-e-app": NaoEApp, entrega: Entrega, vaga: Vaga, fome: Fome, dentro: Dentro, cesta: Cesta, entregador: Entregador };
+// 9 · Cadê meu pedido?: o celular com a tela de acompanhamento (Acompanhar.png na linha do tempo: "Saiu para entrega" aceso)
+//     e o Pertim espiando por trás dele, olhando para a câmera; um "?" e brilhos em volta
+const Acompanha: React.FC = () => {
+  const pw = 320, ph = 590, px = 150, py = 4, bz = 13, tw = pw - 2 * bz, k = tw / 1170, rola = 1020;
+  const alt = 430, s = alt / 270, wP = 240 * s;
+  return (
+    <>
+      <Svg abs>
+        <ellipse cx="378" cy="590" rx="260" ry="12" fill="#000" opacity="0.08" />
+        <Brilho x={110} y={110} s={42} c={C.coral} /><Brilho x={700} y={90} s={34} /><Brilho x={80} y={420} s={28} /><Brilho x={720} y={470} s={30} c={C.coral} />
+      </Svg>
+      {/* o Pertim atrás do celular, espiando pela direita */}
+      <div style={{ position: "absolute", left: 545 - wP / 2, top: 592 - alt, width: wP, height: alt, transform: "rotate(-10deg)", transformOrigin: "50% 100%" }}>
+        <Pertim v={1} pose="parado" expr="sorrindo" altura={alt} rig={{ olhar: [0, 0], centro: true }} />
+      </div>
+      <div style={{ position: "absolute", left: px, top: py, width: pw, height: ph, transform: "rotate(-5deg)", transformOrigin: "50% 100%" }}>
+        <div style={{ position: "absolute", inset: 0, borderRadius: 46, background: C.tinta, boxShadow: "inset 0 0 0 4px #4A3E38, 0 24px 44px rgba(34,28,25,0.3)" }} />
+        <div style={{ position: "absolute", left: bz, top: bz, width: tw, height: ph - 2 * bz, borderRadius: 36, overflow: "hidden", background: "#FAF8F5" }}>
+          <Img src={staticFile("telas-app/celular/Acompanhar.png")} style={{ position: "absolute", left: 0, top: -rola * k, width: 1170 * k, height: 3540 * k, maxWidth: "none" }} />
+          {/* o status "Saiu para entrega" aceso */}
+          <div style={{ position: "absolute", left: 50 * k, top: (1408 - rola) * k, width: 1070 * k, height: 164 * k, borderRadius: 14, border: `5px solid ${C.coral}`, boxShadow: "0 0 0 6px rgba(249,178,51,0.35)" }} />
+        </div>
+        <div style={{ position: "absolute", left: pw / 2 - 7, top: bz + 8, width: 14, height: 14, borderRadius: "50%", background: "#0D0B0A" }} />
+      </div>
+      {/* o "?" */}
+      <svg width={120} height={120} viewBox="-60 -60 120 120" style={{ position: "absolute", left: 640, top: 40, overflow: "visible", transform: "rotate(10deg)" }}>
+        <path d="M-52 -30 Q-52 -50 -32 -50 H32 Q52 -50 52 -30 V18 Q52 38 32 38 H22 L34 58 L4 38 H-32 Q-52 38 -52 18 Z" fill={C.coralDark} transform="translate(0 6)" />
+        <path d="M-52 -30 Q-52 -50 -32 -50 H32 Q52 -50 52 -30 V18 Q52 38 32 38 H22 L34 58 L4 38 H-32 Q-52 38 -52 18 Z" fill={C.coral} />
+        <text x="0" y="22" textAnchor="middle" fontFamily={FONT} fontWeight={900} fontSize="76" fill="#fff">?</text>
+      </svg>
+    </>
+  );
+};
+
+const ILUSTRACOES: Record<Ilustracao, React.FC> = { mesa: Mesa, "nao-e-app": NaoEApp, entrega: Entrega, vaga: Vaga, fome: Fome, dentro: Dentro, cesta: Cesta, entregador: Entregador, acompanha: Acompanha };
 
 // ---------------------------------------------------------------- a capa
 const TWINK: Array<[number, number]> = [[150, 470], [930, 520], [130, 1120], [950, 1100], [170, 1560], [910, 1570]];

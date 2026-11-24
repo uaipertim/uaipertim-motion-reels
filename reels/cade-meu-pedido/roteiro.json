@@ -1,0 +1,198 @@
+{
+ "id": "cade-meu-pedido",
+ "titulo": "Cadê meu pedido?",
+ "marca": "@uaipertim",
+ "perfil_voz": "narracao",
+ "trilha": "animada",
+ "bpm": 120,
+ "legenda": true,
+ "grade": true,
+ "logo_pronta": 0.6,
+ "limites": [
+  25.0,
+  30.0
+ ],
+ "limites_fecho": [
+  3.5,
+  6.5
+ ],
+ "_doc": "Reel 'Cadê meu pedido?' (Instagram @uaipertim, sex 27/11 20h): demonstração do app com as telas reais, com foco em acompanhar o pedido. Narrado pelo Pertim (rig 2D atual). Pipeline do Explica, Sô! (voz.py, linha.py, audio.py) + a composição Remotion CadeMeuPedido (src/cade-meu-pedido/). 'grade': true = todo corte numa batida da trilha animada (120 BPM). Trilha: a animada do app no nível padrão (sem trilha_db). O cartão aparece como a opção 'Cartão de crédito' do Checkout.png (decisão de 2026-11-24: a Cartao.png segue fora).",
+ "_doc_pronuncia": "'UaiPertim' vai para a voz como 'Uai pertím', 'Pertim'/'pertim' como 'pertím' e 'WhatsApp' como 'Uátsap' (só o texto enviado; na tela e na legenda, a grafia oficial).",
+ "pronuncia": {
+  "UaiPertim": "Uai pertím",
+  "Pertim": "pertím",
+  "pertim": "pertím",
+  "WhatsApp": "Uátsap"
+ },
+ "capitulos": [
+  {
+   "rotulo": "CENA 1 · gancho",
+   "titulo": [
+    "",
+    ""
+   ],
+   "batidas": 4,
+   "inicio": 0.12,
+   "segura": 0.05,
+   "fala": [
+    {
+     "texto": "Pediu um lanche e ficou de olho no portão, perguntando: cadê meu pedido?",
+     "apoio": null
+    }
+   ],
+   "diagrama": {
+    "tipo": "gancho"
+   },
+   "chaves": [
+    "cadê",
+    "pedido?"
+   ]
+  },
+  {
+   "rotulo": "CENA 2 · whatsapp",
+   "titulo": [
+    "",
+    ""
+   ],
+   "batidas": 4,
+   "inicio": 0.1,
+   "segura": 0.05,
+   "fala": [
+    {
+     "texto": "No UaiPertim, cê não precisa ficar perguntando no WhatsApp.",
+     "apoio": null
+    }
+   ],
+   "diagrama": {
+    "tipo": "whatsapp"
+   },
+   "chaves": [
+    "UaiPertim,"
+   ]
+  },
+  {
+   "rotulo": "CENA 3 · pedido",
+   "titulo": [
+    "",
+    ""
+   ],
+   "batidas": 4,
+   "inicio": 0.1,
+   "segura": 0.05,
+   "fala": [
+    {
+     "texto": "Escolhe a loja, monta a sacola e fecha o pedido.",
+     "apoio": null
+    }
+   ],
+   "diagrama": {
+    "tipo": "pedido"
+   },
+   "chaves": [
+    "loja,",
+    "sacola",
+    "pedido."
+   ]
+  },
+  {
+   "rotulo": "CENA 4 · pagamento",
+   "titulo": [
+    "",
+    ""
+   ],
+   "batidas": 4,
+   "inicio": 0.1,
+   "segura": 0.05,
+   "fala": [
+    {
+     "texto": "Paga no Pix pelo app, no cartão… ou na entrega.",
+     "apoio": null
+    }
+   ],
+   "diagrama": {
+    "tipo": "pagamento"
+   },
+   "chaves": [
+    "Pix",
+    "cartão…",
+    "entrega."
+   ]
+  },
+  {
+   "rotulo": "CENA 5 · acompanha",
+   "titulo": [
+    "",
+    ""
+   ],
+   "batidas": 4,
+   "inicio": 0.1,
+   "segura": 0.05,
+   "fala": [
+    {
+     "texto": "E acompanha tudo: aceito, em preparo, pronto… saiu pra entrega!",
+     "apoio": null
+    }
+   ],
+   "diagrama": {
+    "tipo": "acompanha"
+   },
+   "chaves": [
+    "aceito,",
+    "preparo,",
+    "pronto…",
+    "entrega!"
+   ]
+  },
+  {
+   "rotulo": "CENA 6 · aviso",
+   "titulo": [
+    "",
+    ""
+   ],
+   "batidas": 4,
+   "inicio": 0.1,
+   "segura": 0.05,
+   "fala": [
+    {
+     "texto": "E quando sai, chega o aviso no celular.",
+     "apoio": null
+    }
+   ],
+   "diagrama": {
+    "tipo": "aviso"
+   },
+   "chaves": [
+    "aviso"
+   ]
+  },
+  {
+   "rotulo": "FECHO",
+   "titulo": [
+    "",
+    ""
+   ],
+   "batidas": 4,
+   "inicio": 0.12,
+   "segura": 0.3,
+   "fala": [
+    {
+     "texto": "Quantas vezes cê já perguntou 'cadê meu pedido'? Conta aqui!",
+     "apoio": null
+    }
+   ],
+   "diagrama": {
+    "tipo": "fecho",
+    "logo": {
+     "em": "Quantas"
+    }
+   },
+   "chaves": [
+    "Quantas"
+   ],
+   "pergunta": true
+  }
+ ],
+ "_doc_chaves": "'chaves' de cada capítulo: as palavras-chave da legenda gravada (ficam em amarelo/laranja depois de ditas).",
+ "_doc_pergunta": "'pergunta': true só na fala 7, wh-question: o pico de F0 do trecho da pergunta (até o '?') fica na palavra interrogativa, 'Quantas' (tomadas.py mede; qa.py confere).",
+ "_doc_fecho": "A logo do fecho entra em 'Quantas' (o começo da pergunta) e fica parada até o fim; o balão 'Conta aqui 👇' entra em 'Conta'. Assim o Reel fica em 25–30 s."
+}

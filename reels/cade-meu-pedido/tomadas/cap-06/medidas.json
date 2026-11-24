@@ -1,0 +1,90 @@
+{
+ "episodio": "cade-meu-pedido",
+ "cap": 6,
+ "texto": "Quantas vezes cê já perguntou 'cadê meu pedido'? Conta aqui!",
+ "voz": "Victor Pinho",
+ "perfil": "narracao",
+ "modelo": "eleven_v4",
+ "tomadas": [
+  {
+   "tomada": "A",
+   "arquivo": "A-seed42.mp3",
+   "seed": 42,
+   "texto_api": "Quantas vezes cê já perguntou 'cadê meu pedido'? Conta aqui!",
+   "conferencia": "ok",
+   "ritmo_letras_s": 12.5,
+   "maior_pausa_s": 0.44,
+   "sobra_no_fim_s": 0.16,
+   "fala_s": 3.76,
+   "pergunta_wh": {
+    "palavra": "Quantas",
+    "de_s": 0.0,
+    "ate_s": 0.4,
+    "pico_hz": 374,
+    "t_pico_s": 2.29,
+    "pico_na_interrogativa": false,
+    "interrogativa_vs_resto_st": 12.7
+   }
+  },
+  {
+   "tomada": "B",
+   "arquivo": "B-seed1042.mp3",
+   "seed": 1042,
+   "texto_api": "Quantas vezes cê já perguntou 'cadê meu pedido'? Conta aqui!",
+   "conferencia": "ok",
+   "ritmo_letras_s": 12.8,
+   "maior_pausa_s": 0.44,
+   "sobra_no_fim_s": 0.24,
+   "fala_s": 3.68,
+   "pergunta_wh": {
+    "palavra": "Quantas",
+    "de_s": 0.0,
+    "ate_s": 0.4,
+    "pico_hz": 356,
+    "t_pico_s": 0.16,
+    "pico_na_interrogativa": true,
+    "interrogativa_vs_resto_st": 13.5
+   }
+  },
+  {
+   "tomada": "C",
+   "arquivo": "C-seed2042.mp3",
+   "seed": 2042,
+   "texto_api": "Quantas vezes cê já perguntou 'cadê meu pedido'? Conta aqui!",
+   "conferencia": "ok",
+   "ritmo_letras_s": 12.8,
+   "maior_pausa_s": 0.44,
+   "sobra_no_fim_s": 0.16,
+   "fala_s": 3.68,
+   "pergunta_wh": {
+    "palavra": "Quantas",
+    "de_s": 0.0,
+    "ate_s": 0.4,
+    "pico_hz": 377,
+    "t_pico_s": 0.27,
+    "pico_na_interrogativa": true,
+    "interrogativa_vs_resto_st": 15.4
+   }
+  },
+  {
+   "tomada": "D",
+   "arquivo": "D-seed3042.mp3",
+   "seed": 3042,
+   "texto_api": "Quantas vezes cê já perguntou 'cadê meu pedido'? Conta aqui!",
+   "conferencia": "ok",
+   "ritmo_letras_s": 12.5,
+   "maior_pausa_s": 0.44,
+   "sobra_no_fim_s": 0.16,
+   "fala_s": 3.76,
+   "pergunta_wh": {
+    "palavra": "Quantas",
+    "de_s": 0.0,
+    "ate_s": 0.4,
+    "pico_hz": 383,
+    "t_pico_s": 2.31,
+    "pico_na_interrogativa": false,
+    "interrogativa_vs_resto_st": 11.7
+   }
+  }
+ ]
+}

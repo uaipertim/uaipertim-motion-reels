@@ -1,0 +1,160 @@
+{
+ "duracao": 30.0,
+ "fps": 30,
+ "quadros": 900,
+ "batida": 0.5,
+ "bpm": 120.0,
+ "cenas": [
+  {
+   "n": 0,
+   "tipo": "gancho",
+   "t0": 0.0,
+   "t1": 5.0,
+   "voz_t0": 0.12,
+   "voz_t1": 4.76,
+   "texto": "Pediu um lanche e ficou de olho no portão, perguntando: cadê meu pedido?"
+  },
+  {
+   "n": 1,
+   "tipo": "whatsapp",
+   "t0": 5.0,
+   "t1": 9.0,
+   "voz_t0": 5.1,
+   "voz_t1": 8.62,
+   "texto": "No UaiPertim, cê não precisa ficar perguntando no WhatsApp."
+  },
+  {
+   "n": 2,
+   "tipo": "pedido",
+   "t0": 9.0,
+   "t1": 13.0,
+   "voz_t0": 9.1,
+   "voz_t1": 12.78,
+   "texto": "Escolhe a loja, monta a sacola e fecha o pedido."
+  },
+  {
+   "n": 3,
+   "tipo": "pagamento",
+   "t0": 13.0,
+   "t1": 17.0,
+   "voz_t0": 13.1,
+   "voz_t1": 16.78,
+   "texto": "Paga no Pix pelo app, no cartão… ou na entrega."
+  },
+  {
+   "n": 4,
+   "tipo": "acompanha",
+   "t0": 17.0,
+   "t1": 22.5,
+   "voz_t0": 17.1,
+   "voz_t1": 22.38,
+   "texto": "E acompanha tudo: aceito, em preparo, pronto… saiu pra entrega!"
+  },
+  {
+   "n": 5,
+   "tipo": "aviso",
+   "t0": 22.5,
+   "t1": 25.5,
+   "voz_t0": 22.6,
+   "voz_t1": 25.4,
+   "texto": "E quando sai, chega o aviso no celular."
+  },
+  {
+   "n": 6,
+   "tipo": "fecho",
+   "t0": 25.5,
+   "t1": 30.0,
+   "voz_t0": 25.62,
+   "voz_t1": 29.3,
+   "texto": "Quantas vezes cê já perguntou 'cadê meu pedido'? Conta aqui!"
+  }
+ ],
+ "eventos": {
+  "gancho": {
+   "balao": 0.45,
+   "cade": 3.85,
+   "portao": 2.25,
+   "sai": 4.7
+  },
+  "whatsapp": {
+   "baloes": [
+    5.15,
+    5.53,
+    5.91,
+    6.29
+   ],
+   "puf": 8.57
+  },
+  "pedido": {
+   "celular": [
+    8.95,
+    9.4
+   ],
+   "toque_loja": 9.56,
+   "loja": 9.81,
+   "toque_mais": 10.303,
+   "toque_sacola": 10.703,
+   "sacola": 10.953,
+   "toque_continuar": 11.56,
+   "checkout": 11.81,
+   "toque_fazer": 12.38
+  },
+  "pagamento": {
+   "pix": [
+    12.95,
+    13.25
+   ],
+   "qr": 13.43,
+   "cartao": 14.69,
+   "entrega": 16.07,
+   "selo": 16.15
+  },
+  "acompanha": {
+   "tela": [
+    16.95,
+    17.25
+   ],
+   "painel": 16.88,
+   "status": [
+    18.63,
+    19.47,
+    20.377,
+    21.11
+   ]
+  },
+  "aviso": {
+   "notif": 23.54,
+   "sino": 23.93
+  },
+  "fecho": {
+   "sai": [
+    25.35,
+    25.8
+   ],
+   "chega": [
+    25.5,
+    26.1
+   ],
+   "logo": {
+    "entra": 25.57,
+    "parada": 26.17
+   },
+   "frase": 26.17,
+   "conta": 28.91,
+   "acena": 28.84,
+   "pisca": 29.6
+  }
+ },
+ "piscadas": [
+  0.9,
+  4.379,
+  6.562,
+  10.179,
+  12.859,
+  16.865,
+  21.585,
+  26.203,
+  28.61
+ ],
+ "piscada_dur": 0.16
+}
