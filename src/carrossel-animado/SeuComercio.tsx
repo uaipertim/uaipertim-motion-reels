@@ -293,7 +293,7 @@ const Pagamento: React.FC<P> = ({ L, layout, f, D }) => {
         const ks = k0;
         k0 += g.formas.length;
         return (
-          <div key={gi} style={{ position: "absolute", left: SAFE.x0 + gi * (cw + 30), top, width: cw, height: 560, boxSizing: "border-box", borderRadius: 38, background: "#fff",
+          <div key={gi} style={{ position: "absolute", left: SAFE.x0 + gi * (cw + 30), top, width: cw, height: 600, boxSizing: "border-box", borderRadius: 38, background: "#fff",
             border: `5px solid ${mix("#EADBC6", C.coral, eg)}`, boxShadow: `0 9px 0 ${mix("#E2CDB2", C.coralDark, eg)}`, padding: "30px 24px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "flex-start", gap: 18 }}>
             <div style={{ flex: "none", width: 116, height: 116, borderRadius: "50%", background: mix("#F3EADF", "#FFE2D4", eg), display: "flex", alignItems: "center", justifyContent: "center" }}>
               {gi === 0 ? <IconeCelular s={78} /> : <ScooterIcon size={84} />}
@@ -311,14 +311,14 @@ const Pagamento: React.FC<P> = ({ L, layout, f, D }) => {
           </div>
         );
       })}
-      <div style={{ position: "absolute", left: SAFE.x0, width: LARG, top: top + 610, display: "flex", justifyContent: "center", transform: `scale(${(0.92 + 0.08 * selo) * pulso})`, opacity: 0.35 + 0.65 * selo }}>
+      <div style={{ position: "absolute", left: SAFE.x0, width: LARG, top: top + 646, display: "flex", justifyContent: "center", transform: `scale(${(0.92 + 0.08 * selo) * pulso})`, opacity: 0.35 + 0.65 * selo }}>
         <div style={{ display: "flex", alignItems: "center", gap: 18, padding: "16px 30px 16px 18px", borderRadius: 30, background: C.amarelo, boxShadow: `0 8px 0 ${C.amareloDark}`, maxWidth: LARG - 70, boxSizing: "border-box" }}>
           <div style={{ flex: "none", width: 72, height: 72, borderRadius: "50%", background: "#fff", display: "flex", alignItems: "center", justifyContent: "center",
             fontFamily: FONT, fontWeight: W.black, fontSize: 32, color: C.coral, letterSpacing: -1 }}>%</div>
           <div style={{ fontFamily: FONTE, fontWeight: W.black, fontSize: 34, lineHeight: 1.15, color: C.tinta, letterSpacing: -0.4, textWrap: "balance" } as React.CSSProperties}>{glue(L.selo!)}</div>
         </div>
       </div>
-      <Texto y={top + 760} size={34} x={SAFE.x0} w={LARG}><div style={{ textAlign: "center", opacity: 0.8 }}>{glue(L.nota!)}</div></Texto>
+      <Texto y={top + 792} size={34} x={SAFE.x0} w={LARG}><div style={{ textAlign: "center", opacity: 0.8 }}>{glue(L.nota!)}</div></Texto>
     </>
   );
 };
@@ -352,12 +352,12 @@ const Mensalidade: React.FC<P> = ({ L, layout, f, D, valores }) => {
   const brilho = clamp01((t - 5.5) / 0.9);
   return (
     <>
-      <Titulo L={L} wt={layout!.titulo} topo />
+      <div style={{ position: "absolute", left: 12, top: 0, width: 1080, height: 1350 }}><Titulo L={L} wt={layout!.titulo} topo /></div>
       <div style={{ position: "absolute", left: SAFE.x0, width: LARG, top, height: 400, boxSizing: "border-box", borderRadius: 40, background: "#fff", border: "5px solid #EADBC6", boxShadow: "0 9px 0 #E2CDB2",
         display: "flex", alignItems: "center", justifyContent: "center", gap: 34 }}>
         <div style={{ transform: `rotate(${-6 + 3 * onda(f, D, 2)}deg)` }}><Calendario s={170} /></div>
         <div style={{ display: "flex", alignItems: "baseline", gap: 18 }}>
-          <span style={{ opacity: vis, fontFamily: FONT, fontWeight: W.black, fontSize: 260, lineHeight: 1, color: C.coral, letterSpacing: -8, display: "inline-block", transform: `scale(${1 + 0.12 * pulo})`, textShadow: `0 10px 0 ${C.amarelo}` }}>{n}</span>
+          <span style={{ opacity: vis, width: 190, textAlign: "center", fontFamily: FONT, fontWeight: W.black, fontSize: 260, lineHeight: 1, color: C.coral, letterSpacing: -8, display: "inline-block", transform: `scale(${1 + 0.12 * pulo})`, textShadow: `0 10px 0 ${C.amarelo}` }}>{n}</span>
           <span style={{ fontFamily: FONT, fontWeight: W.black, fontSize: 84, lineHeight: 1, color: C.tinta, letterSpacing: -2 }}>meses</span>
         </div>
       </div>
@@ -431,7 +431,7 @@ export const SeuComercio: React.FC<SeuComercioProps> = (props) => {
   const n = props.laminas.length;
   const Pp = { ...props, L, f, D };
   return (
-    <AbsoluteFill style={{ overflow: "hidden" }}>
+    <AbsoluteFill style={{ overflow: "hidden", wordSpacing: 6 }}>
       {!props.semFundo && <Fundo f={f} D={D} cy={L.tipo === "capa" ? 470 : 760} cor={C.amarelo} seed={`seu-comercio-${props.lamina}`} pts={[]} />}
       <Brilhos f={f} D={D} pts={BRILHOS[L.tipo]} seed={`sc-b-${props.lamina}`} />
       {L.tipo !== "capa" && <Cabecalho selo={props.selo} n={props.lamina + 1} total={n} icone={<IconeLoja s={38} cor={C.amarelo} />} />}

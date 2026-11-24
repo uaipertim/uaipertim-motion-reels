@@ -78,7 +78,18 @@ def ocr(png):
             tsv = "".join(subprocess.run(["tesseract", str(tmp), "-", "-l", "por", "--psm", psm, "tsv"], capture_output=True, text=True).stdout for psm in ("11", "3"))
             for ln in tsv.splitlines():
                 c = ln.split("\t")
-                if len(c) == 12 and c[11].strip() and float(c[10]) >= 0:
+                if len(c) == 12 and c[11].strip() and re.fullmatch(r"-?[\d.]+", c[10]) and float(c[10]) >= 0:
+                    w = c[11].strip()
+                    toks[w] = max(toks.get(w, 0), float(c[10]))
+    # + faixas horizontais (o modo de página às vezes pula uma pílula inteira): 220 px com passo de 110, linha a linha
+    for y in range(0, im.height - 110, 220):
+        faixa = im.crop((0, y, im.width, min(im.height, y + 440)))
+        for v in (ImageOps.invert(ImageOps.grayscale(faixa)), ImageOps.invert(faixa.split()[2]), ImageOps.grayscale(faixa)):
+            v.save(tmp)
+            tsv = subprocess.run(["tesseract", str(tmp), "-", "-l", "por", "--psm", "6", "tsv"], capture_output=True, text=True).stdout
+            for ln in tsv.splitlines():
+                c = ln.split("\t")
+                if len(c) == 12 and c[11].strip() and re.fullmatch(r"-?[\d.]+", c[10]) and float(c[10]) >= 0:
                     w = c[11].strip()
                     toks[w] = max(toks.get(w, 0), float(c[10]))
     tmp.unlink()
