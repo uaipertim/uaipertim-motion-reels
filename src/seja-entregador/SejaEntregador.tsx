@@ -411,11 +411,11 @@ const Coleta: React.FC<{ t: number; quadro: number }> = ({ t, quadro }) => {
   const K = EV.coleta;
   if (t < K.troca[0] || t >= T[5]) return null;
   const entra = 1200 * (1 - outCubic(entre(t, K.troca[0], K.troca[1])));
-  const cam = 780 * inOut(entre(t, K.sai, K.chega));
+  const cam = 900 * inOut(entre(t, K.sai, K.chega));
   const giro = t * 720;
   const pegou = t >= K.pega, saiu = t >= K.sai;
   // o Pertim: parado no balcão → pega a sacola → sai na motinha até a casinha (em coordenadas do mundo)
-  const px = saiu ? interpolate(t, [K.sai, K.chega], [330, 1120], { ...clamp, easing: inOut }) : 330;
+  const px = saiu ? interpolate(t, [K.sai, K.chega], [330, 1150], { ...clamp, easing: inOut }) : 330;
   const pose: Pose = saiu ? "moto" : pegou ? "sacola" : "parado";
   const desde = saiu ? K.sai : pegou ? K.pega : K.troca[0];
   const ox = entra - cam;
@@ -430,12 +430,12 @@ const Coleta: React.FC<{ t: number; quadro: number }> = ({ t, quadro }) => {
         </div>
         <div style={abs(500, 1250 - 120)}><Balcao w={300} /></div>
         {!pegou && <div style={abs(600, 1130 - 104)}><Sacola w={86} /></div>}
-        <div style={abs(1330, 1250 - 260 * 240 / 220)}><CasaCliente w={260} abre={abre} /></div>
+        <div style={abs(1400, 1250 - 260 * 240 / 220)}><CasaCliente w={260} abre={abre} /></div>
       </div>
       <PertimEm t={t} quadro={quadro} pose={pose} cx={px + ox} base={1262} altura={saiu ? 300 : 330} desde={desde} />
       <Pop t={t} t0={K.coletei} cx={340 + ox} cy={850} fim={K.sai + 0.15}><Selo texto="Coletei" cor={C.coral} size={44} /></Pop>
-      <Pop t={t} t0={K.entregue} cx={1460 + ox} cy={760} fim={T[5]}><Selo texto="Entregue" size={44} /></Pop>
-      <Brilhos t={t} t0={K.entregue} cx={1460 + ox} cy={1040} r={130} />
+      <Pop t={t} t0={K.entregue} cx={1530 + ox} cy={760} fim={T[5]}><Selo texto="Entregue" size={44} /></Pop>
+      <Brilhos t={t} t0={K.entregue} cx={1530 + ox} cy={1040} r={130} />
     </>
   );
 };
