@@ -9,8 +9,8 @@ Lê os PNGs das lâminas (o quadro "estatico" de cada uma: lamina-N.png) com OCR
     passadas, uma palavra logo depois da outra); acusa o par que só aparece grudado num token ("comércio" + "no" → "comérciono");
   • legibilidade: o OCR reconhece ≥ 90% das palavras de tela da lâmina, com confiança média ≥ 75; e nenhum texto da
     composição tem fonte menor que 24 px (fora as telas do app, que são imagem);
-  • valores: os do JSON ("valores": meses grátis, mensalidade, comissão) estão na tela (OCR) e na legenda do post, e
-    nenhum outro valor de mensalidade/comissão aparece;
+  • valores: os do JSON ("valores": as 3 faixas da mensalidade, o teto e a comissão) estão na tela (OCR), na tabela e na
+    legenda do post; nenhum outro valor aparece e nada sobra da política antiga (3 meses grátis, R$ 49,90);
   • regras: "entrega" (nunca "frete"); sem promessa de vendas/resultado; sem WhatsApp de suporte nem telefone; "o Glória"
     no masculino; "Pertim" sem troca de grafia.
 Grava <saida>/revisao/textos-qa.txt e termina em "RESULTADO: aprovado" ou "RESULTADO: ajustar".
@@ -136,28 +136,39 @@ ok(min(tamanhos) >= 24, f"menor fonte dos textos da composição: {min(tamanhos)
 V = D.get("valores", {})
 tudo_tela = " ".join(t for i in OCR for t, _ in OCR[i])
 if V:
-    meses, mens, com = str(V["meses_gratis"]), V["mensalidade"], V["comissao"]
+    # a política de mensalidade (revisada em 2026-11-24): 3 faixas pelo que a loja vende pelo app + a comissão de 5%
     i6 = next(i for i, L in enumerate(D["laminas"]) if L["tipo"] == "mensalidade")
     i5 = next(i for i, L in enumerate(D["laminas"]) if L["tipo"] == "pagamento")
-    t6 = " ".join(t for t, _ in OCR[i6])
+    sem = lambda x: re.sub(r"\s", "", x)
+    t6 = sem(" ".join(t for t, _ in OCR[i6]))
     t5 = " ".join(t for t, _ in OCR[i5])
-    ok(re.search(rf"\b{meses}\b", t6) and "meses" in t6.lower(), f"{meses} meses sem mensalidade: na tela da lâmina {i6 + 1} (OCR: o contador parado em {meses})")
-    ok(mens.split()[-1] in t6, f"mensalidade depois: {mens}/mês na tela da lâmina {i6 + 1} (OCR: {mens.split()[-1]})")
-    ok(com in t5, f"comissão: {com} só nos pedidos pagos pelo app, na tela da lâmina {i5 + 1}")
+    vals = [V["mensalidade_minima"], V["faixa_1_ate"], V["faixa_2_ate"], V["percentual_faixa_2"], V["teto"]]
+    faltam_v = [v for v in vals if sem(v).replace("R$", "") not in t6]
+    ok(not faltam_v, f"as 3 faixas na tela da lâmina {i6 + 1} (OCR): até {V['faixa_1_ate']} → {V['mensalidade_minima']}; até {V['faixa_2_ate']} → {V['percentual_faixa_2']}; acima → {V['teto']} (teto)"
+       + (f" (não lidos: {', '.join(faltam_v)})" if faltam_v else ""))
+    ok(V["comissao"] in t5 and V["comissao"] in t6, f"comissão de {V['comissao']} dos pedidos pagos pelo app: nas lâminas {i5 + 1} e {i6 + 1}")
+    fx = D["laminas"][i6]["faixas"]
+    ok([f["valor"] for f in fx] == [V["mensalidade_minima"], V["percentual_faixa_2"], V["teto"]] and V["faixa_1_ate"] in fx[0]["quando"] and V["faixa_1_ate"] in fx[1]["quando"]
+       and V["faixa_2_ate"] in fx[1]["quando"] and V["faixa_2_ate"] in fx[2]["quando"] and "teto" in fx[2].get("obs", ""), "a tabela da lâmina bate com o campo 'valores' do JSON (as faixas em ordem, o teto marcado)")
     js = json.dumps(D["laminas"], ensure_ascii=False)
-    ok(re.search(rf"\*?{meses}\*? \*?meses\*?", js) and f"{mens}/mês" in js and f"Comissão de {com}" in js, "os valores do texto das lâminas batem com o campo 'valores' do JSON")
-    ok(not [x for x in re.findall(r"R\$\s?\d+,\d\d", js) if x.replace(" ", "") != mens.replace(" ", "")], f"nenhum outro valor em R$ nas lâminas além de {mens}")
-    ok(not [x for x in re.findall(r"\d+\s?%", js) if x.replace(" ", "") != com], f"nenhuma outra porcentagem além de {com}")
+    permitidos = {sem(v) for v in (V["mensalidade_minima"], V["faixa_1_ate"], V["faixa_2_ate"], V["teto"])}
+    outros = [x for x in re.findall(r"R\$\s?[\d.]+(?:,\d\d)?", js) if sem(x) not in permitidos]
+    ok(not outros, "nenhum outro valor em R$ nas lâminas" + (f" (achados: {', '.join(outros)})" if outros else ""))
+    ok(not [x for x in re.findall(r"\d+\s?%", js) if sem(x) != V["comissao"]], f"nenhuma outra porcentagem além de {V['comissao']}")
+    velho = re.compile(r"3\s?\*?\s?meses|sem mensalidade|gr[áa]tis|49,90|lançamento", re.I)
+    ok(not velho.search(js) and not velho.search(LEG) and not velho.search(" ".join(t for i in OCR for t, _ in OCR[i])),
+       'nada da política antiga ("3 meses", "sem mensalidade", "grátis", "R$ 49,90", "lojas do lançamento") nas lâminas, na tela nem na legenda')
     if LEG:
-        ok(f"{meses} meses" in LEG and mens in LEG and com in LEG, f"a legenda do post traz os mesmos valores ({meses} meses, {mens}, {com})")
+        ok(V["mensalidade_minima"] in LEG and V["teto"] in LEG and "acompanha" in LEG and V["comissao"] in LEG,
+           f"a legenda do post traz a regra nova (a partir de {V['mensalidade_minima']}, acompanha as vendas pelo app, teto de {V['teto']}) e a comissão de {V['comissao']}")
 ok(not [t for L in D["laminas"] for t in ([L["titulo"]] if isinstance(L["titulo"], str) else L["titulo"]) + L.get("quebra", []) if re.search(r"\*[^*\s]+\s[^*]+\*", t)],
    "o marcador vai numa palavra só (num marcador de várias palavras o espaço fica estreito)")
 texto_total = json.dumps({k: v for k, v in D.items() if not k.startswith("_")}, ensure_ascii=False) + LEG
 ok(not re.search(r"\bfrete", texto_total, re.I), 'sem "frete" (sempre "entrega")')
 ok(not re.search(r"vend(a|e)r? mais|aument\w* (as |suas |de )?vendas|mais vendas|garant|fatur\w+ mais|lucr", texto_total, re.I), "sem promessa de vendas ou resultado")
 wa = [L["rotulo"] for L in D["laminas"] if "whatsapp" in json.dumps(L, ensure_ascii=False).lower()]
-ok(wa == ["pedido no painel"] and "whatsapp" not in LEG.lower() and not re.search(r"\(?\d{2}\)?\s?9?\d{4}-?\d{4}", texto_total),
-   'WhatsApp só como o jeito antigo ("Sem ficar repetindo cardápio e preço no WhatsApp"), nunca como canal de suporte; sem telefone')
+ok(wa == ["pedido no painel", "mensalidade"] and "whatsapp" not in LEG.lower() and not re.search(r"\(?\d{2}\)?\s?9?\d{4}-?\d{4}", texto_total),
+   'WhatsApp só como o jeito antigo (lâmina 3) e como venda que não entra na conta da mensalidade (lâmina 6), nunca como canal de suporte; sem telefone')
 ok(not re.search(r"\b(a|da|na|de)\s+Glória", texto_total), '"o Glória" no masculino')
 ok(re.search(r"\bpertim\b", texto_total, re.I) and not re.search(r"P[ée]rr-?t[ií]m|P[ée]r-t[ií]m|Pértim|Pertím", texto_total), '"Pertim" sem troca de grafia na tela')
 

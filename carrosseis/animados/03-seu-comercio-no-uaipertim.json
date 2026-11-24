@@ -14,8 +14,11 @@
  "selo": "PRO LOJISTA",
  "ilustrativo": "Lojas e valores ilustrativos",
  "valores": {
-  "meses_gratis": 3,
-  "mensalidade": "R$ 49,90",
+  "mensalidade_minima": "R$ 79,90",
+  "faixa_1_ate": "R$ 1.600",
+  "faixa_2_ate": "R$ 6.000",
+  "percentual_faixa_2": "5%",
+  "teto": "R$ 300",
   "comissao": "5%"
  },
  "laminas": [
@@ -64,7 +67,8 @@
    "quebra": [
     "Pedido chega",
     "*organizado* no painel"
-   ]
+   ],
+   "_doc_tela": "O painel não tem mais o botão Recusar: nos dois cartões da coluna Novos fica só o Aceitar, em largura total (public/telas-app/painel/Lojista-so-aceitar.png, gerada por scripts/painel_so_aceitar.py a partir da Lojista.png)."
   },
   {
    "tipo": "entrega",
@@ -76,7 +80,7 @@
    "opcoes": [
     {
      "titulo": "Equipe da própria loja",
-     "texto": "quem entrega é o seu pessoal"
+     "texto": "quem entrega é o seu pessoal, e o motoboy marca a entrega pelo QR da comanda"
     },
     {
      "titulo": "Entregador parceiro",
@@ -123,14 +127,30 @@
    "rotulo": "mensalidade",
    "segundos": 8,
    "estatico": 4.8,
-   "titulo": "*3* *meses* sem mensalidade",
-   "texto": "Pras lojas do lançamento.",
-   "depois": "Depois, R$ 49,90/mês",
-   "destaque": "Pão de Queijo Points sem custo pra loja: os prêmios são bancados pelo UaiPertim",
+   "titulo": "Mensalidade que acompanha suas *vendas*",
    "quebra": [
-    "*3* *meses*",
-    "sem mensalidade"
-   ]
+    "Mensalidade que",
+    "acompanha suas *vendas*"
+   ],
+   "faixas": [
+    {
+     "quando": "Vendeu até R$ 1.600 no mês",
+     "valor": "R$ 79,90"
+    },
+    {
+     "quando": "Acima de R$ 1.600 até R$ 6.000",
+     "valor": "5%",
+     "obs": "do que vendeu"
+    },
+    {
+     "quando": "Acima de R$ 6.000",
+     "valor": "R$ 300",
+     "obs": "teto: nunca passa disso"
+    }
+   ],
+   "texto": "Conta só o que você vende pelo app. Balcão e WhatsApp ficam de fora.",
+   "selo": "Somada à comissão de 5% dos pedidos pagos pelo app",
+   "destaque": "Pão de Queijo Points sem custo pra loja: os prêmios são bancados pelo UaiPertim"
   },
   {
    "tipo": "fecho",
@@ -146,5 +166,6 @@
     "no UaiPertim?"
    ]
   }
- ]
+ ],
+ "_doc_mensalidade": "Política de mensalidade revisada em 2026-11-24 (não existe mais período grátis): até R$ 1.600 vendidos no mês pelo app, R$ 79,90; acima de R$ 1.600 até R$ 6.000, 5% do que vendeu; acima de R$ 6.000, R$ 300 (o teto). Conta só o que é vendido pelo app (balcão e WhatsApp ficam de fora) e soma-se à comissão de 5% dos pedidos pagos pelo app. O QA dos textos confere estes valores na tela, nas lâminas e na legenda."
 }

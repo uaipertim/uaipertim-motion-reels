@@ -19,21 +19,22 @@ import {
 // da lâmina (D), então o quadro D é igual ao quadro 0. Lâmina 1 = capa da grade: o quadro 0 já é a capa completa.
 //   1 capa         a lojinha com toldo (olhinhos) e o Pertim apontando pra ela, olhando pra câmera; "Seu *comércio* no UaiPertim"
 //   2 vitrine      LojistaCardapio.png num notebook; os anéis passam pelo cardápio, pelas fotos e pelos preços (e os chips acendem)
-//   3 pedido       os balões de pergunta somem; um pedido novo chega no painel (Lojista.png), com o aviso e o toque em "Aceitar"
+//   3 pedido       os balões de pergunta somem; um pedido novo chega no painel (Lojista-so-aceitar.png: sem o Recusar), com o aviso e o toque em "Aceitar"
 //   4 entrega      equipe da loja · entregador parceiro · retirada no balcão: os três cartões acendem um a um
 //   5 pagamento    pelo app (Pix, cartão) ou na entrega (dinheiro, Pix, cartão); a comissão de 5% e a nota das taxas
-//   6 mensalidade  o contador 0 → 3 meses; "Depois, R$ 49,90/mês"; o Pão de Queijo Points sem custo pra loja
+//   6 mensalidade  a tabela das 3 faixas (até R$ 1.600: R$ 79,90 · até R$ 6.000: 5% · acima: R$ 300, o teto); a comissão; o Pão de Queijo Points
 //   7 fecho        o CTA do Direct, o e-mail, a logo redonda sem fundo, "Tudo pertim de você" e o Pertim acenando
 // Todo o conteúdo fica em x 135–945 e y 60–1290. `semFundo` tira o fundo para o QA medir o conteúdo.
 
 type Opcao = { titulo: string; texto: string };
 type Grupo = { titulo: string; formas: string[] };
+type Faixa = { quando: string; valor: string; obs?: string };
 type Lamina = {
   tipo: "capa" | "vitrine" | "pedido" | "entrega" | "pagamento" | "mensalidade" | "fecho"; rotulo: string; segundos: number; estatico?: number;
   titulo: string | string[]; quebra?: string[]; rodape?: string; texto?: string; itens?: string[]; baloes?: string[]; aviso?: string; opcoes?: Opcao[];
-  grupos?: Grupo[]; selo?: string; nota?: string; depois?: string; destaque?: string; cta?: string; email?: string; assinatura?: string;
+  grupos?: Grupo[]; faixas?: Faixa[]; selo?: string; nota?: string; depois?: string; destaque?: string; cta?: string; email?: string; assinatura?: string;
 };
-export type SeuComercioDados = { numero: number; formato: [number, number]; selo: string; ilustrativo: string; valores: { meses_gratis: number; mensalidade: string; comissao: string }; laminas: Lamina[] };
+export type SeuComercioDados = { numero: number; formato: [number, number]; selo: string; ilustrativo: string; valores: { mensalidade_minima: string; faixa_1_ate: string; faixa_2_ate: string; percentual_faixa_2: string; teto: string; comissao: string }; laminas: Lamina[] };
 export type SeuComercioProps = SeuComercioDados & { lamina: number; layout?: { titulo: Wrapped }; semFundo?: boolean };
 
 export const SEU_COMERCIO = { width: 1080, height: 1350, fps: 30 };
@@ -184,16 +185,16 @@ const Pedido: React.FC<P> = ({ L, layout, f, D, ilustrativo }) => {
     <>
       <Titulo L={L} wt={layout!.titulo} topo />
       <Texto y={yt} size={34}>{glue(L.texto!)}</Texto>
-      <Notebook x={180} y={676} w={720} tela="Lojista" recorte={REC_PED}>
+      <Notebook x={180} y={676} w={720} tela="Lojista-so-aceitar" recorte={REC_PED}>
         {/* o lugar do pedido novo, vazio até ele chegar (o fundo do painel) */}
         <div style={{ position: "absolute", left: CARD_NOVO[0], top: CARD_NOVO[1], width: CARD_NOVO[2] - CARD_NOVO[0], height: CARD_NOVO[3] - CARD_NOVO[1], background: "#F8F6F3" }} />
         {chega > 0.001 && (
           <div style={{ position: "absolute", left: CARD_NOVO[0], top: CARD_NOVO[1] - 90 * (1 - chega), width: CARD_NOVO[2] - CARD_NOVO[0], height: CARD_NOVO[3] - CARD_NOVO[1], overflow: "hidden", opacity: chega }}>
-            <Img src={staticFile("telas-app/painel/Lojista.png")} style={{ position: "absolute", left: -CARD_NOVO[0], top: -CARD_NOVO[1], width: 1280, height: 880, maxWidth: "none" }} />
+            <Img src={staticFile("telas-app/painel/Lojista-so-aceitar.png")} style={{ position: "absolute", left: -CARD_NOVO[0], top: -CARD_NOVO[1], width: 1280, height: 880, maxWidth: "none" }} />
           </div>
         )}
         <Anel cx={CARD_NOVO} e={anel} raio={22} esp={7} />
-        <Toque u={(t - T_TOQUE) / 0.6} x={485} y={372} r={44} />
+        <Toque u={(t - T_TOQUE) / 0.6} x={410} y={372} r={44} />
       </Notebook>
       {L.baloes!.map((b, k) => {
         const s = bal(k);
@@ -252,7 +253,7 @@ const Entrega: React.FC<P> = ({ L, layout, f, D }) => {
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ fontFamily: FONT, fontWeight: W.black, fontSize: 44, lineHeight: 1.08, color: mix("#8C7F75", C.tinta, e), letterSpacing: -0.8, textWrap: "balance" } as React.CSSProperties}>{o.titulo}</div>
-              <div style={{ fontFamily: FONTE, fontWeight: W.medium, fontSize: 34, lineHeight: 1.2, color: C.tinta, opacity: 0.55 + 0.35 * e, marginTop: 8 }}>{glue(o.texto)}</div>
+              <div style={{ fontFamily: FONTE, fontWeight: W.medium, fontSize: o.texto.length > 50 ? 28 : 34, lineHeight: 1.16, color: C.tinta, opacity: 0.55 + 0.35 * e, marginTop: 8, wordSpacing: o.texto.length > 50 ? 0 : undefined, letterSpacing: o.texto.length > 50 ? -0.2 : undefined }}>{glue(o.texto)}</div>
             </div>
             <div style={{ flex: "none", width: 60, height: 60, borderRadius: "50%", background: mix("#E9DED0", C.verde, e), display: "flex", alignItems: "center", justifyContent: "center", transform: `scale(${0.8 + 0.25 * e})` }}>
               <IconeCheck s={42} cor="#fff" />
@@ -323,15 +324,7 @@ const Pagamento: React.FC<P> = ({ L, layout, f, D }) => {
   );
 };
 
-// ================================================================ 6 · mensalidade (o contador 0 → 3 meses; o Pão de Queijo Points sem custo)
-const Calendario: React.FC<{ s: number }> = ({ s }) => (
-  <svg width={s} height={s} viewBox="0 0 100 100">
-    <rect x="10" y="18" width="80" height="72" rx="12" fill="#fff" stroke={C.coral} strokeWidth="6" />
-    <rect x="10" y="18" width="80" height="22" rx="10" fill={C.coral} />
-    <rect x="28" y="8" width="8" height="20" rx="4" fill={C.coralDark} /><rect x="64" y="8" width="8" height="20" rx="4" fill={C.coralDark} />
-    {[0, 1, 2].map((r) => [0, 1, 2, 3].map((c) => <rect key={`${r}${c}`} x={20 + c * 17} y={48 + r * 13} width="10" height="8" rx="2" fill={C.cremeDeep} />))}
-  </svg>
-);
+// ================================================================ 6 · mensalidade (a tabela das 3 faixas; a comissão; o Pão de Queijo Points sem custo)
 const MoedaPdq: React.FC<{ s: number }> = ({ s }) => (
   <svg width={s} height={s} viewBox="-50 -50 100 100">
     <circle r="48" fill={C.amareloDark} /><circle r="44" cy="-3" fill={C.amarelo} /><circle r="32" cy="-3" fill="none" stroke="#FFE08A" strokeWidth="5" />
@@ -339,33 +332,47 @@ const MoedaPdq: React.FC<{ s: number }> = ({ s }) => (
     <path d="M-17 1 C-19 -14 -9 -21 0 -21 C9 -21 19 -14 17 1 C16 9 9 12 0 12 C-9 12 -16 9 -17 1 Z" fill="#FFE08A" transform="translate(0 -3)" />
   </svg>
 );
-const Mensalidade: React.FC<P> = ({ L, layout, f, D, valores }) => {
+const Seta: React.FC<{ cor: string }> = ({ cor }) => (
+  <svg width={30} height={24} viewBox="0 0 40 30"><path d="M3 15 H32 M23 5 L34 15 L23 25" stroke={cor} strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" fill="none" /></svg>
+);
+const rs = (t: string) => glue(t).replace(/R\$ /g, "R$\u00A0");
+// as linhas da tabela acendem uma a uma (e ficam acesas); tudo apaga suave antes do fim (loop)
+const Mensalidade: React.FC<P> = ({ L, layout, f, D }) => {
   const t = t_(f), dur = D / 30;
-  const top = 168 + altTitulo(layout!.titulo) + 30;
-  // o contador: 0 → 3 entre 0,5 e 1,7 s; o número some suave no fim e o quadro 0 começa no 0 (loop)
-  const cont = clamp01((t - 0.5) / 1.2);
-  const n = Math.min(valores.meses_gratis, Math.floor(cont * (valores.meses_gratis + 0.999)));
-  const pulo = n > 0 ? Math.sin(Math.PI * clamp01(((cont * (valores.meses_gratis + 0.999)) % 1) / 0.6)) * (cont < 1 ? 1 : 0) : 0;
-  const some = 1 - ease(clamp01((t - (dur - 0.6)) / 0.45));
-  const vis = some * ease(clamp01(t / 0.45));
-  const dep = liga(t, 2.0, dur - 0.7, 0.35), dest = liga(t, 3.0, dur - 0.7, 0.35);
+  const top = 168 + altTitulo(layout!.titulo) + 28;
+  const fx = L.faixas!, RH = 128;
+  const sel = liga(t, 3.3, dur - 0.7, 0.35), dest = liga(t, 3.9, dur - 0.7, 0.35);
   const brilho = clamp01((t - 5.5) / 0.9);
+  const hT = fx.length * RH + 2 * 14;
   return (
     <>
-      <div style={{ position: "absolute", left: 12, top: 0, width: 1080, height: 1350 }}><Titulo L={L} wt={layout!.titulo} topo /></div>
-      <div style={{ position: "absolute", left: SAFE.x0, width: LARG, top, height: 400, boxSizing: "border-box", borderRadius: 40, background: "#fff", border: "5px solid #EADBC6", boxShadow: "0 9px 0 #E2CDB2",
-        display: "flex", alignItems: "center", justifyContent: "center", gap: 34 }}>
-        <div style={{ transform: `rotate(${-6 + 3 * onda(f, D, 2)}deg)` }}><Calendario s={170} /></div>
-        <div style={{ display: "flex", alignItems: "baseline", gap: 18 }}>
-          <span style={{ opacity: vis, width: 190, textAlign: "center", fontFamily: FONT, fontWeight: W.black, fontSize: 260, lineHeight: 1, color: C.coral, letterSpacing: -8, display: "inline-block", transform: `scale(${1 + 0.12 * pulo})`, textShadow: `0 10px 0 ${C.amarelo}` }}>{n}</span>
-          <span style={{ fontFamily: FONT, fontWeight: W.black, fontSize: 84, lineHeight: 1, color: C.tinta, letterSpacing: -2 }}>meses</span>
-        </div>
+      <Titulo L={L} wt={layout!.titulo} topo />
+      <div style={{ position: "absolute", left: SAFE.x0, width: LARG, top, height: hT, boxSizing: "border-box", borderRadius: 38, background: "#fff", border: "5px solid #EADBC6", boxShadow: "0 9px 0 #E2CDB2",
+        padding: "9px 14px" }}>
+        {fx.map((x, k) => {
+          const e = liga(t, 0.6 + 0.85 * k, dur - 0.8, 0.3);
+          const teto = k === fx.length - 1;
+          return (
+            <div key={k} style={{ position: "relative", height: RH, display: "flex", alignItems: "center", gap: 14, padding: "0 16px", borderRadius: 26,
+              background: mix("#FFFFFF", teto ? "#FFF1E8" : "#FFF8EC", e), borderTop: k ? "3px dashed #EADBC6" : undefined }}>
+              <div style={{ flex: "none", width: 50, height: 50, borderRadius: "50%", background: mix("#E9DED0", C.coral, e), display: "flex", alignItems: "center", justifyContent: "center",
+                fontFamily: FONT, fontWeight: W.black, fontSize: 28, color: "#fff", transform: `scale(${1 + 0.1 * e})` }}>{k + 1}</div>
+              <div style={{ flex: 1, minWidth: 0, fontFamily: FONTE, fontWeight: W.extraBold, fontSize: 33, lineHeight: 1.16, color: C.tinta, letterSpacing: -0.3, textWrap: "balance" } as React.CSSProperties}>{rs(x.quando)}</div>
+              <div style={{ flex: "none", opacity: 0.4 + 0.6 * e }}><Seta cor={mix("#D9CBBB", C.coral, e)} /></div>
+              <div style={{ flex: "none", width: 250, textAlign: "right" }}>
+                <div style={{ fontFamily: FONT, fontWeight: W.black, fontSize: 50, lineHeight: 1.04, color: mix("#9C8F86", C.coral, e), letterSpacing: -1.2, whiteSpace: "nowrap" }}>{rs(x.valor)}</div>
+                {x.obs && <div style={{ fontFamily: FONTE, fontWeight: W.extraBold, fontSize: 24, lineHeight: 1.12, color: C.tinta, opacity: 0.75, marginTop: 2, wordSpacing: 2, textWrap: "balance" } as React.CSSProperties}>{glue(x.obs)}</div>}
+              </div>
+            </div>
+          );
+        })}
       </div>
-      <Texto y={top + 432} size={38} x={SAFE.x0} w={LARG}><div style={{ textAlign: "center" }}>{glue(L.texto!)}</div></Texto>
-      <div style={{ position: "absolute", left: SAFE.x0, width: LARG, top: top + 520, display: "flex", justifyContent: "center", opacity: 0.35 + 0.65 * dep, transform: `scale(${0.94 + 0.06 * dep})` }}>
-        <div style={{ padding: "14px 34px", borderRadius: 999, background: C.tinta, fontFamily: FONT, fontWeight: W.black, fontSize: 46, color: "#fff", whiteSpace: "nowrap", letterSpacing: -0.5, wordSpacing: 4 }}>{L.depois}</div>
+      <Texto y={top + hT + 22} size={30} x={SAFE.x0} w={LARG}><div style={{ textAlign: "center", opacity: 0.8 }}>{glue(L.texto!)}</div></Texto>
+      <div style={{ position: "absolute", left: SAFE.x0, width: LARG, top: top + hT + 126, display: "flex", justifyContent: "center", opacity: 0.35 + 0.65 * sel, transform: `scale(${0.94 + 0.06 * sel})` }}>
+        <div style={{ maxWidth: LARG - 60, boxSizing: "border-box", padding: "14px 34px", borderRadius: 30, background: C.tinta, fontFamily: FONT, fontWeight: W.black, fontSize: 34, lineHeight: 1.18,
+          color: "#fff", letterSpacing: -0.4, textAlign: "center", textWrap: "balance" } as React.CSSProperties}>{rs(L.selo!)}</div>
       </div>
-      <div style={{ position: "absolute", left: SAFE.x0, width: LARG, top: top + 670, boxSizing: "border-box", borderRadius: 34, background: "#EAF6EA", border: `5px solid ${C.verde}`,
+      <div style={{ position: "absolute", left: SAFE.x0, width: LARG, top: top + hT + 262, boxSizing: "border-box", borderRadius: 34, background: "#EAF6EA", border: `5px solid ${C.verde}`,
         boxShadow: `0 8px 0 ${C.verdeDark}`, display: "flex", alignItems: "center", gap: 22, padding: "22px 30px 22px 22px", overflow: "hidden", opacity: 0.35 + 0.65 * dest, transform: `scale(${0.96 + 0.04 * dest})` }}>
         <div style={{ flex: "none", transform: `rotate(${10 * onda(f, D, 2)}deg)` }}><MoedaPdq s={120} /></div>
         <div style={{ fontFamily: FONTE, fontWeight: W.extraBold, fontSize: 38, lineHeight: 1.2, color: "#1F5A2B", textWrap: "balance" } as React.CSSProperties}>{glue(L.destaque!)}</div>

@@ -82,23 +82,27 @@ Para o LOJISTA do Glória: atrair as primeiras lojas parceiras do lançamento. S
 |---|---|---|---|
 | 1 · capa | selo "PRO LOJISTA"; a lojinha com toldo (olhinhos, placa balançando) e o Pertim apontando pra ela, olhando pra câmera; "Seu *comércio* no UaiPertim"; "Arrasta pra ver →" | 6 s | quadro 0 |
 | 2 · vitrine | "Sua vitrine montada *junto* com você" + "No cadastro, a nossa equipe monta o cardápio, as fotos e os preços com você. Depois, cê atualiza tudo pelo painel."; LojistaCardapio.png num notebook: os anéis passam pelo cardápio, pelas fotos e pelos preços, e os chips Cardápio · Fotos · Preços acendem; "Lojas e valores ilustrativos" | 7 s | 4,4 s |
-| 3 · pedido no painel | "Pedido chega *organizado* no painel" + "Sem ficar repetindo cardápio e preço no WhatsApp o dia todo."; os balões de pergunta ("Qual o preço?", "Manda o cardápio?", "Ainda tem?") somem e um pedido novo chega na coluna "Novos" do painel (Lojista.png, recorte sem os números do dia), com o aviso "Novo pedido!" e o toque em "Aceitar"; "Lojas e valores ilustrativos" | 7 s | 3,6 s |
-| 4 · entrega | "Entrega do seu *jeito*" + "A loja escolhe como faz:"; os cartões Equipe da própria loja · Entregador parceiro · Retirada no balcão acendem um a um | 7 s | 4,6 s |
+| 3 · pedido no painel | "Pedido chega *organizado* no painel" + "Sem ficar repetindo cardápio e preço no WhatsApp o dia todo."; os balões de pergunta ("Qual o preço?", "Manda o cardápio?", "Ainda tem?") somem e um pedido novo chega na coluna "Novos" do painel (Lojista-so-aceitar.png: os cartões só com o "Aceitar", em largura total; recorte sem os números do dia), com o aviso "Novo pedido!" e o toque em "Aceitar"; "Lojas e valores ilustrativos" | 7 s | 3,6 s |
+| 4 · entrega | "Entrega do seu *jeito*" + "A loja escolhe como faz:"; os cartões Equipe da própria loja ("quem entrega é o seu pessoal, e o motoboy marca a entrega pelo QR da comanda", em 28 px) · Entregador parceiro · Retirada no balcão acendem um a um | 7 s | 4,6 s |
 | 5 · pagamento | "Recebe pelo app ou na *entrega*": Pelo app (Pix, Cartão) e Na entrega (Dinheiro, Pix, Cartão) acendem; o selo amarelo "Comissão de 5% só nos pedidos pagos pelo app"; "As taxas do meio de pagamento ficam com a loja." | 7 s | 4,2 s |
-| 6 · mensalidade | "*3* *meses* sem mensalidade": o contador 0 → 3 meses (com o calendário); "Pras lojas do lançamento."; "Depois, R$ 49,90/mês"; o cartão verde "Pão de Queijo Points sem custo pra loja: os prêmios são bancados pelo UaiPertim" | 8 s | 4,8 s |
+| 6 · mensalidade | "Mensalidade que acompanha suas *vendas*": a tabela das 3 faixas, que acendem uma a uma (Vendeu até R$ 1.600 no mês → R$ 79,90 · Acima de R$ 1.600 até R$ 6.000 → 5% do que vendeu · Acima de R$ 6.000 → R$ 300, teto: nunca passa disso); "Conta só o que você vende pelo app. Balcão e WhatsApp ficam de fora."; o selo escuro "Somada à comissão de 5% dos pedidos pagos pelo app"; o cartão verde "Pão de Queijo Points sem custo pra loja: os prêmios são bancados pelo UaiPertim" | 8 s | 4,8 s |
 | 7 · fecho | "Quer sua *loja* no UaiPertim?"; o Pertim acenando ao lado da lojinha (com o cordão de luzinhas); o CTA "Chama a gente no Direct 📩"; uaipertim@uaipertim.com.br; a logo redonda sem fundo e "Tudo pertim de você" | 7 s | quadro 0 |
 
 **Decisões:**
 
-- **Valores** no campo `"valores"` do JSON (3 meses, R$ 49,90, 5%); o QA dos textos confere se a tela (OCR), as lâminas e a
-  legenda batem com ele e se não aparece nenhum outro valor.
-- **Sem promessa de vendas ou resultado**; "entrega", nunca "frete"; o WhatsApp só aparece como o jeito antigo (lâmina 3),
-  nunca como canal de suporte. O contato é o Direct e o e-mail.
+- **Mensalidade (política revisada em 2026-11-24; não existe mais período grátis):** até R$ 1.600 vendidos no mês pelo app,
+  R$ 79,90; acima de R$ 1.600 até R$ 6.000, 5% do que vendeu; acima de R$ 6.000, R$ 300 (o teto). Conta só o que é vendido
+  pelo app e soma-se à comissão de 5% dos pedidos pagos pelo app. Os valores ficam no campo `"valores"` do JSON; o QA dos textos
+  confere a tela (OCR), a tabela e a legenda, e que nada sobrou da política antiga (3 meses grátis, R$ 49,90).
+- **O painel não tem mais o botão "Recusar":** `scripts/painel_so_aceitar.py` gera `public/telas-app/painel/Lojista-so-aceitar.png`
+  a partir da Lojista.png, com o "Aceitar" dos dois cartões da coluna "Novos" esticado na largura total (os pixels do botão
+  original: cantos, cor e texto).
+- **Sem promessa de vendas ou resultado**; "entrega", nunca "frete"; o WhatsApp só aparece como o jeito antigo (lâmina 3) e
+  como venda que não entra na conta da mensalidade (lâmina 6), nunca como canal de suporte. O contato é o Direct e o e-mail.
 - **A tela Lojista.png** entra recortada nas colunas "Novos" e "Em preparo": os números do dia (pedidos, vendas) ficam de fora,
   para não ler como resultado prometido.
 - **Marcador numa palavra só:** dentro de um marcador de várias palavras o espaço fica estreito ("seu jeito" lia como
-  "seujeito" no OCR). Por isso "Entrega do seu *jeito*", "ou na *entrega*", "Quer sua *loja*" e "*3* *meses*".
-- **O contador da lâmina 6** começa invisível no quadro 0 e some no fim, para a emenda do loop não saltar de 3 para 0.
+  "seujeito" no OCR). Por isso "Entrega do seu *jeito*", "ou na *entrega*", "Quer sua *loja*" e "suas *vendas*".
 
 **QA dos textos** (`scripts/carrossel_textos_qa.py <json>`, além do `quiz_qa.py`): OCR (tesseract, português, 12 passadas
 por canal de cor) do PNG de cada lâmina. Confere que nenhum par de palavras vizinhas aparece grudado, que ≥ 90% das palavras de
