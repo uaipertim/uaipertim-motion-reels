@@ -319,7 +319,7 @@ const Gancho: React.FC<{ t: number; quadro: number }> = ({ t, quadro }) => {
         const a = -0.9 + i * 0.6, d = 80 + 120 * outCubic(u);
         return <div key={i} style={abs(780 + Math.cos(a) * d - 20, 860 + Math.sin(a) * d - 20, { opacity: 1 - u })}><StarShape size={40} color={i % 2 ? C.amarelo : C.coral} /></div>;
       })}
-      <Twinkles frame={quadro} seed="spp-gancho" points={[[150, 300], [930, 320], [150, 900], [940, 1180]]} size={30} />
+      <Twinkles frame={quadro} seed="spp-gancho" points={[[150, 300], [930, 320], [150, 900], [920, 980]]} size={30} />
     </div>
   );
 };
