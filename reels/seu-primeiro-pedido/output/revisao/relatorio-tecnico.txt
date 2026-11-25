@@ -1,0 +1,73 @@
+REVISÃO TÉCNICA · Reel "Seu primeiro pedido" · reels/seu-primeiro-pedido/output/uaipertim-seu-primeiro-pedido.mp4
+30.50 s · 915 quadros a 30 fps
+
+FORMATO E SOM
+OK     vídeo h264 yuv420p 1080×1920
+OK     30 fps
+OK     duração 30.50 s (30–35 s)
+OK     áudio aac 48000 Hz, 2 canais
+OK     -14.0 LUFS integrados (alvo −14)
+OK     pico real -1.6 dBTP (≤ −1)
+OK     a trilha animada do app, no nível padrão (sem "trilha_db"), como no "Olha ele por dentro!" e no "Bateu a fome?"
+OK     nível da trilha: -13.2 dB da voz (LUFS); no "Olha ele por dentro!", -12.9 dB (diferença -0.3 dB; tolerância 1 dB)
+OK     a trilha toca no gancho (-28.2 LUFS nos primeiros 3 s) e no fecho (-26.0 LUFS de 26.5 a 30.5 s, na pista da música)
+OK     a voz em destaque: a trilha fica 13.2 dB abaixo dela
+
+RITMO (trilha animada, 120 BPM: uma batida a cada 0,5 s)
+OK     cena 1 gancho: 0.00–3.50 s = batidas 0–7; fala 0.12–3.32 s dentro dela
+OK     cena 2 loja: 3.50–6.00 s = batidas 7–12; fala 3.60–5.68 s dentro dela
+OK     cena 3 sacola: 6.00–9.50 s = batidas 12–19; fala 6.10–9.38 s dentro dela
+OK     cena 4 entrega: 9.50–15.50 s = batidas 19–31; fala 9.60–15.12 s dentro dela
+OK     cena 5 pagamento: 15.50–22.50 s = batidas 31–45; fala 15.60–22.40 s dentro dela
+OK     cena 6 bonus: 22.50–26.50 s = batidas 45–53; fala 22.60–26.20 s dentro dela
+OK     cena 7 fecho: 26.50–30.50 s = batidas 53–61; fala 26.62–28.78 s dentro dela
+OK     a logo do fecho fica parada nos últimos 3.33 s (mínimo 3 s)
+
+VOZ
+OK     o texto falado é o roteiro, cena a cena
+OK     Victor Pinho (LuQ9eaWO9yCQrR73VQFa), eleven_v4, perfil "narracao"
+OK     "UaiPertim" vai para a voz como "Uai pertím" (e "Pertim" nunca sem acento); na tela, "UaiPertim"
+OK     "o Glória" no masculino (nunca "a/da/na/de Glória")
+OK     sem "aguarde" e sem "não é app"
+OK     sem "frete" (na fala, na tela e na legenda do post: sempre "entrega")
+OK     sem WhatsApp (nem de suporte) na fala e na legenda do post
+OK     sem a Cartao.png (não usar por enquanto) e sem a tela "Falta só pagar"
+OK     sem número de lojas nem data de lançamento (o cabeçalho da legenda é a data da postagem)
+OK     o cliente escolhe só entre entrega e retirada (a loja decide entre a equipe dela e a rede)
+OK     os pontos na tela são só o +20 por pedido concluído (o padrão do app, loyaltyService.ts); a fala não cita número
+OK     nota fixa "Lojas e valores ilustrativos" enquanto as telas aparecem
+OK     o Pertim olha para a câmera (olhar no centro) e nunca aparece bravo (sem "apressado")
+OK     legenda do post: termina em "Qual vai ser o seu primeiro pedido?", com as hashtags locais e o comentário fixado
+     cena 1: seed 2042 · 3.20 s · enviado "Seu primeiro pedido no Uai pertím? É facim, ó!" · reels/seu-primeiro-pedido/tomadas/cap-00/C-seed2042.mp3
+     cena 2: seed 42 · 2.08 s · enviado "Abre o app e escolhe a loja." · voz.py, seed 42
+     cena 3: seed 42 · 3.28 s · enviado "Toca no lanche, escolhe as opções e põe na sacola." · voz.py, seed 42
+     cena 4: seed 42 · 5.52 s · enviado "No fim, cê escolhe: entrega ou retirada. Se for entrega, confere o endereço." · voz.py, seed 42
+     cena 5: seed 42 · 6.80 s · enviado "Escolhe como pagar: no Pix ou no cartão pelo app, ou na entrega. Aí é só fazer o pedido!" · voz.py, seed 42
+     cena 6: seed 3042 · 3.60 s · enviado "E quando o pedido chega, já rende Pão de Queijo Points!" · voz.py, seed 3042
+     cena 7: seed 42 · 2.16 s · enviado "Segue a gente pra saber do lançamento!" · voz.py, seed 42
+OK     só a fala 1 é marcada como pergunta ("pergunta": true), de sim/não
+
+PITCH · A PERGUNTA DA CENA 1 ("Seu primeiro pedido no UaiPertim? É facim, ó!")
+     tomada usada: reels/seu-primeiro-pedido/tomadas/cap-00/C-seed2042.mp3 (seed 2042)
+     o F0 vai de 139 Hz ("no") para 342 Hz no pico de "pertím" (em 1.88 s); a última vogal: -2.2 st
+OK     a pergunta (de sim/não) sobe até a tônica de "pertím": +15.6 st (mínimo +8 st)
+     gráfico: output/revisao/f0-cena-1.png
+
+LEGENDA (a nova, da Coisa de mineiro #03)
+OK     a legenda bate com a fala, cena a cena (o texto da tela, na ordem, com a grafia oficial)
+OK     nenhum bloco atravessa a troca de cena
+OK     blocos curtos (até 2 linhas, até 4 palavras; "pão de queijo" conta como uma)
+OK     legenda na faixa segura: x 138–884, y 1374–1548 (x 110–906, y 1372–1565: abaixo dos pés, fora da coluna de botões e acima da descrição)
+OK     legenda sem palavras grudadas: o espaço entre as palavras nunca some (nenhum par encostado em nenhum quadro); menor vão entre duas palavras: 12 px
+
+BORDAS (máscara do conteúdo, sem o fundo; 10 quadros/s)
+     o conteúdo ocupa no máximo x 40–1078, até y 1920 (entrando e saindo incluídos)
+OK     nada parado cortado pela borda
+OK     parado, tudo a ≥ 30 px das bordas laterais e de baixo
+OK     nada parado na coluna de botões do Instagram (x ≥ 940, y 1060–1560)
+
+CAPA (3:4, padrão da grade)
+OK     capa-3x4.png 1080×1440 (o recorte da grade, y 240–1680 da capa 9:16)
+OK     todo o conteúdo da capa em x 144–945 (regra x 135–945: vale na grade e na aba Reels), y 84–1341 do 3:4
+
+RESULTADO: aprovado
