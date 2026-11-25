@@ -58,7 +58,7 @@ OK     legenda na faixa segura: x 122–900, y 1388–1548 (x 110–906, y 1372�
 OK     legenda sem palavras grudadas: o espaço entre as palavras nunca some (nenhum par encostado em nenhum quadro); menor vão entre duas palavras: 8 px
 
 BORDAS (máscara do conteúdo, sem o fundo; 10 quadros/s)
-     o conteúdo ocupa no máximo x 40–1080, até y 1920 (entrando e saindo incluídos)
+     o conteúdo ocupa no máximo x 36–1080, até y 1920 (entrando e saindo incluídos)
 OK     nada parado cortado pela borda
 OK     parado, tudo a ≥ 30 px das bordas laterais e de baixo
 OK     nada parado na coluna de botões do Instagram (x ≥ 940, y 1060–1560)

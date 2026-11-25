@@ -1,0 +1,34 @@
+--- lâmina 1 (capa)
+ok    espaços entre palavras: nenhum par grudado
+ok    legível: o OCR reconhece 13/13 palavras (100%), confiança média 95
+--- lâmina 2 (pra quem pede)
+ok    espaços entre palavras: nenhum par grudado
+ok    legível: o OCR reconhece 22/22 palavras (100%), confiança média 96
+--- lâmina 3 (acompanhar e pagar)
+ok    espaços entre palavras: nenhum par grudado
+ok    legível: o OCR reconhece 36/37 palavras (97%), confiança média 97 (não lidas: gloria)
+--- lâmina 4 (Pão de Queijo Points)
+ok    espaços entre palavras: nenhum par grudado
+ok    legível: o OCR reconhece 26/27 palavras (96%), confiança média 95 (não lidas: gloria)
+--- lâmina 5 (pra quem vende)
+ok    espaços entre palavras: nenhum par grudado
+ok    legível: o OCR reconhece 38/39 palavras (97%), confiança média 96 (não lidas: gloria)
+--- lâmina 6 (pra quem entrega)
+ok    espaços entre palavras: nenhum par grudado
+ok    legível: o OCR reconhece 32/33 palavras (97%), confiança média 93 (não lidas: gloria)
+--- lâmina 7 (fecho)
+ok    espaços entre palavras: nenhum par grudado
+ok    legível: o OCR reconhece 22/22 palavras (100%), confiança média 96
+--- a composição, os valores e as regras
+ok    menor fonte dos textos da composição: 24 px (mínimo 24)
+ok    o marcador vai numa palavra só (num marcador de várias palavras o espaço fica estreito)
+ok    sem "frete" (sempre "entrega")
+ok    sem promessa de vendas ou resultado
+ok    WhatsApp só onde o JSON permite (pra quem pede), nunca como canal de suporte; sem telefone
+ok    "o Glória" no masculino
+ok    sem números nos textos das lâminas (nem valores, nem quantidade de lojas)
+ok    sem data de lançamento (só "Em breve"; o cabeçalho "LEGENDA (data da postagem)" não conta)
+ok    o cliente não escolhe entre a loja e o entregador parceiro (quem decide é a loja)
+ok    "Pertim" sem troca de grafia na tela
+
+RESULTADO: aprovado
