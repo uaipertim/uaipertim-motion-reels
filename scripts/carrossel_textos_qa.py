@@ -183,8 +183,8 @@ ok(not re.search(r"\b(a|da|na|de)\s+Glória", texto_total), '"o Glória" no masc
 if D.get("sem_numeros"):
     js_l = json.dumps([{k: v for k, v in L.items() if k not in TECNICOS} for L in D["laminas"]], ensure_ascii=False)
     ok(not re.search(r"\d", js_l), "sem números nos textos das lâminas (nem valores, nem quantidade de lojas)")
-    ok(not re.search(r"\d{1,2}/\d{1,2}|janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro|segunda|terça|quarta|quinta|sexta|sábado|domingo", js_l + LEG, re.I),
-       'sem data de lançamento (só "Em breve")')
+    ok(not re.search(r"\d{1,2}/\d{1,2}|janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro|segunda|terça|quarta|quinta|sexta|sábado|domingo", js_l + LEG.split("\n", 1)[-1], re.I),
+       'sem data de lançamento (só "Em breve"; o cabeçalho "LEGENDA (data da postagem)" não conta)')
     ok(not re.search(r"(cliente|você|cê)[^.]{0,40}escolhe[^.]{0,60}entregador|escolhe[^.]{0,30}(o|seu) entregador", js_l + LEG, re.I),
        "o cliente não escolhe entre a loja e o entregador parceiro (quem decide é a loja)")
 ok(re.search(r"\bpertim\b", texto_total, re.I) and not re.search(r"P[ée]rr-?t[ií]m|P[ée]r-t[ií]m|Pértim|Pertím", texto_total), '"Pertim" sem troca de grafia na tela')

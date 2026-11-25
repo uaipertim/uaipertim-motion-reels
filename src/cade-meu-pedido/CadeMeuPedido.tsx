@@ -239,8 +239,9 @@ const PainelStatus: React.FC<{ t: number }> = ({ t }) => {
   const x0 = 110, x1 = 930, W_ = x1 - x0, nx = (k: number) => x0 + 80 + (k * (W_ - 160)) / 3;
   const st = A.status;
   // a motinha: anda até o status da vez (0,35 s depois da palavra), parte de antes do 1º
+  // (corrigido em 25/11: antes, a fórmula punha a motinha em "Pronto" antes do 1º status acender)
   let pos = -0.35;
-  st.forEach((ts, k) => { pos = Math.max(pos, k - 1 + inOut(clamp01((t - ts) / 0.35))); });
+  st.forEach((ts, k) => { const de = k === 0 ? -0.35 : k - 1; if (t >= ts) pos = de + (k - de) * inOut(clamp01((t - ts) / 0.35)); });
   const mx = x0 + 80 + ((Math.max(-0.35, pos)) * (W_ - 160)) / 3;
   const quique = 4 * Math.abs(Math.sin(t * 14));
   return (

@@ -152,7 +152,7 @@ const Pede: React.FC<P> = ({ L, layout, f, D, ilustrativo }) => {
                 {A.baloes!.map((b, k) => {
                   const e = liga(t, 0.4 + 0.5 * k, dur - 0.5, 0.3);
                   return <div key={k} style={{ alignSelf: k % 2 ? "flex-end" : "flex-start", padding: "10px 14px", borderRadius: 18, background: k % 2 ? "#DCF3D2" : "#fff", boxShadow: "0 3px 8px rgba(0,0,0,0.1)",
-                    fontFamily: FONTE, fontWeight: W.extraBold, fontSize: 20, color: "#5E534C", opacity: e, transform: `scale(${0.8 + 0.2 * e})`, whiteSpace: "nowrap", wordSpacing: 1 }}>{b}</div>;
+                    fontFamily: FONTE, fontWeight: W.extraBold, fontSize: 24, lineHeight: 1.1, color: "#5E534C", opacity: e, transform: `scale(${0.8 + 0.2 * e})`, maxWidth: "88%", wordSpacing: 1 }}>{b}</div>;
                 })}
                 <div style={{ alignSelf: "flex-start", display: "flex", gap: 6, padding: "12px 16px", borderRadius: 18, background: "#fff" }}>
                   {[0, 1, 2].map((i) => <div key={i} style={{ width: 10, height: 10, borderRadius: 5, background: "#B5A897", opacity: 0.4 + 0.6 * Math.max(0, Math.sin((TAU * 7 * f) / D - i)) }} />)}
@@ -170,7 +170,7 @@ const Pede: React.FC<P> = ({ L, layout, f, D, ilustrativo }) => {
         </Cartao>
       </div>
       {/* agora: o cardápio e o preço na tela (Loja.png) */}
-      <div style={{ position: "absolute", left: SAFE.x0 + cw + 30, top: top - 12 * eAg, width: cw, height: ch, transform: `scale(${1 + 0.02 * eAg})` }}>
+      <div style={{ position: "absolute", left: SAFE.x0 + cw + 30, top: top - 12 * eAg, width: cw, height: ch }}>
         <Cartao e={0.35 + 0.65 * eAg} style={{ width: cw, height: ch, padding: "26px 22px", display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
           <div style={{ padding: "8px 26px", borderRadius: 999, background: C.coral, boxShadow: `0 5px 0 ${C.coralDark}`, fontFamily: FONT, fontWeight: W.black, fontSize: 34, color: "#fff" }}>{G.rotulo}</div>
           <Telefone w={pw}>
@@ -204,8 +204,9 @@ const Acompanha: React.FC<P> = ({ L, layout, f, D }) => {
   const top = 168 + altTitulo(layout!.titulo) + 34;
   const ps = L.passos!, T0 = 0.4, PASSO = 0.6, APAGA = dur - 0.8;
   const W_ = LARG, nx = (k: number) => 100 + (k * (W_ - 200)) / 3;
+  // a motinha: parte de antes do 1º status e anda de um status ao seguinte quando ele acende
   let pos = -0.3;
-  ps.forEach((_, k) => { pos = Math.max(pos, k - 1 + ease(clamp01((t - (T0 + PASSO * k)) / 0.35))); });
+  ps.forEach((_, k) => { const de = k === 0 ? -0.3 : k - 1, ts = T0 + PASSO * k; if (t >= ts) pos = de + (k - de) * ease(clamp01((t - ts) / 0.35)); });
   const X0 = 100, WB = W_ - 200;
   const volta = ease(clamp01((t - (APAGA - 0.1)) / 0.6));
   const mx = X0 + ((pos * (1 - volta) - 0.3 * volta) * WB) / 3;
