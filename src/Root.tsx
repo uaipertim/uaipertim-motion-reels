@@ -47,6 +47,8 @@ import { CapaCoisaDeMineiro, CoisaDeMineiro, CoisaDeMineiroProps, carregaEpisodi
 import { COMO_CHEGA, ComoChega, ComoChegaProps, duracaoComoChega, medeComoChega } from "./carrossel-animado/ComoChega";
 import comoChega02 from "../carrosseis/animados/02-como-chega-o-seu-pedido.json";
 import seuComercio03 from "../carrosseis/animados/03-seu-comercio-no-uaipertim.json";
+import oQueMuda04 from "../carrosseis/animados/04-o-que-muda-no-gloria.json";
+import { O_QUE_MUDA, OQueMuda, OQueMudaProps, duracaoOQueMuda, medeOQueMuda } from "./carrossel-animado/OQueMuda";
 import { SEU_COMERCIO, SeuComercio, SeuComercioProps, duracaoSeuComercio, medeSeuComercio } from "./carrossel-animado/SeuComercio";
 import { PDQ, PaoDeQueijoPoints } from "./pao-de-queijo-points/PaoDeQueijoPoints";
 import { SE, SejaEntregador } from "./seja-entregador/SejaEntregador";
@@ -278,6 +280,9 @@ export const RemotionRoot: React.FC = () => (
     <Composition id="SeuComercio" component={SeuComercio} durationInFrames={180} fps={SEU_COMERCIO.fps} width={SEU_COMERCIO.width} height={SEU_COMERCIO.height}
       defaultProps={{ ...(seuComercio03 as unknown as SeuComercioProps), lamina: 0 }}
       calculateMetadata={async ({ props }) => { await fontsReady; return { durationInFrames: duracaoSeuComercio(props, props.lamina), props: { ...props, layout: medeSeuComercio(props, props.lamina) } }; }} />
+    <Composition id="OQueMuda" component={OQueMuda} durationInFrames={180} fps={O_QUE_MUDA.fps} width={O_QUE_MUDA.width} height={O_QUE_MUDA.height}
+      defaultProps={{ ...(oQueMuda04 as unknown as OQueMudaProps), lamina: 0 }}
+      calculateMetadata={async ({ props }) => { await fontsReady; return { durationInFrames: duracaoOQueMuda(props, props.lamina), props: { ...props, layout: medeOQueMuda(props, props.lamina) } }; }} />
     {/* Carrossel animado "Quiz" (carrosseis/quiz): UMA lâmina por render, em loop (--props={"lamina": 0..7}); scripts/quiz.mjs */}
     <Composition id="QuizMineiro" component={QuizMineiro} durationInFrames={180} fps={QUIZ.fps} width={QUIZ.width} height={QUIZ.height}
       defaultProps={{ ...(quiz01 as unknown as QuizProps), lamina: 0 }}

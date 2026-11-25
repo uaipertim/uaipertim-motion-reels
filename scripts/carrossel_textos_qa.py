@@ -47,19 +47,29 @@ def palavras(t):
     return [w for w in re.split(r"\s+", t.replace("*", "").replace(" ", " ")) if nrm(w)]
 
 
-# os textos de tela de cada lâmina (o que está visível no quadro do PNG)
+# os textos de tela de cada lâmina (o que está visível no quadro do PNG): todos os campos de texto do JSON da lâmina,
+# menos os técnicos, o título quando há "quebra" e os listados em "ocr_ignora" (ex.: balões que já sumiram no quadro do PNG)
+TECNICOS = {"tipo", "rotulo", "segundos", "estatico", "crf", "ilustrativo", "ocr_ignora"}
+
+
 def textos(i, L):
     ts = [D["selo"]]
-    ts += L["quebra"] if L.get("quebra") else (L["titulo"] if isinstance(L["titulo"], list) else [L["titulo"]])
-    for k in ("rodape", "texto", "aviso", "selo", "nota", "depois", "destaque", "cta", "email", "assinatura"):
-        if L.get(k):
-            ts.append(L[k])
-    ts += L.get("itens", [])
-    for o in L.get("opcoes", []):
-        ts += [o["titulo"], o["texto"]]
-    for g in L.get("grupos", []):
-        ts += [g["titulo"]] + g["formas"]
-    if L["tipo"] in ("vitrine", "pedido"):
+    ign = set(L.get("ocr_ignora", [])) | TECNICOS | ({"titulo"} if L.get("quebra") else set())
+
+    def anda(v, chave):
+        if chave in ign or str(chave).startswith("_"):
+            return
+        if isinstance(v, str):
+            ts.append(v)
+        elif isinstance(v, list):
+            for x in v:
+                anda(x, chave)
+        elif isinstance(v, dict):
+            for k, x in v.items():
+                anda(x, k)
+    for k, v in L.items():
+        anda(v, k)
+    if L.get("ilustrativo") or L["tipo"] in ("vitrine", "pedido"):
         ts.append(D["ilustrativo"])
     return ts
 
@@ -167,9 +177,16 @@ texto_total = json.dumps({k: v for k, v in D.items() if not k.startswith("_")}, 
 ok(not re.search(r"\bfrete", texto_total, re.I), 'sem "frete" (sempre "entrega")')
 ok(not re.search(r"vend(a|e)r? mais|aument\w* (as |suas |de )?vendas|mais vendas|garant|fatur\w+ mais|lucr", texto_total, re.I), "sem promessa de vendas ou resultado")
 wa = [L["rotulo"] for L in D["laminas"] if "whatsapp" in json.dumps(L, ensure_ascii=False).lower()]
-ok(wa == ["pedido no painel", "mensalidade"] and "whatsapp" not in LEG.lower() and not re.search(r"\(?\d{2}\)?\s?9?\d{4}-?\d{4}", texto_total),
-   'WhatsApp só como o jeito antigo (lâmina 3) e como venda que não entra na conta da mensalidade (lâmina 6), nunca como canal de suporte; sem telefone')
+ok(wa == D.get("whatsapp_permitido", ["pedido no painel", "mensalidade"]) and "whatsapp" not in LEG.lower() and not re.search(r"\(?\d{2}\)?\s?9?\d{4}-?\d{4}", texto_total),
+   'WhatsApp só onde o JSON permite (' + ', '.join(D.get("whatsapp_permitido", ["pedido no painel", "mensalidade"])) + '), nunca como canal de suporte; sem telefone')
 ok(not re.search(r"\b(a|da|na|de)\s+Glória", texto_total), '"o Glória" no masculino')
+if D.get("sem_numeros"):
+    js_l = json.dumps([{k: v for k, v in L.items() if k not in TECNICOS} for L in D["laminas"]], ensure_ascii=False)
+    ok(not re.search(r"\d", js_l), "sem números nos textos das lâminas (nem valores, nem quantidade de lojas)")
+    ok(not re.search(r"\d{1,2}/\d{1,2}|janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro|segunda|terça|quarta|quinta|sexta|sábado|domingo", js_l + LEG, re.I),
+       'sem data de lançamento (só "Em breve")')
+    ok(not re.search(r"(cliente|você|cê)[^.]{0,40}escolhe[^.]{0,60}entregador|escolhe[^.]{0,30}(o|seu) entregador", js_l + LEG, re.I),
+       "o cliente não escolhe entre a loja e o entregador parceiro (quem decide é a loja)")
 ok(re.search(r"\bpertim\b", texto_total, re.I) and not re.search(r"P[ée]rr-?t[ií]m|P[ée]r-t[ií]m|Pértim|Pertím", texto_total), '"Pertim" sem troca de grafia na tela')
 
 rel.append("")

@@ -68,7 +68,11 @@
     "Pedido chega",
     "*organizado* no painel"
    ],
-   "_doc_tela": "O painel não tem mais o botão Recusar: nos dois cartões da coluna Novos fica só o Aceitar, em largura total (public/telas-app/painel/Lojista-so-aceitar.png, gerada por scripts/painel_so_aceitar.py a partir da Lojista.png)."
+   "_doc_tela": "O painel não tem mais o botão Recusar: nos dois cartões da coluna Novos fica só o Aceitar, em largura total (public/telas-app/painel/Lojista-so-aceitar.png, gerada por scripts/painel_so_aceitar.py a partir da Lojista.png).",
+   "ocr_ignora": [
+    "baloes",
+    "_doc_tela"
+   ]
   },
   {
    "tipo": "entrega",

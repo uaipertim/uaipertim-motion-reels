@@ -20,6 +20,7 @@ Os dois recebem o caminho do JSON. Um JSON com `"composicao"` diz:
 |---|---|---|---|---|---|
 | 02 | "Como chega o seu pedido?" | ter 24/11, 12h | [`02-como-chega-o-seu-pedido.json`](02-como-chega-o-seu-pedido.json) | `ComoChega` (`src/carrossel-animado/ComoChega.tsx`) | `out/carrosseis/animados/02-como-chega-o-seu-pedido/` |
 | 03 | "Seu comércio no UaiPertim" (pro lojista) | qui 26/11, 12h | [`03-seu-comercio-no-uaipertim.json`](03-seu-comercio-no-uaipertim.json) | `SeuComercio` (`src/carrossel-animado/SeuComercio.tsx`) | `out/carrosseis/animados/03-seu-comercio-no-uaipertim/` |
+| 04 | "O que muda no Glória" | sáb 28/11 | [`04-o-que-muda-no-gloria.json`](04-o-que-muda-no-gloria.json) | `OQueMuda` (`src/carrossel-animado/OQueMuda.tsx`) | `out/carrosseis/animados/04-o-que-muda-no-gloria/` |
 
 ## Formato: 4:5 (1080 × 1350)
 
@@ -114,4 +115,49 @@ node scripts/quiz.mjs carrosseis/animados/03-seu-comercio-no-uaipertim.json masc
 node scripts/quiz.mjs carrosseis/animados/03-seu-comercio-no-uaipertim.json loop
 python3 scripts/quiz_qa.py carrosseis/animados/03-seu-comercio-no-uaipertim.json       # revisao/relatorio-tecnico.txt + previa.png
 python3 scripts/carrossel_textos_qa.py carrosseis/animados/03-seu-comercio-no-uaipertim.json   # revisao/textos-qa.txt
+```
+
+## #04 "O que muda no Glória" (7 lâminas, 46 s no total)
+
+O que muda na rotina de São João Batista do Glória com o UaiPertim, para quem pede, quem vende e quem entrega. Tom de vizinho,
+sem prometer resultado e sem números. Selo "NO GLÓRIA". Sem áudio, como os carrosséis animados anteriores.
+
+| lâmina | texto | o que mostra | duração | PNG (plano B) |
+|---|---|---|---|---|
+| 1 · capa | "O que muda no *Glória* com o UaiPertim?" · "Arrasta pro lado →" | o Pertim acenando na pracinha (igrejinha, árvores, poste aceso, banco) | 6 s | quadro 0 |
+| 2 · pra quem pede | "Pra quem *pede*" · "Antes × agora" · Antes: "Ligar e esperar responder no WhatsApp" · Agora: "Cardápio e preço na tela" · "Lojas e valores ilustrativos" | antes, em cinza: o telefone balançando, os balões "Tem o quê hoje?" e "Quanto tá?", os três pontinhos e o relógio; agora: a Loja.png com os preços dos destaques acesos | 7 s | 4,6 s |
+| 3 · acompanhar e pagar | "Acompanha e *paga* do seu jeito" · Aceito, Em preparo, Pronto, Saiu para entrega · "Paga no Pix ou no cartão pelo app, ou na entrega" (Pix · Cartão · Na entrega) · "E escolhe: entrega ou retirada" | os status acendem e a motinha anda na barrinha; os chips acendem; os cartões Entrega e Retirada acendem um de cada vez | 7 s | 4,8 s |
+| 4 · Pão de Queijo Points | "Pão de Queijo *Points*" · "Cada pedido concluído vale pontos" · "Os pontos viram cupom de desconto" · "E cê vai subindo de nível": Bronze, Prata, Ouro, Diamante | o pão de queijo fumegando, com as moedinhas girando em volta; as medalhas acendem uma a uma | 6 s | 4,2 s |
+| 5 · pra quem vende | "Pra quem *vende*" · "O comércio da cidade:" · Ganha vitrine no app (cardápio, fotos e preços) · Recebe o pedido organizado (tudo no painel da loja) · Decide como entrega (com a equipe própria ou com a rede de entregadores) | os três cartões acendem um a um | 7 s | 4,8 s |
+| 6 · pra quem entrega | "Pra quem *entrega*" · "Entregadores da cidade, de moto, bike, carro ou a pé" · o aviso "Nova entrega disponível" com Loja · Bairro · Valor · "Cê vê tudo isso antes de aceitar" | a moto, a bike, o carro e o entregador a pé andando; o aviso desce e os campos acendem | 7 s | 4,6 s |
+| 7 · fecho | "O comércio do *Glória*, tudo pertim de você." · @uaipertim · "Em breve no Glória" · "Segue a gente pra saber do lançamento" | a pracinha com o Pertim acenando; a logo redonda sem fundo; o aviãozinho voando | 6 s | quadro 0 |
+
+**Decisões:**
+
+- **Só fatos do app**, conferidos no repositório `uaipertim/uaipertim` (só leitura, HEAD b09f362):
+  - os status do pedido estão em `src/utils/orderLifecycle.ts`;
+  - a loja chama a rede, o entregador vê loja, bairro e valor antes do aceite, o aviso é "Nova entrega disponível — loja ·
+    bairro · valor" e a ficha aceita moto, bicicleta, carro ou a pé (`PROCEDIMENTO-ENTREGADORES.md`);
+  - os pontos vêm por pedido concluído e viram cupom, nos níveis Bronze, Prata, Ouro e Diamante (`src/lib/loyalty.ts`,
+    `server/orderStatusChange.ts`).
+- **O cliente escolhe só entre entrega e retirada.** Quem decide entre a equipe da loja e a rede de entregadores é a loja
+  (lâmina 5).
+- **Sem números** (`"sem_numeros": true` no JSON): nada de valores, quantidade de lojas ou data. O aviso do entregador mostra
+  só os rótulos Loja · Bairro · Valor. O lançamento aparece como "Em breve no Glória".
+- **Nenhum comércio real:** a Loja.png da lâmina 2 é a loja fictícia de sempre ("Burger do Glória"), com a nota de
+  ilustrativos.
+- **6 ou 7 s por lâmina:** cabe no pedido (5–7 s) e no QA do motor (6–8 s).
+- **Marcador:** "no *Glória*" na capa e "do *Glória*" no fecho. O `glue` mantém "do Glória" junto no texto medido e no
+  desenhado; "tudo pertim de você" fica sem marcador, porque o `glue` só o junta sem o asterisco e a linha perdia o "de você".
+
+**QA dos textos:** o `scripts/carrossel_textos_qa.py` passou a ler todos os campos de texto do JSON da lâmina. Ele ignora os
+técnicos, o título quando há `quebra` e os listados em `ocr_ignora`. Os lugares onde o WhatsApp pode aparecer vêm de
+`whatsapp_permitido`. Com `sem_numeros`, ele confere também que não há número, data nem "cliente escolhe o entregador".
+
+```bash
+node scripts/quiz.mjs carrosseis/animados/04-o-que-muda-no-gloria.json            # lamina-1..7.mp4/.png + capa-4x5.png
+node scripts/quiz.mjs carrosseis/animados/04-o-que-muda-no-gloria.json mascara
+node scripts/quiz.mjs carrosseis/animados/04-o-que-muda-no-gloria.json loop
+python3 scripts/quiz_qa.py carrosseis/animados/04-o-que-muda-no-gloria.json       # revisao/relatorio-tecnico.txt + previa.png
+python3 scripts/carrossel_textos_qa.py carrosseis/animados/04-o-que-muda-no-gloria.json   # revisao/textos-qa.txt
 ```

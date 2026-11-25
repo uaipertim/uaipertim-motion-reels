@@ -1,0 +1,166 @@
+{
+ "numero": 4,
+ "pasta": "04-o-que-muda-no-gloria",
+ "composicao": "OQueMuda",
+ "formato": [
+  1080,
+  1350
+ ],
+ "respiro": 60,
+ "saida": "out/carrosseis/animados/04-o-que-muda-no-gloria",
+ "capa_arquivo": "capa-4x5.png",
+ "publicacao": "sáb 28/11",
+ "_doc": "Carrossel animado #04 'O que muda no Glória' (App UaiPertim): o que muda na rotina de São João Batista do Glória para quem pede, quem vende e quem entrega. Tom de vizinho, sem prometer resultado e sem números. Mesmo motor do #02 e do #03 (scripts/quiz.mjs + scripts/quiz_qa.py + scripts/carrossel_textos_qa.py com o caminho deste JSON). Lâminas 1080×1350 (4:5), em loop, sem áudio (como os carrosséis animados anteriores), 6 ou 7 s cada. Fatos conferidos no repositório do app (uaipertim/uaipertim, só leitura, HEAD b09f362): os status do pedido (src/utils/orderLifecycle.ts), entrega ou retirada à escolha do cliente e a loja decidindo entre a equipe própria e a rede (PROCEDIMENTO-ENTREGADORES.md), o que o entregador vê antes do aceite e o aviso 'Nova entrega disponível — loja · bairro · valor' (idem, §5 e §6), os veículos da ficha (moto, bicicleta, carro ou a pé), os pontos por pedido concluído trocados por cupom e os níveis Bronze, Prata, Ouro e Diamante (src/lib/loyalty.ts, server/orderStatusChange.ts). Nenhum comércio real, nenhuma data de lançamento, nenhum número de lojas, nenhum WhatsApp de suporte.",
+ "selo": "NO GLÓRIA",
+ "ilustrativo": "Lojas e valores ilustrativos",
+ "whatsapp_permitido": [
+  "pra quem pede"
+ ],
+ "laminas": [
+  {
+   "tipo": "capa",
+   "rotulo": "capa",
+   "segundos": 6,
+   "estatico": 0,
+   "titulo": [
+    "O que muda",
+    "no *Glória*",
+    "com o UaiPertim?"
+   ],
+   "rodape": "Arrasta pro lado →",
+   "crf": 12
+  },
+  {
+   "tipo": "pede",
+   "rotulo": "pra quem pede",
+   "segundos": 7,
+   "estatico": 4.6,
+   "titulo": "Pra quem *pede*",
+   "texto": "Antes × agora",
+   "antes": {
+    "rotulo": "Antes",
+    "texto": "Ligar e esperar responder no WhatsApp",
+    "baloes": [
+     "Tem o quê hoje?",
+     "Quanto tá?"
+    ]
+   },
+   "agora": {
+    "rotulo": "Agora",
+    "texto": "Cardápio e preço na tela"
+   },
+   "ilustrativo": true,
+   "ocr_ignora": [
+    "baloes"
+   ]
+  },
+  {
+   "tipo": "acompanha",
+   "rotulo": "acompanhar e pagar",
+   "segundos": 7,
+   "estatico": 4.8,
+   "titulo": "Acompanha e *paga* do seu jeito",
+   "passos": [
+    "Aceito",
+    "Em preparo",
+    "Pronto",
+    "Saiu para entrega"
+   ],
+   "formas": [
+    "Pix",
+    "Cartão",
+    "Na entrega"
+   ],
+   "formas_titulo": "Paga no Pix ou no cartão pelo app, ou na entrega",
+   "modos": [
+    "Entrega",
+    "Retirada"
+   ],
+   "modos_titulo": "E escolhe: entrega ou retirada",
+   "quebra": [
+    "Acompanha e *paga*",
+    "do seu jeito"
+   ]
+  },
+  {
+   "tipo": "points",
+   "rotulo": "Pão de Queijo Points",
+   "segundos": 6,
+   "estatico": 4.2,
+   "titulo": "Pão de Queijo *Points*",
+   "linhas": [
+    "Cada pedido concluído vale pontos",
+    "Os pontos viram cupom de desconto"
+   ],
+   "niveis": [
+    "Bronze",
+    "Prata",
+    "Ouro",
+    "Diamante"
+   ],
+   "niveis_titulo": "E cê vai subindo de nível",
+   "quebra": [
+    "Pão de Queijo",
+    "*Points*"
+   ]
+  },
+  {
+   "tipo": "vende",
+   "rotulo": "pra quem vende",
+   "segundos": 7,
+   "estatico": 4.8,
+   "titulo": "Pra quem *vende*",
+   "texto": "O comércio da cidade:",
+   "opcoes": [
+    {
+     "titulo": "Ganha vitrine no app",
+     "texto": "cardápio, fotos e preços"
+    },
+    {
+     "titulo": "Recebe o pedido organizado",
+     "texto": "tudo no painel da loja"
+    },
+    {
+     "titulo": "Decide como entrega",
+     "texto": "com a equipe própria ou com a rede de entregadores"
+    }
+   ]
+  },
+  {
+   "tipo": "entrega",
+   "rotulo": "pra quem entrega",
+   "segundos": 7,
+   "estatico": 4.6,
+   "titulo": "Pra quem *entrega*",
+   "texto": "Entregadores da cidade, de moto, bike, carro ou a pé",
+   "veiculos": [
+    "Moto",
+    "Bike",
+    "Carro",
+    "A pé"
+   ],
+   "aviso": "Nova entrega disponível",
+   "campos": [
+    "Loja",
+    "Bairro",
+    "Valor"
+   ],
+   "rodape": "Cê vê tudo isso antes de aceitar"
+  },
+  {
+   "tipo": "fecho",
+   "rotulo": "fecho",
+   "segundos": 6,
+   "estatico": 0,
+   "titulo": "O comércio do *Glória*, tudo pertim de você.",
+   "quebra": [
+    "O comércio do *Glória*,",
+    "tudo pertim de você."
+   ],
+   "handle": "@uaipertim",
+   "embreve": "Em breve no Glória",
+   "cta": "Segue a gente pra saber do lançamento"
+  }
+ ],
+ "sem_numeros": true
+}
