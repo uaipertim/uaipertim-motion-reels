@@ -11,5 +11,6 @@ export const CAPAS_REELS: CapaReelProps[] = [
   { id: "pao-de-queijo-points", selo: "CONHEÇA", icone: "pin", ilustracao: "cesta", titulo: ["Seu pedido", "rende *pontos*!"], fundo: "creme", cor: "coral", margem: 135 },
   { id: "seja-entregador", selo: "ENTREGADOR PARCEIRO", icone: "pin", ilustracao: "entregador", titulo: ["Bora *entregar*", "com o Pertim?"], fundo: "creme", cor: "coral", margem: 135 },
   { id: "cade-meu-pedido", selo: "CONHEÇA", icone: "pin", ilustracao: "acompanha", titulo: ["Cadê meu", "*pedido*?"], fundo: "creme", cor: "coral", margem: 135 },
+  { id: "seu-primeiro-pedido", selo: "PASSO A PASSO", icone: "pin", ilustracao: "primeiro", titulo: ["Seu *primeiro*", "pedido"], fundo: "creme", cor: "amarelo", margem: 135 },
   { id: "qual-comercio-precisa", selo: "CONTA PRA GENTE", icone: "megafone", ilustracao: "vaga", titulo: ["Qual comércio", "*PRECISA*", "estar aqui?"], fundo: "pessego", cor: "coral" },
 ];

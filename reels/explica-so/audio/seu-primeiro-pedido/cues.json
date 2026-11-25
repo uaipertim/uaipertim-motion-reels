@@ -1,0 +1,155 @@
+{
+ "duration": 30.5,
+ "cues": [
+  {
+   "t": 0.0,
+   "type": "pop",
+   "f": 520
+  },
+  {
+   "t": 0.35,
+   "type": "shine"
+  },
+  {
+   "t": 2.73,
+   "type": "jump"
+  },
+  {
+   "t": 2.83,
+   "type": "shine"
+  },
+  {
+   "t": 3.2,
+   "type": "whoosh"
+  },
+  {
+   "t": 3.45,
+   "type": "whoosh"
+  },
+  {
+   "t": 4.84,
+   "type": "tick"
+  },
+  {
+   "t": 5.08,
+   "type": "slide"
+  },
+  {
+   "t": 6.47,
+   "type": "tick"
+  },
+  {
+   "t": 6.72,
+   "type": "slide"
+  },
+  {
+   "t": 7.72,
+   "type": "light",
+   "i": 0
+  },
+  {
+   "t": 8.12,
+   "type": "check"
+  },
+  {
+   "t": 8.63,
+   "type": "tick"
+  },
+  {
+   "t": 8.88,
+   "type": "slide"
+  },
+  {
+   "t": 9.13,
+   "type": "plop"
+  },
+  {
+   "t": 9.55,
+   "type": "tick"
+  },
+  {
+   "t": 9.75,
+   "type": "slide"
+  },
+  {
+   "t": 10.37,
+   "type": "tick"
+  },
+  {
+   "t": 10.62,
+   "type": "slide"
+  },
+  {
+   "t": 11.07,
+   "type": "light",
+   "i": 0
+  },
+  {
+   "t": 11.87,
+   "type": "light",
+   "i": 1
+  },
+  {
+   "t": 14.047,
+   "type": "light",
+   "i": 2
+  },
+  {
+   "t": 17.57,
+   "type": "light",
+   "i": 0
+  },
+  {
+   "t": 18.21,
+   "type": "light",
+   "i": 1
+  },
+  {
+   "t": 19.57,
+   "type": "light",
+   "i": 2
+  },
+  {
+   "t": 21.13,
+   "type": "tick"
+  },
+  {
+   "t": 21.48,
+   "type": "check"
+  },
+  {
+   "t": 22.35,
+   "type": "whoosh"
+  },
+  {
+   "t": 22.6,
+   "type": "pop",
+   "f": 600
+  },
+  {
+   "t": 24.37,
+   "type": "coinsfall"
+  },
+  {
+   "t": 25.45,
+   "type": "coin"
+  },
+  {
+   "t": 26.57,
+   "type": "logo"
+  },
+  {
+   "t": 27.02,
+   "type": "pop",
+   "f": 700
+  },
+  {
+   "t": 27.37,
+   "type": "msg"
+  },
+  {
+   "t": 29.08,
+   "type": "shine"
+  }
+ ]
+}

@@ -24,7 +24,7 @@ export type CapaReelProps = {
   semFundo?: boolean;   // só para o QA: sem o fundo (creme, raios e halo), para medir onde está o conteúdo
   margem?: number;  // a margem lateral do título e dos brilhos (padrão 110; 135 = a regra das capas que valem na grade E na aba Reels)
 };
-type Ilustracao = "mesa" | "nao-e-app" | "entrega" | "vaga" | "fome" | "dentro" | "cesta" | "entregador" | "acompanha";
+type Ilustracao = "mesa" | "nao-e-app" | "entrega" | "vaga" | "fome" | "dentro" | "cesta" | "entregador" | "acompanha" | "primeiro";
 
 const SAFE = { x0: 110, x1: 970, y0: 300, y1: 1620 };
 const SELO_Y = 372;                                     // centro do selo
@@ -409,7 +409,46 @@ const Acompanha: React.FC = () => {
   );
 };
 
-const ILUSTRACOES: Record<Ilustracao, React.FC> = { mesa: Mesa, "nao-e-app": NaoEApp, entrega: Entrega, vaga: Vaga, fome: Fome, dentro: Dentro, cesta: Cesta, entregador: Entregador, acompanha: Acompanha };
+// 10 · Seu primeiro pedido: o celular na tela do lanche (Produto.png, o "Smash Duplo" com o botão "Adicionar"), com o toque
+//      no botão, e o Pertim ao lado apontando pro celular, olhando para a câmera; a sacolinha com o "+1"
+const Primeiro: React.FC = () => {
+  const pw = 320, ph = 590, px = 340, py = 4, bz = 13, tw = pw - 2 * bz, th = ph - 2 * bz, k = tw / 1170;
+  const alt = 420, wP = 280 * alt / 284;
+  const faixa = 270 * k;                                  // a faixa fixa de baixo (o "Adicionar"), presa no rodapé da tela
+  return (
+    <>
+      <Svg abs>
+        <ellipse cx="378" cy="590" rx="270" ry="12" fill="#000" opacity="0.08" />
+        <Brilho x={80} y={110} s={42} c={C.coral} /><Brilho x={720} y={90} s={34} /><Brilho x={700} y={430} s={28} c={C.coral} /><Brilho x={60} y={420} s={28} />
+      </Svg>
+      <div style={{ position: "absolute", left: 175 - wP / 2, top: 592 - alt, width: wP, height: alt }}>
+        <Pertim v={1} pose="apontando" expr="sorrindo" altura={alt} rig={{ olhar: [0, 0], centro: true, aceno: -14 }} />
+      </div>
+      <div style={{ position: "absolute", left: px, top: py, width: pw, height: ph, transform: "rotate(5deg)", transformOrigin: "50% 100%" }}>
+        <div style={{ position: "absolute", inset: 0, borderRadius: 46, background: C.tinta, boxShadow: "inset 0 0 0 4px #4A3E38, 0 24px 44px rgba(34,28,25,0.3)" }} />
+        <div style={{ position: "absolute", left: bz, top: bz, width: tw, height: th, borderRadius: 36, overflow: "hidden", background: "#FAF8F5" }}>
+          <Img src={staticFile("telas-app/celular/Produto.png")} style={{ position: "absolute", left: 0, top: 0, width: 1170 * k, height: 3360 * k, maxWidth: "none" }} />
+          <div style={{ position: "absolute", left: 0, top: th - faixa, width: tw, height: faixa, overflow: "hidden" }}>
+            <Img src={staticFile("telas-app/celular/Produto.png")} style={{ position: "absolute", left: 0, top: -3090 * k, width: 1170 * k, height: 3360 * k, maxWidth: "none" }} />
+          </div>
+          {/* o toque no "Adicionar" */}
+          <div style={{ position: "absolute", left: 789 * k - 34, top: th - (3360 - 3205) * k - 34, width: 68, height: 68, borderRadius: "50%", border: `7px solid ${C.amarelo}`, boxShadow: `0 0 0 6px rgba(242,80,43,0.35)` }} />
+        </div>
+        <div style={{ position: "absolute", left: pw / 2 - 7, top: bz + 8, width: 14, height: 14, borderRadius: "50%", background: "#0D0B0A" }} />
+      </div>
+      {/* a sacolinha com o "+1" */}
+      <svg width={130} height={150} viewBox="0 0 100 120" style={{ position: "absolute", left: 640, top: 40, overflow: "visible", transform: "rotate(10deg)" }}>
+        <path d="M34 30 Q34 8 50 8 Q66 8 66 30" stroke={C.coralDark} strokeWidth="6" fill="none" />
+        <path d="M14 30 H86 L80 112 Q79 118 72 118 H28 Q21 118 20 112 Z" fill={C.coral} />
+        <circle cx="50" cy="76" r="17" fill="#fff" /><path d="M50 90 C50 90 40 79 40 73 A10 10 0 0 1 60 73 C60 79 50 90 50 90 Z" fill={C.coral} />
+        <circle cx="86" cy="26" r="20" fill={C.amarelo} stroke="#fff" strokeWidth="4" />
+        <text x="86" y="34" textAnchor="middle" fontFamily={FONT} fontWeight={900} fontSize="22" fill={C.coral}>+1</text>
+      </svg>
+    </>
+  );
+};
+
+const ILUSTRACOES: Record<Ilustracao, React.FC> = { mesa: Mesa, "nao-e-app": NaoEApp, entrega: Entrega, vaga: Vaga, fome: Fome, dentro: Dentro, cesta: Cesta, entregador: Entregador, acompanha: Acompanha, primeiro: Primeiro };
 
 // ---------------------------------------------------------------- a capa
 const TWINK: Array<[number, number]> = [[150, 470], [930, 520], [130, 1120], [950, 1100], [170, 1560], [910, 1570]];

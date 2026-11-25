@@ -53,6 +53,7 @@ import { SEU_COMERCIO, SeuComercio, SeuComercioProps, duracaoSeuComercio, medeSe
 import { PDQ, PaoDeQueijoPoints } from "./pao-de-queijo-points/PaoDeQueijoPoints";
 import { SE, SejaEntregador } from "./seja-entregador/SejaEntregador";
 import { CMP, CadeMeuPedido } from "./cade-meu-pedido/CadeMeuPedido";
+import { SPP, SeuPrimeiroPedido } from "./seu-primeiro-pedido/SeuPrimeiroPedido";
 import { QUIZ, QuizMineiro, QuizProps, duracaoLamina, medeQuiz } from "./quiz/QuizMineiro";
 import quiz01 from "../carrosseis/quiz/01-voce-e-mineiro-raiz.json";
 import facim02 from "../carrosseis/facim/02-como-vai-funcionar.json";
@@ -273,6 +274,7 @@ export const RemotionRoot: React.FC = () => (
     <Composition id="PaoDeQueijoPoints" component={PaoDeQueijoPoints} durationInFrames={PDQ.duracao} fps={PDQ.fps} width={1080} height={1920} defaultProps={{}} calculateMetadata={async () => { await fontsReady; return {}; }} />
     <Composition id="SejaEntregador" component={SejaEntregador} durationInFrames={SE.duracao} fps={SE.fps} width={1080} height={1920} defaultProps={{}} calculateMetadata={async () => { await fontsReady; return {}; }} />
     <Composition id="CadeMeuPedido" component={CadeMeuPedido} durationInFrames={CMP.duracao} fps={CMP.fps} width={1080} height={1920} defaultProps={{}} calculateMetadata={async () => { await fontsReady; return {}; }} />
+    <Composition id="SeuPrimeiroPedido" component={SeuPrimeiroPedido} durationInFrames={SPP.duracao} fps={SPP.fps} width={1080} height={1920} defaultProps={{}} calculateMetadata={async () => { await fontsReady; return {}; }} />
     {/* Carrossel animado #02 "Como chega o seu pedido?" (1080×1350, uma lâmina por render: --props={"lamina": 0..6}); scripts/quiz.mjs com o caminho do JSON */}
     <Composition id="ComoChega" component={ComoChega} durationInFrames={180} fps={COMO_CHEGA.fps} width={COMO_CHEGA.width} height={COMO_CHEGA.height}
       defaultProps={{ ...(comoChega02 as unknown as ComoChegaProps), lamina: 0 }}

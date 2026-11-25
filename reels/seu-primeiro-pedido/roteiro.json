@@ -1,0 +1,201 @@
+{
+ "id": "seu-primeiro-pedido",
+ "titulo": "Seu primeiro pedido",
+ "marca": "@uaipertim",
+ "perfil_voz": "narracao",
+ "trilha": "animada",
+ "bpm": 120,
+ "legenda": true,
+ "grade": true,
+ "logo_pronta": 0.6,
+ "limites": [
+  30.0,
+  35.0
+ ],
+ "limites_fecho": [
+  3.5,
+  6.5
+ ],
+ "_doc": "Reel 'Seu primeiro pedido' (Instagram @uaipertim, dom 29/11 20h): do começo ao fim, como fazer o primeiro pedido no UaiPertim, com as telas do app. Narrado pelo Pertim (rig 2D atual). Pipeline do Explica, Sô! (voz.py, linha.py, audio.py) + a composição Remotion SeuPrimeiroPedido (src/seu-primeiro-pedido/). 'grade': true = todo corte numa batida da trilha animada (120 BPM). Trilha: a animada do app no nível padrão (sem trilha_db). A ordem das telas e os textos seguem o app (uaipertim/uaipertim, só leitura, HEAD b09f362): Início → Loja → Produto (opções, 'Adicionar') → 'Ver sacola' → Sacola ('Continuar') → Finalizar pedido (Entrega / Retirar na loja, endereço, forma de pagamento, 'Fazer pedido e pagar') → o primeiro status, 'Pedido recebido'.",
+ "_doc_pronuncia": "'UaiPertim' vai para a voz como 'Uai pertím', 'Pertim'/'pertim' como 'pertím' e 'WhatsApp' como 'Uátsap' (só o texto enviado; na tela e na legenda, a grafia oficial).",
+ "pronuncia": {
+  "UaiPertim": "Uai pertím",
+  "Pertim": "pertím",
+  "pertim": "pertím",
+  "WhatsApp": "Uátsap"
+ },
+ "capitulos": [
+  {
+   "rotulo": "CENA 1 · gancho",
+   "titulo": [
+    "",
+    ""
+   ],
+   "batidas": 4,
+   "inicio": 0.12,
+   "segura": 0.05,
+   "fala": [
+    {
+     "texto": "Seu primeiro pedido no UaiPertim? É facim, ó!",
+     "apoio": null
+    }
+   ],
+   "diagrama": {
+    "tipo": "gancho"
+   },
+   "chaves": [
+    "primeiro",
+    "facim,"
+   ],
+   "pergunta": true
+  },
+  {
+   "rotulo": "CENA 2 · loja",
+   "titulo": [
+    "",
+    ""
+   ],
+   "batidas": 4,
+   "inicio": 0.1,
+   "segura": 0.05,
+   "fala": [
+    {
+     "texto": "Abre o app e escolhe a loja.",
+     "apoio": null
+    }
+   ],
+   "diagrama": {
+    "tipo": "loja"
+   },
+   "chaves": [
+    "loja."
+   ]
+  },
+  {
+   "rotulo": "CENA 3 · sacola",
+   "titulo": [
+    "",
+    ""
+   ],
+   "batidas": 4,
+   "inicio": 0.1,
+   "segura": 0.05,
+   "fala": [
+    {
+     "texto": "Toca no lanche, escolhe as opções e põe na sacola.",
+     "apoio": null
+    }
+   ],
+   "diagrama": {
+    "tipo": "sacola"
+   },
+   "chaves": [
+    "lanche,",
+    "opções",
+    "sacola."
+   ]
+  },
+  {
+   "rotulo": "CENA 4 · entrega",
+   "titulo": [
+    "",
+    ""
+   ],
+   "batidas": 4,
+   "inicio": 0.1,
+   "segura": 0.05,
+   "fala": [
+    {
+     "texto": "No fim, cê escolhe: entrega ou retirada. Se for entrega, confere o endereço.",
+     "apoio": null
+    }
+   ],
+   "diagrama": {
+    "tipo": "entrega"
+   },
+   "chaves": [
+    "entrega",
+    "retirada.",
+    "endereço."
+   ]
+  },
+  {
+   "rotulo": "CENA 5 · pagamento",
+   "titulo": [
+    "",
+    ""
+   ],
+   "batidas": 4,
+   "inicio": 0.1,
+   "segura": 0.05,
+   "fala": [
+    {
+     "texto": "Escolhe como pagar: no Pix ou no cartão pelo app, ou na entrega. Aí é só fazer o pedido!",
+     "apoio": null
+    }
+   ],
+   "diagrama": {
+    "tipo": "pagamento"
+   },
+   "chaves": [
+    "Pix",
+    "cartão",
+    "entrega.",
+    "pedido!"
+   ]
+  },
+  {
+   "rotulo": "CENA 6 · bônus",
+   "titulo": [
+    "",
+    ""
+   ],
+   "batidas": 4,
+   "inicio": 0.1,
+   "segura": 0.05,
+   "fala": [
+    {
+     "texto": "E quando o pedido chega, já rende Pão de Queijo Points!",
+     "apoio": null
+    }
+   ],
+   "diagrama": {
+    "tipo": "bonus"
+   },
+   "chaves": [
+    "Pão",
+    "de",
+    "Queijo",
+    "Points!"
+   ]
+  },
+  {
+   "rotulo": "FECHO",
+   "titulo": [
+    "",
+    ""
+   ],
+   "batidas": 4,
+   "inicio": 0.12,
+   "segura": 0.3,
+   "fala": [
+    {
+     "texto": "Segue a gente pra saber do lançamento!",
+     "apoio": null
+    }
+   ],
+   "diagrama": {
+    "tipo": "fecho",
+    "logo": {
+     "em": "Segue"
+    }
+   },
+   "chaves": [
+    "Segue",
+    "lançamento!"
+   ]
+  }
+ ],
+ "_doc_chaves": "'chaves' de cada capítulo: as palavras-chave da legenda gravada (ficam em amarelo/laranja depois de ditas).",
+ "_doc_pergunta": "'pergunta': true só na fala 1: 'Seu primeiro pedido no UaiPertim?' é pergunta de sim/não (o tópico do Reel); o F0 sobe ≥ +8 st da palavra anterior ('no') até o pico na última palavra da pergunta ('pertím', a tônica TÍM), a regra das tomadas (o qa.py confere)."
+}

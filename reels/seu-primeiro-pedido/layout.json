@@ -1,0 +1,208 @@
+{
+ "_doc": "Layout do Reel 'Seu primeiro pedido' (1080×1920, 30 fps). Lido pela composição (src/seu-primeiro-pedido/), por scripts/preparar.py e pelo qa.py. Caixas [x0, y0, x1, y1]; telas em px do PNG (1170 de largura). O celular é o do 'Cadê meu pedido?' (x 245–935, y 310–1750); o Pertim no canto de baixo à esquerda nas cenas 2–5; a legenda nova (pop) em x 110–906; a nota 'Lojas e valores ilustrativos' no rodapé (y 1584) enquanto as telas aparecem.",
+ "W": 1080,
+ "H": 1920,
+ "fps": 30,
+ "botoes": [
+  940,
+  1060,
+  1080,
+  1560
+ ],
+ "legenda_pop": {
+  "cx": 508,
+  "top": 1400,
+  "size": 72,
+  "linha": 88,
+  "size2": 60,
+  "linha2": 66,
+  "maxW": 796,
+  "x0": 110,
+  "x1": 906,
+  "_doc": "a legenda nova (a da Coisa de mineiro #03): uma linha na letra grande; se não couber, duas na menor; sempre em x 110–906"
+ },
+ "nota": {
+  "texto": "Lojas e valores ilustrativos",
+  "cx": 508,
+  "y": 1584,
+  "size": 24
+ },
+ "celular": {
+  "x": 245,
+  "y": 310,
+  "w": 690,
+  "h": 1440,
+  "bezel": 0.042
+ },
+ "pertim": {
+  "canto": {
+   "cx": 180,
+   "base": 1318,
+   "altura": 300
+  },
+  "gancho": {
+   "cx": 470,
+   "base": 1300,
+   "altura": 560
+  },
+  "fecho": {
+   "cx": 250,
+   "base": 1318,
+   "altura": 400
+  }
+ },
+ "telas": {
+  "Main": {
+   "h": 4140,
+   "fixo": {
+    "faixa": [
+     4033,
+     4140
+    ]
+   },
+   "pontos": {
+    "loja": [
+     40,
+     2270,
+     1130,
+     2470
+    ]
+   }
+  },
+  "Loja": {
+   "h": 4920,
+   "fixo": {
+    "faixa": [
+     4650,
+     4920
+    ]
+   },
+   "pontos": {
+    "lanche": [
+     55,
+     1735,
+     575,
+     2370
+    ],
+    "verSacola": [
+     585,
+     4783
+    ],
+    "contador": [
+     72,
+     4740,
+     172,
+     4830
+    ]
+   }
+  },
+  "Produto": {
+   "h": 3360,
+   "fixo": {
+    "faixa": [
+     3090,
+     3360
+    ]
+   },
+   "pontos": {
+    "ponto": [
+     50,
+     1630,
+     1120,
+     1745
+    ],
+    "bacon": [
+     50,
+     2160,
+     1120,
+     2305
+    ],
+    "adicionar": [
+     789,
+     3205
+    ]
+   }
+  },
+  "Sacola": {
+   "h": 3180,
+   "fixo": {
+    "faixa": [
+     2910,
+     3180
+    ]
+   },
+   "pontos": {
+    "continuar": [
+     585,
+     3043
+    ]
+   }
+  },
+  "Checkout": {
+   "h": 4740,
+   "fixo": {
+    "faixa": [
+     4470,
+     4740
+    ]
+   },
+   "pontos": {
+    "entrega": [
+     72,
+     240,
+     579,
+     366
+    ],
+    "retirada": [
+     591,
+     240,
+     1104,
+     366
+    ],
+    "endereco": [
+     60,
+     540,
+     1110,
+     762
+    ],
+    "pix": [
+     60,
+     1100,
+     1110,
+     1520
+    ],
+    "cartao": [
+     60,
+     1550,
+     1110,
+     1770
+    ],
+    "naEntrega": [
+     60,
+     1805,
+     1110,
+     2030
+    ],
+    "fazer": [
+     585,
+     4603
+    ]
+   }
+  }
+ },
+ "fecho": {
+  "logo": {
+   "cx": 610,
+   "cy": 470,
+   "d": 290
+  },
+  "frase": {
+   "cy": 700,
+   "size": 58
+  },
+  "cta": {
+   "cx": 610,
+   "cy": 870
+  }
+ }
+}

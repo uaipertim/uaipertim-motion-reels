@@ -1,0 +1,141 @@
+{
+ "duracao": 30.5,
+ "fps": 30,
+ "quadros": 915,
+ "batida": 0.5,
+ "bpm": 120.0,
+ "cenas": [
+  {
+   "n": 0,
+   "tipo": "gancho",
+   "t0": 0.0,
+   "t1": 3.5,
+   "voz_t0": 0.12,
+   "voz_t1": 3.32,
+   "texto": "Seu primeiro pedido no UaiPertim? É facim, ó!"
+  },
+  {
+   "n": 1,
+   "tipo": "loja",
+   "t0": 3.5,
+   "t1": 6.0,
+   "voz_t0": 3.6,
+   "voz_t1": 5.68,
+   "texto": "Abre o app e escolhe a loja."
+  },
+  {
+   "n": 2,
+   "tipo": "sacola",
+   "t0": 6.0,
+   "t1": 9.5,
+   "voz_t0": 6.1,
+   "voz_t1": 9.38,
+   "texto": "Toca no lanche, escolhe as opções e põe na sacola."
+  },
+  {
+   "n": 3,
+   "tipo": "entrega",
+   "t0": 9.5,
+   "t1": 15.5,
+   "voz_t0": 9.6,
+   "voz_t1": 15.12,
+   "texto": "No fim, cê escolhe: entrega ou retirada. Se for entrega, confere o endereço."
+  },
+  {
+   "n": 4,
+   "tipo": "pagamento",
+   "t0": 15.5,
+   "t1": 22.5,
+   "voz_t0": 15.6,
+   "voz_t1": 22.4,
+   "texto": "Escolhe como pagar: no Pix ou no cartão pelo app, ou na entrega. Aí é só fazer o pedido!"
+  },
+  {
+   "n": 5,
+   "tipo": "bonus",
+   "t0": 22.5,
+   "t1": 26.5,
+   "voz_t0": 22.6,
+   "voz_t1": 26.2,
+   "texto": "E quando o pedido chega, já rende Pão de Queijo Points!"
+  },
+  {
+   "n": 6,
+   "tipo": "fecho",
+   "t0": 26.5,
+   "t1": 30.5,
+   "voz_t0": 26.62,
+   "voz_t1": 28.78,
+   "texto": "Segue a gente pra saber do lançamento!"
+  }
+ ],
+ "eventos": {
+  "gancho": {
+   "facim": 2.73,
+   "sai": 3.2
+  },
+  "loja": {
+   "celular": [
+    3.45,
+    3.9
+   ],
+   "toque": 4.84,
+   "abre": 5.08
+  },
+  "sacola": {
+   "toque_lanche": 6.47,
+   "produto": 6.72,
+   "ponto": 7.72,
+   "bacon": 8.12,
+   "toque_adicionar": 8.63,
+   "volta": 8.88,
+   "contador": 9.13
+  },
+  "entrega": {
+   "toque_ver": 9.55,
+   "sacola": 9.75,
+   "toque_continuar": 10.37,
+   "checkout": 10.62,
+   "entrega": 11.07,
+   "retirada": 11.87,
+   "endereco": 14.047
+  },
+  "pagamento": {
+   "pix": 17.57,
+   "cartao": 18.21,
+   "na_entrega": 19.57,
+   "toque_fazer": 21.13,
+   "recebido": 21.48
+  },
+  "bonus": {
+   "sai": [
+    22.35,
+    22.8
+   ],
+   "pao": 22.6,
+   "rende": 24.37,
+   "pontos": 25.45
+  },
+  "fecho": {
+   "logo": {
+    "entra": 26.57,
+    "parada": 27.17
+   },
+   "frase": 27.02,
+   "cta": 27.37,
+   "pisca": 29.08
+  }
+ },
+ "piscadas": [
+  1.567,
+  5.779,
+  8.229,
+  10.779,
+  13.292,
+  16.965,
+  20.652,
+  24.436,
+  27.21
+ ],
+ "piscada_dur": 0.16
+}

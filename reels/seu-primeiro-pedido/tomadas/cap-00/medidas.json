@@ -1,0 +1,130 @@
+{
+ "episodio": "seu-primeiro-pedido",
+ "cap": 0,
+ "texto": "Seu primeiro pedido no UaiPertim? É facim, ó!",
+ "voz": "Victor Pinho",
+ "perfil": "narracao",
+ "modelo": "eleven_v4",
+ "tomadas": [
+  {
+   "tomada": "A",
+   "arquivo": "A-seed42.mp3",
+   "seed": 42,
+   "texto_api": "Seu primeiro pedido no Uai pertím? É facim, ó!",
+   "conferencia": "ok",
+   "ritmo_letras_s": 11.2,
+   "maior_pausa_s": 0.32,
+   "sobra_no_fim_s": 0.16,
+   "fala_s": 3.12,
+   "pertim": [
+    {
+     "grafia": "Uai pertím",
+     "F1_PER_max_hz": null,
+     "E_aberto": false,
+     "vogal_PER": {
+      "dur": 0.04,
+      "f0": null
+     },
+     "vogal_TIM": {
+      "dur": 0.12,
+      "f0": 218
+     },
+     "forca": "TIM",
+     "F2_meio": 2641,
+     "F2_fim": 2604,
+     "fim": "in? (F2 alto)"
+    }
+   ]
+  },
+  {
+   "tomada": "B",
+   "arquivo": "B-seed1042.mp3",
+   "seed": 1042,
+   "texto_api": "Seu primeiro pedido no Uai pertím? É facim, ó!",
+   "conferencia": "ok",
+   "ritmo_letras_s": 11.2,
+   "maior_pausa_s": 0.36,
+   "sobra_no_fim_s": 0.16,
+   "fala_s": 3.12,
+   "pertim": [
+    {
+     "grafia": "Uai pertím",
+     "F1_PER_max_hz": 2112,
+     "E_aberto": true,
+     "vogal_PER": {
+      "dur": 0.04,
+      "f0": null
+     },
+     "vogal_TIM": {
+      "dur": 0.12,
+      "f0": 218
+     },
+     "forca": "TIM",
+     "F2_meio": 2650,
+     "F2_fim": 2600,
+     "fim": "in? (F2 alto)"
+    }
+   ]
+  },
+  {
+   "tomada": "C",
+   "arquivo": "C-seed2042.mp3",
+   "seed": 2042,
+   "texto_api": "Seu primeiro pedido no Uai pertím? É facim, ó!",
+   "conferencia": "ok",
+   "ritmo_letras_s": 10.9,
+   "maior_pausa_s": 0.32,
+   "sobra_no_fim_s": 0.24,
+   "fala_s": 3.2,
+   "pertim": [
+    {
+     "grafia": "Uai pertím",
+     "F1_PER_max_hz": null,
+     "E_aberto": false,
+     "vogal_PER": {
+      "dur": 0.04,
+      "f0": null
+     },
+     "vogal_TIM": {
+      "dur": 0.12,
+      "f0": 233
+     },
+     "forca": "TIM",
+     "F2_meio": 2521,
+     "F2_fim": 2024,
+     "fim": "im (F2 cai)"
+    }
+   ]
+  },
+  {
+   "tomada": "D",
+   "arquivo": "D-seed3042.mp3",
+   "seed": 3042,
+   "texto_api": "Seu primeiro pedido no Uai pertím? É facim, ó!",
+   "conferencia": "ok",
+   "ritmo_letras_s": 11.2,
+   "maior_pausa_s": 0.32,
+   "sobra_no_fim_s": 0.16,
+   "fala_s": 3.12,
+   "pertim": [
+    {
+     "grafia": "Uai pertím",
+     "F1_PER_max_hz": null,
+     "E_aberto": false,
+     "vogal_PER": {
+      "dur": 0.04,
+      "f0": null
+     },
+     "vogal_TIM": {
+      "dur": 0.12,
+      "f0": 231
+     },
+     "forca": "TIM",
+     "F2_meio": 2532,
+     "F2_fim": 4080,
+     "fim": "in? (F2 alto)"
+    }
+   ]
+  }
+ ]
+}
